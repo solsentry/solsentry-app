@@ -55,7 +55,7 @@ export function Nav() {
     <nav className="nav">
       <div className="container nav-inner">
         <Link href="/" className="nav-brand">
-          <span className="dot" aria-hidden />
+          <img src="/logo-shield.svg" alt="" width={22} height={22} style={{ display: "block" }} />
           SolSentry
         </Link>
         <div className="nav-links">

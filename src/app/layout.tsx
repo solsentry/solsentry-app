@@ -25,6 +25,11 @@ export const metadata: Metadata = {
       "What Pyth is to prices, SolSentry is to operator risk. Post-deploy threat intelligence for Solana.",
   },
   robots: { index: true, follow: true },
+  icons: { icon: "/favicon.svg" },
+};
+
+export const viewport = {
+  themeColor: "#0A0A0A",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
