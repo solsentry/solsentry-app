@@ -2,6 +2,7 @@ import Link from "next/link";
 import { WalletConnectButton } from "./WalletConnectButton";
 
 const PRODUCT_LINKS = [
+  { label: "Fun mode", sub: "Is this wallet safe?", href: "/fun" },
   { label: "Operator lookup", sub: "Paste a wallet, get the history", href: "/operator" },
   { label: "Token lookup", sub: "Scan any mint", href: "/token" },
   { label: "Drain tracer", sub: "Follow SOL 10 hops", href: "/drain" },

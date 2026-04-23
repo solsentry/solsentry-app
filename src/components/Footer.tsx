@@ -4,6 +4,7 @@ const COLS = [
   {
     title: "Product",
     links: [
+      { label: "Fun mode", href: "/fun" },
       { label: "Operator lookup", href: "/operator" },
       { label: "Token lookup", href: "/token" },
       { label: "Drain tracer", href: "/drain" },

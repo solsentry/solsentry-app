@@ -2,6 +2,13 @@ import Link from "next/link";
 
 const FEATURES = [
   {
+    title: "Fun mode",
+    desc: "Paste a wallet — emoji + plain-English verdict in seconds. Three modes: Easy, Pro, Dev. Consumer-facing.",
+    href: "/fun",
+    pillar: "EXPLAIN",
+    color: "var(--brand-white)",
+  },
+  {
     title: "Operator lookup",
     desc: "Paste any Solana wallet. Get confirmed rug count, deployment history, risk label, tags.",
     href: "/operator",

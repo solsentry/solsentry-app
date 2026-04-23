@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SolSentry — Is it safe?</title>
+<meta name="description" content="SolSentry: find out in seconds if a Solana wallet or token is safe.">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:ital,wght@0,400;0,500;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin="anonymous"></script>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --orange: #FF6B00; --teal: #00C9A7; --purple: #A855F7;
+  --red: #FF4444; --yellow: #FFB800; --green: #22C55E;
+  --bg: #0A0A0A; --card: #1A1A1A; --border: #242424;
+  --white: #FFFFFF; --muted: rgba(255,255,255,0.55);
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+html, body { background: var(--bg); color: var(--white); font-family: var(--font-body); min-height: 100vh; }
+body { background:
+  radial-gradient(ellipse 900px 600px at 20% 10%, rgba(255,107,0,0.08), transparent 60%),
+  radial-gradient(ellipse 700px 500px at 80% 90%, rgba(168,85,247,0.06), transparent 60%),
+  #0A0A0A;
+}
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #111; }
+::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 4px; }
+:focus-visible { outline: 2px solid var(--orange); outline-offset: 2px; border-radius: 4px; }
+button { font-family: inherit; }
+
+@keyframes pulse { 0%,100% { opacity: 0.4; } 50% { opacity: 1; } }
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes fade-up { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes scale-in { from { opacity: 0; transform: scale(0.92); } to { opacity: 1; transform: scale(1); } }
+.fade-up { animation: fade-up 400ms ease-out; }
+.scale-in { animation: scale-in 500ms cubic-bezier(0.34, 1.56, 0.64, 1); }
+
+/* Mode switcher (bottom-left) */
+.mode-switcher {
+  position: fixed; bottom: 20px; left: 20px; z-index: 100;
+  background: rgba(26,26,26,0.95); backdrop-filter: blur(12px);
+  border: 1px solid var(--border); border-radius: 10px; padding: 6px;
+  display: flex; flex-direction: column; gap: 2px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+}
+.mode-btn {
+  padding: 8px 14px; border-radius: 6px; background: transparent;
+  border: none; color: var(--muted); cursor: pointer;
+  font-family: var(--font-body); font-weight: 500; font-size: 13px;
+  text-transform: uppercase; letter-spacing: 0.08em;
+  display: flex; align-items: center; gap: 8px;
+  transition: all 0.15s ease; min-width: 100px;
+}
+.mode-btn:hover { background: rgba(255,255,255,0.04); color: var(--white); }
+.mode-btn.active { background: var(--orange); color: var(--white); }
+.mode-btn .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; opacity: 0.5; }
+.mode-btn.active .dot { opacity: 1; animation: pulse 1.8s infinite; }
+.mode-hint { font-size: 10px; color: var(--muted); padding: 4px 14px 2px; letter-spacing: 0.1em; text-transform: uppercase; }
+
+/* FUN MODE */
+.fun-shell {
+  max-width: 640px; margin: 0 auto;
+  padding: 40px 20px 120px; min-height: 100vh;
+  display: flex; flex-direction: column; align-items: center;
+}
+.fun-logo { display: flex; align-items: center; gap: 12px; margin-bottom: 40px; margin-top: 40px; }
+.fun-logo-text { font-family: var(--font-display); font-weight: 700; font-size: 28px; color: var(--orange); letter-spacing: -0.02em; text-transform: uppercase; }
+.fun-headline {
+  font-family: var(--font-display); font-weight: 700; font-size: 32px;
+  text-align: center; line-height: 1.15; margin-bottom: 10px;
+  letter-spacing: -0.02em;
+}
+.fun-sub {
+  font-size: 15px; color: var(--muted); text-align: center;
+  margin-bottom: 32px; max-width: 460px; line-height: 1.5;
+}
+.fun-input-wrap {
+  width: 100%; display: flex; gap: 10px; margin-bottom: 12px;
+}
+.fun-input {
+  flex: 1; background: var(--card); border: 2px solid var(--border);
+  border-radius: 12px; padding: 18px 20px;
+  color: var(--white); font-family: var(--font-mono); font-size: 14px;
+  outline: none; transition: all 0.2s ease;
+}
+.fun-input:focus { border-color: var(--orange); box-shadow: 0 0 0 4px rgba(255,107,0,0.1); }
+.fun-input::placeholder { color: var(--muted); }
+.fun-btn {
+  background: var(--orange); color: var(--white); border: none;
+  border-radius: 12px; padding: 0 28px; cursor: pointer;
+  font-family: var(--font-body); font-weight: 700; font-size: 14px;
+  text-transform: uppercase; letter-spacing: 0.08em;
+  transition: all 0.15s ease; white-space: nowrap;
+}
+.fun-btn:hover { background: #FF8533; transform: translateY(-1px); }
+.fun-btn:disabled { background: #333; color: var(--muted); cursor: not-allowed; transform: none; }
+.fun-examples {
+  display: flex; gap: 8px; flex-wrap: wrap; justify-content: center;
+  margin-top: 4px;
+}
+.fun-example {
+  background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+  border-radius: 8px; padding: 8px 14px; cursor: pointer;
+  font-size: 12px; color: var(--muted); font-family: var(--font-body);
+  transition: all 0.15s ease;
+}
+.fun-example:hover { background: rgba(255,255,255,0.08); color: var(--white); }
+
+/* Result card */
+.result-card {
+  width: 100%; margin-top: 32px;
+  background: var(--card); border: 2px solid var(--border);
+  border-radius: 16px; overflow: hidden;
+}
+.result-card.critical { border-color: rgba(255,68,68,0.5); box-shadow: 0 0 40px rgba(255,68,68,0.15); }
+.result-card.high { border-color: rgba(255,107,0,0.5); box-shadow: 0 0 40px rgba(255,107,0,0.15); }
+.result-card.medium { border-color: rgba(255,184,0,0.45); }
+.result-card.low, .result-card.clean { border-color: rgba(34,197,94,0.45); box-shadow: 0 0 40px rgba(34,197,94,0.1); }
+.result-card.unknown { border-color: rgba(168,85,247,0.4); }
+
+.result-header {
+  padding: 36px 28px 24px; text-align: center;
+  border-bottom: 1px solid var(--border);
+}
+.result-emoji { font-size: 72px; line-height: 1; margin-bottom: 16px; display: block; }
+.result-title {
+  font-family: var(--font-display); font-weight: 700; font-size: 32px;
+  letter-spacing: -0.02em; margin-bottom: 8px;
+}
+.result-title.critical { color: var(--red); }
+.result-title.high { color: var(--orange); }
+.result-title.medium { color: var(--yellow); }
+.result-title.low, .result-title.clean { color: var(--green); }
+.result-title.unknown { color: var(--purple); }
+
+.result-recommendation {
+  font-size: 13px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.12em;
+  padding: 6px 14px; border-radius: 6px;
+  display: inline-block;
+}
+.result-recommendation.critical { background: rgba(255,68,68,0.15); color: var(--red); border: 1px solid rgba(255,68,68,0.4); }
+.result-recommendation.high { background: rgba(255,107,0,0.15); color: var(--orange); border: 1px solid rgba(255,107,0,0.4); }
+.result-recommendation.medium { background: rgba(255,184,0,0.12); color: var(--yellow); border: 1px solid rgba(255,184,0,0.35); }
+.result-recommendation.low, .result-recommendation.clean { background: rgba(34,197,94,0.12); color: var(--green); border: 1px solid rgba(34,197,94,0.35); }
+.result-recommendation.unknown { background: rgba(168,85,247,0.12); color: var(--purple); border: 1px solid rgba(168,85,247,0.35); }
+
+.result-body { padding: 24px 28px; }
+.result-explain { font-size: 15px; line-height: 1.65; color: rgba(255,255,255,0.85); margin-bottom: 20px; }
+.result-explain strong { color: var(--white); font-weight: 600; }
+.result-explain .num { font-family: var(--font-mono); }
+
+.result-stats {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
+  margin-top: 20px;
+}
+.result-stat {
+  background: rgba(0,0,0,0.3); border-radius: 8px; padding: 14px 12px; text-align: center;
+}
+.result-stat-value {
+  font-family: var(--font-display); font-weight: 700; font-size: 24px;
+  line-height: 1; letter-spacing: -0.02em;
+}
+.result-stat-label {
+  font-size: 10px; color: var(--muted); margin-top: 6px;
+  text-transform: uppercase; letter-spacing: 0.1em;
+}
+
+.result-details-toggle {
+  display: block; width: 100%; padding: 14px 28px;
+  background: rgba(255,255,255,0.02); border: none; border-top: 1px solid var(--border);
+  color: var(--muted); cursor: pointer; font-size: 12px;
+  text-transform: uppercase; letter-spacing: 0.1em; font-weight: 500;
+  transition: background 0.15s ease;
+}
+.result-details-toggle:hover { background: rgba(255,255,255,0.04); color: var(--white); }
+
+.result-details {
+  padding: 20px 28px; border-top: 1px solid var(--border);
+  background: rgba(0,0,0,0.2);
+}
+.result-detail-row {
+  display: flex; justify-content: space-between; padding: 8px 0;
+  font-size: 13px; border-bottom: 1px solid rgba(255,255,255,0.03);
+}
+.result-detail-row:last-child { border-bottom: none; }
+.result-detail-key { color: var(--muted); }
+.result-detail-val { color: var(--white); font-weight: 500; font-family: var(--font-mono); font-size: 12px; }
+
+.addr-display {
+  font-family: var(--font-mono); font-size: 12px; color: var(--muted);
+  padding: 10px 14px; background: rgba(0,0,0,0.3);
+  border-radius: 6px; word-break: break-all; margin-bottom: 16px;
+}
+
+.fun-footer {
+  text-align: center; color: var(--muted); font-size: 12px; margin-top: 48px;
+  line-height: 1.6;
+}
+.fun-footer a { color: var(--orange); text-decoration: none; }
+.fun-footer a:hover { text-decoration: underline; }
+
+/* Loading spinner */
+.spinner {
+  display: inline-block; width: 20px; height: 20px;
+  border: 3px solid rgba(255,107,0,0.2); border-top-color: var(--orange);
+  border-radius: 50%; animation: spin 0.8s linear infinite;
+}
+
+/* PRO MODE */
+.pro-shell {
+  padding: 0; min-height: 100vh;
+}
+.pro-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 16px 24px; border-bottom: 1px solid var(--border);
+  background: rgba(10,10,10,0.9); backdrop-filter: blur(12px);
+  position: sticky; top: 0; z-index: 10;
+}
+.pro-brand { display: flex; align-items: center; gap: 12px; }
+.pro-brand-text { font-family: var(--font-display); font-weight: 700; font-size: 22px; color: var(--orange); letter-spacing: -0.02em; }
+.pro-stats-bar {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 10px; padding: 16px 24px;
+}
+.pro-stat {
+  background: var(--card); border: 1px solid var(--border); border-radius: 8px;
+  padding: 14px 16px;
+}
+.pro-stat-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 6px; }
+.pro-stat-value { font-family: var(--font-display); font-weight: 700; font-size: 26px; letter-spacing: -0.02em; }
+.pro-stat-sub { font-size: 11px; color: var(--muted); margin-top: 4px; }
+.pro-main { padding: 16px 24px; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 900px) { .pro-main { grid-template-columns: 1fr; } }
+.pro-panel { background: var(--card); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+.pro-panel-header {
+  padding: 14px 16px; border-bottom: 1px solid var(--border);
+  font-family: var(--font-display); font-weight: 700; font-size: 13px;
+  text-transform: uppercase; letter-spacing: 0.12em;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.pro-op-row {
+  display: grid; grid-template-columns: 160px 1fr 100px 80px;
+  gap: 10px; padding: 10px 16px; align-items: center;
+  border-bottom: 1px solid var(--border);
+}
+.pro-op-row:last-child { border-bottom: none; }
+.mono { font-family: var(--font-mono); font-size: 12px; }
+.risk-pill {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; padding: 2px 8px; border-radius: 4px;
+}
+.risk-pill::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: currentColor; display: inline-block; }
+.risk-CRITICAL { color: var(--red); background: rgba(255,68,68,0.12); border: 1px solid rgba(255,68,68,0.35); }
+.risk-HIGH { color: var(--orange); background: rgba(255,107,0,0.12); border: 1px solid rgba(255,107,0,0.35); }
+.risk-MEDIUM { color: var(--yellow); background: rgba(255,184,0,0.12); border: 1px solid rgba(255,184,0,0.35); }
+.risk-LOW, .risk-CLEAN { color: var(--teal); background: rgba(0,201,167,0.12); border: 1px solid rgba(0,201,167,0.35); }
+.risk-UNKNOWN { color: var(--muted); background: rgba(255,255,255,0.04); border: 1px solid var(--border); }
+
+/* DEV MODE */
+.dev-shell { padding: 24px; max-width: 1100px; margin: 0 auto 100px; }
+.dev-title {
+  font-family: var(--font-display); font-weight: 700; font-size: 32px;
+  margin-bottom: 8px; color: var(--orange); letter-spacing: -0.02em;
+}
+.dev-sub { color: var(--muted); margin-bottom: 32px; font-size: 14px; }
+.dev-section { margin-bottom: 32px; }
+.dev-section-title {
+  font-family: var(--font-display); font-weight: 700; font-size: 14px;
+  text-transform: uppercase; letter-spacing: 0.15em;
+  color: var(--muted); margin-bottom: 14px; padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+.dev-endpoint {
+  background: var(--card); border: 1px solid var(--border); border-radius: 8px;
+  padding: 16px; margin-bottom: 12px;
+}
+.dev-endpoint-method {
+  display: inline-block; font-family: var(--font-mono); font-size: 11px;
+  font-weight: 700; padding: 2px 8px; border-radius: 4px;
+  background: rgba(0,201,167,0.15); color: var(--teal);
+  margin-right: 10px; letter-spacing: 0.05em;
+}
+.dev-endpoint-path {
+  font-family: var(--font-mono); font-size: 14px; color: var(--white);
+}
+.dev-endpoint-desc { color: var(--muted); font-size: 13px; margin-top: 8px; line-height: 1.5; }
+.dev-code {
+  background: #000; border: 1px solid var(--border); border-radius: 6px;
+  padding: 14px 16px; font-family: var(--font-mono); font-size: 12px;
+  color: #88ddff; overflow-x: auto; margin-top: 10px;
+  line-height: 1.6; position: relative;
+}
+.dev-code-copy {
+  position: absolute; top: 10px; right: 10px;
+  background: rgba(255,255,255,0.06); border: 1px solid var(--border);
+  color: var(--muted); cursor: pointer; padding: 4px 10px;
+  font-family: var(--font-body); font-size: 10px; border-radius: 4px;
+  text-transform: uppercase; letter-spacing: 0.1em;
+}
+.dev-code-copy:hover { color: var(--orange); border-color: var(--orange); }
+.dev-tabs { display: flex; gap: 4px; margin-bottom: 10px; }
+.dev-tab {
+  padding: 6px 14px; background: transparent; border: 1px solid var(--border);
+  color: var(--muted); border-radius: 4px; cursor: pointer;
+  font-family: var(--font-body); font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em;
+}
+.dev-tab.active { background: var(--orange); color: var(--white); border-color: var(--orange); }
+
+/* Responsive */
+@media (max-width: 600px) {
+  .fun-headline { font-size: 26px; }
+  .fun-input-wrap { flex-direction: column; }
+  .fun-btn { padding: 16px; width: 100%; }
+  .result-emoji { font-size: 56px; }
+  .result-title { font-size: 24px; }
+  .result-stats { grid-template-columns: repeat(2, 1fr); }
+  .mode-switcher { bottom: 10px; left: 10px; }
+}
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel">
+const { useState, useEffect, useRef, useCallback } = React;
+
+const API = 'https://api.solsentry.app';
+const DEFAULT_DANGER = '4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1';
+const DEFAULT_SAFE = 'So11111111111111111111111111111111111111112';
+
+// ── API ───────────────────────────────────────────────────────
+async function fetchOperator(a) { const r = await fetch(`${API}/v1/operator/${a}`); return r.json(); }
+async function fetchToken(a) { const r = await fetch(`${API}/v1/token/${a}`); return r.json(); }
+async function fetchStats() { const r = await fetch(`${API}/v1/stats`); return r.json(); }
+async function fetchTopOps(n = 10) { const r = await fetch(`${API}/v1/top-operators?limit=${n}`); const d = await r.json(); return d.operators || []; }
+
+// ── Helpers ───────────────────────────────────────────────────
+function isValidAddr(s) {
+  if (!s) return false;
+  const t = s.trim();
+  return t.length >= 32 && t.length <= 44 && /^[1-9A-HJ-NP-Za-km-z]+$/.test(t);
+}
+function fmt(n) { if (n == null) return '—'; return typeof n === 'number' ? n.toLocaleString() : String(n); }
+function shortAddr(a) { if (!a || a.length < 12) return a || '—'; return a.slice(0,6)+'…'+a.slice(-4); }
+
+// ── Rule-based AI Explainer (pt-BR) ───────────────────────────
+function explainRisk({ op, tok, addr }) {
+  const opKnown = op?.known;
+  const tokKnown = tok?.known;
+
+  if (!opKnown && !tokKnown) {
+    return {
+      level: 'unknown',
+      emoji: '❓',
+      title: 'NOT FOUND',
+      recommendation: 'Maximum caution',
+      explain: <>
+        This address <strong>is not in the SolSentry database</strong>.
+        It might be too new, never scanned, or simply has not generated suspicious activity.
+        <br/><br/>
+        <strong>That does not mean it is safe</strong> — it means we have no information.
+        If you are planning to buy, investigate with other tools first.
+      </>,
+      stats: null
+    };
+  }
+
+  // Operator takes priority
+  if (opKnown) {
+    const rugs = op.confirmed_rugs || 0;
+    const tokens = op.total_tokens || 0;
+    const rate = op.rug_rate_pct || 0;
+    const isSerial = op.tags?.includes('serial_rugger') || op.tags?.includes('serial_deployer');
+    const level = op.risk_level;
+
+    const stats = [
+      { label: 'Rug pulls', value: fmt(rugs), color: 'var(--red)' },
+      { label: 'Tokens created', value: fmt(tokens), color: 'var(--orange)' },
+      { label: 'Rug rate', value: rate != null ? rate + '%' : '—', color: rate >= 50 ? 'var(--red)' : 'var(--white)' },
+    ];
+
+    if (rugs >= 5 || level === 'CRITICAL') {
+      return {
+        level: 'critical', emoji: '🔴',
+        title: 'EXTREME DANGER',
+        recommendation: '⛔ DO NOT BUY',
+        explain: <>
+          This creator has already executed <strong className="num">{rugs} confirmed rug pulls</strong> across <strong className="num">{tokens} tokens</strong> deployed.
+          Rug rate: <strong className="num">{rate}%</strong>.
+          {isSerial && <> This is a known <strong>serial deployer</strong> — repeating pattern of launching tokens, attracting buyers, and pulling liquidity.</>}
+          <br/><br/>
+          Any new token from this wallet is extremely likely to be another scam.
+        </>,
+        stats
+      };
+    }
+
+    if (rugs >= 2 || level === 'HIGH') {
+      return {
+        level: 'high', emoji: '🟠',
+        title: 'HIGH RISK',
+        recommendation: '⚠ Avoid buying',
+        explain: <>
+          This wallet has <strong className="num">{rugs} confirmed rug pulls</strong> across <strong className="num">{tokens} tokens</strong> deployed.
+          {rate >= 30 && <> Rug rate: <strong className="num">{rate}%</strong>.</>}
+          <br/><br/>
+          If you really need to interact, use only very small amounts — there is real risk of losing everything.
+        </>,
+        stats
+      };
+    }
+
+    if (level === 'MEDIUM') {
+      return {
+        level: 'medium', emoji: '🟡',
+        title: 'MEDIUM RISK',
+        recommendation: 'Investigate first',
+        explain: <>
+          This wallet has some warning signs but nothing conclusive.
+          Activity: <strong className="num">{tokens} tokens</strong> created{rugs > 0 && <>, <strong className="num">{rugs}</strong> turned into rugs</>}.
+          <br/><br/>
+          Look for more information before investing any significant amount.
+        </>,
+        stats
+      };
+    }
+
+    return {
+      level: 'low', emoji: '🟢',
+      title: 'LOW RISK',
+      recommendation: 'Looks safe',
+      explain: <>
+        This wallet is in our database and <strong>does not show clear scam patterns</strong>.
+        Activity: <strong className="num">{tokens} tokens</strong> created, <strong className="num">{rugs}</strong> rugs.
+        <br/><br/>
+        This is not an absolute guarantee — in crypto, never invest more than you can afford to lose.
+      </>,
+      stats
+    };
+  }
+
+  // Token (not operator)
+  if (tokKnown) {
+    const score = tok.risk_score || 0;
+    const level = tok.risk_level;
+    const sym = tok.symbol;
+
+    const stats = [
+      { label: 'Risk Score', value: score + '/100', color: score >= 60 ? 'var(--red)' : score >= 40 ? 'var(--yellow)' : 'var(--green)' },
+      { label: 'Symbol', value: sym || '—', color: 'var(--white)' },
+      { label: 'Result', value: tok.final_outcome === 'confirmed_scam' ? 'RUG' : tok.final_outcome === 'confirmed_safe' ? 'SAFE' : 'Pending', color: 'var(--muted)' },
+    ];
+
+    if (level === 'CRITICAL' || score >= 80 || tok.final_outcome === 'confirmed_scam') {
+      return {
+        level: 'critical', emoji: '🔴',
+        title: 'DANGEROUS TOKEN',
+        recommendation: '⛔ DO NOT BUY',
+        explain: <>
+          This token <strong>{sym ? `(${sym})` : ''} has been classified as a scam</strong> by SolSentry.
+          Risk score: <strong className="num">{score}/100</strong>.
+          {tok.final_outcome === 'confirmed_scam' && <> Already confirmed as an <strong>executed rug pull</strong>.</>}
+          {tok.is_bundle && <> We detected a <strong>coordinated bot cluster</strong> buying on launch.</>}
+          <br/><br/>
+          {tok.flags?.length > 0 && <>Signals detected: {tok.flags.slice(0,3).map(f => String(f).replace(/[^\x20-\x7E]/g,'').trim()).filter(Boolean).join(', ')}.</>}
+        </>,
+        stats
+      };
+    }
+
+    if (level === 'HIGH' || score >= 60) {
+      return {
+        level: 'high', emoji: '🟠',
+        title: 'RISKY TOKEN',
+        recommendation: '⚠ Maximum caution',
+        explain: <>
+          This token has <strong>concerning signals</strong>. Score: <strong className="num">{score}/100</strong>.
+          {tok.is_bundle && <> Coordinated bot cluster detected.</>}
+          <br/><br/>
+          Only invest amounts you accept to lose completely.
+        </>,
+        stats
+      };
+    }
+
+    if (level === 'MEDIUM' || score >= 40) {
+      return {
+        level: 'medium', emoji: '🟡',
+        title: 'MEDIUM RISK',
+        recommendation: 'Investigate first',
+        explain: <>
+          Risk score: <strong className="num">{score}/100</strong>. Some warning signs detected, but not conclusive.
+          <br/><br/>
+          Check liquidity, holders, and creator activity before deciding.
+        </>,
+        stats
+      };
+    }
+
+    return {
+      level: 'low', emoji: '🟢',
+      title: 'TOKEN OK',
+      recommendation: 'Looks safe',
+      explain: <>
+        Low score: <strong className="num">{score}/100</strong>.
+        {tok.final_outcome === 'confirmed_safe' && <> Confirmed as <strong>safe</strong> by our resolution system.</>}
+        <br/><br/>
+        Remember: "low risk" is not "no risk". Do your own research.
+      </>,
+      stats
+    };
+  }
+
+  return { level: 'unknown', emoji: '❓', title: 'NOT FOUND', recommendation: 'Caution', explain: 'No data.', stats: null };
+}
+
+// ── Shield icon ───────────────────────────────────────────────
+function Shield({ size = 32 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 40 40" fill="none">
+      <path d="M20 4L6 10v10c0 8.8 6 17 14 19 8-2 14-10.2 14-19V10L20 4z"
+        fill="rgba(255,107,0,0.15)" stroke="#FF6B00" strokeWidth="1.5"/>
+      <line x1="20" y1="5" x2="20" y2="33" stroke="#FF6B00" strokeWidth="1.2" opacity="0.6"/>
+      <circle cx="20" cy="20" r="4" stroke="#FF6B00" strokeWidth="1.2"/>
+      <circle cx="20" cy="20" r="1.5" fill="#FF6B00"/>
+    </svg>
+  );
+}
+
+// ── Mode Switcher ─────────────────────────────────────────────
+function ModeSwitcher({ mode, onChange }) {
+  return (
+    <div className="mode-switcher" role="tablist" aria-label="Mode selector">
+      <div className="mode-hint">Mode</div>
+      <button
+        className={'mode-btn ' + (mode === 'fun' ? 'active' : '')}
+        onClick={() => onChange('fun')} role="tab" aria-selected={mode === 'fun'}
+      >
+        <span className="dot"></span> Easy
+      </button>
+      <button
+        className={'mode-btn ' + (mode === 'pro' ? 'active' : '')}
+        onClick={() => onChange('pro')} role="tab" aria-selected={mode === 'pro'}
+      >
+        <span className="dot"></span> Pro
+      </button>
+      <button
+        className={'mode-btn ' + (mode === 'dev' ? 'active' : '')}
+        onClick={() => onChange('dev')} role="tab" aria-selected={mode === 'dev'}
+      >
+        <span className="dot"></span> Dev
+      </button>
+    </div>
+  );
+}
+
+// ── FUN MODE ──────────────────────────────────────────────────
+function FunMode() {
+  const [input, setInput] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [result, setResult] = useState(null);
+  const [errorr, setErrorr] = useState(null);
+  const [showDetails, setShowDetails] = useState(false);
+  const inputRef = useRef(null);
+
+  const check = useCallback(async (addr) => {
+    const a = (addr || input).trim();
+    if (!isValidAddr(a)) {
+      setErrorr('Invalid Solana address. Check and try again.');
+      return;
+    }
+    setLoading(true); setErrorr(null); setResult(null); setShowDetails(false);
+    try {
+      const [op, tok] = await Promise.all([
+        fetchOperator(a).catch(() => ({})),
+        fetchToken(a).catch(() => ({}))
+      ]);
+      const analysis = explainRisk({ op, tok, addr: a });
+      setResult({ ...analysis, addr: a, raw: { op, tok } });
+    } catch (e) {
+      setErrorr('API request failed. Check that the server is running.');
+    } finally {
+      setLoading(false);
+    }
+  }, [input]);
+
+  const tryExample = useCallback((addr) => {
+    setInput(addr);
+    setTimeout(() => check(addr), 100);
+  }, [check]);
+
+  return (
+    <div className="fun-shell">
+      <div className="fun-logo">
+        <Shield size={40} />
+        <div className="fun-logo-text">SolSentry</div>
+      </div>
+
+      <h1 className="fun-headline">Is this wallet or token safe?</h1>
+      <p className="fun-sub">Paste any Solana address and find out in seconds if it carries rug pull or scam risk.</p>
+
+      <div className="fun-input-wrap">
+        <input
+          ref={inputRef}
+          className="fun-input"
+          value={input}
+          onChange={e => setInput(e.target.value)}
+          onKeyDown={e => e.key === 'Enter' && check()}
+          placeholder="Paste a Solana address..."
+          spellCheck={false}
+          autoComplete="off"
+          aria-label="Solana address to check"
+        />
+        <button
+          className="fun-btn"
+          onClick={() => check()}
+          disabled={loading || !input.trim()}
+        >
+          {loading ? <span className="spinner" aria-label="Verificando" /> : 'Check'}
+        </button>
+      </div>
+
+      <div className="fun-examples">
+        <span style={{ fontSize: 12, color: 'var(--muted)', alignSelf: 'center', marginRight: 4 }}>Experimente:</span>
+        <button className="fun-example" onClick={() => tryExample(DEFAULT_DANGER)}>⚠️ Operator perigoso</button>
+        <button className="fun-example" onClick={() => tryExample(DEFAULT_SAFE)}>✅ Trusted token (SOL)</button>
+      </div>
+
+      {errorr && (
+        <div className="result-card fade-up" style={{ borderColor: 'rgba(255,68,68,0.5)', marginTop: 24, padding: 20 }} role="alert">
+          <div style={{ color: 'var(--red)', fontSize: 14 }}>⚠ {errorr}</div>
+        </div>
+      )}
+
+      {result && (
+        <div className={'result-card scale-in ' + result.level}>
+          <div className="result-header">
+            <span className="result-emoji" aria-hidden="true">{result.emoji}</span>
+            <h2 className={'result-title ' + result.level}>{result.title}</h2>
+            <div style={{ marginTop: 10 }}>
+              <span className={'result-recommendation ' + result.level}>{result.recommendation}</span>
+            </div>
+          </div>
+
+          <div className="result-body">
+            <div className="addr-display" title={result.addr}>{result.addr}</div>
+            <div className="result-explain">{result.explain}</div>
+
+            {result.stats && (
+              <div className="result-stats">
+                {result.stats.map(s => (
+                  <div className="result-stat" key={s.label}>
+                    <div className="result-stat-value" style={{ color: s.color }}>{s.value}</div>
+                    <div className="result-stat-label">{s.label}</div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <button
+            className="result-details-toggle"
+            onClick={() => setShowDetails(!showDetails)}
+            aria-expanded={showDetails}
+          >
+            {showDetails ? '▴ Hide technical details' : '▾ See technical details'}
+          </button>
+
+          {showDetails && (
+            <div className="result-details fade-up">
+              {result.raw.op?.known && (
+                <>
+                  <div style={{ fontSize: 11, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 8 }}>Operator</div>
+                  <div className="result-detail-row"><span className="result-detail-key">Risk Level</span><span className="result-detail-val">{result.raw.op.risk_level || '—'}</span></div>
+                  <div className="result-detail-row"><span className="result-detail-key">Confirmed Rugs</span><span className="result-detail-val">{fmt(result.raw.op.confirmed_rugs)}</span></div>
+                  <div className="result-detail-row"><span className="result-detail-key">Total Tokens</span><span className="result-detail-val">{fmt(result.raw.op.total_tokens)}</span></div>
+                  <div className="result-detail-row"><span className="result-detail-key">Rug Rate</span><span className="result-detail-val">{result.raw.op.rug_rate_pct != null ? result.raw.op.rug_rate_pct + '%' : '—'}</span></div>
+                  <div className="result-detail-row"><span className="result-detail-key">Tags</span><span className="result-detail-val">{result.raw.op.tags?.join(', ') || '—'}</span></div>
+                </>
+              )}
+              {result.raw.tok?.known && (
+                <>
+                  <div style={{ fontSize: 11, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.1em', marginTop: 16, marginBottom: 8 }}>Token</div>
+                  <div className="result-detail-row"><span className="result-detail-key">Risk Level</span><span className="result-detail-val">{result.raw.tok.risk_level || '—'}</span></div>
+                  <div className="result-detail-row"><span className="result-detail-key">Risk Score</span><span className="result-detail-val">{result.raw.tok.risk_score ?? '—'}/100</span></div>
+                  <div className="result-detail-row"><span className="result-detail-key">Symbol</span><span className="result-detail-val">{result.raw.tok.symbol || '—'}</span></div>
+                  <div className="result-detail-row"><span className="result-detail-key">Outcome</span><span className="result-detail-val">{result.raw.tok.final_outcome || '—'}</span></div>
+                  <div className="result-detail-row"><span className="result-detail-key">Bundle</span><span className="result-detail-val">{result.raw.tok.is_bundle ? 'Yes' : 'No'}</span></div>
+                </>
+              )}
+            </div>
+          )}
+        </div>
+      )}
+
+      <div className="fun-footer">
+        <p>SolSentry has been watching Solana for 210h+ · 24,600+ scans resolved · 86.4% accuracy · public outcome ledger</p>
+        <p style={{ marginTop: 8 }}>
+          Found something new? Share it on <a href="https://twitter.com/solsentryai" target="_blank">@solsentryai</a>
+        </p>
+      </div>
+    </div>
+  );
+}
+
+// ── PRO MODE ──────────────────────────────────────────────────
+function ProMode() {
+  const [stats, setStats] = useState(null);
+  const [ops, setOps] = useState([]);
+  const [query, setQuery] = useState('');
+  const [lookup, setLookup] = useState(null);
+
+  useEffect(() => {
+    fetchStats().then(setStats).catch(() => {});
+    fetchTopOps(15).then(setOps).catch(() => {});
+    const id = setInterval(() => {
+      fetchStats().then(setStats).catch(() => {});
+      fetchTopOps(15).then(setOps).catch(() => {});
+    }, 30000);
+    return () => clearInterval(id);
+  }, []);
+
+  async function runLookup() {
+    const a = query.trim();
+    if (!isValidAddr(a)) return;
+    const [op, tok] = await Promise.all([fetchOperator(a).catch(() => ({})), fetchToken(a).catch(() => ({}))]);
+    setLookup({ op, tok, addr: a });
+  }
+
+  return (
+    <div className="pro-shell">
+      <header className="pro-header">
+        <div className="pro-brand">
+          <Shield size={28} />
+          <div className="pro-brand-text">SolSentry</div>
+          <span style={{ fontSize: 10, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.15em' }}>Pro</span>
+        </div>
+        <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+          <input
+            className="fun-input"
+            style={{ padding: '10px 14px', fontSize: 12, minWidth: 320, borderWidth: 1 }}
+            value={query}
+            onChange={e => setQuery(e.target.value)}
+            onKeyDown={e => e.key === 'Enter' && runLookup()}
+            placeholder="Paste address..."
+          />
+          <button className="fun-btn" style={{ padding: '10px 18px' }} onClick={runLookup}>Check</button>
+        </div>
+      </header>
+
+      <div className="pro-stats-bar">
+        <div className="pro-stat">
+          <div className="pro-stat-label">Scans</div>
+          <div className="pro-stat-value" style={{ color: 'var(--white)' }}>{stats ? fmt(stats.total_predictions) : '…'}</div>
+          <div className="pro-stat-sub">total tokens</div>
+        </div>
+        <div className="pro-stat">
+          <div className="pro-stat-label">Accuracy</div>
+          <div className="pro-stat-value" style={{ color: 'var(--teal)' }}>{stats?.accuracy_pct ? stats.accuracy_pct + '%' : '…'}</div>
+          <div className="pro-stat-sub">prediction</div>
+        </div>
+        <div className="pro-stat">
+          <div className="pro-stat-label">Rugs</div>
+          <div className="pro-stat-value" style={{ color: 'var(--red)' }}>{stats ? fmt(stats.confirmed_rugs) : '…'}</div>
+          <div className="pro-stat-sub">confirmed</div>
+        </div>
+        <div className="pro-stat">
+          <div className="pro-stat-label">Operators</div>
+          <div className="pro-stat-value" style={{ color: 'var(--orange)' }}>{stats ? fmt(stats.total_operators) : '…'}</div>
+          <div className="pro-stat-sub">tracked</div>
+        </div>
+        <div className="pro-stat">
+          <div className="pro-stat-label">Clusters</div>
+          <div className="pro-stat-value" style={{ color: 'var(--purple)' }}>{stats ? fmt(stats.bot_clusters) : '…'}</div>
+          <div className="pro-stat-sub">bot graphs</div>
+        </div>
+        <div className="pro-stat">
+          <div className="pro-stat-label">Runtime</div>
+          <div className="pro-stat-value">{stats?.runtime_hours ? stats.runtime_hours + 'h' : '…'}</div>
+          <div className="pro-stat-sub">mainnet</div>
+        </div>
+      </div>
+
+      <div className="pro-main">
+        <div className="pro-panel">
+          <div className="pro-panel-header">
+            <span>Top Serial Deployers</span>
+            <span style={{ fontSize: 10, color: 'var(--muted)' }}>{ops.length} shown</span>
+          </div>
+          <div>
+            {ops.length === 0 ? (
+              <div style={{ padding: 32, textAlign: 'center', color: 'var(--muted)', fontSize: 12 }}>Loading…</div>
+            ) : ops.map(op => (
+              <div className="pro-op-row" key={op.wallet}>
+                <div className="mono" title={op.wallet}>{shortAddr(op.wallet)}</div>
+                <div>
+                  {op.tags?.slice(0, 2).map(t => (
+                    <span key={t} style={{
+                      display: 'inline-block', fontSize: 9, padding: '2px 6px', borderRadius: 3,
+                      background: 'rgba(255,107,0,0.12)', color: 'var(--orange)',
+                      marginRight: 4, textTransform: 'uppercase', letterSpacing: '0.08em'
+                    }}>{t.replace(/_/g, ' ')}</span>
+                  ))}
+                </div>
+                <span className={'risk-pill risk-' + (op.risk_level || 'UNKNOWN')}>{op.risk_level || '—'}</span>
+                <span style={{ color: 'var(--red)', fontWeight: 700, fontFamily: 'var(--font-mono)', fontSize: 12 }}>{op.confirmed_rugs} rugs</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="pro-panel">
+          <div className="pro-panel-header">
+            <span>Lookup Result</span>
+          </div>
+          <div style={{ padding: 16 }}>
+            {!lookup && <div style={{ color: 'var(--muted)', fontSize: 13, padding: 24, textAlign: 'center' }}>Paste an address above to analyze.</div>}
+            {lookup && (() => {
+              const a = explainRisk(lookup);
+              return (
+                <div className="fade-up">
+                  <div style={{ marginBottom: 14, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <span className="mono" style={{ color: 'var(--muted)' }}>{shortAddr(lookup.addr)}</span>
+                    <span className={'risk-pill risk-' + (lookup.op?.risk_level || lookup.tok?.risk_level || 'UNKNOWN')}>
+                      {lookup.op?.risk_level || lookup.tok?.risk_level || '—'}
+                    </span>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
+                    <span style={{ fontSize: 32 }}>{a.emoji}</span>
+                    <div>
+                      <div className={'result-title ' + a.level} style={{ fontSize: 20, marginBottom: 2 }}>{a.title}</div>
+                      <span className={'result-recommendation ' + a.level} style={{ fontSize: 10, padding: '3px 8px' }}>{a.recommendation}</span>
+                    </div>
+                  </div>
+                  {a.stats && (
+                    <div className="result-stats" style={{ marginTop: 14 }}>
+                      {a.stats.map(s => (
+                        <div className="result-stat" key={s.label}>
+                          <div className="result-stat-value" style={{ color: s.color, fontSize: 20 }}>{s.value}</div>
+                          <div className="result-stat-label">{s.label}</div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  <div style={{ marginTop: 14, fontSize: 13, color: 'rgba(255,255,255,0.75)', lineHeight: 1.6 }}>{a.explain}</div>
+                </div>
+              );
+            })()}
+          </div>
+        </div>
+      </div>
+
+      <div style={{ textAlign: 'center', padding: 20, color: 'var(--muted)', fontSize: 11 }}>
+        Pro mode · Data refresh 30s · For full v2 dashboard with alerts feed, timeline charts, and cluster graph, open <code style={{ color: 'var(--orange)' }}>dashboard/index.html</code>
+      </div>
+    </div>
+  );
+}
+
+// ── DEV MODE ──────────────────────────────────────────────────
+function DevMode() {
+  const endpoints = [
+    { method: 'GET', path: '/v1/stats', desc: 'Global network statistics: total predictions, accuracy, operators, clusters, runtime.' },
+    { method: 'GET', path: '/v1/operator/{wallet}', desc: 'Operator profile: risk level, confirmed rugs, total tokens, tags.' },
+    { method: 'GET', path: '/v1/operator/{wallet}/timeline', desc: 'Daily buckets with deployments, rugs, safe, pending for the last N days.' },
+    { method: 'GET', path: '/v1/token/{mint}', desc: 'Token risk: score, level, symbol, flags, outcome, bundle detection.' },
+    { method: 'GET', path: '/v1/top-operators?limit=N', desc: 'Top serial deployers ranked by confirmed rug count.' },
+    { method: 'GET', path: '/v1/alerts/recent?limit=N&min_risk=N', desc: 'Recent high-risk scan alerts with full metadata.' },
+    { method: 'GET', path: '/v1/clusters?min_size=N&limit=N', desc: 'Bot clusters: coordinated wallets with shared funding sources.' },
+    { method: 'GET', path: '/v1/resolutions/recent', desc: 'Recently resolved predictions — correctness tracking.' },
+    { method: 'GET', path: '/health', desc: 'Basic health check.' },
+    { method: 'GET', path: '/health/invariants', desc: 'Data consistency monitor — sentinels + schema checks.' },
+  ];
+
+  const mcpTools = [
+    { name: 'check_operator', desc: 'Operator risk profile query' },
+    { name: 'check_token', desc: 'Token risk analysis' },
+    { name: 'get_top_operators', desc: 'Top serial deployers list' },
+    { name: 'get_network_stats', desc: 'Global statistics' },
+    { name: 'explain_risk', desc: 'Natural language risk explanation (PT-BR)' },
+  ];
+
+  const [snippetType, setSnippetType] = useState('curl');
+  const examples = {
+    curl: `curl http://localhost:8081/v1/operator/4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1`,
+    python: `import requests
+r = requests.get('http://localhost:8081/v1/operator/4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1')
+data = r.json()
+print(data['risk_level'], data['confirmed_rugs'])`,
+    ts: `const res = await fetch('http://localhost:8081/v1/operator/4kxscute...');
+const data = await res.json();
+console.log(data.risk_level, data.confirmed_rugs);`,
+    mcp: `# From MCP-compatible client:
+tool: check_operator
+args: { wallet: "4kxscuteRLQdNi..." }
+# Returns structured risk profile`
+  };
+
+  const copyToClipboard = (text) => {
+    navigator.clipboard?.writeText(text);
+  };
+
+  return (
+    <div className="dev-shell">
+      <h1 className="dev-title">SolSentry API Reference</h1>
+      <p className="dev-sub">REST + MCP server on localhost:8081 · CORS enabled · zero auth in dev mode</p>
+
+      <div className="dev-section">
+        <div className="dev-section-title">Quick Example</div>
+        <div className="dev-tabs">
+          <button className={'dev-tab ' + (snippetType === 'curl' ? 'active' : '')} onClick={() => setSnippetType('curl')}>cURL</button>
+          <button className={'dev-tab ' + (snippetType === 'python' ? 'active' : '')} onClick={() => setSnippetType('python')}>Python</button>
+          <button className={'dev-tab ' + (snippetType === 'ts' ? 'active' : '')} onClick={() => setSnippetType('ts')}>TypeScript</button>
+          <button className={'dev-tab ' + (snippetType === 'mcp' ? 'active' : '')} onClick={() => setSnippetType('mcp')}>MCP</button>
+        </div>
+        <div className="dev-code">
+          <button className="dev-code-copy" onClick={() => copyToClipboard(examples[snippetType])}>Copy</button>
+          <pre style={{ whiteSpace: 'pre-wrap', margin: 0, fontFamily: 'inherit' }}>{examples[snippetType]}</pre>
+        </div>
+      </div>
+
+      <div className="dev-section">
+        <div className="dev-section-title">REST Endpoints</div>
+        {endpoints.map(e => (
+          <div className="dev-endpoint" key={e.path}>
+            <span className="dev-endpoint-method">{e.method}</span>
+            <span className="dev-endpoint-path">{e.path}</span>
+            <div className="dev-endpoint-desc">{e.desc}</div>
+          </div>
+        ))}
+      </div>
+
+      <div className="dev-section">
+        <div className="dev-section-title">MCP Tools (Model Context Protocol)</div>
+        {mcpTools.map(t => (
+          <div className="dev-endpoint" key={t.name}>
+            <span className="dev-endpoint-method" style={{ background: 'rgba(168,85,247,0.15)', color: 'var(--purple)' }}>TOOL</span>
+            <span className="dev-endpoint-path">{t.name}</span>
+            <div className="dev-endpoint-desc">{t.desc}</div>
+          </div>
+        ))}
+        <div className="dev-code" style={{ marginTop: 12 }}>
+          <button className="dev-code-copy" onClick={() => copyToClipboard('python run_mcp.py --transport http --port 8080')}>Copy</button>
+          <span style={{ color: 'var(--muted)' }}># start MCP server:</span><br/>
+          python run_mcp.py --transport http --port 8080
+        </div>
+      </div>
+
+      <div className="dev-section">
+        <div className="dev-section-title">Response Schema — Operator</div>
+        <div className="dev-code">
+          <button className="dev-code-copy" onClick={() => copyToClipboard(`{
+  "wallet": "4kxscuteRLQdNi...",
+  "known": true,
+  "risk_level": "CRITICAL",
+  "risk_label": "serial_rugger",
+  "confirmed_rugs": 343,
+  "total_tokens": 349,
+  "rug_rate_pct": 98.28,
+  "tags": ["serial_rugger", "fast_deployer"],
+  "rank": 1,
+  "first_seen": 1741780800,
+  "last_seen": 1745136000
+}`)}>Copy</button>
+<pre style={{ whiteSpace: 'pre-wrap', margin: 0, fontFamily: 'inherit', color: '#88ddff' }}>{`{
+  "wallet": "4kxscuteRLQdNi...",
+  "known": true,
+  "risk_level": "CRITICAL",
+  "risk_label": "serial_rugger",
+  "confirmed_rugs": 343,
+  "total_tokens": 349,
+  "rug_rate_pct": 98.28,
+  "tags": ["serial_rugger", "fast_deployer"],
+  "rank": 1,
+  "first_seen": 1741780800,
+  "last_seen": 1745136000
+}`}</pre>
+        </div>
+      </div>
+
+      <div className="dev-section">
+        <div className="dev-section-title">Response Schema — Token</div>
+        <div className="dev-code">
+<pre style={{ whiteSpace: 'pre-wrap', margin: 0, fontFamily: 'inherit', color: '#88ddff' }}>{`{
+  "mint": "...",
+  "known": true,
+  "risk_level": "CRITICAL",
+  "risk_score": 95,
+  "symbol": "RUG",
+  "final_outcome": "confirmed_scam",
+  "is_bundle": true,
+  "flags": ["MINT_AUTH_ACTIVE", "FREEZE_AUTH_ACTIVE", "BUNDLE_EXIT"]
+}`}</pre>
+        </div>
+      </div>
+
+      <div className="dev-section">
+        <div className="dev-section-title">Running the Server</div>
+        <div className="dev-code">
+<pre style={{ whiteSpace: 'pre-wrap', margin: 0, fontFamily: 'inherit' }}>{`# REST API only (default for dashboard)
+python run_mcp.py --api-only --api-port 8081
+
+# Full MCP + REST
+python run_mcp.py --transport http --port 8080 --api-port 8081
+
+# MCP stdio (for Claude Desktop / Cursor)
+python run_mcp.py --transport stdio`}</pre>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── App ───────────────────────────────────────────────────────
+function App() {
+  const [mode, setMode] = useState(() => localStorage.getItem('solsentry_mode') || 'fun');
+
+  const changeMode = useCallback((m) => {
+    setMode(m);
+    localStorage.setItem('solsentry_mode', m);
+  }, []);
+
+  return (
+    <>
+      {mode === 'fun' && <FunMode />}
+      {mode === 'pro' && <ProMode />}
+      {mode === 'dev' && <DevMode />}
+      <ModeSwitcher mode={mode} onChange={changeMode} />
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
