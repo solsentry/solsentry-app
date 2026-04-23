@@ -10,11 +10,11 @@ export function Nav() {
         </Link>
         <div className="nav-links">
           <Link href="/operator">Operator</Link>
+          <Link href="/token">Token</Link>
+          <Link href="/leaderboard">Leaderboard</Link>
+          <Link href="/alerts">Alerts</Link>
           <Link href="/docs">Docs</Link>
-          <a href="https://www.npmjs.com/package/@solsentry/mcp" target="_blank" rel="noreferrer">
-            NPM
-          </a>
-          <a href="https://github.com/solsentryai" target="_blank" rel="noreferrer">
+          <a href="https://github.com/solsentry" target="_blank" rel="noreferrer">
             GitHub
           </a>
         </div>
