@@ -8,7 +8,7 @@
     "build": "next build",
     "start": "next start -p 3000",
     "lint": "next lint",
-    "pages:build": "npx @cloudflare/next-on-pages"
+    "pages:build": "npx @cloudflare/next-on-pages && printf '_worker.js\\n_routes.json\\nnop-build-log.json\\n' > .vercel/output/static/.assetsignore"
   },
   "dependencies": {
     "next": "15.1.0",
