@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { WalletConnectButton } from "./WalletConnectButton";
 
 export function Nav() {
   return (
@@ -17,6 +18,7 @@ export function Nav() {
           <a href="https://github.com/solsentry" target="_blank" rel="noreferrer">
             GitHub
           </a>
+          <WalletConnectButton />
         </div>
       </div>
     </nav>

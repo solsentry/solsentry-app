@@ -536,6 +536,104 @@ button {
   font-family: var(--font-mono);
 }
 
+/* Wallet adapter overrides */
+.wallet-btn-nav,
+.wallet-adapter-button.wallet-btn-nav {
+  background: var(--brand-orange) !important;
+  color: var(--bg) !important;
+  border-radius: var(--radius-md) !important;
+  font-family: var(--font-display) !important;
+  font-weight: 600 !important;
+  font-size: 13px !important;
+  padding: 8px 16px !important;
+  height: auto !important;
+  letter-spacing: 0.02em !important;
+  border: none !important;
+  transition: background 120ms ease !important;
+}
+.wallet-btn-nav:hover { background: var(--brand-orange-600) !important; }
+.wallet-btn-tiny,
+.wallet-adapter-button.wallet-btn-tiny {
+  background: var(--surface) !important;
+  color: var(--fg-1) !important;
+  border: 1px solid var(--border) !important;
+  font-family: var(--font-mono) !important;
+  font-size: 12px !important;
+  padding: 6px 12px !important;
+  border-radius: var(--radius-md) !important;
+  height: auto !important;
+}
+.wallet-connected {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.wallet-me-link {
+  font-family: var(--font-body);
+  color: var(--brand-orange) !important;
+  text-decoration: none;
+  font-size: 14px;
+}
+.wallet-me-link:hover { color: var(--brand-orange-600) !important; }
+
+/* /me page profile cards */
+.me-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 48px 40px;
+  max-width: 720px;
+  text-align: center;
+}
+.me-card-clean { border-color: var(--brand-teal); }
+.me-card-secondary {
+  background: var(--surface-2);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-md);
+  padding: 20px 24px;
+  max-width: 720px;
+  font-size: 14px;
+  color: var(--fg-2);
+}
+.me-icon {
+  font-size: 48px;
+  line-height: 1;
+  margin-bottom: 16px;
+}
+.me-card h2 {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 12px;
+  color: var(--fg-1);
+}
+.me-card p {
+  color: var(--fg-2);
+  line-height: 1.6;
+  font-size: 15px;
+  max-width: 540px;
+  margin: 0 auto 8px;
+}
+.me-disclaimer {
+  font-family: var(--font-mono) !important;
+  font-size: 12px !important;
+  color: var(--fg-3) !important;
+  margin-top: 16px !important;
+}
+.me-action {
+  display: inline-block;
+  padding: 10px 18px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  color: var(--fg-1);
+  text-decoration: none;
+  font-size: 14px;
+  transition: background 120ms ease;
+}
+.me-action:hover { background: var(--surface-3); border-color: var(--brand-orange); }
+
 /* Empty state */
 .empty-state {
   background: var(--surface);
