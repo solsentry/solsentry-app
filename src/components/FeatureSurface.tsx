@@ -24,7 +24,7 @@ const FEATURES = [
   },
   {
     title: "Bot clusters",
-    desc: "Coordinated wallet groups. 1,659 mapped. Each with its funding source and rug attribution.",
+    desc: "Coordinated wallet groups mapped live. Each with its funding source and rug attribution.",
     href: "/clusters",
     pillar: "TRACK",
     color: "var(--brand-teal)",

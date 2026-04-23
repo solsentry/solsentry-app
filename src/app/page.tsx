@@ -6,6 +6,7 @@ import { CaseStudy } from "@/components/CaseStudy";
 import { InstallCarousel } from "@/components/InstallCarousel";
 import { PillarGrid } from "@/components/PillarGrid";
 import { FeatureSurface } from "@/components/FeatureSurface";
+import { HeroScan } from "@/components/HeroScan";
 import Link from "next/link";
 
 export const revalidate = 60;
@@ -26,16 +27,13 @@ export default async function Home() {
             </h1>
             <p className="hero-sub">
               Autonomous threat intelligence for Solana. Detects serial rug operators, bot clusters, and
-              malicious launches before your users lose funds. 240+ hours continuous mainnet. 86% accuracy.
-              Zero false positives at HIGH+ confidence.
+              malicious launches before your users lose funds. 210+ hours continuous mainnet. 86% accuracy.
+              Zero confirmed false positives at CRITICAL risk.
             </p>
 
-            <InstallCarousel />
-            <p className="hero-tagline">
-              Telegram bot · REST API · MCP server · TypeScript SDK — same package.
-            </p>
+            <HeroScan />
 
-            <div style={{ display: "flex", gap: 10, marginTop: 24, flexWrap: "wrap" }}>
+            <div style={{ display: "flex", gap: 10, marginTop: 28, flexWrap: "wrap" }}>
               <Link href="/telegram" className="btn-primary">
                 Try the bot →
               </Link>
@@ -45,6 +43,13 @@ export default async function Home() {
               <Link href="/partners" className="btn-ghost">
                 For partners
               </Link>
+            </div>
+
+            <div style={{ marginTop: 40 }}>
+              <InstallCarousel />
+              <p className="hero-tagline">
+                Telegram bot · REST API · MCP server — same intelligence layer.
+              </p>
             </div>
           </div>
         </section>

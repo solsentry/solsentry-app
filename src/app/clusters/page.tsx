@@ -9,7 +9,7 @@ export const revalidate = 120;
 
 export const metadata = {
   title: "Bot clusters — coordinated wallet groups",
-  description: "Coordinated bot clusters observed on Solana. 1,659 mapped — each cluster is a fingerprint: shared funding, sync-timed actions, cross-wallet launch coordination.",
+  description: "Coordinated bot clusters observed on Solana. Each cluster is a fingerprint: shared funding, sync-timed actions, cross-wallet launch coordination.",
 };
 
 function fmtAge(ts: number) {

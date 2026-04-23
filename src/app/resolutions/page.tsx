@@ -32,8 +32,9 @@ export default async function ResolutionsPage() {
           sub={
             <>
               Every scan gets a predicted risk. Every prediction gets resolved against on-chain outcome —
-              did the token rug, or not? Zero false positives at HIGH+ confidence so far. All misses are
-              stealth-rug false negatives. This is the transparency layer competitors don&rsquo;t publish.
+              did the token rug, or not? Zero confirmed false positives at CRITICAL risk so far. All misses
+              are stealth-rug false negatives. This is the transparency layer competitors don&rsquo;t
+              publish.
             </>
           }
         />

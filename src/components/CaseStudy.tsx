@@ -38,8 +38,8 @@ export function CaseStudy() {
             <dd style={{ color: "var(--status-critical)" }}>Operator executes rug pull</dd>
             <dt style={{ marginTop: 20, color: "var(--brand-teal)" }}>Lead time</dt>
             <dd style={{ color: "var(--fg-1)", fontSize: 20, fontWeight: 600 }}>19 minutes</dd>
-            <dt style={{ color: "var(--brand-teal)" }}>Operator lifetime</dt>
-            <dd style={{ color: "var(--fg-1)" }}>624 confirmed rugs · 629 tokens · 99.2% rug rate</dd>
+            <dt style={{ color: "var(--brand-teal)" }}>Operator lifetime (live)</dt>
+            <dd style={{ color: "var(--fg-1)" }}>766 confirmed rugs · 834 tokens · 91.8% rug rate · CRITICAL</dd>
           </dl>
         </div>
       </div>

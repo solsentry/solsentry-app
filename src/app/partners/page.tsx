@@ -28,10 +28,10 @@ export default async function PartnersPage() {
           }
           sub={
             <>
-              SolSentry is a solo-founded autonomous threat intelligence system for Solana. 240+ hours of
-              continuous mainnet runtime, 24,000+ scans resolved, 86.4% accuracy with zero false positives
-              at HIGH+ confidence. Built for Colosseum Frontier 2026. Looking for enterprise partners,
-              ecosystem integrators, and security teams.
+              SolSentry is a solo-founded autonomous threat intelligence system for Solana. 210+ hours of
+              continuous mainnet runtime, 24,000+ scans resolved, 86.4% accuracy with zero confirmed false
+              positives at CRITICAL risk. Built for Colosseum Frontier 2026. Looking for enterprise
+              partners, ecosystem integrators, and security teams.
             </>
           }
         >
@@ -85,7 +85,7 @@ export default async function PartnersPage() {
         <Section
           eyebrow="Case study — 4kxscute"
           title="Flagged 19 minutes before rug pull #62"
-          sub="March 12, 2026. Operator 4kxscute deployed token #62. SolSentry issued a HIGH RISK alert 4 seconds after deploy — because operator history already had 61 prior rugs. The rug executed 19 minutes later. Today that wallet has 634 deployments and 343 confirmed rugs."
+          sub="March 12, 2026. Operator 4kxscute deployed token #62. SolSentry issued a HIGH RISK alert 4 seconds after deploy — because operator history already had 61 prior rugs. The rug executed 19 minutes later. Today that wallet has 834 deployments and 766 confirmed rugs (91.8%)."
         >
           <div className="grid-3">
             {[

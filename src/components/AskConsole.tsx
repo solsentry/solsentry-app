@@ -18,32 +18,30 @@ const EXAMPLES: Example[] = [
       <>
         <strong style={{ color: "var(--status-critical)" }}>Yes — CRITICAL risk operator.</strong>
         <br />
-        This wallet has <strong>634 tracked deployments</strong> with{" "}
-        <strong>343 confirmed rugs</strong>. Rug rate <strong>93.6%</strong>. Tags: <code>serial_rugger</code>,{" "}
-        <code>pump_fun_abuser</code>. Last observed deploying 2 days ago. Label in SolSentry: <code>CRITICAL</code>.
+        This wallet has <strong>834 tracked deployments</strong> with{" "}
+        <strong>766 confirmed rugs</strong>. Rug rate <strong>91.8%</strong>. Tags: <code>fast_deployer</code>,{" "}
+        <code>rebrand_artist</code>. Label in SolSentry: <code>serial_rugger</code>. Risk level:{" "}
+        <code>CRITICAL</code>.
       </>
     ),
   },
   {
-    q: "Show me the top 5 operators by confirmed rug count",
+    q: "Show me the top operators by confirmed rug count",
     intent: "top_operators",
-    tools: ["/v1/top-operators?limit=5"],
+    tools: ["/v1/top-operators?limit=10"],
     a: (
       <>
-        <strong>Top 5 confirmed-rug operators</strong> (as of the last refresh):
+        <strong>Top confirmed-rug operator (live):</strong>
         <br />
-        1. <code>4kxscute...</code> — 343 rugs / 349 tokens (93.6%)
+        <code>4kxscute...L5pH1</code> — 766 rugs / 834 tokens (91.8%). Active today.
         <br />
-        2. <code>9mQsY9...</code> — 38 rugs / 41 tokens (92.7%)
         <br />
-        3. <code>BpT1wL...</code> — 31 rugs / 33 tokens (93.9%)
-        <br />
-        4. <code>7fA3zE...</code> — 26 rugs / 28 tokens (92.8%)
-        <br />
-        5. <code>CKv2qY...</code> — 22 rugs / 25 tokens (88.0%)
+        Across the full leaderboard, SolSentry currently tracks{" "}
+        <strong>408 serial ruggers</strong> (operators with multiple confirmed rugs) out of{" "}
+        <strong>1,345 total deployer wallets</strong> profiled.
         <br />
         <span style={{ color: "var(--fg-3)", fontSize: 13 }}>
-          See the full leaderboard at <code>/leaderboard</code>. Exact numbers shift as new deploys are
+          See the live ranking at <a href="/leaderboard">/leaderboard</a>. Numbers shift as new deploys are
           resolved.
         </span>
       </>
@@ -88,8 +86,8 @@ const EXAMPLES: Example[] = [
         Taxa de acerto (<code>was_correct</code>) está em <strong style={{ color: "var(--brand-orange)" }}>
           86.4%
         </strong>{" "}
-        sobre <strong>24,630 previsões resolvidas</strong>. Resolve rate de 97%+. Zero falsos positivos
-        confirmados em HIGH+ risk. Os erros são todos stealth-rug (falsos negativos). Feed público em{" "}
+        sobre <strong>24,630 previsões resolvidas</strong>. Resolve rate de 95.5%. Zero falsos positivos
+        confirmados em CRITICAL risk. Os erros são todos stealth-rug (falsos negativos). Feed público em{" "}
         <a href="/resolutions">/resolutions</a>.
       </>
     ),

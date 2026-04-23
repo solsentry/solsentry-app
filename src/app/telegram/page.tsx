@@ -91,10 +91,10 @@ Mint:  Bz4UpUmp...tRTwZv
 Dev:   4kxscute...L5pH1  (known)
 Risk:  100/100   CRITICAL
 
-Operator history
-  · 634 deployments tracked
-  · 343 confirmed rugs (93.6%)
-  · Last rug: 2d ago
+Operator history (live)
+  · 834 deployments tracked
+  · 766 confirmed rugs (91.8%)
+  · Label: serial_rugger
 
 Token-specific flags
   · MINT_AUTHORITY_ENABLED

@@ -3,9 +3,9 @@
 import { useEffect, useState } from "react";
 
 const COMMANDS = [
-  { label: "MCP server",  cmd: "npx @solsentry/mcp" },
-  { label: "Add skill",   cmd: "npx skills add @solsentry/mcp" },
-  { label: "TypeScript SDK", cmd: 'import { SolSentryClient } from "@solsentry/mcp/client"' },
+  { label: "Run the MCP",   cmd: "npx -y @solsentry/mcp" },
+  { label: "Hit the REST API", cmd: "curl https://api.solsentry.app/v1/stats" },
+  { label: "Open the bot",  cmd: "t.me/solsentryai" },
 ];
 
 const ROTATE_MS = 3500;
