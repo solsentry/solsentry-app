@@ -143,6 +143,33 @@ export interface X402Stats {
   by_tool: Record<string, number>;
 }
 
+export interface DrainHop {
+  from?: string;
+  to?: string;
+  amount_sol?: number;
+  timestamp?: number;
+  signature?: string;
+  classification?: string;
+}
+
+export interface DrainTrace {
+  wallet: string;
+  origin_token?: string;
+  origin_risk?: number;
+  hop_count: number;
+  total_sol_drained: number;
+  reached_cex: boolean;
+  reached_mixer: boolean;
+  hops: DrainHop[];
+  endpoints: {
+    address?: string;
+    classification?: string;
+    amount_sol?: number;
+  }[];
+  trace_time_ms?: number;
+  latency_ms?: number;
+}
+
 async function safeFetch<T>(path: string, revalidate: number): Promise<T | null> {
   try {
     const res = await fetch(`${API_URL}${path}`, { next: { revalidate } });
@@ -195,6 +222,10 @@ export async function fetchCluster(clusterId: string): Promise<Cluster | null> {
 
 export async function fetchX402Stats(): Promise<X402Stats | null> {
   return safeFetch<X402Stats>("/v1/x402/stats", TTL.x402);
+}
+
+export async function fetchDrainTrace(wallet: string): Promise<DrainTrace | null> {
+  return safeFetch<DrainTrace>(`/v1/drain-trace/${encodeURIComponent(wallet)}`, 60);
 }
 
 export function truncate(addr: string, head = 6, tail = 4): string {

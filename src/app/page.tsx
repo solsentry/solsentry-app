@@ -4,6 +4,9 @@ import { Footer } from "@/components/Footer";
 import { StatsGrid } from "@/components/StatsGrid";
 import { CaseStudy } from "@/components/CaseStudy";
 import { InstallCarousel } from "@/components/InstallCarousel";
+import { PillarGrid } from "@/components/PillarGrid";
+import { FeatureSurface } from "@/components/FeatureSurface";
+import Link from "next/link";
 
 export const revalidate = 60;
 
@@ -16,25 +19,40 @@ export default async function Home() {
       <main>
         <section className="hero">
           <div className="container">
-            <span className="hero-eyebrow">Post-deploy · Solana threat intel</span>
+            <span className="hero-eyebrow">Solana security intelligence · operator-centric</span>
             <h1 className="hero-title">
-              What Pyth is to prices,<br />
-              <em>SolSentry</em> is to operator risk.
+              RugCheck tells you a fire is burning.<br />
+              <em>SolSentry</em> tells you who lit it.
             </h1>
             <p className="hero-sub">
-              Real-time threat intelligence on Solana. Detect serial rug pull operators,
-              bot clusters, and malicious launches before your users lose funds.
+              Autonomous threat intelligence for Solana. Detects serial rug operators, bot clusters, and
+              malicious launches before your users lose funds. 240+ hours continuous mainnet. 86% accuracy.
+              Zero false positives at HIGH+ confidence.
             </p>
 
             <InstallCarousel />
             <p className="hero-tagline">
-              No login. No waiting. MCP server, TypeScript SDK, and Claude skills — same package.
+              Telegram bot · REST API · MCP server · TypeScript SDK — same package.
             </p>
+
+            <div style={{ display: "flex", gap: 10, marginTop: 24, flexWrap: "wrap" }}>
+              <Link href="/telegram" className="btn-primary">
+                Try the bot →
+              </Link>
+              <Link href="/compare" className="btn-ghost">
+                How it compares
+              </Link>
+              <Link href="/partners" className="btn-ghost">
+                For partners
+              </Link>
+            </div>
           </div>
         </section>
 
         <StatsGrid stats={stats} />
+        <PillarGrid />
         <CaseStudy />
+        <FeatureSurface />
       </main>
       <Footer />
     </>
