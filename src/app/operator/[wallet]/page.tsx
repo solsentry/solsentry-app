@@ -6,7 +6,6 @@ import { OperatorSearchForm } from "@/components/OperatorSearchForm";
 import { RiskCard } from "@/components/RiskCard";
 
 export const dynamic = "force-dynamic";
-export const runtime = "edge";
 
 interface PageProps {
   params: Promise<{ wallet: string }>;

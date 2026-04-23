@@ -1,10 +1,10 @@
 name = "solsentry-app"
-main = ".vercel/output/static/_worker.js/index.js"
-compatibility_date = "2025-01-01"
+main = ".open-next/worker.js"
+compatibility_date = "2025-04-01"
 compatibility_flags = ["nodejs_compat", "global_fetch_strictly_public"]
 
 [assets]
-directory = ".vercel/output/static"
+directory = ".open-next/assets"
 binding = "ASSETS"
 
 [vars]
