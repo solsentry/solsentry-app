@@ -151,7 +151,16 @@ export function Footer() {
           }}
         >
           <div>
-            SolSentry · Built by Crash Diniz · São Paulo · Colosseum Frontier 2026
+            SolSentry · Built by{" "}
+            <a
+              href="https://x.com/crashdiniz"
+              target="_blank"
+              rel="noreferrer"
+              style={{ color: "inherit", borderBottom: "1px solid var(--border)" }}
+            >
+              Crash Diniz
+            </a>
+            {" "}· São Paulo · Colosseum Frontier 2026
           </div>
           <div style={{ display: "flex", gap: 16 }}>
             <span style={{ fontFamily: "var(--font-mono)" }}>
