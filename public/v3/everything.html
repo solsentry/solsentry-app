@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>SolSentry — Everything</title>
+<link rel="icon" href="assets/favicon.svg" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="colors_and_type.css" />
+<link rel="stylesheet" href="shared/nav.css" />
+<style>
+  html, body { margin: 0; background: var(--bg); color: var(--fg-1); }
+  a { color: inherit; }
+  ::selection { background: var(--brand-orange); color: var(--fg-on-brand); }
+
+  .ev { max-width: 1080px; margin: 0 auto; padding: 120px 40px 120px; }
+  .ev-eyebrow { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--brand-orange); margin-bottom: 18px; display: inline-flex; align-items: center; gap: 8px; padding: 5px 11px; border: 1px solid var(--brand-orange-line); border-radius: 999px; background: var(--brand-orange-tint); }
+  .ev-eyebrow .dot { width: 6px; height: 6px; background: var(--brand-orange); border-radius: 50%; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.4;} }
+  .ev h1 { font-family: var(--font-display); font-size: clamp(44px, 6vw, 76px); font-weight: 700; line-height: 1.02; letter-spacing: -0.025em; margin: 8px 0 20px; }
+  .ev h1 em { font-style: normal; color: var(--brand-orange); }
+  .ev-lead { font-size: 19px; color: var(--fg-2); max-width: 720px; line-height: 1.55; margin-bottom: 32px; }
+  .ev-meta { font-family: var(--font-mono); font-size: 12px; color: var(--fg-3); padding: 12px 16px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 72px; }
+  .ev-meta b { color: var(--brand-orange); font-weight: 500; }
+  .ev-meta span { font-family: var(--font-body); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--fg-4); display: block; margin-bottom: 4px; }
+
+  h2.ev-h2 { font-family: var(--font-display); font-size: clamp(26px, 3vw, 40px); font-weight: 700; letter-spacing: -0.02em; line-height: 1.1; margin: 80px 0 8px; }
+  h2.ev-h2 em { font-style: normal; color: var(--brand-orange); }
+  .ev-section-k { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--fg-3); }
+  .ev-section-sub { color: var(--fg-2); font-size: 16px; margin: 12px 0 32px; max-width: 680px; }
+
+  /* pillars */
+  .pillars { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .pil { padding: 24px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; position: relative; overflow: hidden; }
+  .pil::before { content:""; position: absolute; top: 0; left: 0; width: 3px; height: 60px; background: var(--c); }
+  .pil.p0 { --c: var(--brand-orange); }
+  .pil.p1 { --c: var(--brand-teal); }
+  .pil.p2 { --c: var(--brand-white); }
+  .pil.p3 { --c: var(--brand-purple); }
+  .pil-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+  .pil-name { font-family: var(--font-display); font-size: 22px; font-weight: 700; letter-spacing: 0.04em; color: var(--c); }
+  .pil-idx { font-family: var(--font-mono); font-size: 10px; color: var(--fg-4); letter-spacing: 0.1em; }
+  .pil-tagline { font-family: var(--font-mono); font-size: 11px; color: var(--fg-3); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 14px; }
+  .pil-body { color: var(--fg-2); font-size: 14px; line-height: 1.6; }
+
+  /* color swatches */
+  .swatches { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .sw { padding: 14px; border: 1px solid var(--border); border-radius: 6px; background: var(--surface); }
+  .sw-chip { height: 60px; border-radius: 4px; margin-bottom: 10px; }
+  .sw-name { font-family: var(--font-body); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--fg-3); }
+  .sw-hex { font-family: var(--font-mono); font-size: 12px; color: var(--fg-1); margin-top: 2px; }
+
+  /* type spec */
+  .type-grid { display: grid; grid-template-columns: 180px 1fr; gap: 20px; padding: 20px 0; border-top: 1px solid var(--border); }
+  .type-grid:first-of-type { border-top: 0; }
+  .type-label { font-family: var(--font-body); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--fg-3); padding-top: 6px; }
+  .type-label b { display: block; color: var(--fg-1); font-family: var(--font-mono); font-size: 12px; letter-spacing: 0; text-transform: none; margin-top: 4px; }
+  .type-example.display { font-family: 'Space Grotesk'; font-weight: 700; font-size: 48px; letter-spacing: -0.025em; }
+  .type-example.body { font-family: 'Inter'; font-weight: 400; font-size: 16px; color: var(--fg-2); line-height: 1.55; }
+  .type-example.label { font-family: 'Inter'; font-weight: 500; font-size: 12px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--fg-3); }
+  .type-example.mono { font-family: 'JetBrains Mono'; font-weight: 400; font-size: 14px; color: var(--brand-orange); }
+
+  /* stack */
+  .stack { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .stk { padding: 20px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; }
+  .stk h4 { font-family: var(--font-display); font-size: 14px; font-weight: 600; margin: 0 0 10px; color: var(--fg-1); }
+  .stk ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 4px; }
+  .stk li { font-family: var(--font-mono); font-size: 12px; color: var(--fg-2); }
+  .stk li::before { content: "› "; color: var(--brand-orange); }
+
+  /* roadmap */
+  .roadmap { border: 1px solid var(--border); border-radius: 10px; overflow: hidden; background: var(--surface); }
+  .rm-row { display: grid; grid-template-columns: 120px 100px 1fr; padding: 16px 20px; border-bottom: 1px solid var(--border); gap: 16px; align-items: center; font-size: 14px; }
+  .rm-row:last-child { border-bottom: 0; }
+  .rm-q { font-family: var(--font-mono); font-size: 12px; color: var(--fg-3); letter-spacing: 0.1em; }
+  .rm-status { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; padding: 3px 8px; border-radius: 4px; border: 1px solid currentColor; justify-self: start; }
+  .rm-status.done { color: var(--brand-teal); background: var(--brand-teal-tint); }
+  .rm-status.now  { color: var(--brand-orange); background: var(--brand-orange-tint); }
+  .rm-status.next { color: var(--fg-3); }
+  .rm-text { color: var(--fg-1); }
+  .rm-text small { color: var(--fg-3); font-family: var(--font-mono); font-size: 11px; display: block; margin-top: 4px; }
+
+  /* voice */
+  .voice { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .v-card { padding: 20px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; }
+  .v-card.do { border-left: 2px solid var(--brand-teal); }
+  .v-card.dont { border-left: 2px solid var(--status-critical); }
+  .v-card h4 { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; margin: 0 0 10px; color: var(--fg-3); }
+  .v-card.do h4 { color: var(--brand-teal); }
+  .v-card.dont h4 { color: var(--status-critical); }
+  .v-card ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; }
+  .v-card li { font-size: 13.5px; color: var(--fg-2); line-height: 1.5; }
+  .v-card .q { font-family: var(--font-mono); font-size: 12.5px; color: var(--fg-1); padding: 6px 10px; background: var(--bg); border-radius: 4px; margin-top: 4px; display: block; }
+
+  /* page links */
+  .pages { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  .pg { padding: 20px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; text-decoration: none; color: inherit; transition: all 180ms; }
+  .pg:hover { border-color: var(--brand-orange); transform: translateY(-2px); }
+  .pg .t { font-family: var(--font-display); font-size: 16px; font-weight: 600; color: var(--fg-1); }
+  .pg .s { font-family: var(--font-mono); font-size: 11px; color: var(--fg-3); margin-top: 4px; }
+  .pg .arrow { color: var(--brand-orange); margin-top: 14px; font-family: var(--font-mono); font-size: 12px; }
+
+  @media (max-width: 900px) {
+    .ev { padding: 88px 20px 60px; }
+    .pillars, .voice { grid-template-columns: 1fr; }
+    .swatches { grid-template-columns: repeat(2, 1fr); }
+    .stack, .pages { grid-template-columns: 1fr; }
+    .ev-meta { grid-template-columns: repeat(2, 1fr); }
+    .type-grid { grid-template-columns: 1fr; }
+    .rm-row { grid-template-columns: 1fr; gap: 6px; }
+  }
+</style>
+<script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin="anonymous"></script>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel" src="shared/nav.jsx"></script>
+
+<script type="text/babel">
+function App() {
+  return (
+    <>
+      <SSNav active="all" />
+      <main className="ev">
+        <span className="ev-eyebrow"><span className="dot"></span>SolSentry · everything in one page</span>
+        <h1>Operator intelligence for Solana.<br/><em>The whole picture, one scroll.</em></h1>
+        <p className="ev-lead">
+          RugCheck tells you a fire is burning. SolSentry tells you who lit it. This page is the
+          source of truth — brand, product, stack, roadmap, voice, all the numbers. Linked from
+          every other surface.
+        </p>
+
+        <div className="ev-meta">
+          <div><span>Runtime</span><b>210h+</b> continuous mainnet</div>
+          <div><span>Scans</span><b>28,404</b> tokens scanned</div>
+          <div><span>Accuracy</span><b>86.7%</b> · 0 FP @ CRITICAL</div>
+          <div><span>Operators</span><b>1,653</b> tracked · 475 serial</div>
+        </div>
+
+        <h2 className="ev-h2"><span className="ev-section-k">§ 01 · product</span><br/>Four pillars. <em>One graph.</em></h2>
+        <p className="ev-section-sub">Everything SolSentry does reduces to these four verbs. Every surface uses this color-coded model.</p>
+        <div className="pillars">
+          <div className="pil p0">
+            <div className="pil-head"><span className="pil-name">PREVENT</span><span className="pil-idx">01 · orange</span></div>
+            <div className="pil-tagline">Fast-scan · risk score · deploy-time</div>
+            <div className="pil-body">Every new Solana deploy, scored in &lt;200ms. 1 to 100. Flags are SHOUTED in snake_case UPPER so you can grep them. The scanner is the front door.</div>
+          </div>
+          <div className="pil p1">
+            <div className="pil-head"><span className="pil-name">TRACK</span><span className="pil-idx">02 · teal</span></div>
+            <div className="pil-tagline">10-hop drain flow · operator graph</div>
+            <div className="pil-body">Wallets don't exist alone. We connect funding, deploys, same-block buys, and drain terminals up to 10 hops deep. Operators can't hide behind new wallets.</div>
+          </div>
+          <div className="pil p2">
+            <div className="pil-head"><span className="pil-name">EXPLAIN</span><span className="pil-idx">03 · white</span></div>
+            <div className="pil-tagline">AI risk explainer · PT-BR · EN</div>
+            <div className="pil-body">Provider-agnostic LLM layer that translates flag soup into plain language. Portuguese-Brazilian is first-class, not a localization afterthought.</div>
+          </div>
+          <div className="pil p3">
+            <div className="pil-head"><span className="pil-name">EVOLVE</span><span className="pil-idx">04 · purple</span></div>
+            <div className="pil-tagline">30 ALife agents · mutate + reproduce</div>
+            <div className="pil-body">Hunter agents attach to flagged operators, mutate their scan thresholds, and reproduce the winners. Life finds a way. Now, to protect.</div>
+          </div>
+        </div>
+
+        <h2 className="ev-h2"><span className="ev-section-k">§ 02 · surfaces</span><br/>Three ways in.</h2>
+        <p className="ev-section-sub">Same intelligence layer. Different delivery. Pick any, switch anytime.</p>
+        <div className="pages">
+          <a className="pg" href="index.html"><div className="t">Home</div><div className="s">marketing · tier picker</div><div className="arrow">index.html →</div></a>
+          <a className="pg" href="dashboard.html"><div className="t">Dashboard</div><div className="s">Pro · operator console</div><div className="arrow">dashboard.html →</div></a>
+          <a className="pg" href="explorer.html"><div className="t">Explorer</div><div className="s">graph · 10-hop drain</div><div className="arrow">explorer.html →</div></a>
+          <a className="pg" href="docs.html"><div className="t">Docs</div><div className="s">Dev · 11 REST + MCP</div><div className="arrow">docs.html →</div></a>
+        </div>
+
+        <h2 className="ev-h2"><span className="ev-section-k">§ 03 · color</span><br/>Dark only. <em>Orange is primary.</em></h2>
+        <p className="ev-section-sub">Not Solana green — on purpose. Teal, purple, and white are pillar-bound. Red is reserved for CRITICAL.</p>
+        <div className="swatches">
+          <div className="sw"><div className="sw-chip" style={{background:'#FF6B00'}}/><div className="sw-name">Brand · PREVENT</div><div className="sw-hex">#FF6B00</div></div>
+          <div className="sw"><div className="sw-chip" style={{background:'#00C9A7'}}/><div className="sw-name">TRACK · teal</div><div className="sw-hex">#00C9A7</div></div>
+          <div className="sw"><div className="sw-chip" style={{background:'#F5F5F5'}}/><div className="sw-name">EXPLAIN · white</div><div className="sw-hex">#F5F5F5</div></div>
+          <div className="sw"><div className="sw-chip" style={{background:'#A855F7'}}/><div className="sw-name">EVOLVE · purple</div><div className="sw-hex">#A855F7</div></div>
+          <div className="sw"><div className="sw-chip" style={{background:'#FF4444'}}/><div className="sw-name">Critical</div><div className="sw-hex">#FF4444</div></div>
+          <div className="sw"><div className="sw-chip" style={{background:'#FFB020'}}/><div className="sw-name">Warning</div><div className="sw-hex">#FFB020</div></div>
+          <div className="sw"><div className="sw-chip" style={{background:'#0A0A0A', border:'1px solid #242424'}}/><div className="sw-name">BG · page</div><div className="sw-hex">#0A0A0A</div></div>
+          <div className="sw"><div className="sw-chip" style={{background:'#1A1A1A'}}/><div className="sw-name">Surface · card</div><div className="sw-hex">#1A1A1A</div></div>
+        </div>
+
+        <h2 className="ev-h2"><span className="ev-section-k">§ 04 · type</span><br/>Three families. <em>No more.</em></h2>
+        <div>
+          <div className="type-grid">
+            <div className="type-label">Display<br/><b>Space Grotesk 700</b></div>
+            <div className="type-example display">The wallet behind the wallet.</div>
+          </div>
+          <div className="type-grid">
+            <div className="type-label">Body<br/><b>Inter 400/500</b></div>
+            <div className="type-example body">Real-time operator intelligence for Solana. Track serial rug deployers, bot clusters, and malicious launches before your users lose funds.</div>
+          </div>
+          <div className="type-grid">
+            <div className="type-label">Label<br/><b>Inter 500 · 0.15em</b></div>
+            <div className="type-example label">§ 01 · live from mainnet</div>
+          </div>
+          <div className="type-grid">
+            <div className="type-label">Mono<br/><b>JetBrains Mono 400/500</b></div>
+            <div className="type-example mono">4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1</div>
+          </div>
+        </div>
+
+        <h2 className="ev-h2"><span className="ev-section-k">§ 05 · stack</span><br/>How it runs.</h2>
+        <p className="ev-section-sub">Solo build. Boring technology. The interesting bits are the ALife agents and the operator graph — everything else is off the shelf.</p>
+        <div className="stack">
+          <div className="stk">
+            <h4>Ingestion</h4>
+            <ul>
+              <li>Helius RPC · 5 nodes</li>
+              <li>Alchemy · 3 nodes</li>
+              <li>Triton · 1 dedicated</li>
+              <li>Geyser plugin · real-time</li>
+            </ul>
+          </div>
+          <div className="stk">
+            <h4>Intelligence</h4>
+            <ul>
+              <li>PostgreSQL · operator graph</li>
+              <li>Redis · hot cache</li>
+              <li>30 ALife agents · Rust</li>
+              <li>Provider-agnostic LLM layer</li>
+            </ul>
+          </div>
+          <div className="stk">
+            <h4>Delivery</h4>
+            <ul>
+              <li>Fastify · 11 REST endpoints</li>
+              <li>@solsentry/mcp · Claude/Cursor</li>
+              <li>Telegram bot · bilingual</li>
+              <li>React dashboard · v1 Q3</li>
+            </ul>
+          </div>
+        </div>
+
+        <h2 className="ev-h2"><span className="ev-section-k">§ 06 · roadmap</span><br/>Where it's going.</h2>
+        <div className="roadmap">
+          <div className="rm-row"><span className="rm-q">Q4 2025</span><span className="rm-status done">Shipped</span><span className="rm-text">Public beta · Telegram + REST<small>13,131 scans · 75.9% accuracy at launch</small></span></div>
+          <div className="rm-row"><span className="rm-q">Q1 2026</span><span className="rm-status done">Shipped</span><span className="rm-text">MCP · graph endpoint · depth slider<small>v1.2 · drain trace to 5 hops</small></span></div>
+          <div className="rm-row"><span className="rm-q">Q2 2026</span><span className="rm-status now">Now</span><span className="rm-text">Dashboard v1 · Operator Explorer · Rust SDK<small>Colosseum Frontier 2026 build target</small></span></div>
+          <div className="rm-row"><span className="rm-q">Q3 2026</span><span className="rm-status next">Next</span><span className="rm-text">Protected Payment · Stealth Launch · B2B oracle<small>"What Pyth is to prices, SolSentry is to operator risk."</small></span></div>
+          <div className="rm-row"><span className="rm-q">Q4 2026</span><span className="rm-status next">Next</span><span className="rm-text">Cross-chain operator graph · Base · BSC<small>Same model, more chains</small></span></div>
+        </div>
+
+        <h2 className="ev-h2"><span className="ev-section-k">§ 07 · voice</span><br/>How it talks.</h2>
+        <p className="ev-section-sub">Technical, confident, a little dangerous. A security brand, not a consumer product.</p>
+        <div className="voice">
+          <div className="v-card do">
+            <h4>✓ Do</h4>
+            <ul>
+              <li>Use the real numbers. <span className="q">"634 rugs · 90.2% rug rate"</span></li>
+              <li>Present tense, active voice. <span className="q">"Hunter_042 tracking"</span></li>
+              <li>Flags SHOUTED in snake_case. <span className="q">MINT_AUTHORITY_ENABLED</span></li>
+              <li>PT-BR as first class. <span className="q">"Analisa. Rastreia. Explica. Evolui."</span></li>
+            </ul>
+          </div>
+          <div className="v-card dont">
+            <h4>✗ Don't</h4>
+            <ul>
+              <li>Hype adjectives. <span className="q">"revolutionary · game-changing"</span></li>
+              <li>Round marketing numbers. <span className="q">"600+" when the real is 634</span></li>
+              <li>AI-slop framing. <span className="q">"unlock the power of…"</span></li>
+              <li>Emoji outside alerts. <span className="q">🚀 ✨ 🔥 in marketing</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <h2 className="ev-h2"><span className="ev-section-k">§ 08 · signature lines</span><br/>What SolSentry says.</h2>
+        <div style={{display:'flex', flexDirection:'column', gap:12, marginTop:24}}>
+          {[
+            ['Hero',      'RugCheck tells you a fire is burning. SolSentry tells you who lit it.'],
+            ['B2B',       'What Pyth is to prices, SolSentry is to operator risk.'],
+            ['ALife',     'Life finds a way. Now, to protect.'],
+            ['Voice',     'Nunca estagnar. Sempre evoluir.'],
+            ['Short EN',  'Analyzes. Tracks. Explains. Evolves.'],
+            ['Short PT',  'Analisa. Rastreia. Explica. Evolui.'],
+          ].map(([k, v]) => (
+            <div key={k} style={{display:'grid', gridTemplateColumns:'90px 1fr', gap:16, padding:'14px 18px', background:'var(--surface)', border:'1px solid var(--border)', borderRadius:8}}>
+              <span style={{fontFamily:'var(--font-mono)', fontSize:11, color:'var(--brand-orange)', letterSpacing:'0.12em', textTransform:'uppercase'}}>{k}</span>
+              <span style={{fontFamily:'var(--font-display)', fontSize:17, color:'var(--fg-1)', letterSpacing:'-0.01em'}}>{v}</span>
+            </div>
+          ))}
+        </div>
+
+        <h2 className="ev-h2"><span className="ev-section-k">§ 09 · contact</span><br/><a href="https://x.com/crashdiniz" target="_blank" rel="noopener" style={{color:'inherit', textDecoration:'none', borderBottom:'1px solid var(--border)'}}>Crash Diniz</a>. Solo. Brasil.</h2>
+        <div className="stack" style={{marginTop: 24}}>
+          <div className="stk">
+            <h4>Product</h4>
+            <ul>
+              <li>solsentry.app</li>
+              <li>api.solsentry.app</li>
+              <li>t.me/solsentryai</li>
+            </ul>
+          </div>
+          <div className="stk">
+            <h4>Code</h4>
+            <ul>
+              <li>github.com/solsentry</li>
+              <li>@solsentry/sdk · npm</li>
+              <li>@solsentry/mcp · npm</li>
+            </ul>
+          </div>
+          <div className="stk">
+            <h4>Social</h4>
+            <ul>
+              <li>x.com/solsentryai</li>
+              <li>Colosseum Frontier 2026</li>
+              <li>Superteam Brasil</li>
+            </ul>
+          </div>
+        </div>
+
+        <div style={{marginTop: 96, paddingTop: 32, borderTop: '1px solid var(--border)', fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--fg-4)', letterSpacing: '0.1em', display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16}}>
+          <span>© 2026 SolSentry · all systems · ok · mainnet</span>
+          <span>Built for Colosseum Frontier · Superteam Brasil</span>
+          <span>Nunca estagnar. Sempre evoluir.</span>
+        </div>
+      </main>
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>

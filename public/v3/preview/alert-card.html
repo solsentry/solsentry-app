@@ -1,0 +1,29 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body{padding:24px;background:var(--bg);}
+  .alert{background:#1A1A1A;border:1px solid #242424;border-radius:6px;padding:16px 18px;display:flex;gap:14px;align-items:flex-start;max-width:620px;}
+  .alert.critical{border-color:#FF4444;box-shadow:0 0 0 1px #FF4444, 0 0 24px rgba(255,68,68,.16);}
+  .icon{width:32px;height:32px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:700;color:#0A0A0A;flex-shrink:0;}
+  .icon.critical{background:#FF4444;}
+  .title{font-family:var(--font-display);font-weight:700;font-size:16px;letter-spacing:-.01em;color:#F5F5F5;text-transform:uppercase;}
+  .body{font-family:var(--font-body);font-size:13px;color:var(--fg-2);margin-top:4px;line-height:1.5;}
+  .addr{font-family:var(--font-mono);font-size:12px;color:#FF6B00;word-break:break-all;display:block;margin-top:6px;}
+  .flags{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;}
+  .flag{font-family:var(--font-mono);font-size:10px;padding:2px 6px;border:1px solid rgba(255,68,68,.4);border-radius:2px;color:#FF4444;background:rgba(255,68,68,.06);}
+</style></head>
+<body>
+  <div class="alert critical">
+    <div class="icon critical">!</div>
+    <div style="flex:1">
+      <div class="title">Hunter Alert · Risk 100/100</div>
+      <div class="body">hunter_1570 tracking operator deployed a new token. Auto-scan triggered.</div>
+      <span class="addr">4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1</span>
+      <div class="flags">
+        <span class="flag">MINT_AUTHORITY_ENABLED</span>
+        <span class="flag">TOP_HOLDER_OWNS_100%</span>
+        <span class="flag">VERY_FEW_HOLDERS</span>
+      </div>
+    </div>
+  </div>
+</body></html>

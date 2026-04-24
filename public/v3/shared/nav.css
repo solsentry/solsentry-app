@@ -1,0 +1,22 @@
+/* Shared nav styling */
+.ss-nav { position: fixed; top: 14px; right: 14px; z-index: 50; display: flex; gap: 8px; align-items: center; font-family: var(--font-body, Inter, sans-serif); }
+.ss-pill { background: rgba(26,26,26,0.95); border: 1px solid #242424; border-radius: 10px; padding: 6px; box-shadow: 0 8px 24px rgba(0,0,0,0.4); display: flex; align-items: center; gap: 2px; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+.ss-brand { padding: 6px 12px 6px 8px; gap: 8px; text-decoration: none; }
+.ss-mark { width: 22px; height: 22px; border-radius: 6px; background: rgba(255,107,0,0.15); border: 1px solid rgba(255,107,0,0.4); display: grid; place-items: center; }
+.ss-name { font-family: var(--font-display, 'Space Grotesk'); font-weight: 700; font-size: 13px; color: #F5F5F5; letter-spacing: -0.01em; }
+.ss-menu { gap: 0; }
+.ss-item { padding: 7px 12px; font-size: 12.5px; font-weight: 500; color: #B8B8B8; border-radius: 6px; text-decoration: none; white-space: nowrap; transition: all 120ms ease; line-height: 1; background: transparent; border: 0; cursor: pointer; font: inherit; }
+.ss-item:hover { color: #F5F5F5; background: rgba(255,255,255,0.04); }
+.ss-item.active { background: rgba(255,107,0,0.12); color: #FF6B00; }
+.ss-div { width: 1px; height: 16px; background: #242424; margin: 0 2px; }
+.ss-util { padding: 6px; gap: 4px; }
+.ss-seg { display: flex; background: #121212; border-radius: 6px; padding: 2px; font-family: var(--font-mono, 'JetBrains Mono'); font-size: 10px; letter-spacing: 0.08em; height: 24px; }
+.ss-seg button { padding: 0 8px; display: grid; place-items: center; border-radius: 4px; color: #8A8A8A; background: transparent; border: 0; font: inherit; cursor: pointer; }
+.ss-seg button.on { background: #262626; color: #F5F5F5; }
+.ss-ic { width: 28px; height: 28px; border-radius: 6px; display: grid; place-items: center; color: #B8B8B8; background: transparent; border: 0; cursor: pointer; text-decoration: none; }
+.ss-ic:hover { background: rgba(255,255,255,0.04); color: #F5F5F5; }
+@media (max-width: 860px) {
+  .ss-menu .ss-item:not(.active) { display: none; }
+  .ss-menu .ss-div { display: none; }
+  .ss-util { display: none; }
+}
