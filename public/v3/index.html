@@ -720,8 +720,8 @@ function Hero() {
         </p>
 
         <div className="hero-ctas">
-          <a href="dashboard.html" className="btn-primary">Open the Dashboard →</a>
-          <a href="explorer.html" className="btn-ghost">Try the Explorer</a>
+          <a href="/dashboard" className="btn-primary">Open the Dashboard →</a>
+          <a href="/explorer" className="btn-ghost">Try the Explorer</a>
           <button className="btn-code" onClick={() => navigator.clipboard?.writeText('npm i @solsentry/mcp')}>
             <span className="pfx">$</span>
             <span className="cmd">npm i @solsentry/mcp</span>
@@ -917,7 +917,7 @@ function CaseStudy() {
                 the harder it is for operators to hide behind new wallets.
               </div>
             </div>
-            <a href="everything.html" className="btn-ghost" style={{ marginTop: 8 }}>
+            <a href="/everything" className="btn-ghost" style={{ marginTop: 8 }}>
               Read full analysis →
             </a>
           </div>
@@ -1008,7 +1008,7 @@ function GraphTeaser() {
             ))}
           </svg>
           <div className="graph-cta">
-            <a href="explorer.html" className="btn-primary">Open Explorer →</a>
+            <a href="/explorer" className="btn-primary">Open Explorer →</a>
           </div>
         </div>
       </div>
@@ -1080,9 +1080,9 @@ function CTA() {
             210 hours live, zero false positives at CRITICAL risk.
           </p>
           <div className="hero-ctas">
-            <a href="dashboard.html" className="btn-primary">Open the Dashboard →</a>
-            <a href="docs.html" className="btn-ghost">Read the API docs</a>
-            <a href="explorer.html" className="btn-ghost">Explore the graph</a>
+            <a href="/dashboard" className="btn-primary">Open the Dashboard →</a>
+            <a href="/docs" className="btn-ghost">Read the API docs</a>
+            <a href="/explorer" className="btn-ghost">Explore the graph</a>
           </div>
         </div>
       </div>
@@ -1105,16 +1105,16 @@ function Footer() {
           <div className="ft-col">
             <h5>Product</h5>
             <ul>
-              <li><a href="dashboard.html">Dashboard</a></li>
-              <li><a href="explorer.html">Explorer</a></li>
-              <li><a href="everything.html">Everything · one page</a></li>
+              <li><a href="/dashboard">Dashboard</a></li>
+              <li><a href="/explorer">Explorer</a></li>
+              <li><a href="/everything">Everything · one page</a></li>
               <li><a href="#/products/protected-payment">Protected Payment</a></li>
             </ul>
           </div>
           <div className="ft-col">
             <h5>Developers</h5>
             <ul>
-              <li><a href="docs.html">API + MCP docs</a></li>
+              <li><a href="/docs">API + MCP docs</a></li>
               <li><a href="docs.html#mcp">MCP · @solsentry/mcp</a></li>
               <li><a href="https://api.solsentry.app/health">API health</a></li>
               <li><a href="https://github.com/solsentry">GitHub</a></li>

@@ -15,18 +15,18 @@ function SSShieldMark({ size = 22 }) {
 }
 
 const SS_LINKS = [
-  { label: 'Home',      href: 'index.html',      key: 'home' },
-  { label: 'Dashboard', href: 'dashboard.html',  key: 'dash' },
-  { label: 'Explorer',  href: 'explorer.html',   key: 'graph' },
-  { label: 'Docs',      href: 'docs.html',       key: 'docs' },
-  { label: 'Everything',href: 'everything.html', key: 'all' },
+  { label: 'Home',      href: '/',            key: 'home' },
+  { label: 'Dashboard', href: '/dashboard',   key: 'dash' },
+  { label: 'Explorer',  href: '/explorer',    key: 'graph' },
+  { label: 'Docs',      href: '/docs',        key: 'docs' },
+  { label: 'Everything',href: '/everything',  key: 'all' },
 ];
 
 function SSNav({ active = 'home' }) {
   const [lang, setLang] = useState('EN');
   return (
     <nav className="ss-nav" aria-label="Primary">
-      <a href="index.html" className="ss-pill ss-brand">
+      <a href="/" className="ss-pill ss-brand">
         <span className="ss-mark"><SSShieldMark size={12} /></span>
         <span className="ss-name">SolSentry</span>
       </a>
