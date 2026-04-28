@@ -63,6 +63,13 @@ const ENDPOINTS: { group: string; items: Endpoint[] }[] = [
       },
       {
         method: "GET",
+        path: "/v1/operator/{wallet}/network",
+        desc: "Bounded operator graph (alts, bot clusters, KOLs). Tunable via tokens, clusters, peers query params.",
+        example:
+          "curl 'https://api.solsentry.app/v1/operator/{wallet}/network?tokens=14&clusters=5&peers=3'",
+      },
+      {
+        method: "GET",
         path: "/v1/top-operators?limit=10",
         desc: "Ranked list of the highest-risk operators by confirmed rugs.",
         example: "curl https://api.solsentry.app/v1/top-operators?limit=20",
@@ -130,6 +137,23 @@ const ENDPOINTS: { group: string; items: Endpoint[] }[] = [
         desc: "x402 payment ledger stats — total queries billed, USDC billed, unique clients, by-tool breakdown.",
         example: "curl https://api.solsentry.app/v1/x402/stats",
         tier: "x402",
+      },
+    ],
+  },
+  {
+    group: "Health",
+    items: [
+      {
+        method: "GET",
+        path: "/health",
+        desc: "Liveness probe. Returns 200 + JSON if the API process is responsive.",
+        example: "curl https://api.solsentry.app/health",
+      },
+      {
+        method: "GET",
+        path: "/health/invariants",
+        desc: "Runtime data-consistency monitor — accuracy, resolve rate, store size invariants. Returns 200 if healthy, 503 if degraded.",
+        example: "curl https://api.solsentry.app/health/invariants",
       },
     ],
   },
