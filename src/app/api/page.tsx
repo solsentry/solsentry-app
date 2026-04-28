@@ -8,7 +8,8 @@ export const revalidate = 60;
 
 export const metadata = {
   title: "API reference — SolSentry REST + MCP",
-  description: "Complete REST API for SolSentry. 11 endpoints covering operators, tokens, alerts, resolutions, bot clusters, drain traces, and network stats. Free public tier. No API key for read endpoints.",
+  description:
+    "Complete REST API for SolSentry. 11 endpoints covering operators, tokens, alerts, resolutions, bot clusters, drain traces, and network stats. Free public tier. No API key for read endpoints.",
 };
 
 interface Endpoint {
@@ -92,7 +93,8 @@ const ENDPOINTS: { group: string; items: Endpoint[] }[] = [
         method: "GET",
         path: "/v1/resolutions/recent?limit=20",
         desc: "Outcome stream — was_correct flag, final classification, resolution latency.",
-        example: "curl https://api.solsentry.app/v1/resolutions/recent?limit=50",
+        example:
+          "curl https://api.solsentry.app/v1/resolutions/recent?limit=50",
       },
     ],
   },
@@ -174,18 +176,23 @@ export default async function ApiPage() {
           eyebrow={`REST API · api.solsentry.app · v1`}
           title={
             <>
-              11 endpoints. <span style={{ color: "var(--brand-orange)" }}>No API key</span>. JSON in, JSON out.
+              11 endpoints.{" "}
+              <span style={{ color: "var(--brand-orange)" }}>No API key</span>.
+              JSON in, JSON out.
             </>
           }
           sub={
             <>
-              Public read tier is free. 30s cache on the edge. Rate-limited per IP for abuse prevention. For
-              high-volume / enterprise access (guaranteed rate, webhooks, SLA), reach out at{" "}
+              Public read tier is free. 30s cache on the edge. Rate-limited per
+              IP for abuse prevention. For high-volume / enterprise access
+              (guaranteed rate, webhooks, SLA), reach out at{" "}
               <a href="mailto:hello@solsentry.app">hello@solsentry.app</a>.
             </>
           }
         >
-          <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 8 }}>
+          <div
+            style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 8 }}
+          >
             <a href="#endpoints" className="btn-primary">
               Endpoints
             </a>
@@ -205,36 +212,76 @@ export default async function ApiPage() {
                 <span className="status-dot live" />
                 Live
               </div>
-              <div style={{ fontFamily: "var(--font-display)", fontSize: 28, fontWeight: 700, marginTop: 8 }}>
+              <div
+                style={{
+                  fontFamily: "var(--font-display)",
+                  fontSize: 28,
+                  fontWeight: 700,
+                  marginTop: 8,
+                }}
+              >
                 {(stats?.runtime_hours ?? 0).toLocaleString()}h
               </div>
-              <div style={{ fontSize: 11, color: "var(--fg-3)" }}>continuous runtime</div>
+              <div style={{ fontSize: 11, color: "var(--fg-3)" }}>
+                continuous runtime
+              </div>
             </div>
             <div className="panel">
               <div className="label-tag">Endpoints</div>
-              <div style={{ fontFamily: "var(--font-display)", fontSize: 28, fontWeight: 700, marginTop: 8 }}>
+              <div
+                style={{
+                  fontFamily: "var(--font-display)",
+                  fontSize: 28,
+                  fontWeight: 700,
+                  marginTop: 8,
+                }}
+              >
                 11
               </div>
-              <div style={{ fontSize: 11, color: "var(--fg-3)" }}>public v1 routes</div>
+              <div style={{ fontSize: 11, color: "var(--fg-3)" }}>
+                public v1 routes
+              </div>
             </div>
             <div className="panel">
               <div className="label-tag">Latency</div>
-              <div style={{ fontFamily: "var(--font-display)", fontSize: 28, fontWeight: 700, marginTop: 8 }}>
+              <div
+                style={{
+                  fontFamily: "var(--font-display)",
+                  fontSize: 28,
+                  fontWeight: 700,
+                  marginTop: 8,
+                }}
+              >
                 &lt; 50ms
               </div>
-              <div style={{ fontSize: 11, color: "var(--fg-3)" }}>p95, cached responses</div>
+              <div style={{ fontSize: 11, color: "var(--fg-3)" }}>
+                p95, cached responses
+              </div>
             </div>
             <div className="panel">
               <div className="label-tag">Auth</div>
-              <div style={{ fontFamily: "var(--font-display)", fontSize: 28, fontWeight: 700, marginTop: 8 }}>
+              <div
+                style={{
+                  fontFamily: "var(--font-display)",
+                  fontSize: 28,
+                  fontWeight: 700,
+                  marginTop: 8,
+                }}
+              >
                 None
               </div>
-              <div style={{ fontSize: 11, color: "var(--fg-3)" }}>for public read endpoints</div>
+              <div style={{ fontSize: 11, color: "var(--fg-3)" }}>
+                for public read endpoints
+              </div>
             </div>
           </div>
         </Section>
 
-        <Section eyebrow="Endpoint reference" title="Every route, every method" id="endpoints">
+        <Section
+          eyebrow="Endpoint reference"
+          title="Every route, every method"
+          id="endpoints"
+        >
           {ENDPOINTS.map((group) => (
             <div key={group.group} style={{ marginBottom: 36 }}>
               <div
@@ -252,19 +299,33 @@ export default async function ApiPage() {
               {group.items.map((e) => (
                 <div key={e.path} className="cmd-row">
                   <div>
-                    <span className={`http-method ${e.method.toLowerCase()}`}>{e.method}</span>
+                    <span className={`http-method ${e.method.toLowerCase()}`}>
+                      {e.method}
+                    </span>
                     <div style={{ marginTop: 6 }}>
                       <code>{e.path}</code>
                     </div>
                     {e.tier === "x402" && (
-                      <span className="cmd-meta" style={{ background: "var(--brand-purple-tint)", color: "var(--brand-purple)", marginTop: 6, display: "inline-block", marginLeft: 0 }}>
+                      <span
+                        className="cmd-meta"
+                        style={{
+                          background: "var(--brand-purple-tint)",
+                          color: "var(--brand-purple)",
+                          marginTop: 6,
+                          display: "inline-block",
+                          marginLeft: 0,
+                        }}
+                      >
                         x402
                       </span>
                     )}
                   </div>
                   <div>
                     <div className="desc">{e.desc}</div>
-                    <div className="code-block" style={{ marginTop: 10, fontSize: 12 }}>
+                    <div
+                      className="code-block"
+                      style={{ marginTop: 10, fontSize: 12 }}
+                    >
                       {e.example}
                     </div>
                   </div>
@@ -274,25 +335,35 @@ export default async function ApiPage() {
           ))}
         </Section>
 
-        <Section eyebrow="Code samples" title="Copy-paste integrations" id="samples">
+        <Section
+          eyebrow="Code samples"
+          title="Copy-paste integrations"
+          id="samples"
+        >
           <div className="grid-3">
             <div>
               <div className="label-tag" style={{ marginBottom: 10 }}>
                 TypeScript / Node
               </div>
-              <div className="code-block" style={{ fontSize: 12 }}>{JS_SAMPLE}</div>
+              <div className="code-block" style={{ fontSize: 12 }}>
+                {JS_SAMPLE}
+              </div>
             </div>
             <div>
               <div className="label-tag" style={{ marginBottom: 10 }}>
                 Python
               </div>
-              <div className="code-block" style={{ fontSize: 12 }}>{PY_SAMPLE}</div>
+              <div className="code-block" style={{ fontSize: 12 }}>
+                {PY_SAMPLE}
+              </div>
             </div>
             <div>
               <div className="label-tag" style={{ marginBottom: 10 }}>
                 Rust
               </div>
-              <div className="code-block" style={{ fontSize: 12 }}>{RUST_SAMPLE}</div>
+              <div className="code-block" style={{ fontSize: 12 }}>
+                {RUST_SAMPLE}
+              </div>
             </div>
           </div>
         </Section>
@@ -302,31 +373,59 @@ export default async function ApiPage() {
           title="Per-query micro-payments for premium tools"
           sub="Some MCP tools (high-cost lookups, premium classifications) will be gated by x402 — a Solana-native per-request micropayment protocol. No subscription. You pay only for what you query. Free tier remains free."
         >
-          <div className="panel" style={{ borderLeft: "3px solid var(--brand-purple)" }}>
+          <div
+            className="panel"
+            style={{ borderLeft: "3px solid var(--brand-purple)" }}
+          >
             <p style={{ color: "var(--fg-2)", fontSize: 15, lineHeight: 1.7 }}>
-              x402 is standardized 402-Payment-Required header signed with SPL USDC on Solana. SolSentry
-              returns a 402 with an x-amount and x-payment-asset header; your client signs a micro-transfer;
-              we return the response and ledger-record the payment. Public aggregates are always free.
+              x402 is standardized 402-Payment-Required header signed with SPL
+              USDC on Solana. SolSentry returns a 402 with an x-amount and
+              x-payment-asset header; your client signs a micro-transfer; we
+              return the response and ledger-record the payment. Public
+              aggregates are always free.
             </p>
             <p style={{ color: "var(--fg-3)", fontSize: 13, marginTop: 12 }}>
-              Interested in gating a custom dataset? <a href="mailto:hello@solsentry.app">hello@solsentry.app</a>
+              Interested in gating a custom dataset?{" "}
+              <a href="mailto:hello@solsentry.app">hello@solsentry.app</a>
             </p>
           </div>
         </Section>
 
-        <Section
-          eyebrow="Status & SLA"
-          title="What we guarantee today"
-        >
+        <Section eyebrow="Status & SLA" title="What we guarantee today">
           <div className="grid-3">
             {[
-              { t: "Uptime", d: "No contractual SLA on free tier. Current uptime > 99% over the last 30 days. Status page coming. Outages reported on @solsentryai." },
-              { t: "Data freshness", d: "Scans write within ~2s of deploy. Operator profile updates propagate within 30s. Edge cache is 30s." },
-              { t: "Rate limit", d: "Per-IP limit applies to protect infrastructure. Too many requests returns 429 with a Retry-After header. No key for public reads." },
+              {
+                t: "Uptime",
+                d: "No contractual SLA on free tier. Current uptime > 99% over the last 30 days. Status page coming. Outages reported on @solsentryai.",
+              },
+              {
+                t: "Data freshness",
+                d: "Scans write within ~2s of deploy. Operator profile updates propagate within 30s. Edge cache is 30s.",
+              },
+              {
+                t: "Rate limit",
+                d: "Per-IP limit applies to protect infrastructure. Too many requests returns 429 with a Retry-After header. No key for public reads.",
+              },
             ].map((c) => (
               <div key={c.t} className="panel">
-                <h3 style={{ fontFamily: "var(--font-display)", fontSize: 17, marginBottom: 8 }}>{c.t}</h3>
-                <p style={{ color: "var(--fg-2)", fontSize: 14, lineHeight: 1.55 }}>{c.d}</p>
+                <h3
+                  style={{
+                    fontFamily: "var(--font-display)",
+                    fontSize: 17,
+                    marginBottom: 8,
+                  }}
+                >
+                  {c.t}
+                </h3>
+                <p
+                  style={{
+                    color: "var(--fg-2)",
+                    fontSize: 14,
+                    lineHeight: 1.55,
+                  }}
+                >
+                  {c.d}
+                </p>
               </div>
             ))}
           </div>

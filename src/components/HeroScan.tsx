@@ -3,7 +3,17 @@
 import { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, Loader2, Skull, ShieldAlert, AlertTriangle, ShieldCheck, Activity, Coins, TrendingUp } from "lucide-react";
+import {
+  Search,
+  Loader2,
+  Skull,
+  ShieldAlert,
+  AlertTriangle,
+  ShieldCheck,
+  Activity,
+  Coins,
+  TrendingUp,
+} from "lucide-react";
 
 interface OperatorResp {
   wallet: string;
@@ -18,8 +28,14 @@ interface OperatorResp {
 }
 
 const SAMPLES = [
-  { label: "Top operator (CRITICAL)", wallet: "4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1" },
-  { label: "Random unknown", wallet: "So11111111111111111111111111111111111111112" },
+  {
+    label: "Top operator (CRITICAL)",
+    wallet: "4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1",
+  },
+  {
+    label: "Random unknown",
+    wallet: "So11111111111111111111111111111111111111112",
+  },
 ];
 
 const RISK_ICON: Record<string, { icon: typeof Skull; color: string }> = {
@@ -102,7 +118,12 @@ export function HeroScan() {
               }}
             />
           </div>
-          <button type="submit" className="btn-primary" disabled={loading} style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
+          <button
+            type="submit"
+            className="btn-primary"
+            disabled={loading}
+            style={{ display: "inline-flex", alignItems: "center", gap: 8 }}
+          >
             {loading ? (
               <>
                 <Loader2 size={14} className="spin" />
@@ -119,7 +140,15 @@ export function HeroScan() {
       </form>
 
       <div style={{ marginTop: 10, display: "flex", gap: 6, flexWrap: "wrap" }}>
-        <span style={{ fontSize: 11, color: "var(--fg-3)", letterSpacing: "0.12em", textTransform: "uppercase", marginRight: 4 }}>
+        <span
+          style={{
+            fontSize: 11,
+            color: "var(--fg-3)",
+            letterSpacing: "0.12em",
+            textTransform: "uppercase",
+            marginRight: 4,
+          }}
+        >
           Try
         </span>
         {SAMPLES.map((s) => (
@@ -208,14 +237,29 @@ export function HeroScan() {
                     alignItems: "center",
                     justifyContent: "center",
                     borderRadius: 8,
-                    background: data.known ? (rc.color === "var(--status-critical)" ? "rgba(255,68,68,0.15)" : "rgba(255,107,0,0.15)") : "rgba(0,201,167,0.15)",
+                    background: data.known
+                      ? rc.color === "var(--status-critical)"
+                        ? "rgba(255,68,68,0.15)"
+                        : "rgba(255,107,0,0.15)"
+                      : "rgba(0,201,167,0.15)",
                     border: `1px solid ${data.known ? rc.color : "var(--brand-teal)"}`,
                   }}
                 >
-                  <Icon size={20} style={{ color: data.known ? rc.color : "var(--brand-teal)" }} />
+                  <Icon
+                    size={20}
+                    style={{
+                      color: data.known ? rc.color : "var(--brand-teal)",
+                    }}
+                  />
                 </div>
                 <div>
-                  <div className="label-tag" style={{ color: data.known ? rc.color : "var(--brand-teal)", marginBottom: 3 }}>
+                  <div
+                    className="label-tag"
+                    style={{
+                      color: data.known ? rc.color : "var(--brand-teal)",
+                      marginBottom: 3,
+                    }}
+                  >
                     Risk level
                   </div>
                   <div
@@ -232,8 +276,16 @@ export function HeroScan() {
                 </div>
               </div>
               <div style={{ textAlign: "right" }}>
-                <div className="label-tag" style={{ marginBottom: 3 }}>Operator</div>
-                <div style={{ fontFamily: "var(--font-mono)", fontSize: 12, color: "var(--fg-1)" }}>
+                <div className="label-tag" style={{ marginBottom: 3 }}>
+                  Operator
+                </div>
+                <div
+                  style={{
+                    fontFamily: "var(--font-mono)",
+                    fontSize: 12,
+                    color: "var(--fg-1)",
+                  }}
+                >
                   {data.wallet.slice(0, 8)}…{data.wallet.slice(-6)}
                 </div>
               </div>
@@ -241,41 +293,91 @@ export function HeroScan() {
 
             {/* Metrics */}
             {data.known ? (
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)" }}>
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(3, 1fr)",
+                }}
+              >
                 <MetricCell
-                  icon={<Skull size={14} style={{ color: "var(--status-critical)" }} />}
+                  icon={
+                    <Skull
+                      size={14}
+                      style={{ color: "var(--status-critical)" }}
+                    />
+                  }
                   label="Confirmed rugs"
                   value={data.confirmed_rugs ?? 0}
                 />
                 <MetricCell
-                  icon={<Coins size={14} style={{ color: "var(--brand-orange)" }} />}
+                  icon={
+                    <Coins size={14} style={{ color: "var(--brand-orange)" }} />
+                  }
                   label="Total tokens"
                   value={data.total_tokens ?? 0}
                 />
                 <MetricCell
-                  icon={<TrendingUp size={14} style={{ color: "var(--status-warning)" }} />}
+                  icon={
+                    <TrendingUp
+                      size={14}
+                      style={{ color: "var(--status-warning)" }}
+                    />
+                  }
                   label="Rug rate"
-                  value={data.rug_rate_pct != null ? `${data.rug_rate_pct.toFixed(1)}%` : "—"}
+                  value={
+                    data.rug_rate_pct != null
+                      ? `${data.rug_rate_pct.toFixed(1)}%`
+                      : "—"
+                  }
                 />
               </div>
             ) : (
-              <div style={{ padding: "18px 20px", color: "var(--fg-2)", fontSize: 13, lineHeight: 1.6 }}>
-                Not in the operator database. Either this wallet has not deployed a token during the
-                monitored window, or it is a safe protocol address.
+              <div
+                style={{
+                  padding: "18px 20px",
+                  color: "var(--fg-2)",
+                  fontSize: 13,
+                  lineHeight: 1.6,
+                }}
+              >
+                Not in the operator database. Either this wallet has not
+                deployed a token during the monitored window, or it is a safe
+                protocol address.
               </div>
             )}
 
             {/* Tags + actions */}
             {data.known && (
-              <div style={{ padding: "12px 20px", borderTop: "1px solid var(--border-soft)", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 10 }}>
+              <div
+                style={{
+                  padding: "12px 20px",
+                  borderTop: "1px solid var(--border-soft)",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  flexWrap: "wrap",
+                  gap: 10,
+                }}
+              >
                 <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
                   {data.risk_label && (
-                    <span className="hover-chip" style={{ fontSize: 10, padding: "3px 10px" }}>
+                    <span
+                      className="hover-chip"
+                      style={{ fontSize: 10, padding: "3px 10px" }}
+                    >
                       {data.risk_label}
                     </span>
                   )}
                   {(data.tags || []).slice(0, 3).map((t) => (
-                    <span key={t} className="hover-chip" style={{ fontSize: 10, padding: "3px 10px", color: "var(--brand-teal)" }}>
+                    <span
+                      key={t}
+                      className="hover-chip"
+                      style={{
+                        fontSize: 10,
+                        padding: "3px 10px",
+                        color: "var(--brand-teal)",
+                      }}
+                    >
                       {t}
                     </span>
                   ))}
@@ -319,7 +421,15 @@ export function HeroScan() {
   );
 }
 
-function MetricCell({ icon, label, value }: { icon: React.ReactNode; label: string; value: string | number }) {
+function MetricCell({
+  icon,
+  label,
+  value,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  value: string | number;
+}) {
   return (
     <div
       style={{

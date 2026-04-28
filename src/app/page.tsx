@@ -20,20 +20,31 @@ export default async function Home() {
       <main>
         <section className="hero">
           <div className="container">
-            <span className="hero-eyebrow">Solana security intelligence · operator-centric</span>
+            <span className="hero-eyebrow">
+              Solana security intelligence · operator-centric
+            </span>
             <h1 className="hero-title">
-              RugCheck tells you a fire is burning.<br />
+              RugCheck tells you a fire is burning.
+              <br />
               <em>SolSentry</em> tells you who lit it.
             </h1>
             <p className="hero-sub">
-              Autonomous threat intelligence for Solana. Detects serial rug operators, bot clusters, and
-              malicious launches before your users lose funds. 210+ hours continuous mainnet. 86% accuracy.
-              Zero confirmed false positives at CRITICAL risk.
+              Autonomous threat intelligence for Solana. Detects serial rug
+              operators, bot clusters, and malicious launches before your users
+              lose funds. 210+ hours continuous mainnet. 86% accuracy. Zero
+              confirmed false positives at CRITICAL risk.
             </p>
 
             <HeroScan />
 
-            <div style={{ display: "flex", gap: 10, marginTop: 28, flexWrap: "wrap" }}>
+            <div
+              style={{
+                display: "flex",
+                gap: 10,
+                marginTop: 28,
+                flexWrap: "wrap",
+              }}
+            >
               <Link href="/telegram" className="btn-primary">
                 Try the bot →
               </Link>

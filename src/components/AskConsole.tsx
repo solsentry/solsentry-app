@@ -16,12 +16,15 @@ const EXAMPLES: Example[] = [
     tools: ["/v1/operator/:wallet"],
     a: (
       <>
-        <strong style={{ color: "var(--status-critical)" }}>Yes — CRITICAL risk operator.</strong>
+        <strong style={{ color: "var(--status-critical)" }}>
+          Yes — CRITICAL risk operator.
+        </strong>
         <br />
         This wallet has <strong>834 tracked deployments</strong> with{" "}
-        <strong>766 confirmed rugs</strong>. Rug rate <strong>91.8%</strong>. Tags: <code>fast_deployer</code>,{" "}
-        <code>rebrand_artist</code>. Label in SolSentry: <code>serial_rugger</code>. Risk level:{" "}
-        <code>CRITICAL</code>.
+        <strong>766 confirmed rugs</strong>. Rug rate <strong>91.8%</strong>.
+        Tags: <code>fast_deployer</code>, <code>rebrand_artist</code>. Label in
+        SolSentry: <code>serial_rugger</code>. Risk level: <code>CRITICAL</code>
+        .
       </>
     ),
   },
@@ -33,16 +36,17 @@ const EXAMPLES: Example[] = [
       <>
         <strong>Top confirmed-rug operator (live):</strong>
         <br />
-        <code>4kxscute...L5pH1</code> — 766 rugs / 834 tokens (91.8%). Active today.
+        <code>4kxscute...L5pH1</code> — 766 rugs / 834 tokens (91.8%). Active
+        today.
         <br />
         <br />
         Across the full leaderboard, SolSentry currently tracks{" "}
-        <strong>408 serial ruggers</strong> (operators with multiple confirmed rugs) out of{" "}
-        <strong>1,345 total deployer wallets</strong> profiled.
+        <strong>408 serial ruggers</strong> (operators with multiple confirmed
+        rugs) out of <strong>1,345 total deployer wallets</strong> profiled.
         <br />
         <span style={{ color: "var(--fg-3)", fontSize: 13 }}>
-          See the live ranking at <a href="/leaderboard">/leaderboard</a>. Numbers shift as new deploys are
-          resolved.
+          See the live ranking at <a href="/leaderboard">/leaderboard</a>.
+          Numbers shift as new deploys are resolved.
         </span>
       </>
     ),
@@ -53,13 +57,14 @@ const EXAMPLES: Example[] = [
     tools: ["/v1/drain-trace/:wallet"],
     a: (
       <>
-        The tracer walks forward from the input wallet up to <strong>10 hops</strong>. For each terminal, it
-        classifies the endpoint: <code>cex_deposit</code>, <code>mixer</code>, <code>bridge_lock</code>,{" "}
+        The tracer walks forward from the input wallet up to{" "}
+        <strong>10 hops</strong>. For each terminal, it classifies the endpoint:{" "}
+        <code>cex_deposit</code>, <code>mixer</code>, <code>bridge_lock</code>,{" "}
         <code>known_operator</code>, or <code>unknown</code>.
         <br />
-        The response includes a boolean <code>reached_cex</code> and <code>reached_mixer</code>, plus a full
-        hop list with per-hop SOL amounts. Try it live at{" "}
-        <a href="/drain">/drain</a>.
+        The response includes a boolean <code>reached_cex</code> and{" "}
+        <code>reached_mixer</code>, plus a full hop list with per-hop SOL
+        amounts. Try it live at <a href="/drain">/drain</a>.
       </>
     ),
   },
@@ -69,11 +74,12 @@ const EXAMPLES: Example[] = [
     tools: ["/v1/operator/:wallet", "/v1/clusters?funding_source=..."],
     a: (
       <>
-        This is a two-step query. First we pull the operator&rsquo;s known funding source from{" "}
-        <code>/v1/operator</code>. Then we query <code>/v1/clusters</code> filtered by that funding source
-        classification. Matching clusters surface with their associated wallets and rug count — exposing the
-        operator&rsquo;s &quot;army&quot; of helper wallets. This is how single-deployer rugs look
-        multi-participant.
+        This is a two-step query. First we pull the operator&rsquo;s known
+        funding source from <code>/v1/operator</code>. Then we query{" "}
+        <code>/v1/clusters</code> filtered by that funding source
+        classification. Matching clusters surface with their associated wallets
+        and rug count — exposing the operator&rsquo;s &quot;army&quot; of helper
+        wallets. This is how single-deployer rugs look multi-participant.
       </>
     ),
   },
@@ -83,11 +89,11 @@ const EXAMPLES: Example[] = [
     tools: ["/v1/stats"],
     a: (
       <>
-        Taxa de acerto (<code>was_correct</code>) está em <strong style={{ color: "var(--brand-orange)" }}>
-          86.4%
-        </strong>{" "}
-        sobre <strong>24,630 previsões resolvidas</strong>. Resolve rate de 95.5%. Zero falsos positivos
-        confirmados em CRITICAL risk. Os erros são todos stealth-rug (falsos negativos). Feed público em{" "}
+        Taxa de acerto (<code>was_correct</code>) está em{" "}
+        <strong style={{ color: "var(--brand-orange)" }}>86.4%</strong> sobre{" "}
+        <strong>24,630 previsões resolvidas</strong>. Resolve rate de 95.5%.
+        Zero falsos positivos confirmados em CRITICAL risk. Os erros são todos
+        stealth-rug (falsos negativos). Feed público em{" "}
         <a href="/resolutions">/resolutions</a>.
       </>
     ),
@@ -144,8 +150,14 @@ export function AskConsole() {
         ))}
       </div>
 
-      <div className="panel" style={{ borderLeft: "3px solid var(--brand-orange)" }}>
-        <div className="label-tag" style={{ color: "var(--brand-orange)", marginBottom: 8 }}>
+      <div
+        className="panel"
+        style={{ borderLeft: "3px solid var(--brand-orange)" }}
+      >
+        <div
+          className="label-tag"
+          style={{ color: "var(--brand-orange)", marginBottom: 8 }}
+        >
           Question
         </div>
         <div
@@ -165,7 +177,14 @@ export function AskConsole() {
         <div className="label-tag" style={{ marginBottom: 8 }}>
           Intent · {current.intent}
         </div>
-        <div style={{ marginBottom: 20, display: "flex", gap: 6, flexWrap: "wrap" }}>
+        <div
+          style={{
+            marginBottom: 20,
+            display: "flex",
+            gap: 6,
+            flexWrap: "wrap",
+          }}
+        >
           {current.tools.map((t) => (
             <span key={t} className="hover-chip" style={{ fontSize: 11 }}>
               <span style={{ color: "var(--brand-teal)" }}>GET</span> {t}
@@ -176,7 +195,9 @@ export function AskConsole() {
         <div className="label-tag" style={{ marginBottom: 8 }}>
           Answer
         </div>
-        <div style={{ fontSize: 15, color: "var(--fg-2)", lineHeight: 1.7 }}>{current.a}</div>
+        <div style={{ fontSize: 15, color: "var(--fg-2)", lineHeight: 1.7 }}>
+          {current.a}
+        </div>
       </div>
     </div>
   );

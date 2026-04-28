@@ -15,7 +15,10 @@ export function DrainSearchForm() {
   };
 
   return (
-    <form onSubmit={submit} style={{ marginTop: 16, display: "flex", gap: 8, flexWrap: "wrap" }}>
+    <form
+      onSubmit={submit}
+      style={{ marginTop: 16, display: "flex", gap: 8, flexWrap: "wrap" }}
+    >
       <input
         value={v}
         onChange={(e) => setV(e.target.value)}

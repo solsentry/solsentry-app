@@ -7,7 +7,10 @@ interface Props {
 
 export function PageHeader({ eyebrow, title, sub, children }: Props) {
   return (
-    <section className="section-pad-sm" style={{ paddingTop: 64, paddingBottom: 24 }}>
+    <section
+      className="section-pad-sm"
+      style={{ paddingTop: 64, paddingBottom: 24 }}
+    >
       <div className="container">
         <div className="section-head">
           <span className="eyebrow">{eyebrow}</span>

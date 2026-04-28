@@ -6,7 +6,8 @@ import { AskConsole } from "@/components/AskConsole";
 
 export const metadata = {
   title: "Ask SolSentry — natural language query",
-  description: "Ask questions in English or Portuguese about Solana operators, bot clusters, and rug deployments. SolSentry translates the query into live API calls and summarizes the answer.",
+  description:
+    "Ask questions in English or Portuguese about Solana operators, bot clusters, and rug deployments. SolSentry translates the query into live API calls and summarizes the answer.",
 };
 
 export default function AskPage() {
@@ -18,15 +19,19 @@ export default function AskPage() {
           eyebrow="Ask SolSentry · natural language"
           title={
             <>
-              Type a question.<br />
-              <span style={{ color: "var(--brand-orange)" }}>Get live operator intel back.</span>
+              Type a question.
+              <br />
+              <span style={{ color: "var(--brand-orange)" }}>
+                Get live operator intel back.
+              </span>
             </>
           }
           sub={
             <>
-              Arkham has Oracle. Dune has DuneAI. Nansen has AI-powered search. SolSentry plugs the same
-              interface on top of Solana operator data — but with live drain traces, bot cluster memory,
-              and outcome-resolved predictions. No query language required.
+              Arkham has Oracle. Dune has DuneAI. Nansen has AI-powered search.
+              SolSentry plugs the same interface on top of Solana operator data
+              — but with live drain traces, bot cluster memory, and
+              outcome-resolved predictions. No query language required.
             </>
           }
         />
@@ -56,8 +61,24 @@ export default function AskPage() {
               },
             ].map((c) => (
               <div key={c.t} className="panel">
-                <h3 style={{ fontFamily: "var(--font-display)", fontSize: 18, marginBottom: 8 }}>{c.t}</h3>
-                <p style={{ color: "var(--fg-2)", fontSize: 14, lineHeight: 1.55 }}>{c.d}</p>
+                <h3
+                  style={{
+                    fontFamily: "var(--font-display)",
+                    fontSize: 18,
+                    marginBottom: 8,
+                  }}
+                >
+                  {c.t}
+                </h3>
+                <p
+                  style={{
+                    color: "var(--fg-2)",
+                    fontSize: 14,
+                    lineHeight: 1.55,
+                  }}
+                >
+                  {c.d}
+                </p>
               </div>
             ))}
           </div>

@@ -36,12 +36,15 @@ export default async function AlertsPage() {
         <section className="hero" style={{ padding: "80px 0 32px" }}>
           <div className="container">
             <span className="hero-eyebrow">Live · refreshed every 10s</span>
-            <h1 className="hero-title" style={{ fontSize: "clamp(32px, 5vw, 64px)" }}>
+            <h1
+              className="hero-title"
+              style={{ fontSize: "clamp(32px, 5vw, 64px)" }}
+            >
               Threat stream
             </h1>
             <p className="hero-sub">
-              Recent CRITICAL and HIGH risk alerts on the left, confirmed rug outcomes
-              on the right. Direct from the mainnet scanner.
+              Recent CRITICAL and HIGH risk alerts on the left, confirmed rug
+              outcomes on the right. Direct from the mainnet scanner.
             </p>
           </div>
         </section>
@@ -50,7 +53,10 @@ export default async function AlertsPage() {
           <div className="container">
             <div className="alerts-grid">
               <div className="alerts-col">
-                <h2 className="section-title" style={{ marginBottom: 16, fontSize: 20 }}>
+                <h2
+                  className="section-title"
+                  style={{ marginBottom: 16, fontSize: 20 }}
+                >
                   Recent alerts
                 </h2>
                 {alerts.length === 0 ? (
@@ -66,20 +72,32 @@ export default async function AlertsPage() {
                         <div className="alert-head">
                           <span
                             className="alert-level"
-                            style={{ color: LEVEL_COLOR[a.risk_level] || "var(--fg-3)" }}
+                            style={{
+                              color: LEVEL_COLOR[a.risk_level] || "var(--fg-3)",
+                            }}
                           >
                             {a.risk_level}
                           </span>
-                          <span className="alert-age">{fmtUnixAge(a.predicted_at)}</span>
+                          <span className="alert-age">
+                            {fmtUnixAge(a.predicted_at)}
+                          </span>
                         </div>
-                        <div className="alert-mint mono">{truncate(a.mint, 8, 6)}</div>
-                        {a.symbol && <div className="alert-symbol">{a.symbol}</div>}
+                        <div className="alert-mint mono">
+                          {truncate(a.mint, 8, 6)}
+                        </div>
+                        {a.symbol && (
+                          <div className="alert-symbol">{a.symbol}</div>
+                        )}
                         <div className="alert-flags">
                           {(a.flags ?? []).slice(0, 3).map((f, i) => (
-                            <span key={i} className="alert-flag">{f}</span>
+                            <span key={i} className="alert-flag">
+                              {f}
+                            </span>
                           ))}
                           {(a.flags ?? []).length > 3 && (
-                            <span className="alert-flag-more">+{(a.flags ?? []).length - 3}</span>
+                            <span className="alert-flag-more">
+                              +{(a.flags ?? []).length - 3}
+                            </span>
                           )}
                         </div>
                       </Link>
@@ -89,7 +107,10 @@ export default async function AlertsPage() {
               </div>
 
               <div className="alerts-col">
-                <h2 className="section-title" style={{ marginBottom: 16, fontSize: 20 }}>
+                <h2
+                  className="section-title"
+                  style={{ marginBottom: 16, fontSize: 20 }}
+                >
                   Recent resolutions
                 </h2>
                 {resolutions.length === 0 ? (
@@ -118,7 +139,9 @@ export default async function AlertsPage() {
                             {r.was_correct ? "✓ correct" : "✗ miss"}
                           </span>
                         </div>
-                        <div className="alert-mint mono">{truncate(r.mint, 8, 6)}</div>
+                        <div className="alert-mint mono">
+                          {truncate(r.mint, 8, 6)}
+                        </div>
                         <div className="alert-meta">
                           predicted {r.predicted_level} · resolved in{" "}
                           {r.resolve_latency_hours?.toFixed(1) ?? "?"}h

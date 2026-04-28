@@ -100,13 +100,20 @@ export function FeatureSurface() {
       <div className="container">
         <div className="section-head">
           <span className="eyebrow">12 surfaces · one system</span>
-          <h2 className="section-title">
-            The full product, on one page.
-          </h2>
+          <h2 className="section-title">The full product, on one page.</h2>
           <p className="section-sub">
-            Everything SolSentry does today, tapable. Every page below hits the same API at{" "}
-            <code style={{ color: "var(--brand-orange)", fontFamily: "var(--font-mono)" }}>api.solsentry.app</code>
-            . The bot, the MCP server, and this site are all thin wrappers on the same intelligence layer.
+            Everything SolSentry does today, tapable. Every page below hits the
+            same API at{" "}
+            <code
+              style={{
+                color: "var(--brand-orange)",
+                fontFamily: "var(--font-mono)",
+              }}
+            >
+              api.solsentry.app
+            </code>
+            . The bot, the MCP server, and this site are all thin wrappers on
+            the same intelligence layer.
           </p>
         </div>
         <div className="grid-auto">
@@ -121,8 +128,22 @@ export function FeatureSurface() {
                 borderTop: `2px solid ${f.color}`,
               }}
             >
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
-                <h3 style={{ fontFamily: "var(--font-display)", fontSize: 17, color: "var(--fg-1)", letterSpacing: "-0.01em" }}>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  marginBottom: 10,
+                }}
+              >
+                <h3
+                  style={{
+                    fontFamily: "var(--font-display)",
+                    fontSize: 17,
+                    color: "var(--fg-1)",
+                    letterSpacing: "-0.01em",
+                  }}
+                >
                   {f.title}
                 </h3>
                 <span
@@ -137,7 +158,11 @@ export function FeatureSurface() {
                   {f.pillar}
                 </span>
               </div>
-              <p style={{ color: "var(--fg-2)", fontSize: 13, lineHeight: 1.55 }}>{f.desc}</p>
+              <p
+                style={{ color: "var(--fg-2)", fontSize: 13, lineHeight: 1.55 }}
+              >
+                {f.desc}
+              </p>
             </Link>
           ))}
         </div>

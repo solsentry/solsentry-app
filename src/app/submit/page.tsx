@@ -8,7 +8,8 @@ export const revalidate = 120;
 
 export const metadata = {
   title: "Submission — SolSentry · Colosseum Frontier 2026",
-  description: "One-page submission summary. Live traction, architecture, novelty, and links. For judges short on time.",
+  description:
+    "One-page submission summary. Live traction, architecture, novelty, and links. For judges short on time.",
 };
 
 export default async function SubmitPage() {
@@ -18,24 +19,54 @@ export default async function SubmitPage() {
     <>
       <Nav />
       <main>
-        <section className="section-pad" style={{ paddingTop: 48, paddingBottom: 32, borderBottom: "1px solid var(--border)" }}>
+        <section
+          className="section-pad"
+          style={{
+            paddingTop: 48,
+            paddingBottom: 32,
+            borderBottom: "1px solid var(--border)",
+          }}
+        >
           <div className="container">
-            <span className="eyebrow">Colosseum Frontier 2026 · submission artifact</span>
+            <span className="eyebrow">
+              Colosseum Frontier 2026 · submission artifact
+            </span>
             <h1
               className="section-title"
-              style={{ fontSize: "clamp(40px, 6vw, 72px)", marginTop: 12, marginBottom: 20 }}
+              style={{
+                fontSize: "clamp(40px, 6vw, 72px)",
+                marginTop: 12,
+                marginBottom: 20,
+              }}
             >
-              SolSentry — <span style={{ color: "var(--brand-orange)" }}>the security relay for Solana</span>.
+              SolSentry —{" "}
+              <span style={{ color: "var(--brand-orange)" }}>
+                the security relay for Solana
+              </span>
+              .
             </h1>
             <p
               className="section-sub"
-              style={{ fontSize: 19, maxWidth: 820, color: "var(--fg-2)", lineHeight: 1.65 }}
+              style={{
+                fontSize: 19,
+                maxWidth: 820,
+                color: "var(--fg-2)",
+                lineHeight: 1.65,
+              }}
             >
-              Autonomous threat intelligence — operator-centric, not token-by-token. Running on Solana
-              mainnet with publicly auditable outcomes. This page is the short version. Everything is live,
+              Autonomous threat intelligence — operator-centric, not
+              token-by-token. Running on Solana mainnet with publicly auditable
+              outcomes. This page is the short version. Everything is live,
               linkable, and verifiable.
             </p>
-            <div style={{ marginTop: 24, display: "flex", gap: 10, flexWrap: "wrap" }}>
+            <div
+              style={{
+                marginTop: 24,
+                display: "flex",
+                gap: 10,
+                flexWrap: "wrap",
+              }}
+            >
               <Link href="/telegram" className="btn-primary">
                 Try the bot →
               </Link>
@@ -55,7 +86,10 @@ export default async function SubmitPage() {
           </div>
         </section>
 
-        <Section eyebrow="Live as of this request" title="Traction that answers 'is it real?'">
+        <Section
+          eyebrow="Live as of this request"
+          title="Traction that answers 'is it real?'"
+        >
           <div
             style={{
               display: "grid",
@@ -71,10 +105,19 @@ export default async function SubmitPage() {
               ["Runtime", `${(stats?.runtime_hours ?? 210).toLocaleString()}h`],
               ["Scans resolved", (stats?.resolved ?? 24630).toLocaleString()],
               ["Accuracy", `${(stats?.accuracy_pct ?? 86.4).toFixed(1)}%`],
-              ["Resolve rate", `${(stats?.resolve_rate_pct ?? 95.5).toFixed(1)}%`],
+              [
+                "Resolve rate",
+                `${(stats?.resolve_rate_pct ?? 95.5).toFixed(1)}%`,
+              ],
               ["Operators", (stats?.total_operators ?? 1345).toLocaleString()],
-              ["Serial ruggers", (stats?.serial_ruggers ?? 408).toLocaleString()],
-              ["Confirmed rugs", (stats?.confirmed_rugs ?? 4664).toLocaleString()],
+              [
+                "Serial ruggers",
+                (stats?.serial_ruggers ?? 408).toLocaleString(),
+              ],
+              [
+                "Confirmed rugs",
+                (stats?.confirmed_rugs ?? 4664).toLocaleString(),
+              ],
               ["Bot clusters", (stats?.bot_clusters ?? 2014).toLocaleString()],
             ].map(([l, v], i) => (
               <div
@@ -103,9 +146,24 @@ export default async function SubmitPage() {
               </div>
             ))}
           </div>
-          <p style={{ color: "var(--fg-3)", fontSize: 12, marginTop: 16, fontFamily: "var(--font-mono)" }}>
-            Source: <a href="https://api.solsentry.app/v1/stats" target="_blank" rel="noreferrer" style={{ color: "var(--brand-orange)" }}>api.solsentry.app/v1/stats</a> ·
-            refreshed every 2 min on this page · refresh to see latest
+          <p
+            style={{
+              color: "var(--fg-3)",
+              fontSize: 12,
+              marginTop: 16,
+              fontFamily: "var(--font-mono)",
+            }}
+          >
+            Source:{" "}
+            <a
+              href="https://api.solsentry.app/v1/stats"
+              target="_blank"
+              rel="noreferrer"
+              style={{ color: "var(--brand-orange)" }}
+            >
+              api.solsentry.app/v1/stats
+            </a>{" "}
+            · refreshed every 2 min on this page · refresh to see latest
           </p>
         </Section>
 
@@ -119,52 +177,292 @@ export default async function SubmitPage() {
               overflowX: "auto",
             }}
           >
-            <svg viewBox="0 0 900 520" style={{ width: "100%", height: "auto", minWidth: 640 }}>
+            <svg
+              viewBox="0 0 900 520"
+              style={{ width: "100%", height: "auto", minWidth: 640 }}
+            >
               <defs>
-                <marker id="arr" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <marker
+                  id="arr"
+                  viewBox="0 0 10 10"
+                  refX="10"
+                  refY="5"
+                  markerWidth="6"
+                  markerHeight="6"
+                  orient="auto-start-reverse"
+                >
                   <path d="M 0 0 L 10 5 L 0 10 z" fill="#8A8A8A" />
                 </marker>
               </defs>
 
               {/* Solana mainnet */}
-              <rect x="20" y="20" width="860" height="60" rx="4" fill="#1A1A1A" stroke="#FF6B00" strokeWidth="1" />
-              <text x="450" y="45" textAnchor="middle" fontFamily="Inter" fontWeight="600" fontSize="12" fill="#FF6B00" letterSpacing="0.2em">SOLANA MAINNET</text>
-              <text x="450" y="65" textAnchor="middle" fontFamily="JetBrains Mono" fontSize="11" fill="#8A8A8A">Helius · Triton · Alchemy RPC pool (9 endpoints, priority-based)</text>
+              <rect
+                x="20"
+                y="20"
+                width="860"
+                height="60"
+                rx="4"
+                fill="#1A1A1A"
+                stroke="#FF6B00"
+                strokeWidth="1"
+              />
+              <text
+                x="450"
+                y="45"
+                textAnchor="middle"
+                fontFamily="Inter"
+                fontWeight="600"
+                fontSize="12"
+                fill="#FF6B00"
+                letterSpacing="0.2em"
+              >
+                SOLANA MAINNET
+              </text>
+              <text
+                x="450"
+                y="65"
+                textAnchor="middle"
+                fontFamily="JetBrains Mono"
+                fontSize="11"
+                fill="#8A8A8A"
+              >
+                Helius · Triton · Alchemy RPC pool (9 endpoints, priority-based)
+              </text>
 
               {/* Scanner pipeline */}
               <g>
-                <rect x="40" y="120" width="180" height="80" rx="4" fill="#202020" stroke="#FF6B00" strokeWidth="1" />
-                <text x="130" y="145" textAnchor="middle" fontFamily="Inter" fontWeight="600" fontSize="10" fill="#FF6B00" letterSpacing="0.2em">STAGE 1</text>
-                <text x="130" y="165" textAnchor="middle" fontFamily="Space Grotesk" fontWeight="700" fontSize="14" fill="#F5F5F5">Fast scan</text>
-                <text x="130" y="183" textAnchor="middle" fontFamily="JetBrains Mono" fontSize="10" fill="#B8B8B8">~2s · RPC + meta</text>
+                <rect
+                  x="40"
+                  y="120"
+                  width="180"
+                  height="80"
+                  rx="4"
+                  fill="#202020"
+                  stroke="#FF6B00"
+                  strokeWidth="1"
+                />
+                <text
+                  x="130"
+                  y="145"
+                  textAnchor="middle"
+                  fontFamily="Inter"
+                  fontWeight="600"
+                  fontSize="10"
+                  fill="#FF6B00"
+                  letterSpacing="0.2em"
+                >
+                  STAGE 1
+                </text>
+                <text
+                  x="130"
+                  y="165"
+                  textAnchor="middle"
+                  fontFamily="Space Grotesk"
+                  fontWeight="700"
+                  fontSize="14"
+                  fill="#F5F5F5"
+                >
+                  Fast scan
+                </text>
+                <text
+                  x="130"
+                  y="183"
+                  textAnchor="middle"
+                  fontFamily="JetBrains Mono"
+                  fontSize="10"
+                  fill="#B8B8B8"
+                >
+                  ~2s · RPC + meta
+                </text>
 
-                <rect x="240" y="120" width="180" height="80" rx="4" fill="#202020" stroke="#FF6B00" strokeWidth="1" />
-                <text x="330" y="145" textAnchor="middle" fontFamily="Inter" fontWeight="600" fontSize="10" fill="#FF6B00" letterSpacing="0.2em">STAGE 2</text>
-                <text x="330" y="165" textAnchor="middle" fontFamily="Space Grotesk" fontWeight="700" fontSize="14" fill="#F5F5F5">Deep signals</text>
-                <text x="330" y="183" textAnchor="middle" fontFamily="JetBrains Mono" fontSize="10" fill="#B8B8B8">DAS · DexScreener</text>
+                <rect
+                  x="240"
+                  y="120"
+                  width="180"
+                  height="80"
+                  rx="4"
+                  fill="#202020"
+                  stroke="#FF6B00"
+                  strokeWidth="1"
+                />
+                <text
+                  x="330"
+                  y="145"
+                  textAnchor="middle"
+                  fontFamily="Inter"
+                  fontWeight="600"
+                  fontSize="10"
+                  fill="#FF6B00"
+                  letterSpacing="0.2em"
+                >
+                  STAGE 2
+                </text>
+                <text
+                  x="330"
+                  y="165"
+                  textAnchor="middle"
+                  fontFamily="Space Grotesk"
+                  fontWeight="700"
+                  fontSize="14"
+                  fill="#F5F5F5"
+                >
+                  Deep signals
+                </text>
+                <text
+                  x="330"
+                  y="183"
+                  textAnchor="middle"
+                  fontFamily="JetBrains Mono"
+                  fontSize="10"
+                  fill="#B8B8B8"
+                >
+                  DAS · DexScreener
+                </text>
 
-                <rect x="440" y="120" width="180" height="80" rx="4" fill="#202020" stroke="#FF6B00" strokeWidth="1" />
-                <text x="530" y="145" textAnchor="middle" fontFamily="Inter" fontWeight="600" fontSize="10" fill="#FF6B00" letterSpacing="0.2em">STAGE 3</text>
-                <text x="530" y="165" textAnchor="middle" fontFamily="Space Grotesk" fontWeight="700" fontSize="14" fill="#F5F5F5">Bundle forensics</text>
-                <text x="530" y="183" textAnchor="middle" fontFamily="JetBrains Mono" fontSize="10" fill="#B8B8B8">Enhanced TX · clusters</text>
+                <rect
+                  x="440"
+                  y="120"
+                  width="180"
+                  height="80"
+                  rx="4"
+                  fill="#202020"
+                  stroke="#FF6B00"
+                  strokeWidth="1"
+                />
+                <text
+                  x="530"
+                  y="145"
+                  textAnchor="middle"
+                  fontFamily="Inter"
+                  fontWeight="600"
+                  fontSize="10"
+                  fill="#FF6B00"
+                  letterSpacing="0.2em"
+                >
+                  STAGE 3
+                </text>
+                <text
+                  x="530"
+                  y="165"
+                  textAnchor="middle"
+                  fontFamily="Space Grotesk"
+                  fontWeight="700"
+                  fontSize="14"
+                  fill="#F5F5F5"
+                >
+                  Bundle forensics
+                </text>
+                <text
+                  x="530"
+                  y="183"
+                  textAnchor="middle"
+                  fontFamily="JetBrains Mono"
+                  fontSize="10"
+                  fill="#B8B8B8"
+                >
+                  Enhanced TX · clusters
+                </text>
 
-                <rect x="640" y="120" width="220" height="80" rx="4" fill="#202020" stroke="#FF6B00" strokeWidth="1" />
-                <text x="750" y="145" textAnchor="middle" fontFamily="Inter" fontWeight="600" fontSize="10" fill="#FF6B00" letterSpacing="0.2em">STAGE 4</text>
-                <text x="750" y="165" textAnchor="middle" fontFamily="Space Grotesk" fontWeight="700" fontSize="14" fill="#F5F5F5">Operator enrichment</text>
-                <text x="750" y="183" textAnchor="middle" fontFamily="JetBrains Mono" fontSize="10" fill="#B8B8B8">+ AI explainer (PT-BR / EN)</text>
+                <rect
+                  x="640"
+                  y="120"
+                  width="220"
+                  height="80"
+                  rx="4"
+                  fill="#202020"
+                  stroke="#FF6B00"
+                  strokeWidth="1"
+                />
+                <text
+                  x="750"
+                  y="145"
+                  textAnchor="middle"
+                  fontFamily="Inter"
+                  fontWeight="600"
+                  fontSize="10"
+                  fill="#FF6B00"
+                  letterSpacing="0.2em"
+                >
+                  STAGE 4
+                </text>
+                <text
+                  x="750"
+                  y="165"
+                  textAnchor="middle"
+                  fontFamily="Space Grotesk"
+                  fontWeight="700"
+                  fontSize="14"
+                  fill="#F5F5F5"
+                >
+                  Operator enrichment
+                </text>
+                <text
+                  x="750"
+                  y="183"
+                  textAnchor="middle"
+                  fontFamily="JetBrains Mono"
+                  fontSize="10"
+                  fill="#B8B8B8"
+                >
+                  + AI explainer (PT-BR / EN)
+                </text>
               </g>
 
               {/* Persistent memory */}
               <g>
-                <rect x="40" y="240" width="820" height="90" rx="4" fill="#1A1A1A" stroke="#00C9A7" strokeWidth="1" />
-                <text x="450" y="265" textAnchor="middle" fontFamily="Inter" fontWeight="600" fontSize="11" fill="#00C9A7" letterSpacing="0.2em">PERSISTENT MEMORY (operator graph)</text>
+                <rect
+                  x="40"
+                  y="240"
+                  width="820"
+                  height="90"
+                  rx="4"
+                  fill="#1A1A1A"
+                  stroke="#00C9A7"
+                  strokeWidth="1"
+                />
+                <text
+                  x="450"
+                  y="265"
+                  textAnchor="middle"
+                  fontFamily="Inter"
+                  fontWeight="600"
+                  fontSize="11"
+                  fill="#00C9A7"
+                  letterSpacing="0.2em"
+                >
+                  PERSISTENT MEMORY (operator graph)
+                </text>
 
-                {["operator_profiles.json", "bot_clusters", "wallet_profiles", "known_entities", "progressive_scans.jsonl", "outcome_predictions.json"].map((label, i) => {
+                {[
+                  "operator_profiles.json",
+                  "bot_clusters",
+                  "wallet_profiles",
+                  "known_entities",
+                  "progressive_scans.jsonl",
+                  "outcome_predictions.json",
+                ].map((label, i) => {
                   const x = 70 + i * 132;
                   return (
                     <g key={label}>
-                      <rect x={x} y={285} width="120" height="32" rx="3" fill="#202020" stroke="#242424" />
-                      <text x={x + 60} y={305} textAnchor="middle" fontFamily="JetBrains Mono" fontSize="10" fill="#B8B8B8">{label}</text>
+                      <rect
+                        x={x}
+                        y={285}
+                        width="120"
+                        height="32"
+                        rx="3"
+                        fill="#202020"
+                        stroke="#242424"
+                      />
+                      <text
+                        x={x + 60}
+                        y={305}
+                        textAnchor="middle"
+                        fontFamily="JetBrains Mono"
+                        fontSize="10"
+                        fill="#B8B8B8"
+                      >
+                        {label}
+                      </text>
                     </g>
                   );
                 })}
@@ -172,42 +470,246 @@ export default async function SubmitPage() {
 
               {/* ALife + Resolver */}
               <g>
-                <rect x="40" y="360" width="400" height="80" rx="4" fill="#202020" stroke="#A855F7" strokeWidth="1" />
-                <text x="240" y="385" textAnchor="middle" fontFamily="Inter" fontWeight="600" fontSize="10" fill="#A855F7" letterSpacing="0.2em">ALIFE HUNTERS · 30 agents · 7-gene DNA</text>
-                <text x="240" y="408" textAnchor="middle" fontFamily="Space Grotesk" fontWeight="700" fontSize="14" fill="#F5F5F5">Mutate · reproduce · get culled</text>
-                <text x="240" y="426" textAnchor="middle" fontFamily="JetBrains Mono" fontSize="10" fill="#B8B8B8">DNA adjusts risk_threshold based on accuracy</text>
+                <rect
+                  x="40"
+                  y="360"
+                  width="400"
+                  height="80"
+                  rx="4"
+                  fill="#202020"
+                  stroke="#A855F7"
+                  strokeWidth="1"
+                />
+                <text
+                  x="240"
+                  y="385"
+                  textAnchor="middle"
+                  fontFamily="Inter"
+                  fontWeight="600"
+                  fontSize="10"
+                  fill="#A855F7"
+                  letterSpacing="0.2em"
+                >
+                  ALIFE HUNTERS · 30 agents · 7-gene DNA
+                </text>
+                <text
+                  x="240"
+                  y="408"
+                  textAnchor="middle"
+                  fontFamily="Space Grotesk"
+                  fontWeight="700"
+                  fontSize="14"
+                  fill="#F5F5F5"
+                >
+                  Mutate · reproduce · get culled
+                </text>
+                <text
+                  x="240"
+                  y="426"
+                  textAnchor="middle"
+                  fontFamily="JetBrains Mono"
+                  fontSize="10"
+                  fill="#B8B8B8"
+                >
+                  DNA adjusts risk_threshold based on accuracy
+                </text>
 
-                <rect x="460" y="360" width="400" height="80" rx="4" fill="#202020" stroke="#00C9A7" strokeWidth="1" />
-                <text x="660" y="385" textAnchor="middle" fontFamily="Inter" fontWeight="600" fontSize="10" fill="#00C9A7" letterSpacing="0.2em">OUTCOME RESOLVER</text>
-                <text x="660" y="408" textAnchor="middle" fontFamily="Space Grotesk" fontWeight="700" fontSize="14" fill="#F5F5F5">Every prediction validated vs chain</text>
-                <text x="660" y="426" textAnchor="middle" fontFamily="JetBrains Mono" fontSize="10" fill="#B8B8B8">H6 fast · 2d primary · 14d safe recheck</text>
+                <rect
+                  x="460"
+                  y="360"
+                  width="400"
+                  height="80"
+                  rx="4"
+                  fill="#202020"
+                  stroke="#00C9A7"
+                  strokeWidth="1"
+                />
+                <text
+                  x="660"
+                  y="385"
+                  textAnchor="middle"
+                  fontFamily="Inter"
+                  fontWeight="600"
+                  fontSize="10"
+                  fill="#00C9A7"
+                  letterSpacing="0.2em"
+                >
+                  OUTCOME RESOLVER
+                </text>
+                <text
+                  x="660"
+                  y="408"
+                  textAnchor="middle"
+                  fontFamily="Space Grotesk"
+                  fontWeight="700"
+                  fontSize="14"
+                  fill="#F5F5F5"
+                >
+                  Every prediction validated vs chain
+                </text>
+                <text
+                  x="660"
+                  y="426"
+                  textAnchor="middle"
+                  fontFamily="JetBrains Mono"
+                  fontSize="10"
+                  fill="#B8B8B8"
+                >
+                  H6 fast · 2d primary · 14d safe recheck
+                </text>
               </g>
 
               {/* Outputs */}
               <g>
-                <rect x="40" y="470" width="820" height="40" rx="4" fill="#1A1A1A" stroke="#FFB020" strokeWidth="1" />
-                <text x="80" y="494" fontFamily="Inter" fontWeight="600" fontSize="10" fill="#FFB020" letterSpacing="0.2em">PUBLIC SURFACE</text>
-                <text x="260" y="494" fontFamily="JetBrains Mono" fontSize="11" fill="#F5F5F5">Telegram bot (32 cmds)</text>
-                <text x="450" y="494" fontFamily="JetBrains Mono" fontSize="11" fill="#F5F5F5">REST API (11 routes)</text>
-                <text x="640" y="494" fontFamily="JetBrains Mono" fontSize="11" fill="#F5F5F5">MCP server (7 tools)</text>
-                <text x="800" y="494" fontFamily="JetBrains Mono" fontSize="11" fill="#F5F5F5">Web</text>
+                <rect
+                  x="40"
+                  y="470"
+                  width="820"
+                  height="40"
+                  rx="4"
+                  fill="#1A1A1A"
+                  stroke="#FFB020"
+                  strokeWidth="1"
+                />
+                <text
+                  x="80"
+                  y="494"
+                  fontFamily="Inter"
+                  fontWeight="600"
+                  fontSize="10"
+                  fill="#FFB020"
+                  letterSpacing="0.2em"
+                >
+                  PUBLIC SURFACE
+                </text>
+                <text
+                  x="260"
+                  y="494"
+                  fontFamily="JetBrains Mono"
+                  fontSize="11"
+                  fill="#F5F5F5"
+                >
+                  Telegram bot (32 cmds)
+                </text>
+                <text
+                  x="450"
+                  y="494"
+                  fontFamily="JetBrains Mono"
+                  fontSize="11"
+                  fill="#F5F5F5"
+                >
+                  REST API (11 routes)
+                </text>
+                <text
+                  x="640"
+                  y="494"
+                  fontFamily="JetBrains Mono"
+                  fontSize="11"
+                  fill="#F5F5F5"
+                >
+                  MCP server (7 tools)
+                </text>
+                <text
+                  x="800"
+                  y="494"
+                  fontFamily="JetBrains Mono"
+                  fontSize="11"
+                  fill="#F5F5F5"
+                >
+                  Web
+                </text>
               </g>
 
               {/* Arrows */}
-              <line x1="450" y1="80" x2="130" y2="118" stroke="#3A3A3A" strokeWidth="1" markerEnd="url(#arr)" />
-              <line x1="220" y1="160" x2="240" y2="160" stroke="#3A3A3A" strokeWidth="1" markerEnd="url(#arr)" />
-              <line x1="420" y1="160" x2="440" y2="160" stroke="#3A3A3A" strokeWidth="1" markerEnd="url(#arr)" />
-              <line x1="620" y1="160" x2="640" y2="160" stroke="#3A3A3A" strokeWidth="1" markerEnd="url(#arr)" />
-              <line x1="750" y1="200" x2="450" y2="238" stroke="#3A3A3A" strokeWidth="1" markerEnd="url(#arr)" />
-              <line x1="240" y1="330" x2="240" y2="358" stroke="#3A3A3A" strokeWidth="1" markerEnd="url(#arr)" />
-              <line x1="660" y1="330" x2="660" y2="358" stroke="#3A3A3A" strokeWidth="1" markerEnd="url(#arr)" />
-              <line x1="660" y1="440" x2="660" y2="468" stroke="#3A3A3A" strokeWidth="1" markerEnd="url(#arr)" />
-              <line x1="240" y1="440" x2="240" y2="468" stroke="#3A3A3A" strokeWidth="1" markerEnd="url(#arr)" />
+              <line
+                x1="450"
+                y1="80"
+                x2="130"
+                y2="118"
+                stroke="#3A3A3A"
+                strokeWidth="1"
+                markerEnd="url(#arr)"
+              />
+              <line
+                x1="220"
+                y1="160"
+                x2="240"
+                y2="160"
+                stroke="#3A3A3A"
+                strokeWidth="1"
+                markerEnd="url(#arr)"
+              />
+              <line
+                x1="420"
+                y1="160"
+                x2="440"
+                y2="160"
+                stroke="#3A3A3A"
+                strokeWidth="1"
+                markerEnd="url(#arr)"
+              />
+              <line
+                x1="620"
+                y1="160"
+                x2="640"
+                y2="160"
+                stroke="#3A3A3A"
+                strokeWidth="1"
+                markerEnd="url(#arr)"
+              />
+              <line
+                x1="750"
+                y1="200"
+                x2="450"
+                y2="238"
+                stroke="#3A3A3A"
+                strokeWidth="1"
+                markerEnd="url(#arr)"
+              />
+              <line
+                x1="240"
+                y1="330"
+                x2="240"
+                y2="358"
+                stroke="#3A3A3A"
+                strokeWidth="1"
+                markerEnd="url(#arr)"
+              />
+              <line
+                x1="660"
+                y1="330"
+                x2="660"
+                y2="358"
+                stroke="#3A3A3A"
+                strokeWidth="1"
+                markerEnd="url(#arr)"
+              />
+              <line
+                x1="660"
+                y1="440"
+                x2="660"
+                y2="468"
+                stroke="#3A3A3A"
+                strokeWidth="1"
+                markerEnd="url(#arr)"
+              />
+              <line
+                x1="240"
+                y1="440"
+                x2="240"
+                y2="468"
+                stroke="#3A3A3A"
+                strokeWidth="1"
+                markerEnd="url(#arr)"
+              />
             </svg>
           </div>
         </Section>
 
-        <Section eyebrow="Why this wins Frontier" title="Three non-obvious claims, each verifiable">
+        <Section
+          eyebrow="Why this wins Frontier"
+          title="Three non-obvious claims, each verifiable"
+        >
           <div className="grid-3">
             {[
               {
@@ -229,9 +731,28 @@ export default async function SubmitPage() {
                 linkLabel: "Install the MCP",
               },
             ].map((c) => (
-              <div key={c.t} className="panel" style={{ borderTop: "2px solid var(--brand-orange)" }}>
-                <h3 style={{ fontFamily: "var(--font-display)", fontSize: 17, marginBottom: 10 }}>{c.t}</h3>
-                <p style={{ color: "var(--fg-2)", fontSize: 14, lineHeight: 1.6, marginBottom: 16 }}>
+              <div
+                key={c.t}
+                className="panel"
+                style={{ borderTop: "2px solid var(--brand-orange)" }}
+              >
+                <h3
+                  style={{
+                    fontFamily: "var(--font-display)",
+                    fontSize: 17,
+                    marginBottom: 10,
+                  }}
+                >
+                  {c.t}
+                </h3>
+                <p
+                  style={{
+                    color: "var(--fg-2)",
+                    fontSize: 14,
+                    lineHeight: 1.6,
+                    marginBottom: 16,
+                  }}
+                >
                   {c.d}
                 </p>
                 <Link
@@ -253,42 +774,57 @@ export default async function SubmitPage() {
           </div>
         </Section>
 
-        <Section eyebrow="For judges short on time" title="Five minute verification path">
+        <Section
+          eyebrow="For judges short on time"
+          title="Five minute verification path"
+        >
           <ol className="step-list">
             <li>
               <strong>Check the API is live.</strong>
-              <code>curl https://api.solsentry.app/v1/stats</code> — should return JSON with{" "}
-              <code>runtime_hours</code>, <code>resolved</code>, <code>accuracy_pct</code>.
+              <code>curl https://api.solsentry.app/v1/stats</code> — should
+              return JSON with <code>runtime_hours</code>, <code>resolved</code>
+              , <code>accuracy_pct</code>.
             </li>
             <li>
               <strong>Verify the 4kxscute case study.</strong>
-              <code>curl https://api.solsentry.app/v1/operator/4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1</code>
+              <code>
+                curl
+                https://api.solsentry.app/v1/operator/4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1
+              </code>
               <br />
-              Should return <code>&quot;known&quot;: true</code>, <code>risk_level: CRITICAL</code>, 700+
-              confirmed rugs.
+              Should return <code>&quot;known&quot;: true</code>,{" "}
+              <code>risk_level: CRITICAL</code>, 700+ confirmed rugs.
             </li>
             <li>
               <strong>Open the Telegram bot.</strong>
-              <a href="https://t.me/solsentryai" target="_blank" rel="noreferrer">
+              <a
+                href="https://t.me/solsentryai"
+                target="_blank"
+                rel="noreferrer"
+              >
                 t.me/solsentryai
               </a>{" "}
               · type <code>/status</code> · see live system state.
             </li>
             <li>
               <strong>Install the MCP in Claude Code.</strong>
-              <code>npx -y @solsentry/mcp</code> · ask your agent to scan any wallet · receive live JSON
-              back.
+              <code>npx -y @solsentry/mcp</code> · ask your agent to scan any
+              wallet · receive live JSON back.
             </li>
             <li>
               <strong>Read the accuracy ledger.</strong>
-              <Link href="/resolutions">/resolutions</Link> shows every prediction vs its on-chain outcome.
-              No tool in the category publishes this.
+              <Link href="/resolutions">/resolutions</Link> shows every
+              prediction vs its on-chain outcome. No tool in the category
+              publishes this.
             </li>
           </ol>
         </Section>
 
         <Section eyebrow="Contact" title="Talk to the founder">
-          <div className="panel" style={{ borderLeft: "3px solid var(--brand-orange)" }}>
+          <div
+            className="panel"
+            style={{ borderLeft: "3px solid var(--brand-orange)" }}
+          >
             <div className="grid-2">
               <div>
                 <div className="label-tag">Email</div>
@@ -308,11 +844,18 @@ export default async function SubmitPage() {
               <div>
                 <div className="label-tag">Founder</div>
                 <div
-                  style={{ fontFamily: "var(--font-display)", fontSize: 18, color: "var(--fg-1)", marginTop: 6 }}
+                  style={{
+                    fontFamily: "var(--font-display)",
+                    fontSize: 18,
+                    color: "var(--fg-1)",
+                    marginTop: 6,
+                  }}
                 >
                   Crash Diniz · solo
                 </div>
-                <div style={{ fontSize: 12, color: "var(--fg-3)", marginTop: 4 }}>
+                <div
+                  style={{ fontSize: 12, color: "var(--fg-3)", marginTop: 4 }}
+                >
                   São Paulo, Brazil · BuildStation SP Apr 20
                 </div>
               </div>

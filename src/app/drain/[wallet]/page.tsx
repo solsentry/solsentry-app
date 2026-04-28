@@ -9,7 +9,11 @@ import Link from "next/link";
 
 export const revalidate = 60;
 
-export async function generateMetadata({ params }: { params: Promise<{ wallet: string }> }) {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ wallet: string }>;
+}) {
   const { wallet } = await params;
   return {
     title: `Drain trace · ${truncate(wallet)}`,
@@ -33,10 +37,15 @@ export default async function DrainTracePage({
       <main>
         <PageHeader
           eyebrow="Drain trace"
-          title={<span style={{ fontFamily: "var(--font-mono)", fontSize: 28 }}>{truncate(wallet, 12, 8)}</span>}
+          title={
+            <span style={{ fontFamily: "var(--font-mono)", fontSize: 28 }}>
+              {truncate(wallet, 12, 8)}
+            </span>
+          }
           sub={
             <>
-              {trace.hop_count} hop{trace.hop_count === 1 ? "" : "s"} followed · {trace.total_sol_drained.toFixed(3)} SOL traced · trace time{" "}
+              {trace.hop_count} hop{trace.hop_count === 1 ? "" : "s"} followed ·{" "}
+              {trace.total_sol_drained.toFixed(3)} SOL traced · trace time{" "}
               {(trace.trace_time_ms ?? 0).toFixed(0)}ms
             </>
           }
@@ -85,7 +94,9 @@ export default async function DrainTracePage({
                   fontFamily: "var(--font-display)",
                   fontSize: 36,
                   fontWeight: 700,
-                  color: trace.reached_cex ? "var(--status-warning)" : "var(--fg-3)",
+                  color: trace.reached_cex
+                    ? "var(--status-warning)"
+                    : "var(--fg-3)",
                   letterSpacing: "-0.02em",
                 }}
               >
@@ -99,7 +110,9 @@ export default async function DrainTracePage({
                   fontFamily: "var(--font-display)",
                   fontSize: 36,
                   fontWeight: 700,
-                  color: trace.reached_mixer ? "var(--status-critical)" : "var(--fg-3)",
+                  color: trace.reached_mixer
+                    ? "var(--status-critical)"
+                    : "var(--fg-3)",
                   letterSpacing: "-0.02em",
                 }}
               >
@@ -118,7 +131,9 @@ export default async function DrainTracePage({
                   style={{
                     padding: "16px 20px",
                     borderBottom:
-                      i === trace.hops.length - 1 ? "none" : "1px solid var(--border-soft)",
+                      i === trace.hops.length - 1
+                        ? "none"
+                        : "1px solid var(--border-soft)",
                     display: "grid",
                     gridTemplateColumns: "40px 1fr 1fr 100px",
                     gap: 16,
@@ -135,16 +150,32 @@ export default async function DrainTracePage({
                     {String(i + 1).padStart(2, "0")}
                   </span>
                   <div>
-                    <div className="label-tag" style={{ fontSize: 9, marginBottom: 4 }}>
+                    <div
+                      className="label-tag"
+                      style={{ fontSize: 9, marginBottom: 4 }}
+                    >
                       From
                     </div>
-                    <span className="mono" style={{ fontSize: 12, color: "var(--fg-2)" }}>
+                    <span
+                      className="mono"
+                      style={{ fontSize: 12, color: "var(--fg-2)" }}
+                    >
                       {h.from ? truncate(h.from, 8, 6) : "—"}
                     </span>
                   </div>
                   <div>
-                    <div className="label-tag" style={{ fontSize: 9, marginBottom: 4 }}>
-                      To {h.classification && <span style={{ color: "var(--brand-teal)", marginLeft: 8 }}>[{h.classification}]</span>}
+                    <div
+                      className="label-tag"
+                      style={{ fontSize: 9, marginBottom: 4 }}
+                    >
+                      To{" "}
+                      {h.classification && (
+                        <span
+                          style={{ color: "var(--brand-teal)", marginLeft: 8 }}
+                        >
+                          [{h.classification}]
+                        </span>
+                      )}
                     </div>
                     {h.to ? (
                       <Link
@@ -176,8 +207,9 @@ export default async function DrainTracePage({
           <Section>
             <div className="panel" style={{ textAlign: "center", padding: 48 }}>
               <p style={{ color: "var(--fg-2)" }}>
-                No hops recorded for this wallet. Either it has not drained recently, or the trace could not
-                resolve outgoing SOL flow. Try another address or check{" "}
+                No hops recorded for this wallet. Either it has not drained
+                recently, or the trace could not resolve outgoing SOL flow. Try
+                another address or check{" "}
                 <Link href="/operator">the operator database</Link> instead.
               </p>
             </div>
@@ -189,17 +221,36 @@ export default async function DrainTracePage({
             <div className="grid-2">
               {trace.endpoints.map((e, i) => (
                 <div key={i} className="panel">
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
-                    <span className="mono" style={{ color: "var(--brand-orange)", fontSize: 13 }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      marginBottom: 8,
+                    }}
+                  >
+                    <span
+                      className="mono"
+                      style={{ color: "var(--brand-orange)", fontSize: 13 }}
+                    >
                       {e.address ? truncate(e.address, 8, 6) : "—"}
                     </span>
                     {e.classification && (
-                      <span className="pillar-chip track" style={{ fontSize: 9 }}>
+                      <span
+                        className="pillar-chip track"
+                        style={{ fontSize: 9 }}
+                      >
                         {e.classification}
                       </span>
                     )}
                   </div>
-                  <div style={{ fontFamily: "var(--font-mono)", color: "var(--fg-1)", fontSize: 16 }}>
+                  <div
+                    style={{
+                      fontFamily: "var(--font-mono)",
+                      color: "var(--fg-1)",
+                      fontSize: 16,
+                    }}
+                  >
                     {(e.amount_sol ?? 0).toFixed(3)} SOL
                   </div>
                 </div>

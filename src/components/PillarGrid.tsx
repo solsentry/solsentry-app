@@ -42,12 +42,13 @@ export function PillarGrid() {
         <div className="section-head">
           <span className="eyebrow">Four pillars</span>
           <h2 className="section-title">
-            Operator-level intelligence,<br />
+            Operator-level intelligence,
+            <br />
             not token-by-token detection.
           </h2>
           <p className="section-sub">
-            Every major surface of SolSentry leans on this color-coded mental model. Pick a pillar to see how
-            it shows up in the product.
+            Every major surface of SolSentry leans on this color-coded mental
+            model. Pick a pillar to see how it shows up in the product.
           </p>
         </div>
         <div className="grid-2">
@@ -70,7 +71,14 @@ export function PillarGrid() {
                 {p.label}
               </div>
               <h3>{p.title}</h3>
-              <p style={{ color: "var(--fg-2)", fontSize: 15, lineHeight: 1.6, marginBottom: 20 }}>
+              <p
+                style={{
+                  color: "var(--fg-2)",
+                  fontSize: 15,
+                  lineHeight: 1.6,
+                  marginBottom: 20,
+                }}
+              >
                 {p.desc}
               </p>
               <Link

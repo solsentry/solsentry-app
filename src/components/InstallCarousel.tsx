@@ -3,9 +3,9 @@
 import { useEffect, useState } from "react";
 
 const COMMANDS = [
-  { label: "Run the MCP",   cmd: "npx -y @solsentry/mcp" },
+  { label: "Run the MCP", cmd: "npx -y @solsentry/mcp" },
   { label: "Hit the REST API", cmd: "curl https://api.solsentry.app/v1/stats" },
-  { label: "Open the bot",  cmd: "t.me/solsentryai" },
+  { label: "Open the bot", cmd: "t.me/solsentryai" },
 ];
 
 const ROTATE_MS = 3500;
@@ -27,7 +27,9 @@ export function InstallCarousel() {
       <div className="install-label">{current.label}</div>
       <div className="hero-install" role="region" aria-live="polite">
         <span className="prompt">$</span>
-        <span className="cmd" key={idx}>{current.cmd}</span>
+        <span className="cmd" key={idx}>
+          {current.cmd}
+        </span>
       </div>
       <div className="install-dots">
         {COMMANDS.map((_, i) => (

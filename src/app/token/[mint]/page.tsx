@@ -39,9 +39,17 @@ export default async function TokenPage({ params }: PageProps) {
             <span className="hero-eyebrow">Token profile</span>
             <h1
               className="hero-title"
-              style={{ fontSize: "clamp(20px, 3vw, 32px)", wordBreak: "break-all" }}
+              style={{
+                fontSize: "clamp(20px, 3vw, 32px)",
+                wordBreak: "break-all",
+              }}
             >
-              <code style={{ color: "var(--brand-orange)", fontFamily: "var(--font-mono)" }}>
+              <code
+                style={{
+                  color: "var(--brand-orange)",
+                  fontFamily: "var(--font-mono)",
+                }}
+              >
                 {mint}
               </code>
             </h1>
@@ -52,16 +60,37 @@ export default async function TokenPage({ params }: PageProps) {
           <div className="container">
             <TokenCard mint={mint} token={token} />
             {token?.dev_wallet && (
-              <p style={{ marginTop: 24, fontFamily: "var(--font-mono)", fontSize: 13, color: "var(--fg-3)" }}>
-                Deployer: <Link href={`/operator/${token.dev_wallet}`} style={{ color: "var(--brand-orange)" }}>{truncate(token.dev_wallet, 8, 6)}</Link>
+              <p
+                style={{
+                  marginTop: 24,
+                  fontFamily: "var(--font-mono)",
+                  fontSize: 13,
+                  color: "var(--fg-3)",
+                }}
+              >
+                Deployer:{" "}
+                <Link
+                  href={`/operator/${token.dev_wallet}`}
+                  style={{ color: "var(--brand-orange)" }}
+                >
+                  {truncate(token.dev_wallet, 8, 6)}
+                </Link>
               </p>
             )}
           </div>
         </section>
 
-        <section style={{ padding: "32px 0 80px", borderTop: "1px solid var(--border-soft)" }}>
+        <section
+          style={{
+            padding: "32px 0 80px",
+            borderTop: "1px solid var(--border-soft)",
+          }}
+        >
           <div className="container">
-            <h2 className="section-title" style={{ marginBottom: 24, fontSize: 24 }}>
+            <h2
+              className="section-title"
+              style={{ marginBottom: 24, fontSize: 24 }}
+            >
               Check another token
             </h2>
             <TokenSearchForm />

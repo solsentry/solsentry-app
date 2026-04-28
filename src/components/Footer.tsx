@@ -68,7 +68,14 @@ export function Footer() {
           }}
         >
           <div>
-            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 10,
+                marginBottom: 16,
+              }}
+            >
               <span
                 style={{
                   width: 10,
@@ -91,15 +98,37 @@ export function Footer() {
                 SolSentry
               </span>
             </div>
-            <p style={{ color: "var(--fg-2)", fontSize: 13, lineHeight: 1.7, maxWidth: 280 }}>
-              Autonomous threat intelligence for Solana. RugCheck tells you a fire is burning. SolSentry
-              tells you who lit it.
+            <p
+              style={{
+                color: "var(--fg-2)",
+                fontSize: 13,
+                lineHeight: 1.7,
+                maxWidth: 280,
+              }}
+            >
+              Autonomous threat intelligence for Solana. RugCheck tells you a
+              fire is burning. SolSentry tells you who lit it.
             </p>
-            <div style={{ display: "flex", gap: 6, marginTop: 20, flexWrap: "wrap" }}>
-              <span className="pillar-chip prevent" style={{ fontSize: 9 }}>PREVENT</span>
-              <span className="pillar-chip track" style={{ fontSize: 9 }}>TRACK</span>
-              <span className="pillar-chip explain" style={{ fontSize: 9 }}>EXPLAIN</span>
-              <span className="pillar-chip evolve" style={{ fontSize: 9 }}>EVOLVE</span>
+            <div
+              style={{
+                display: "flex",
+                gap: 6,
+                marginTop: 20,
+                flexWrap: "wrap",
+              }}
+            >
+              <span className="pillar-chip prevent" style={{ fontSize: 9 }}>
+                PREVENT
+              </span>
+              <span className="pillar-chip track" style={{ fontSize: 9 }}>
+                TRACK
+              </span>
+              <span className="pillar-chip explain" style={{ fontSize: 9 }}>
+                EXPLAIN
+              </span>
+              <span className="pillar-chip evolve" style={{ fontSize: 9 }}>
+                EVOLVE
+              </span>
             </div>
           </div>
 
@@ -111,7 +140,15 @@ export function Footer() {
               >
                 {col.title}
               </div>
-              <ul style={{ listStyle: "none", padding: 0, display: "flex", flexDirection: "column", gap: 8 }}>
+              <ul
+                style={{
+                  listStyle: "none",
+                  padding: 0,
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 8,
+                }}
+              >
                 {col.links.map((l) => (
                   <li key={l.label}>
                     {l.href.startsWith("http") ? (
@@ -119,14 +156,22 @@ export function Footer() {
                         href={l.href}
                         target="_blank"
                         rel="noreferrer"
-                        style={{ color: "var(--fg-2)", fontSize: 13, textDecoration: "none" }}
+                        style={{
+                          color: "var(--fg-2)",
+                          fontSize: 13,
+                          textDecoration: "none",
+                        }}
                       >
                         {l.label}
                       </a>
                     ) : (
                       <Link
                         href={l.href}
-                        style={{ color: "var(--fg-2)", fontSize: 13, textDecoration: "none" }}
+                        style={{
+                          color: "var(--fg-2)",
+                          fontSize: 13,
+                          textDecoration: "none",
+                        }}
                       >
                         {l.label}
                       </Link>
@@ -156,15 +201,19 @@ export function Footer() {
               href="https://x.com/crashdiniz"
               target="_blank"
               rel="noreferrer"
-              style={{ color: "inherit", borderBottom: "1px solid var(--border)" }}
+              style={{
+                color: "inherit",
+                borderBottom: "1px solid var(--border)",
+              }}
             >
               Crash Diniz
-            </a>
-            {" "}· São Paulo · Colosseum Frontier 2026
+            </a>{" "}
+            · São Paulo · Colosseum Frontier 2026
           </div>
           <div style={{ display: "flex", gap: 16 }}>
             <span style={{ fontFamily: "var(--font-mono)" }}>
-              api.solsentry.app <span style={{ color: "var(--brand-teal)" }}>● live</span>
+              api.solsentry.app{" "}
+              <span style={{ color: "var(--brand-teal)" }}>● live</span>
             </span>
           </div>
         </div>

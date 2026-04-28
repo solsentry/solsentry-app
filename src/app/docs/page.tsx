@@ -15,22 +15,29 @@ export default function DocsPage() {
         <section className="hero" style={{ padding: "80px 0 48px" }}>
           <div className="container">
             <span className="hero-eyebrow">Install · API · SDK</span>
-            <h1 className="hero-title" style={{ fontSize: "clamp(32px, 5vw, 64px)" }}>
+            <h1
+              className="hero-title"
+              style={{ fontSize: "clamp(32px, 5vw, 64px)" }}
+            >
               Three ways to plug in.
             </h1>
             <p className="hero-sub">
-              MCP server for AI agents. TypeScript SDK for backends. Plain REST for
-              everything else. Same data. Same API. No login.
+              MCP server for AI agents. TypeScript SDK for backends. Plain REST
+              for everything else. Same data. Same API. No login.
             </p>
           </div>
         </section>
 
         <section className="docs-section">
           <div className="container">
-            <h2 className="section-title" id="mcp">1. MCP server</h2>
-            <p style={{ color: "var(--fg-2)", marginBottom: 24, maxWidth: 720 }}>
-              For Claude Desktop, Cursor, Claude Code, or any client that speaks the
-              Model Context Protocol. One line install.
+            <h2 className="section-title" id="mcp">
+              1. MCP server
+            </h2>
+            <p
+              style={{ color: "var(--fg-2)", marginBottom: 24, maxWidth: 720 }}
+            >
+              For Claude Desktop, Cursor, Claude Code, or any client that speaks
+              the Model Context Protocol. One line install.
             </p>
 
             <h3 className="docs-h3">Claude Desktop</h3>
@@ -46,7 +53,9 @@ export default function DocsPage() {
   }
 }`}</pre>
 
-            <h3 className="docs-h3" style={{ marginTop: 32 }}>Cursor / Claude Code</h3>
+            <h3 className="docs-h3" style={{ marginTop: 32 }}>
+              Cursor / Claude Code
+            </h3>
             <p style={{ color: "var(--fg-3)", fontSize: 14, marginBottom: 12 }}>
               Add to <code>.mcp.json</code> at your project root:
             </p>
@@ -59,7 +68,9 @@ export default function DocsPage() {
   }
 }`}</pre>
 
-            <h3 className="docs-h3" style={{ marginTop: 32 }}>Available tools</h3>
+            <h3 className="docs-h3" style={{ marginTop: 32 }}>
+              Available tools
+            </h3>
             <div className="docs-table">
               <div className="docs-row docs-head">
                 <span>Tool</span>
@@ -89,17 +100,27 @@ export default function DocsPage() {
           </div>
         </section>
 
-        <section className="docs-section" style={{ borderTop: "1px solid var(--border-soft)" }}>
+        <section
+          className="docs-section"
+          style={{ borderTop: "1px solid var(--border-soft)" }}
+        >
           <div className="container">
-            <h2 className="section-title" id="sdk">2. TypeScript SDK</h2>
-            <p style={{ color: "var(--fg-2)", marginBottom: 24, maxWidth: 720 }}>
-              For trading bots, wallet warnings, dApp pre-sign checks, and any TS
-              backend that needs threat intel without the MCP transport.
+            <h2 className="section-title" id="sdk">
+              2. TypeScript SDK
+            </h2>
+            <p
+              style={{ color: "var(--fg-2)", marginBottom: 24, maxWidth: 720 }}
+            >
+              For trading bots, wallet warnings, dApp pre-sign checks, and any
+              TS backend that needs threat intel without the MCP transport.
             </p>
 
             <pre className="docs-code">{`npm install @solsentry/mcp`}</pre>
 
-            <pre className="docs-code" style={{ marginTop: 16 }}>{`import { SolSentryClient } from "@solsentry/mcp/client";
+            <pre
+              className="docs-code"
+              style={{ marginTop: 16 }}
+            >{`import { SolSentryClient } from "@solsentry/mcp/client";
 
 const sol = new SolSentryClient();
 
@@ -114,12 +135,22 @@ if (op.risk_level === "CRITICAL") {
           </div>
         </section>
 
-        <section className="docs-section" style={{ borderTop: "1px solid var(--border-soft)" }}>
+        <section
+          className="docs-section"
+          style={{ borderTop: "1px solid var(--border-soft)" }}
+        >
           <div className="container">
-            <h2 className="section-title" id="api">3. Public REST API</h2>
-            <p style={{ color: "var(--fg-2)", marginBottom: 24, maxWidth: 720 }}>
+            <h2 className="section-title" id="api">
+              3. Public REST API
+            </h2>
+            <p
+              style={{ color: "var(--fg-2)", marginBottom: 24, maxWidth: 720 }}
+            >
               No install. Free for read-only endpoints. Live at{" "}
-              <code style={{ color: "var(--brand-orange)" }}>api.solsentry.app</code>.
+              <code style={{ color: "var(--brand-orange)" }}>
+                api.solsentry.app
+              </code>
+              .
             </p>
 
             <h3 className="docs-h3">Examples</h3>
@@ -138,7 +169,9 @@ curl https://api.solsentry.app/v1/token/<mint>
 # Drain trace (post-rug SOL flow, 10 hops)
 curl https://api.solsentry.app/v1/drain-trace/<wallet>`}</pre>
 
-            <h3 className="docs-h3" style={{ marginTop: 32 }}>All endpoints</h3>
+            <h3 className="docs-h3" style={{ marginTop: 32 }}>
+              All endpoints
+            </h3>
             <div className="docs-table">
               <div className="docs-row docs-head">
                 <span>Endpoint</span>
@@ -192,13 +225,18 @@ curl https://api.solsentry.app/v1/drain-trace/<wallet>`}</pre>
           </div>
         </section>
 
-        <section className="docs-section" style={{ borderTop: "1px solid var(--border-soft)" }}>
+        <section
+          className="docs-section"
+          style={{ borderTop: "1px solid var(--border-soft)" }}
+        >
           <div className="container">
             <h2 className="section-title">Pricing</h2>
             <div className="pricing-grid">
               <div className="price-card">
                 <div className="label">Free forever</div>
-                <h3 className="docs-h3" style={{ marginTop: 8 }}>Read-only endpoints</h3>
+                <h3 className="docs-h3" style={{ marginTop: 8 }}>
+                  Read-only endpoints
+                </h3>
                 <ul className="price-list">
                   <li>operator, token, stats, top-operators</li>
                   <li>alerts/recent, resolutions/recent</li>
@@ -208,7 +246,9 @@ curl https://api.solsentry.app/v1/drain-trace/<wallet>`}</pre>
               </div>
               <div className="price-card">
                 <div className="label">Drain-trace (paid)</div>
-                <h3 className="docs-h3" style={{ marginTop: 8 }}>Per-query via x402</h3>
+                <h3 className="docs-h3" style={{ marginTop: 8 }}>
+                  Per-query via x402
+                </h3>
                 <ul className="price-list">
                   <li>10-hop SOL flow tracing</li>
                   <li>Mixer, bridge, CEX classification</li>

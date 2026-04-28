@@ -16,13 +16,16 @@ export default function MePage() {
         <section className="hero" style={{ padding: "80px 0 32px" }}>
           <div className="container">
             <span className="hero-eyebrow">Self-check · wallet</span>
-            <h1 className="hero-title" style={{ fontSize: "clamp(32px, 5vw, 64px)" }}>
+            <h1
+              className="hero-title"
+              style={{ fontSize: "clamp(32px, 5vw, 64px)" }}
+            >
               Are you flagged?
             </h1>
             <p className="hero-sub">
-              Connect your Solana wallet to see if SolSentry has profiled it as an
-              operator. Useful for devs verifying their own deployer wallet, or
-              checking false-positive risk before launching a token.
+              Connect your Solana wallet to see if SolSentry has profiled it as
+              an operator. Useful for devs verifying their own deployer wallet,
+              or checking false-positive risk before launching a token.
             </p>
           </div>
         </section>

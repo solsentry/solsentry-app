@@ -60,7 +60,9 @@ export function LabelsManager() {
   };
 
   const exportJson = () => {
-    const blob = new Blob([JSON.stringify(labels, null, 2)], { type: "application/json" });
+    const blob = new Blob([JSON.stringify(labels, null, 2)], {
+      type: "application/json",
+    });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
@@ -114,23 +116,41 @@ export function LabelsManager() {
       </form>
 
       {!mounted && (
-        <div style={{ padding: 40, textAlign: "center", color: "var(--fg-3)" }}>Loading…</div>
+        <div style={{ padding: 40, textAlign: "center", color: "var(--fg-3)" }}>
+          Loading…
+        </div>
       )}
 
       {mounted && labels.length === 0 && (
-        <div className="panel" style={{ textAlign: "center", padding: 60, border: "1px dashed var(--border)" }}>
+        <div
+          className="panel"
+          style={{
+            textAlign: "center",
+            padding: 60,
+            border: "1px dashed var(--border)",
+          }}
+        >
           <div className="label-tag" style={{ marginBottom: 12 }}>
             No labels yet
           </div>
           <p style={{ color: "var(--fg-2)", fontSize: 15 }}>
-            Add your first one above. Labels stay in your browser — never sent to our servers.
+            Add your first one above. Labels stay in your browser — never sent
+            to our servers.
           </p>
         </div>
       )}
 
       {mounted && labels.length > 0 && (
         <>
-          <div style={{ marginBottom: 16, display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 8 }}>
+          <div
+            style={{
+              marginBottom: 16,
+              display: "flex",
+              justifyContent: "space-between",
+              flexWrap: "wrap",
+              gap: 8,
+            }}
+          >
             <span className="label-tag">{labels.length} labeled wallets</span>
             <button onClick={exportJson} className="btn-ghost">
               Export JSON
@@ -145,7 +165,10 @@ export function LabelsManager() {
                   gridTemplateColumns: "1fr 1fr 80px",
                   gap: 16,
                   padding: "14px 20px",
-                  borderBottom: i === labels.length - 1 ? "none" : "1px solid var(--border-soft)",
+                  borderBottom:
+                    i === labels.length - 1
+                      ? "none"
+                      : "1px solid var(--border-soft)",
                   alignItems: "center",
                 }}
               >
@@ -156,7 +179,9 @@ export function LabelsManager() {
                 >
                   {truncate(l.wallet, 8, 6)}
                 </Link>
-                <span style={{ fontSize: 14, color: "var(--fg-1)" }}>{l.label}</span>
+                <span style={{ fontSize: 14, color: "var(--fg-1)" }}>
+                  {l.label}
+                </span>
                 <button
                   onClick={() => remove(l.wallet)}
                   style={{

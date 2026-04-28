@@ -43,9 +43,17 @@ export default async function TimelinePage({ params }: PageProps) {
             <span className="hero-eyebrow">Operator timeline</span>
             <h1
               className="hero-title"
-              style={{ fontSize: "clamp(20px, 3vw, 32px)", wordBreak: "break-all" }}
+              style={{
+                fontSize: "clamp(20px, 3vw, 32px)",
+                wordBreak: "break-all",
+              }}
             >
-              <code style={{ color: "var(--brand-orange)", fontFamily: "var(--font-mono)" }}>
+              <code
+                style={{
+                  color: "var(--brand-orange)",
+                  fontFamily: "var(--font-mono)",
+                }}
+              >
                 {wallet}
               </code>
             </h1>
@@ -53,11 +61,16 @@ export default async function TimelinePage({ params }: PageProps) {
               <div className="timeline-stats">
                 <div>
                   <span className="label">Tokens deployed</span>
-                  <span className="metric">{fmtInt(timeline.total_tokens_in_window)}</span>
+                  <span className="metric">
+                    {fmtInt(timeline.total_tokens_in_window)}
+                  </span>
                 </div>
                 <div>
                   <span className="label">Confirmed rugs</span>
-                  <span className="metric" style={{ color: "var(--status-critical)" }}>
+                  <span
+                    className="metric"
+                    style={{ color: "var(--status-critical)" }}
+                  >
                     {fmtInt(timeline.confirmed_rugs_in_window)}
                   </span>
                 </div>
@@ -86,19 +99,34 @@ export default async function TimelinePage({ params }: PageProps) {
                     href={`/token/${t.mint}`}
                     className="timeline-item"
                   >
-                    <div className="timeline-time">{fmtUnixAge(t.deployed_at)}</div>
+                    <div className="timeline-time">
+                      {fmtUnixAge(t.deployed_at)}
+                    </div>
                     <div className="timeline-body">
-                      <div className="timeline-mint mono">{truncate(t.mint, 8, 6)}</div>
+                      <div className="timeline-mint mono">
+                        {truncate(t.mint, 8, 6)}
+                      </div>
                       <div className="timeline-meta">
-                        {t.symbol && <span className="timeline-symbol">{t.symbol}</span>}
-                        <span className="timeline-risk">risk {t.risk_score}/100</span>
+                        {t.symbol && (
+                          <span className="timeline-symbol">{t.symbol}</span>
+                        )}
+                        <span className="timeline-risk">
+                          risk {t.risk_score}/100
+                        </span>
                         <span
                           className="timeline-outcome"
-                          style={{ color: OUTCOME_COLOR[t.final_outcome] || "var(--fg-3)" }}
+                          style={{
+                            color:
+                              OUTCOME_COLOR[t.final_outcome] || "var(--fg-3)",
+                          }}
                         >
                           {t.final_outcome}
                         </span>
-                        {t.platform && <span className="timeline-platform">{t.platform}</span>}
+                        {t.platform && (
+                          <span className="timeline-platform">
+                            {t.platform}
+                          </span>
+                        )}
                       </div>
                     </div>
                   </Link>
@@ -113,11 +141,20 @@ export default async function TimelinePage({ params }: PageProps) {
           </div>
         </section>
 
-        <section style={{ padding: "0 0 80px", borderTop: "1px solid var(--border-soft)" }}>
+        <section
+          style={{
+            padding: "0 0 80px",
+            borderTop: "1px solid var(--border-soft)",
+          }}
+        >
           <div className="container" style={{ paddingTop: 32 }}>
             <Link
               href={`/operator/${wallet}`}
-              style={{ color: "var(--brand-orange)", fontFamily: "var(--font-mono)", fontSize: 14 }}
+              style={{
+                color: "var(--brand-orange)",
+                fontFamily: "var(--font-mono)",
+                fontSize: 14,
+              }}
             >
               ← Back to operator profile
             </Link>

@@ -2,18 +2,27 @@ import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 import { PageHeader } from "@/components/PageHeader";
 import { Section } from "@/components/Section";
-import { fetchResolutionsRecent, fetchStats, truncate, fmtUnixAge } from "@/lib/api";
+import {
+  fetchResolutionsRecent,
+  fetchStats,
+  truncate,
+  fmtUnixAge,
+} from "@/lib/api";
 import Link from "next/link";
 
 export const revalidate = 30;
 
 export const metadata = {
   title: "Resolutions — every prediction validated against outcome",
-  description: "SolSentry doesn't just predict. It resolves. Every risk prediction gets confirmed or refuted against the real on-chain outcome within 2 days. This is the public outcome stream.",
+  description:
+    "SolSentry doesn't just predict. It resolves. Every risk prediction gets confirmed or refuted against the real on-chain outcome within 2 days. This is the public outcome stream.",
 };
 
 export default async function ResolutionsPage() {
-  const [resolutions, stats] = await Promise.all([fetchResolutionsRecent(40), fetchStats()]);
+  const [resolutions, stats] = await Promise.all([
+    fetchResolutionsRecent(40),
+    fetchStats(),
+  ]);
 
   const accuracy = stats?.accuracy_pct ?? 0;
   const resolveRate = stats?.resolve_rate_pct ?? 0;
@@ -26,15 +35,17 @@ export default async function ResolutionsPage() {
           eyebrow="Resolutions · outcome stream"
           title={
             <>
-              Predictions meet <span style={{ color: "var(--brand-orange)" }}>reality</span>.
+              Predictions meet{" "}
+              <span style={{ color: "var(--brand-orange)" }}>reality</span>.
             </>
           }
           sub={
             <>
-              Every scan gets a predicted risk. Every prediction gets resolved against on-chain outcome —
-              did the token rug, or not? Zero confirmed false positives at CRITICAL risk so far. All misses
-              are stealth-rug false negatives. This is the transparency layer competitors don&rsquo;t
-              publish.
+              Every scan gets a predicted risk. Every prediction gets resolved
+              against on-chain outcome — did the token rug, or not? Zero
+              confirmed false positives at CRITICAL risk so far. All misses are
+              stealth-rug false negatives. This is the transparency layer
+              competitors don&rsquo;t publish.
             </>
           }
         />
@@ -114,7 +125,13 @@ export default async function ResolutionsPage() {
           </div>
           <div className="panel" style={{ padding: 0 }}>
             {resolutions.length === 0 && (
-              <div style={{ padding: 40, textAlign: "center", color: "var(--fg-3)" }}>
+              <div
+                style={{
+                  padding: 40,
+                  textAlign: "center",
+                  color: "var(--fg-3)",
+                }}
+              >
                 API not reachable. Try again shortly.
               </div>
             )}
@@ -129,7 +146,10 @@ export default async function ResolutionsPage() {
                   style={{ textDecoration: "none", color: "inherit" }}
                 >
                   <span>
-                    <span className={`risk-badge ${level}`} style={{ fontSize: 10 }}>
+                    <span
+                      className={`risk-badge ${level}`}
+                      style={{ fontSize: 10 }}
+                    >
                       {level}
                     </span>
                   </span>
@@ -161,8 +181,12 @@ export default async function ResolutionsPage() {
                         fontSize: 11,
                         padding: "2px 8px",
                         borderRadius: 4,
-                        background: correct ? "rgba(0,201,167,0.1)" : "rgba(255,68,68,0.1)",
-                        color: correct ? "var(--brand-teal)" : "var(--status-critical)",
+                        background: correct
+                          ? "rgba(0,201,167,0.1)"
+                          : "rgba(255,68,68,0.1)",
+                        color: correct
+                          ? "var(--brand-teal)"
+                          : "var(--status-critical)",
                         border: `1px solid ${correct ? "var(--brand-teal)" : "var(--status-critical)"}`,
                       }}
                     >
@@ -197,17 +221,42 @@ export default async function ResolutionsPage() {
           eyebrow="Why we publish this"
           title="Accuracy without transparency is a marketing claim"
         >
-          <p style={{ color: "var(--fg-2)", fontSize: 16, maxWidth: 760, lineHeight: 1.7 }}>
-            Most risk-scoring systems publish a number — 95%, 98%, &quot;industry-leading&quot; — and never show
-            the ledger. SolSentry ships the ledger. <strong style={{ color: "var(--fg-1)" }}>{stats?.resolved.toLocaleString() ?? "—"}</strong>{" "}
-            resolutions means <strong style={{ color: "var(--fg-1)" }}>{stats?.resolved.toLocaleString() ?? "—"}</strong> chances to check our
-            work. If we flag a token CRITICAL and it survives, the record stays — with the mint, the
-            timestamp, the final outcome. Same goes the other way: if we miss a rug, the miss is public.
+          <p
+            style={{
+              color: "var(--fg-2)",
+              fontSize: 16,
+              maxWidth: 760,
+              lineHeight: 1.7,
+            }}
+          >
+            Most risk-scoring systems publish a number — 95%, 98%,
+            &quot;industry-leading&quot; — and never show the ledger. SolSentry
+            ships the ledger.{" "}
+            <strong style={{ color: "var(--fg-1)" }}>
+              {stats?.resolved.toLocaleString() ?? "—"}
+            </strong>{" "}
+            resolutions means{" "}
+            <strong style={{ color: "var(--fg-1)" }}>
+              {stats?.resolved.toLocaleString() ?? "—"}
+            </strong>{" "}
+            chances to check our work. If we flag a token CRITICAL and it
+            survives, the record stays — with the mint, the timestamp, the final
+            outcome. Same goes the other way: if we miss a rug, the miss is
+            public.
           </p>
-          <p style={{ color: "var(--fg-2)", fontSize: 16, maxWidth: 760, lineHeight: 1.7, marginTop: 16 }}>
-            This is how accuracy is supposed to work. Anyone claiming &quot;95%&quot; without a resolve rate
-            and an outcome feed is either not resolving predictions at all, or only counting the ones they
-            got right.
+          <p
+            style={{
+              color: "var(--fg-2)",
+              fontSize: 16,
+              maxWidth: 760,
+              lineHeight: 1.7,
+              marginTop: 16,
+            }}
+          >
+            This is how accuracy is supposed to work. Anyone claiming
+            &quot;95%&quot; without a resolve rate and an outcome feed is either
+            not resolving predictions at all, or only counting the ones they got
+            right.
           </p>
         </Section>
       </main>

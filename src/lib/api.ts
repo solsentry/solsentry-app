@@ -170,7 +170,10 @@ export interface DrainTrace {
   latency_ms?: number;
 }
 
-async function safeFetch<T>(path: string, revalidate: number): Promise<T | null> {
+async function safeFetch<T>(
+  path: string,
+  revalidate: number,
+): Promise<T | null> {
   try {
     const res = await fetch(`${API_URL}${path}`, { next: { revalidate } });
     if (!res.ok) return null;
@@ -185,16 +188,27 @@ export async function fetchStats(): Promise<NetworkStats | null> {
 }
 
 export async function fetchTopOperators(limit = 10): Promise<TopOperator[]> {
-  const data = await safeFetch<{ operators: TopOperator[] }>(`/v1/top-operators?limit=${limit}`, TTL.topOperators);
+  const data = await safeFetch<{ operators: TopOperator[] }>(
+    `/v1/top-operators?limit=${limit}`,
+    TTL.topOperators,
+  );
   return data?.operators ?? [];
 }
 
 export async function fetchOperator(wallet: string): Promise<Operator | null> {
-  return safeFetch<Operator>(`/v1/operator/${encodeURIComponent(wallet)}`, TTL.operator);
+  return safeFetch<Operator>(
+    `/v1/operator/${encodeURIComponent(wallet)}`,
+    TTL.operator,
+  );
 }
 
-export async function fetchOperatorTimeline(wallet: string): Promise<OperatorTimeline | null> {
-  return safeFetch<OperatorTimeline>(`/v1/operator/${encodeURIComponent(wallet)}/timeline`, TTL.timeline);
+export async function fetchOperatorTimeline(
+  wallet: string,
+): Promise<OperatorTimeline | null> {
+  return safeFetch<OperatorTimeline>(
+    `/v1/operator/${encodeURIComponent(wallet)}/timeline`,
+    TTL.timeline,
+  );
 }
 
 export async function fetchToken(mint: string): Promise<Token | null> {
@@ -202,30 +216,51 @@ export async function fetchToken(mint: string): Promise<Token | null> {
 }
 
 export async function fetchAlertsRecent(limit = 20): Promise<Alert[]> {
-  const data = await safeFetch<{ alerts: Alert[] }>(`/v1/alerts/recent?limit=${limit}`, TTL.alerts);
+  const data = await safeFetch<{ alerts: Alert[] }>(
+    `/v1/alerts/recent?limit=${limit}`,
+    TTL.alerts,
+  );
   return data?.alerts ?? [];
 }
 
-export async function fetchResolutionsRecent(limit = 20): Promise<Resolution[]> {
-  const data = await safeFetch<{ resolutions: Resolution[] }>(`/v1/resolutions/recent?limit=${limit}`, TTL.resolutions);
+export async function fetchResolutionsRecent(
+  limit = 20,
+): Promise<Resolution[]> {
+  const data = await safeFetch<{ resolutions: Resolution[] }>(
+    `/v1/resolutions/recent?limit=${limit}`,
+    TTL.resolutions,
+  );
   return data?.resolutions ?? [];
 }
 
-export async function fetchClusters(limit = 20): Promise<{ clusters: Cluster[]; total_clusters: number }> {
-  const data = await safeFetch<{ clusters: Cluster[]; total_clusters: number }>(`/v1/clusters?limit=${limit}`, TTL.clusters);
+export async function fetchClusters(
+  limit = 20,
+): Promise<{ clusters: Cluster[]; total_clusters: number }> {
+  const data = await safeFetch<{ clusters: Cluster[]; total_clusters: number }>(
+    `/v1/clusters?limit=${limit}`,
+    TTL.clusters,
+  );
   return data ?? { clusters: [], total_clusters: 0 };
 }
 
 export async function fetchCluster(clusterId: string): Promise<Cluster | null> {
-  return safeFetch<Cluster>(`/v1/cluster/${encodeURIComponent(clusterId)}`, TTL.cluster);
+  return safeFetch<Cluster>(
+    `/v1/cluster/${encodeURIComponent(clusterId)}`,
+    TTL.cluster,
+  );
 }
 
 export async function fetchX402Stats(): Promise<X402Stats | null> {
   return safeFetch<X402Stats>("/v1/x402/stats", TTL.x402);
 }
 
-export async function fetchDrainTrace(wallet: string): Promise<DrainTrace | null> {
-  return safeFetch<DrainTrace>(`/v1/drain-trace/${encodeURIComponent(wallet)}`, 60);
+export async function fetchDrainTrace(
+  wallet: string,
+): Promise<DrainTrace | null> {
+  return safeFetch<DrainTrace>(
+    `/v1/drain-trace/${encodeURIComponent(wallet)}`,
+    60,
+  );
 }
 
 export function truncate(addr: string, head = 6, tail = 4): string {

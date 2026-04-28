@@ -27,14 +27,19 @@ export function TokenCard({ mint, token }: Props) {
       <div className="risk-card" style={{ borderColor: "var(--border)" }}>
         <div className="risk-banner" style={{ background: "var(--surface-2)" }}>
           <div>
-            <div className="label" style={{ color: "var(--fg-3)" }}>Risk Level</div>
-            <div className="risk-level" style={{ color: "var(--fg-3)" }}>UNAVAILABLE</div>
+            <div className="label" style={{ color: "var(--fg-3)" }}>
+              Risk Level
+            </div>
+            <div className="risk-level" style={{ color: "var(--fg-3)" }}>
+              UNAVAILABLE
+            </div>
           </div>
           <div className="risk-meta">API request failed</div>
         </div>
         <div className="risk-body">
           <p style={{ color: "var(--fg-2)" }}>
-            Could not load token profile. The API may be temporarily unavailable.
+            Could not load token profile. The API may be temporarily
+            unavailable.
           </p>
         </div>
       </div>
@@ -49,8 +54,10 @@ export function TokenCard({ mint, token }: Props) {
     <div
       className="risk-card"
       style={{
-        borderColor: level === "CRITICAL" ? "var(--status-critical)" : "var(--border)",
-        boxShadow: level === "CRITICAL" ? "var(--shadow-glow-critical)" : undefined,
+        borderColor:
+          level === "CRITICAL" ? "var(--status-critical)" : "var(--border)",
+        boxShadow:
+          level === "CRITICAL" ? "var(--shadow-glow-critical)" : undefined,
       }}
     >
       <div
@@ -66,8 +73,12 @@ export function TokenCard({ mint, token }: Props) {
         }}
       >
         <div>
-          <div className="label" style={{ color }}>Risk Level</div>
-          <div className="risk-level" style={{ color }}>{level}</div>
+          <div className="label" style={{ color }}>
+            Risk Level
+          </div>
+          <div className="risk-level" style={{ color }}>
+            {level}
+          </div>
         </div>
         <div className="risk-meta" style={{ color: "var(--fg-2)" }}>
           {outcomeLabel}
@@ -79,7 +90,12 @@ export function TokenCard({ mint, token }: Props) {
           <div className="risk-cell">
             <div className="label">Risk score</div>
             <div className="metric" style={{ color }}>
-              {token.risk_score ?? "—"}<span style={{ color: "var(--fg-3)", fontSize: 16, marginLeft: 4 }}>/100</span>
+              {token.risk_score ?? "—"}
+              <span
+                style={{ color: "var(--fg-3)", fontSize: 16, marginLeft: 4 }}
+              >
+                /100
+              </span>
             </div>
           </div>
           <div className="risk-cell">
@@ -88,7 +104,14 @@ export function TokenCard({ mint, token }: Props) {
           </div>
           <div className="risk-cell">
             <div className="label">Bundle</div>
-            <div className="metric" style={{ color: token.is_bundle ? "var(--status-critical)" : "var(--brand-teal)" }}>
+            <div
+              className="metric"
+              style={{
+                color: token.is_bundle
+                  ? "var(--status-critical)"
+                  : "var(--brand-teal)",
+              }}
+            >
               {token.is_bundle ? "YES" : "NO"}
             </div>
           </div>
@@ -96,12 +119,12 @@ export function TokenCard({ mint, token }: Props) {
       ) : (
         <div className="risk-body">
           <p style={{ color: "var(--fg-2)" }}>
-            This token is not in SolSentry&rsquo;s tracked database. It has not yet
-            been observed by the scanner.
+            This token is not in SolSentry&rsquo;s tracked database. It has not
+            yet been observed by the scanner.
           </p>
           <p style={{ color: "var(--fg-3)", fontSize: 13, marginTop: 12 }}>
-            Absence is <strong>not</strong> proof of safety — the scanner may not
-            have seen this mint yet.
+            Absence is <strong>not</strong> proof of safety — the scanner may
+            not have seen this mint yet.
           </p>
         </div>
       )}
@@ -109,14 +132,17 @@ export function TokenCard({ mint, token }: Props) {
       {token.flags && token.flags.length > 0 && (
         <div className="risk-tags">
           {token.flags.map((f, i) => (
-            <span key={i} className="risk-tag">{f}</span>
+            <span key={i} className="risk-tag">
+              {f}
+            </span>
           ))}
         </div>
       )}
 
       <div className="risk-footer">
         <code style={{ color: "var(--fg-3)", fontSize: 12 }}>
-          GET /v1/token/<span style={{ color: "var(--brand-orange)" }}>{mint}</span>
+          GET /v1/token/
+          <span style={{ color: "var(--brand-orange)" }}>{mint}</span>
         </code>
       </div>
     </div>

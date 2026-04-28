@@ -10,7 +10,9 @@ export function WalletConnectButton() {
   if (connected && publicKey) {
     return (
       <div className="wallet-connected">
-        <Link href="/me" className="wallet-me-link">My profile</Link>
+        <Link href="/me" className="wallet-me-link">
+          My profile
+        </Link>
         <WalletMultiButton className="wallet-btn-tiny" />
       </div>
     );

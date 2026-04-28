@@ -59,12 +59,13 @@ export function MeProfile() {
         <div className="me-icon">🔌</div>
         <h2>Connect a wallet</h2>
         <p>
-          Use Phantom or Solflare to connect. SolSentry will check if your wallet
-          appears in the operator database, and show your deployment history if so.
+          Use Phantom or Solflare to connect. SolSentry will check if your
+          wallet appears in the operator database, and show your deployment
+          history if so.
         </p>
         <p className="me-disclaimer">
-          Read-only. SolSentry never asks you to sign anything. Your wallet is used
-          only to look up the public address against our public database.
+          Read-only. SolSentry never asks you to sign anything. Your wallet is
+          used only to look up the public address against our public database.
         </p>
         <div style={{ marginTop: 24 }}>
           <WalletMultiButton />
@@ -80,7 +81,10 @@ export function MeProfile() {
       <div className="me-card">
         <div className="me-icon">⏳</div>
         <h2>Checking your profile…</h2>
-        <p className="mono" style={{ color: "var(--brand-orange)", fontSize: 13 }}>
+        <p
+          className="mono"
+          style={{ color: "var(--brand-orange)", fontSize: 13 }}
+        >
           {wallet}
         </p>
       </div>
@@ -93,7 +97,12 @@ export function MeProfile() {
         <div className="me-icon">⚠️</div>
         <h2>Could not load profile</h2>
         <p>{error}</p>
-        <p className="mono" style={{ color: "var(--brand-orange)", fontSize: 13 }}>{wallet}</p>
+        <p
+          className="mono"
+          style={{ color: "var(--brand-orange)", fontSize: 13 }}
+        >
+          {wallet}
+        </p>
       </div>
     );
   }
@@ -109,16 +118,20 @@ export function MeProfile() {
         <div className="me-icon">✓</div>
         <h2 style={{ color: "var(--brand-teal)" }}>Not in operator database</h2>
         <p>
-          This wallet has not been observed deploying tokens during SolSentry&rsquo;s
-          monitored period. You will <strong>not</strong> trigger an automatic
-          operator-history flag if you launch a token from it.
+          This wallet has not been observed deploying tokens during
+          SolSentry&rsquo;s monitored period. You will <strong>not</strong>{" "}
+          trigger an automatic operator-history flag if you launch a token from
+          it.
         </p>
         <p style={{ color: "var(--fg-3)", fontSize: 13, marginTop: 12 }}>
-          Note: per-token signals (mint authority, holder concentration, LP lock,
-          bundle activity) are still evaluated independently. See{" "}
+          Note: per-token signals (mint authority, holder concentration, LP
+          lock, bundle activity) are still evaluated independently. See{" "}
           <Link href="/docs">/docs</Link> for the full risk methodology.
         </p>
-        <p className="mono" style={{ color: "var(--brand-orange)", fontSize: 13, marginTop: 16 }}>
+        <p
+          className="mono"
+          style={{ color: "var(--brand-orange)", fontSize: 13, marginTop: 16 }}
+        >
           {wallet}
         </p>
       </div>
@@ -127,7 +140,14 @@ export function MeProfile() {
 
   return (
     <>
-      <div className="me-card" style={{ borderColor: color, boxShadow: level === "CRITICAL" ? "var(--shadow-glow-critical)" : undefined }}>
+      <div
+        className="me-card"
+        style={{
+          borderColor: color,
+          boxShadow:
+            level === "CRITICAL" ? "var(--shadow-glow-critical)" : undefined,
+        }}
+      >
         <div className="me-icon" style={{ color }}>
           {level === "CRITICAL" ? "🚨" : level === "HIGH" ? "⚠️" : "ℹ️"}
         </div>
@@ -141,13 +161,18 @@ export function MeProfile() {
         </p>
         {data.risk_label && (
           <p style={{ color: "var(--fg-3)", fontSize: 13, marginTop: 12 }}>
-            Label: <code style={{ color: "var(--brand-orange)" }}>{data.risk_label}</code>
+            Label:{" "}
+            <code style={{ color: "var(--brand-orange)" }}>
+              {data.risk_label}
+            </code>
           </p>
         )}
         {data.tags && data.tags.length > 0 && (
           <div className="risk-tags" style={{ padding: "16px 0 0" }}>
             {data.tags.map((t) => (
-              <span key={t} className="risk-tag">{t}</span>
+              <span key={t} className="risk-tag">
+                {t}
+              </span>
             ))}
           </div>
         )}
@@ -164,9 +189,11 @@ export function MeProfile() {
       {(data.confirmed_rugs ?? 0) === 0 && data.known && (
         <div className="me-card-secondary" style={{ marginTop: 16 }}>
           <p>
-            <strong style={{ color: "var(--brand-teal)" }}>No rugs on record.</strong>{" "}
-            Your wallet is tracked but has no confirmed rug deployments. Pre-launch
-            checklist: see <Link href="/docs">/docs</Link>.
+            <strong style={{ color: "var(--brand-teal)" }}>
+              No rugs on record.
+            </strong>{" "}
+            Your wallet is tracked but has no confirmed rug deployments.
+            Pre-launch checklist: see <Link href="/docs">/docs</Link>.
           </p>
         </div>
       )}
@@ -175,8 +202,8 @@ export function MeProfile() {
         <div className="me-card-secondary" style={{ marginTop: 16 }}>
           <p style={{ color: "var(--fg-2)" }}>
             <strong>If this is a false positive:</strong> Reach out at{" "}
-            <a href="mailto:hello@solsentry.app">hello@solsentry.app</a> with proof
-            of identity and context. We review false positives manually.
+            <a href="mailto:hello@solsentry.app">hello@solsentry.app</a> with
+            proof of identity and context. We review false positives manually.
           </p>
         </div>
       )}

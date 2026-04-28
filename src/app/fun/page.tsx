@@ -5,7 +5,8 @@ import { Section } from "@/components/Section";
 
 export const metadata = {
   title: "Fun mode — is this wallet safe?",
-  description: "Paste a Solana wallet or token. Get an emoji + plain-English verdict in seconds. Three modes — Easy, Pro, Dev — share one API. Consumer-facing entry point.",
+  description:
+    "Paste a Solana wallet or token. Get an emoji + plain-English verdict in seconds. Three modes — Easy, Pro, Dev — share one API. Consumer-facing entry point.",
 };
 
 export default function FunPage() {
@@ -23,13 +24,16 @@ export default function FunPage() {
           }
           sub={
             <>
-              Easy mode: paste an address, see emoji + plain-English verdict. Three modes — Easy, Pro
-              (dashboard), Dev (endpoints + code) — switcher in the bottom-left of the app. Same intelligence
-              layer as the Telegram bot and REST API, different persona.
+              Easy mode: paste an address, see emoji + plain-English verdict.
+              Three modes — Easy, Pro (dashboard), Dev (endpoints + code) —
+              switcher in the bottom-left of the app. Same intelligence layer as
+              the Telegram bot and REST API, different persona.
             </>
           }
         >
-          <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 8 }}>
+          <div
+            style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 8 }}
+          >
             <a
               href="/references/solsentry-fun.html"
               target="_blank"
@@ -88,10 +92,7 @@ export default function FunPage() {
           </p>
         </Section>
 
-        <Section
-          eyebrow="3 modes · 1 API"
-          title="One layout per audience"
-        >
+        <Section eyebrow="3 modes · 1 API" title="One layout per audience">
           <div className="grid-3">
             {[
               {
@@ -141,7 +142,15 @@ export default function FunPage() {
                 >
                   {m.t} mode
                 </h3>
-                <p style={{ color: "var(--fg-2)", fontSize: 14, lineHeight: 1.6 }}>{m.d}</p>
+                <p
+                  style={{
+                    color: "var(--fg-2)",
+                    fontSize: 14,
+                    lineHeight: 1.6,
+                  }}
+                >
+                  {m.d}
+                </p>
               </div>
             ))}
           </div>
@@ -154,23 +163,40 @@ export default function FunPage() {
         >
           <div className="grid-2">
             <div className="panel">
-              <h3 style={{ fontFamily: "var(--font-display)", fontSize: 17, marginBottom: 10 }}>
+              <h3
+                style={{
+                  fontFamily: "var(--font-display)",
+                  fontSize: 17,
+                  marginBottom: 10,
+                }}
+              >
                 For integrators
               </h3>
-              <p style={{ color: "var(--fg-2)", fontSize: 14, lineHeight: 1.6 }}>
-                This HTML is embeddable. Drop it in an iframe, set the API base, and you have a
-                consumer-grade risk check in any language. Wallet apps, trading frontends, and CEX listings
-                can offer it as a read-only check.
+              <p
+                style={{ color: "var(--fg-2)", fontSize: 14, lineHeight: 1.6 }}
+              >
+                This HTML is embeddable. Drop it in an iframe, set the API base,
+                and you have a consumer-grade risk check in any language. Wallet
+                apps, trading frontends, and CEX listings can offer it as a
+                read-only check.
               </p>
             </div>
             <div className="panel">
-              <h3 style={{ fontFamily: "var(--font-display)", fontSize: 17, marginBottom: 10 }}>
+              <h3
+                style={{
+                  fontFamily: "var(--font-display)",
+                  fontSize: 17,
+                  marginBottom: 10,
+                }}
+              >
                 For judges + investors
               </h3>
-              <p style={{ color: "var(--fg-2)", fontSize: 14, lineHeight: 1.6 }}>
-                Same data, three personas — technical, prosumer, consumer. The TAM for operator risk
-                intelligence is not just devs. It&rsquo;s every wallet user who has been rugged or knows
-                someone who has.
+              <p
+                style={{ color: "var(--fg-2)", fontSize: 14, lineHeight: 1.6 }}
+              >
+                Same data, three personas — technical, prosumer, consumer. The
+                TAM for operator risk intelligence is not just devs. It&rsquo;s
+                every wallet user who has been rugged or knows someone who has.
               </p>
             </div>
           </div>

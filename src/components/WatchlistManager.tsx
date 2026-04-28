@@ -64,7 +64,11 @@ export function WatchlistManager() {
   }, []);
 
   useEffect(() => {
-    if (mounted && entries.length > 0 && entries.some((e) => !e.data && !e.error)) {
+    if (
+      mounted &&
+      entries.length > 0 &&
+      entries.some((e) => !e.data && !e.error)
+    ) {
       void refresh(entries);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -76,7 +80,12 @@ export function WatchlistManager() {
     if (w.length < 32) return;
     if (entries.some((entry) => entry.wallet === w)) return;
     const next: Entry[] = [
-      { wallet: w, added_at: Date.now(), label: labelInput.trim() || undefined, loading: true },
+      {
+        wallet: w,
+        added_at: Date.now(),
+        label: labelInput.trim() || undefined,
+        loading: true,
+      },
       ...entries,
     ];
     setEntries(next);
@@ -93,9 +102,22 @@ export function WatchlistManager() {
   };
 
   const exportJson = () => {
-    const blob = new Blob([JSON.stringify(entries.map((e) => ({ wallet: e.wallet, added_at: e.added_at, label: e.label })), null, 2)], {
-      type: "application/json",
-    });
+    const blob = new Blob(
+      [
+        JSON.stringify(
+          entries.map((e) => ({
+            wallet: e.wallet,
+            added_at: e.added_at,
+            label: e.label,
+          })),
+          null,
+          2,
+        ),
+      ],
+      {
+        type: "application/json",
+      },
+    );
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
@@ -149,26 +171,42 @@ export function WatchlistManager() {
       </form>
 
       {!mounted && (
-        <div style={{ padding: 40, textAlign: "center", color: "var(--fg-3)" }}>Loading your list…</div>
+        <div style={{ padding: 40, textAlign: "center", color: "var(--fg-3)" }}>
+          Loading your list…
+        </div>
       )}
 
       {mounted && entries.length === 0 && (
         <div
           className="panel"
-          style={{ textAlign: "center", padding: 60, border: "1px dashed var(--border)" }}
+          style={{
+            textAlign: "center",
+            padding: 60,
+            border: "1px dashed var(--border)",
+          }}
         >
           <div className="label-tag" style={{ marginBottom: 12 }}>
             Empty
           </div>
           <p style={{ color: "var(--fg-2)", fontSize: 15 }}>
-            Paste a wallet above to start. Your list is saved in this browser only.
+            Paste a wallet above to start. Your list is saved in this browser
+            only.
           </p>
         </div>
       )}
 
       {mounted && entries.length > 0 && (
         <>
-          <div style={{ marginBottom: 16, display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 8 }}>
+          <div
+            style={{
+              marginBottom: 16,
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              flexWrap: "wrap",
+              gap: 8,
+            }}
+          >
             <span className="label-tag">{entries.length} wallets tracked</span>
             <button onClick={exportJson} className="btn-ghost">
               Export JSON
@@ -187,7 +225,10 @@ export function WatchlistManager() {
                     gridTemplateColumns: "1fr 110px 100px 80px",
                     gap: 16,
                     padding: "14px 20px",
-                    borderBottom: i === entries.length - 1 ? "none" : "1px solid var(--border-soft)",
+                    borderBottom:
+                      i === entries.length - 1
+                        ? "none"
+                        : "1px solid var(--border-soft)",
                     alignItems: "center",
                   }}
                 >
@@ -200,7 +241,15 @@ export function WatchlistManager() {
                       {truncate(entry.wallet, 8, 6)}
                     </Link>
                     {entry.label && (
-                      <div style={{ fontSize: 12, color: "var(--fg-2)", marginTop: 2 }}>{entry.label}</div>
+                      <div
+                        style={{
+                          fontSize: 12,
+                          color: "var(--fg-2)",
+                          marginTop: 2,
+                        }}
+                      >
+                        {entry.label}
+                      </div>
                     )}
                   </div>
                   <span>
@@ -223,10 +272,18 @@ export function WatchlistManager() {
                         </span>
                       )
                     ) : (
-                      <span style={{ color: "var(--fg-3)", fontSize: 12 }}>loading…</span>
+                      <span style={{ color: "var(--fg-3)", fontSize: 12 }}>
+                        loading…
+                      </span>
                     )}
                   </span>
-                  <span style={{ fontFamily: "var(--font-mono)", color: "var(--fg-2)", fontSize: 13 }}>
+                  <span
+                    style={{
+                      fontFamily: "var(--font-mono)",
+                      color: "var(--fg-2)",
+                      fontSize: 13,
+                    }}
+                  >
                     {op?.confirmed_rugs ?? "—"} rugs
                   </span>
                   <button

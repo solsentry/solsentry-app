@@ -3,17 +3,33 @@ import { WalletConnectButton } from "./WalletConnectButton";
 
 const PRODUCT_LINKS = [
   { label: "Fun mode", sub: "Is this wallet safe?", href: "/fun" },
-  { label: "Operator lookup", sub: "Paste a wallet, get the history", href: "/operator" },
+  {
+    label: "Operator lookup",
+    sub: "Paste a wallet, get the history",
+    href: "/operator",
+  },
   { label: "Token lookup", sub: "Scan any mint", href: "/token" },
   { label: "Drain tracer", sub: "Follow SOL 10 hops", href: "/drain" },
-  { label: "Bot clusters", sub: "Coordinated wallet groups", href: "/clusters" },
+  {
+    label: "Bot clusters",
+    sub: "Coordinated wallet groups",
+    href: "/clusters",
+  },
   { label: "Self-check", sub: "Am I flagged?", href: "/me" },
 ];
 
 const DATA_LINKS = [
   { label: "Alerts feed", sub: "HIGH + CRITICAL live", href: "/alerts" },
-  { label: "Resolutions", sub: "Outcome-resolved predictions", href: "/resolutions" },
-  { label: "Leaderboard", sub: "Top operators by confirmed rugs", href: "/leaderboard" },
+  {
+    label: "Resolutions",
+    sub: "Outcome-resolved predictions",
+    href: "/resolutions",
+  },
+  {
+    label: "Leaderboard",
+    sub: "Top operators by confirmed rugs",
+    href: "/leaderboard",
+  },
 ];
 
 const DEV_LINKS = [
@@ -35,7 +51,13 @@ const LEARN_LINKS = [
   { label: "Roadmap", sub: "What ships next", href: "/roadmap" },
 ];
 
-function Dropdown({ title, links }: { title: string; links: { label: string; sub: string; href: string }[] }) {
+function Dropdown({
+  title,
+  links,
+}: {
+  title: string;
+  links: { label: string; sub: string; href: string }[];
+}) {
   return (
     <span className="nav-dd">
       <span className="nav-dd-trigger">{title}</span>
@@ -56,7 +78,13 @@ export function Nav() {
     <nav className="nav">
       <div className="container nav-inner">
         <Link href="/" className="nav-brand">
-          <img src="/logo-shield.svg" alt="" width={22} height={22} style={{ display: "block" }} />
+          <img
+            src="/logo-shield.svg"
+            alt=""
+            width={22}
+            height={22}
+            style={{ display: "block" }}
+          />
           SolSentry
         </Link>
         <div className="nav-links">

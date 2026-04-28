@@ -34,7 +34,9 @@ export function RiskCard({ wallet, operator }: Props) {
       <div className="risk-card" style={{ borderColor: "var(--border)" }}>
         <div className="risk-banner" style={{ background: "var(--surface-2)" }}>
           <div>
-            <div className="label" style={{ color: "var(--fg-3)" }}>Risk Level</div>
+            <div className="label" style={{ color: "var(--fg-3)" }}>
+              Risk Level
+            </div>
             <div className="risk-level" style={{ color: "var(--fg-3)" }}>
               UNAVAILABLE
             </div>
@@ -44,7 +46,9 @@ export function RiskCard({ wallet, operator }: Props) {
         <div className="risk-body">
           <p style={{ color: "var(--fg-2)" }}>
             Could not load operator profile. The API at{" "}
-            <code style={{ color: "var(--brand-orange)" }}>api.solsentry.app</code>{" "}
+            <code style={{ color: "var(--brand-orange)" }}>
+              api.solsentry.app
+            </code>{" "}
             may be temporarily unavailable.
           </p>
         </div>
@@ -61,8 +65,10 @@ export function RiskCard({ wallet, operator }: Props) {
     <div
       className="risk-card"
       style={{
-        borderColor: level === "CRITICAL" ? "var(--status-critical)" : "var(--border)",
-        boxShadow: level === "CRITICAL" ? "var(--shadow-glow-critical)" : undefined,
+        borderColor:
+          level === "CRITICAL" ? "var(--status-critical)" : "var(--border)",
+        boxShadow:
+          level === "CRITICAL" ? "var(--shadow-glow-critical)" : undefined,
       }}
     >
       <div
@@ -78,8 +84,12 @@ export function RiskCard({ wallet, operator }: Props) {
         }}
       >
         <div>
-          <div className="label" style={{ color }}>Risk Level</div>
-          <div className="risk-level" style={{ color }}>{level}</div>
+          <div className="label" style={{ color }}>
+            Risk Level
+          </div>
+          <div className="risk-level" style={{ color }}>
+            {level}
+          </div>
         </div>
         <div className="risk-meta" style={{ color: "var(--fg-2)" }}>
           {label}
@@ -101,19 +111,22 @@ export function RiskCard({ wallet, operator }: Props) {
           <div className="risk-cell">
             <div className="label">Rug Rate</div>
             <div className="metric" style={{ color: "var(--brand-orange)" }}>
-              {operator.rug_rate_pct != null ? `${operator.rug_rate_pct.toFixed(1)}%` : "—"}
+              {operator.rug_rate_pct != null
+                ? `${operator.rug_rate_pct.toFixed(1)}%`
+                : "—"}
             </div>
           </div>
         </div>
       ) : (
         <div className="risk-body">
           <p style={{ color: "var(--fg-2)" }}>
-            This wallet is not in SolSentry&rsquo;s tracked operator database. It has not
-            been observed deploying tokens during the monitored period.
+            This wallet is not in SolSentry&rsquo;s tracked operator database.
+            It has not been observed deploying tokens during the monitored
+            period.
           </p>
           <p style={{ color: "var(--fg-3)", fontSize: 13, marginTop: 12 }}>
-            Absence from the database is <strong>not</strong> proof of safety — it just
-            means we have no on-chain history for it as a deployer.
+            Absence from the database is <strong>not</strong> proof of safety —
+            it just means we have no on-chain history for it as a deployer.
           </p>
         </div>
       )}
@@ -130,7 +143,8 @@ export function RiskCard({ wallet, operator }: Props) {
 
       <div className="risk-footer">
         <code style={{ color: "var(--fg-3)", fontSize: 12 }}>
-          GET /v1/operator/<span style={{ color: "var(--brand-orange)" }}>{wallet}</span>
+          GET /v1/operator/
+          <span style={{ color: "var(--brand-orange)" }}>{wallet}</span>
         </code>
       </div>
     </div>

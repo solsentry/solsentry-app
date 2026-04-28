@@ -16,12 +16,15 @@ export default function TokenIndex() {
         <section className="hero" style={{ padding: "96px 0 48px" }}>
           <div className="container">
             <span className="hero-eyebrow">Token lookup</span>
-            <h1 className="hero-title" style={{ fontSize: "clamp(32px, 5vw, 64px)" }}>
+            <h1
+              className="hero-title"
+              style={{ fontSize: "clamp(32px, 5vw, 64px)" }}
+            >
               Is this token a rug?
             </h1>
             <p className="hero-sub">
-              Paste any Solana mint address to see its risk score, flags, deployer
-              history, and current outcome verdict. Free. No login.
+              Paste any Solana mint address to see its risk score, flags,
+              deployer history, and current outcome verdict. Free. No login.
             </p>
             <TokenSearchForm />
             <p className="hero-tagline" style={{ marginTop: 24 }}>
