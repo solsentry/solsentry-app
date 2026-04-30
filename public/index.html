@@ -306,6 +306,7 @@ const fmtAddr = (a) => a ? `${a.slice(0,6)}…${a.slice(-4)}` : '?';
 const fmtNum  = (n) => n >= 1000 ? `${(n/1000).toFixed(1)}K` : String(n||0);
 const fmtPct  = (n) => `${(n||0).toFixed(1)}%`;
 const fmtRuntime = (s) => { const h=Math.floor((s||0)/3600); return h>=24?`${Math.floor(h/24)}d ${h%24}h`:`${h}h`; };
+const fmtHours = (h) => { h=h||0; return h>=24?`${Math.floor(h/24)}d ${h%24}h`:`${h}h`; };
 
 const tagStyle = (tag) => {
   const t = (tag||'').toLowerCase();
@@ -339,13 +340,13 @@ function FollowButton({ address, t }) {
 /* ── ResultCard ── */
 function ResultCard({ data, t }) {
   const [copied, setCopied] = useState(false);
-  const addr  = data.operator_address || data.address || '';
+  const addr  = data.wallet || data.operator_address || data.address || '';
   const score = data.risk_score   || 0;
   const level = data.risk_level   || 'UNKNOWN';
   const rugs  = data.confirmed_rugs || 0;
   const toks  = data.total_tokens  || 0;
   const rate  = data.rug_rate_pct  || 0;
-  const tags  = data.tags || data.risk_labels || [];
+  const tags  = data.tags || data.patterns || data.risk_labels || [];
   const lc    = level==='CRITICAL'?'critical':level==='HIGH'?'high':'low';
   const sc    = score>=80?'critical':score>=50?'high':'low';
 
@@ -419,7 +420,7 @@ function FunMode({ t, stats }) {
     finally { setLoading(false); }
   };
 
-  const caseRugs = stats ? fmtNum(stats.confirmed_rugs||6899) : '6.9K';
+  const caseRugs = stats ? fmtNum(stats.confirmed_rugs||7800) : '7.8K';
 
   return (
     <div className="page">
@@ -461,7 +462,7 @@ function FunMode({ t, stats }) {
         <div className="case-eyebrow">{t.case_eyebrow}</div>
         <div className="case-title">{t.case_fn(caseRugs)}</div>
         <div className="case-body">{t.case_body}</div>
-        <a href="/case-studies/4kxscute" className="case-link">{t.case_link}</a>
+        <a href="/operator/4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1" className="case-link">{t.case_link}</a>
       </div>
     </div>
   );
@@ -484,7 +485,7 @@ function ProMode({ t }) {
       try {
         const [sr, or] = await Promise.all([
           fetch(`${API}/stats`).then(r=>r.json()),
-          fetch(`${API}/operators/top?limit=20`).then(r=>r.json()),
+          fetch(`${API}/top-operators?limit=20`).then(r=>r.json()),
         ]);
         setStats(sr);
         setOps(Array.isArray(or)?or:(or.operators||[]));
@@ -535,7 +536,7 @@ function ProMode({ t }) {
               [fmtNum(stats.confirmed_rugs),      t.st_rugs,  'orange'],
               [fmtNum(stats.total_operators),     t.st_ops,   ''],
               [fmtNum(stats.serial_ruggers),      t.st_serial,'purple'],
-              [fmtRuntime(stats.runtime_seconds), t.st_up,    'teal'],
+              [stats.runtime_seconds?fmtRuntime(stats.runtime_seconds):fmtHours(stats.runtime_hours), t.st_up, 'teal'],
             ].map(([v,l,c])=>(
               <div key={l} className="stat-tile">
                 <div className={`stat-tile-val${c?' '+c:''}`}>{v}</div>
@@ -560,14 +561,15 @@ function ProMode({ t }) {
               </tr></thead>
               <tbody>
                 {ops.slice(0,20).map((op,i)=>{
-                  const addr=op.operator_address||op.address||'';
-                  const lv=op.risk_level||'MEDIUM';
+                  const addr=op.wallet||op.operator_address||op.address||'';
                   const r=op.confirmed_rugs||0;
                   const to=op.total_tokens||0;
                   const rt=op.rug_rate_pct||0;
+                  // top-operators only returns risk_label; derive level from rug volume + rate
+                  const lv = op.risk_level || (r>=100&&rt>=70?'CRITICAL':r>=20&&rt>=50?'HIGH':'MEDIUM');
                   return (
-                    <tr key={i}>
-                      <td><span className="mono-sm">{fmtAddr(addr)}</span></td>
+                    <tr key={addr||i}>
+                      <td><a href={`/operator/${addr}`} className="mono-sm" style={{color:'var(--text)'}}>{fmtAddr(addr)}</a></td>
                       <td><span className={lv==='CRITICAL'?'badge-critical':lv==='HIGH'?'badge-high':'badge-medium'}>{lv}</span></td>
                       <td style={{color:'var(--orange)',fontWeight:600}}>{fmtNum(r)}</td>
                       <td>{fmtNum(to)}</td>
@@ -655,7 +657,7 @@ Input: { "address": "4kxscute…" }`,
   const eps = [
     ['GET','/v1/operator/{address}',    lang==='pt'?'Score + histórico de rugs do operador':'Operator risk score + rug history'],
     ['GET','/v1/stats',                 lang==='pt'?'Métricas do sistema ao vivo':'Live system metrics'],
-    ['GET','/v1/operators/top',         lang==='pt'?'Top ruggers por risco confirmado':'Top ruggers by confirmed risk'],
+    ['GET','/v1/top-operators',         lang==='pt'?'Top ruggers por risco confirmado':'Top ruggers by confirmed risk'],
     ['GET','/v1/drain-trace/{address}', lang==='pt'?'Rastreia SOL pós-rug (10 hops)':'Trace SOL post-rug (10 hops)'],
     ['GET','/health',                   lang==='pt'?'Status + invariantes do sistema':'System health + invariants'],
     ['GET','/v1/x402/stats',            lang==='pt'?'Métricas de uso x402':'x402 usage metrics'],
