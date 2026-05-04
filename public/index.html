@@ -1,809 +1,1635 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="pt-BR">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>SolSentry — Operator Intelligence for Solana</title>
-<meta name="description" content="What Pyth is to prices, SolSentry is to operator risk. Identify serial ruggers before the rug."/>
-<meta property="og:title" content="SolSentry — Operator Intelligence for Solana"/>
-<meta property="og:description" content="Token #62. T+4 seconds. 19 minutes of lead time. Risk 100/100."/>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛡️</text></svg>"/>
-<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SolSentry — É seguro?</title>
+<meta name="description" content="SolSentry: descubra se uma carteira ou token Solana é seguro em segundos.">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin="anonymous"></script>
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --bg:#0a0a0f;
-  --surface:#111118;
-  --border:#1e1e2e;
-  --orange:#ff6b00;
-  --teal:#00c9a7;
-  --purple:#a855f7;
-  --yellow:#f59e0b;
-  --text:#e8e8f0;
-  --muted:#6b6b8a;
-  --topbar-h:48px;
-  --bar-h:52px;
+* { box-sizing: border-box; margin: 0; padding: 0; }
+/* ============================================================
+   SolSentry — paleta v4 (warm âmbar). Dark-warm flat.
+   Filosofia: luz que revela. NÃO neon, NÃO cripto-bro.
+   Source: internal/marketing/brand/sds/v4/colors_and_type.css
+   ============================================================ */
+:root {
+  /* legacy aliases (mantém compat com markup existente) */
+  --orange: #C17D0E; --teal: #2A7A7A; --purple: #8A5A00;
+  --red:    #D94B2B; --yellow: #E0A82E; --green: #4A9A6E;
+  --bg:     #100E0A; --card:   #1E1B16; --border: #2A251E;
+  --white:  #F2EDE4; --muted:  #968D7E;
+
+  /* v4 canonical tokens (use estes em código novo) */
+  --amber-core:      #C17D0E;
+  --amber-core-400:  #D9962E;
+  --amber-burnt:     #8A5A00;
+  --teal-precise:    #2A7A7A;
+  --status-critical: #D94B2B;
+  --status-warning:  #E0A82E;
+  --status-safe:     #4A9A6E;
+  --cream:           #F2EDE4;
+  --fg-2:            #C9C0B0;
+  --fg-3:            #968D7E;
+  --bg-elev-1:       #16130E;
+  --surface:         #1E1B16;
+  --surface-2:       #26221C;
+
+  --font-display: 'Syne', ui-sans-serif, system-ui, sans-serif;
+  --font-body:    'DM Sans', 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-mono:    'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
 }
-html,body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:14px;line-height:1.5;min-height:100vh}
-a{color:inherit;text-decoration:none}
-button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
+html, body { background: var(--bg); color: var(--cream); font-family: var(--font-body); min-height: 100vh; }
+body { background:
+  radial-gradient(ellipse 900px 600px at 20% 10%, rgba(193,125,14,0.10), transparent 60%),
+  radial-gradient(ellipse 700px 500px at 80% 90%, rgba(138,90,0,0.06), transparent 60%),
+  #100E0A;
+}
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #16130E; }
+::-webkit-scrollbar-thumb { background: #2A251E; border-radius: 4px; }
+:focus-visible { outline: 2px solid var(--amber-core); outline-offset: 2px; border-radius: 4px; }
+button { font-family: inherit; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+}
 
-/* TOPBAR */
-.topbar{position:fixed;top:0;left:0;right:0;height:var(--topbar-h);background:rgba(10,10,15,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);z-index:100;display:flex;align-items:center;padding:0 16px;gap:12px}
-.topbar-logo{font-weight:700;font-size:15px;letter-spacing:-.3px;color:var(--text)}
-.topbar-logo span{color:var(--orange)}
-.topbar-spacer{flex:1}
-.topbar-link{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--muted);padding:4px 10px;border-radius:6px;transition:color .15s,background .15s}
-.topbar-link:hover{color:var(--text);background:rgba(255,255,255,.05)}
-.dot-live{width:7px;height:7px;border-radius:50%;background:var(--teal);animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-.lang-btn{font-size:11px;font-weight:600;color:var(--muted);padding:4px 8px;border-radius:5px;border:1px solid var(--border);transition:all .15s}
-.lang-btn:hover{color:var(--text);border-color:rgba(255,255,255,.2)}
-.lang-btn.active{color:var(--text);border-color:var(--orange);background:rgba(255,107,0,.08)}
+@keyframes pulse { 0%,100% { opacity: 0.4; } 50% { opacity: 1; } }
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes fade-up { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes scale-in { from { opacity: 0; transform: scale(0.92); } to { opacity: 1; transform: scale(1); } }
+.fade-up { animation: fade-up 400ms ease-out; }
+.scale-in { animation: scale-in 500ms cubic-bezier(0.34, 1.56, 0.64, 1); }
 
-/* MODE BAR */
-.mode-bar{position:fixed;bottom:0;left:0;right:0;height:var(--bar-h);background:rgba(10,10,15,.95);backdrop-filter:blur(12px);border-top:1px solid var(--border);z-index:100;display:flex;align-items:center;justify-content:center;gap:8px}
-.mode-btn{padding:8px 28px;border-radius:8px;font-size:13px;font-weight:500;color:var(--muted);transition:all .15s;border:1px solid transparent}
-.mode-btn:hover{color:var(--text);background:rgba(255,255,255,.05)}
-.mode-btn.active-easy{background:rgba(255,107,0,.15);color:var(--orange);border-color:rgba(255,107,0,.3)}
-.mode-btn.active-pro{background:rgba(0,201,167,.12);color:var(--teal);border-color:rgba(0,201,167,.25)}
-.mode-btn.active-dev{background:rgba(168,85,247,.12);color:var(--purple);border-color:rgba(168,85,247,.25)}
+/* Hub navigation (top-right) */
+.hub-nav {
+  position: fixed; top: 14px; right: 14px; z-index: 200;
+  display: flex; gap: 6px; align-items: center;
+}
+.hub-link {
+  background: rgba(26,26,26,0.92); border: 1px solid var(--border);
+  border-radius: 6px; padding: 6px 12px; color: var(--muted);
+  font-size: 11px; text-decoration: none; font-family: var(--font-body);
+  font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase;
+  transition: all 0.15s ease; display: flex; align-items: center; gap: 6px;
+  backdrop-filter: blur(10px);
+}
+.hub-link:hover { color: var(--orange); border-color: rgba(193,125,14,0.4); }
+.hub-link.hub-live {
+  background: rgba(74,154,110,0.08); color: var(--teal); border-color: rgba(74,154,110,0.3);
+}
+.hub-link.hub-live:hover { background: rgba(74,154,110,0.14); color: var(--green); }
+.hub-live-dot {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--green); animation: pulse 2s infinite;
+}
 
-/* PAGE */
-.page{padding-top:calc(var(--topbar-h) + 1px);padding-bottom:calc(var(--bar-h) + 1px);min-height:100vh}
-.container{max-width:760px;margin:0 auto;padding:32px 16px}
-.container-wide{max-width:1080px;margin:0 auto;padding:32px 16px}
+/* Mode switcher (bottom-left) */
+.mode-switcher {
+  position: fixed; bottom: 20px; left: 20px; z-index: 100;
+  background: rgba(26,26,26,0.95); backdrop-filter: blur(12px);
+  border: 1px solid var(--border); border-radius: 10px; padding: 6px;
+  display: flex; flex-direction: column; gap: 2px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+}
+.mode-btn {
+  padding: 8px 14px; border-radius: 6px; background: transparent;
+  border: none; color: var(--muted); cursor: pointer;
+  font-family: var(--font-body); font-weight: 500; font-size: 13px;
+  text-transform: uppercase; letter-spacing: 0.08em;
+  display: flex; align-items: center; gap: 8px;
+  transition: all 0.15s ease; min-width: 100px;
+}
+.mode-btn:hover { background: rgba(255,255,255,0.04); color: var(--white); }
+.mode-btn.active { background: var(--orange); color: var(--white); }
+.mode-btn.active.watch-active { background: var(--teal); }
+.mode-btn .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; opacity: 0.5; }
+.mode-btn.active .dot { opacity: 1; animation: pulse 1.8s infinite; }
+.mode-hint { font-size: 10px; color: var(--muted); padding: 4px 14px 2px; letter-spacing: 0.1em; text-transform: uppercase; }
 
-/* HERO */
-.hero{padding:44px 16px 28px;text-align:center;max-width:680px;margin:0 auto}
-.hero-eyebrow{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--teal);margin-bottom:12px}
-.hero-h1{font-size:clamp(26px,5vw,46px);font-weight:800;line-height:1.1;letter-spacing:-.03em;margin-bottom:16px}
-.hero-h1 .hl{color:var(--orange)}
-.hero-sub{font-size:15px;color:var(--muted);max-width:520px;margin:0 auto 28px}
+/* Label tags */
+.label-tag {
+  display: inline-flex; align-items: center; gap: 3px;
+  font-size: 9px; font-weight: 700; letter-spacing: 0.08em;
+  text-transform: uppercase; padding: 2px 7px; border-radius: 3px;
+  border: 1px solid; white-space: nowrap; cursor: default;
+  font-family: var(--font-body);
+}
 
-/* SEARCH */
-.search-wrap{position:relative;max-width:540px;margin:0 auto}
-.search-input{width:100%;padding:13px 100px 13px 16px;background:var(--surface);border:1px solid var(--border);border-radius:10px;font-size:14px;color:var(--text);outline:none;transition:border .15s}
-.search-input:focus{border-color:var(--orange)}
-.search-input::placeholder{color:var(--muted)}
-.search-btn{position:absolute;right:8px;top:50%;transform:translateY(-50%);background:var(--orange);color:#000;font-weight:600;font-size:13px;padding:7px 14px;border-radius:7px;transition:opacity .15s;white-space:nowrap}
-.search-btn:hover{opacity:.85}
-.search-btn:disabled{opacity:.5;cursor:not-allowed}
+/* Follow button */
+.follow-btn {
+  padding: 7px 16px; border-radius: 8px; cursor: pointer;
+  font-size: 12px; font-weight: 700; letter-spacing: 0.06em;
+  text-transform: uppercase; border: 1px solid;
+  transition: all 0.15s ease; font-family: var(--font-body);
+  background: rgba(42,122,122,0.1); color: var(--teal); border-color: rgba(42,122,122,0.35);
+}
+.follow-btn:hover:not(.following) { background: rgba(42,122,122,0.2); transform: translateY(-1px); }
+.follow-btn.following { background: rgba(255,255,255,0.04); color: var(--muted); border-color: var(--border); }
+.follow-btn.following:hover { background: rgba(217,75,43,0.1); color: var(--red); border-color: rgba(217,75,43,0.3); }
+.follow-btn.follow-sm { padding: 4px 10px; font-size: 10px; border-radius: 5px; }
 
-/* RESULT CARD */
-.result-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-top:20px;max-width:540px;margin-left:auto;margin-right:auto}
-.result-card.critical{border-color:rgba(255,107,0,.4)}
-.result-card.high{border-color:rgba(245,158,11,.35)}
-.result-card.low{border-color:rgba(0,201,167,.3)}
-.rc-header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--border)}
-.rc-addr{font-family:monospace;font-size:12px;color:var(--muted)}
-.risk-badge{font-size:11px;font-weight:700;letter-spacing:.05em;padding:3px 10px;border-radius:20px}
-.risk-badge.CRITICAL{background:rgba(255,107,0,.18);color:var(--orange);border:1px solid rgba(255,107,0,.3)}
-.risk-badge.HIGH{background:rgba(245,158,11,.15);color:var(--yellow);border:1px solid rgba(245,158,11,.25)}
-.risk-badge.MEDIUM{background:rgba(255,255,255,.07);color:#d0d0e0;border:1px solid var(--border)}
-.risk-badge.LOW{background:rgba(0,201,167,.12);color:var(--teal);border:1px solid rgba(0,201,167,.2)}
-.rc-body{padding:16px}
-.rc-score-row{display:flex;align-items:center;gap:12px;margin-bottom:14px}
-.rc-score{font-size:38px;font-weight:800;line-height:1}
-.rc-score.critical{color:var(--orange)}
-.rc-score.high{color:var(--yellow)}
-.rc-score.low{color:var(--teal)}
-.rc-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px}
-.rc-stat{background:rgba(255,255,255,.03);border-radius:8px;padding:10px 12px}
-.rc-stat-val{font-size:18px;font-weight:700}
-.rc-stat-lbl{font-size:11px;color:var(--muted);margin-top:2px}
-.rc-explain{font-size:13px;color:#c8c8de;line-height:1.6;background:rgba(255,255,255,.02);border-radius:8px;padding:12px;margin-bottom:12px}
-.rc-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
-.tag{font-size:11px;font-weight:600;padding:3px 9px;border-radius:20px;letter-spacing:.02em}
-.rc-actions{display:flex;gap:8px;flex-wrap:wrap}
-.btn-sm{font-size:12px;padding:7px 14px;border-radius:7px;border:1px solid var(--border);color:var(--muted);transition:all .15s}
-.btn-sm:hover{color:var(--text);border-color:rgba(255,255,255,.2)}
-.btn-follow{background:rgba(0,201,167,.1);color:var(--teal);border-color:rgba(0,201,167,.25)}
-.btn-follow:hover{background:rgba(0,201,167,.2)}
-.btn-follow.following{background:rgba(255,107,0,.08);color:var(--orange);border-color:rgba(255,107,0,.2)}
-.btn-follow.following:hover{background:rgba(239,68,68,.1);color:#ef4444;border-color:rgba(239,68,68,.2)}
-.error-card{background:rgba(239,68,68,.07);border:1px solid rgba(239,68,68,.2);border-radius:10px;padding:16px;margin-top:20px;max-width:540px;margin-left:auto;margin-right:auto;font-size:13px;color:#f87171}
+/* FUN MODE */
+.fun-shell {
+  max-width: 640px; margin: 0 auto;
+  padding: 40px 20px 120px; min-height: 100vh;
+  display: flex; flex-direction: column; align-items: center;
+}
+.fun-logo { display: flex; align-items: center; gap: 12px; margin-bottom: 40px; margin-top: 40px; }
+.fun-logo-text { font-family: var(--font-display); font-weight: 700; font-size: 28px; color: var(--orange); letter-spacing: -0.02em; text-transform: uppercase; }
+.fun-headline {
+  font-family: var(--font-display); font-weight: 700; font-size: 32px;
+  text-align: center; line-height: 1.15; margin-bottom: 10px;
+  letter-spacing: -0.02em;
+}
+.fun-sub {
+  font-size: 15px; color: var(--muted); text-align: center;
+  margin-bottom: 32px; max-width: 460px; line-height: 1.5;
+}
+.fun-input-wrap {
+  width: 100%; display: flex; gap: 10px; margin-bottom: 12px;
+}
+.fun-input {
+  flex: 1; background: var(--card); border: 2px solid var(--border);
+  border-radius: 12px; padding: 18px 20px;
+  color: var(--white); font-family: var(--font-mono); font-size: 14px;
+  outline: none; transition: all 0.2s ease;
+}
+.fun-input:focus { border-color: var(--orange); box-shadow: 0 0 0 4px rgba(193,125,14,0.1); }
+.fun-input::placeholder { color: var(--muted); }
+.fun-btn {
+  background: var(--orange); color: var(--white); border: none;
+  border-radius: 12px; padding: 0 28px; cursor: pointer;
+  font-family: var(--font-body); font-weight: 700; font-size: 14px;
+  text-transform: uppercase; letter-spacing: 0.08em;
+  transition: all 0.15s ease; white-space: nowrap;
+}
+.fun-btn:hover { background: var(--amber-core-400, #D9962E); transform: translateY(-1px); }
+.fun-btn:disabled { background: #333; color: var(--muted); cursor: not-allowed; transform: none; }
+.fun-examples {
+  display: flex; gap: 8px; flex-wrap: wrap; justify-content: center;
+  margin-top: 4px;
+}
+.fun-example {
+  background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+  border-radius: 8px; padding: 8px 14px; cursor: pointer;
+  font-size: 12px; color: var(--muted); font-family: var(--font-body);
+  transition: all 0.15s ease;
+}
+.fun-example:hover { background: rgba(255,255,255,0.08); color: var(--white); }
 
-/* HOW IT WORKS */
-.how-section{max-width:540px;margin:40px auto 0;padding:0 16px}
-.how-title{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:18px;text-align:center}
-.how-steps{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
-.how-step{text-align:center;padding:14px 10px}
-.how-step-icon{font-size:22px;margin-bottom:8px}
-.how-step-title{font-size:13px;font-weight:600;margin-bottom:4px}
-.how-step-desc{font-size:12px;color:var(--muted);line-height:1.5}
+/* Result card */
+.result-card {
+  width: 100%; margin-top: 32px;
+  background: var(--card); border: 2px solid var(--border);
+  border-radius: 16px; overflow: hidden;
+}
+.result-card.critical { border-color: rgba(217,75,43,0.5); box-shadow: 0 0 40px rgba(217,75,43,0.15); }
+.result-card.high { border-color: rgba(193,125,14,0.5); box-shadow: 0 0 40px rgba(193,125,14,0.15); }
+.result-card.medium { border-color: rgba(224,168,46,0.45); }
+.result-card.low, .result-card.clean { border-color: rgba(74,154,110,0.45); box-shadow: 0 0 40px rgba(74,154,110,0.1); }
+.result-card.unknown { border-color: rgba(138,90,0,0.4); }
 
-/* CASE STUDY */
-.case-card{max-width:540px;margin:28px auto 0;background:rgba(255,107,0,.05);border:1px solid rgba(255,107,0,.2);border-radius:12px;padding:18px 20px}
-.case-eyebrow{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--orange);margin-bottom:8px}
-.case-title{font-size:16px;font-weight:700;margin-bottom:8px}
-.case-body{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:10px}
-.case-link{font-size:13px;color:var(--orange)}
-.case-link:hover{text-decoration:underline}
+.result-header {
+  padding: 36px 28px 24px; text-align: center;
+  border-bottom: 1px solid var(--border);
+}
+.result-emoji { font-size: 72px; line-height: 1; margin-bottom: 16px; display: block; }
+.result-title {
+  font-family: var(--font-display); font-weight: 700; font-size: 32px;
+  letter-spacing: -0.02em; margin-bottom: 8px;
+}
+.result-title.critical { color: var(--red); }
+.result-title.high { color: var(--orange); }
+.result-title.medium { color: var(--yellow); }
+.result-title.low, .result-title.clean { color: var(--green); }
+.result-title.unknown { color: var(--purple); }
 
-/* PRO */
-.stats-bar{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:24px}
-@media(min-width:600px){.stats-bar{grid-template-columns:repeat(6,1fr)}}
-.stat-tile{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 12px;text-align:center}
-.stat-tile-val{font-size:20px;font-weight:800;line-height:1.1}
-.stat-tile-val.orange{color:var(--orange)}
-.stat-tile-val.teal{color:var(--teal)}
-.stat-tile-val.purple{color:var(--purple)}
-.stat-tile-lbl{font-size:10px;color:var(--muted);margin-top:3px;text-transform:uppercase;letter-spacing:.05em}
-.tabs{display:flex;gap:2px;border-bottom:1px solid var(--border);margin-bottom:20px}
-.tab-btn{padding:8px 16px;font-size:13px;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .15s}
-.tab-btn:hover{color:var(--text)}
-.tab-btn.active{color:var(--teal);border-bottom-color:var(--teal)}
-.ops-table{width:100%;border-collapse:collapse}
-.ops-table th{font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding:8px 10px;text-align:left;border-bottom:1px solid var(--border)}
-.ops-table td{padding:10px;border-bottom:1px solid rgba(30,30,46,.5);vertical-align:middle;font-size:13px}
-.ops-table tr:hover td{background:rgba(255,255,255,.02)}
-.mono-sm{font-family:monospace;font-size:11px;color:var(--muted)}
-.badge-critical{font-size:10px;font-weight:700;padding:2px 7px;border-radius:20px;background:rgba(255,107,0,.15);color:var(--orange);border:1px solid rgba(255,107,0,.2)}
-.badge-high{font-size:10px;font-weight:700;padding:2px 7px;border-radius:20px;background:rgba(245,158,11,.12);color:var(--yellow);border:1px solid rgba(245,158,11,.2)}
-.badge-medium{font-size:10px;padding:2px 7px;border-radius:20px;background:rgba(255,255,255,.05);color:var(--muted);border:1px solid var(--border)}
-.rug-pct{font-weight:600}
-.rug-pct.hot{color:var(--orange)}
-.rug-pct.warm{color:var(--yellow)}
+.result-recommendation {
+  font-size: 13px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.12em;
+  padding: 6px 14px; border-radius: 6px;
+  display: inline-block;
+}
+.result-recommendation.critical { background: rgba(217,75,43,0.15); color: var(--red); border: 1px solid rgba(217,75,43,0.4); }
+.result-recommendation.high { background: rgba(193,125,14,0.15); color: var(--orange); border: 1px solid rgba(193,125,14,0.4); }
+.result-recommendation.medium { background: rgba(224,168,46,0.12); color: var(--yellow); border: 1px solid rgba(224,168,46,0.35); }
+.result-recommendation.low, .result-recommendation.clean { background: rgba(74,154,110,0.12); color: var(--green); border: 1px solid rgba(74,154,110,0.35); }
+.result-recommendation.unknown { background: rgba(138,90,0,0.12); color: var(--purple); border: 1px solid rgba(138,90,0,0.35); }
 
-/* LOOKUP / WATCHLIST */
-.lookup-form{display:flex;gap:8px;margin-bottom:20px}
-.lookup-input{flex:1;padding:10px 14px;background:var(--surface);border:1px solid var(--border);border-radius:8px;font-size:13px;color:var(--text);outline:none;transition:border .15s}
-.lookup-input:focus{border-color:var(--teal)}
-.lookup-input::placeholder{color:var(--muted)}
-.btn-primary{background:var(--orange);color:#000;font-weight:600;font-size:13px;padding:10px 18px;border-radius:8px;transition:opacity .15s;border:none}
-.btn-primary:hover{opacity:.85}
-.btn-primary:disabled{opacity:.45;cursor:not-allowed}
-.btn-primary.teal{background:var(--teal)}
-.wl-empty{text-align:center;padding:48px 16px;color:var(--muted)}
-.wl-empty .icon{font-size:32px;margin-bottom:12px}
-.wl-grid{display:grid;gap:10px}
-.wl-item{display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 14px;flex-wrap:wrap}
-.wl-item.critical{border-color:rgba(255,107,0,.3)}
-.wl-item.high{border-color:rgba(245,158,11,.2)}
-.wl-addr{font-family:monospace;font-size:12px;color:var(--muted);flex:1;min-width:100px}
-.wl-rugs{font-size:13px;font-weight:600;color:var(--orange)}
-.btn-remove{font-size:11px;color:var(--muted);padding:4px 8px;border-radius:5px;border:1px solid var(--border);transition:all .15s}
-.btn-remove:hover{color:#ef4444;border-color:rgba(239,68,68,.3)}
+.result-body { padding: 24px 28px; }
+.result-explain { font-size: 15px; line-height: 1.65; color: rgba(255,255,255,0.85); margin-bottom: 20px; }
+.result-explain strong { color: var(--white); font-weight: 600; }
+.result-explain .num { font-family: var(--font-mono); }
 
-/* DEV */
-.dev-section{margin-bottom:32px}
-.dev-section-title{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;display:flex;align-items:center;gap:10px}
-.dev-section-title::after{content:'';flex:1;height:1px;background:var(--border)}
-.code-tabs{display:flex;gap:0;border-bottom:1px solid var(--border)}
-.code-tab{font-size:11px;font-weight:600;padding:7px 14px;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .15s;text-transform:uppercase;letter-spacing:.04em}
-.code-tab:hover{color:var(--text)}
-.code-tab.active{color:var(--purple);border-bottom-color:var(--purple)}
-pre.code-block{background:rgba(0,0,0,.45);border:1px solid var(--border);border-top:none;border-radius:0 0 8px 8px;padding:16px;font-size:12px;font-family:'SF Mono',Consolas,monospace;color:#c8c8de;overflow-x:auto;line-height:1.65;margin:0}
-.endpoint-list{display:grid;gap:8px}
-.endpoint-item{display:flex;align-items:flex-start;gap:10px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px 14px}
-.method{font-family:monospace;font-size:10px;font-weight:700;padding:2px 7px;border-radius:4px;background:rgba(0,201,167,.12);color:var(--teal);border:1px solid rgba(0,201,167,.2);flex-shrink:0;margin-top:2px}
-.ep-path{font-family:monospace;font-size:12px;color:var(--text);margin-bottom:3px}
-.ep-desc{font-size:12px;color:var(--muted)}
-.mcp-list{display:grid;gap:6px}
-.mcp-item{display:flex;gap:10px;align-items:flex-start;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-size:12px}
-.mcp-name{font-family:monospace;color:var(--purple);min-width:180px;flex-shrink:0}
-.mcp-desc{color:var(--muted)}
-.pricing-table{width:100%;border-collapse:collapse;font-size:13px}
-.pricing-table th{text-align:left;padding:8px 12px;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);border-bottom:1px solid var(--border)}
-.pricing-table td{padding:10px 12px;border-bottom:1px solid rgba(30,30,46,.5)}
-.pricing-table tr:last-child td{border-bottom:none}
-.price-val{font-weight:700;color:var(--teal)}
+.result-stats {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
+  margin-top: 20px;
+}
+.result-stat {
+  background: rgba(0,0,0,0.3); border-radius: 8px; padding: 14px 12px; text-align: center;
+}
+.result-stat-value {
+  font-family: var(--font-display); font-weight: 700; font-size: 24px;
+  line-height: 1; letter-spacing: -0.02em;
+}
+.result-stat-label {
+  font-size: 10px; color: var(--muted); margin-top: 6px;
+  text-transform: uppercase; letter-spacing: 0.1em;
+}
 
-/* MISC */
-.spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,.12);border-top-color:currentColor;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle}
-@keyframes spin{to{transform:rotate(360deg)}}
+.result-details-toggle {
+  display: block; width: 100%; padding: 14px 28px;
+  background: rgba(255,255,255,0.02); border: none; border-top: 1px solid var(--border);
+  color: var(--muted); cursor: pointer; font-size: 12px;
+  text-transform: uppercase; letter-spacing: 0.1em; font-weight: 500;
+  transition: background 0.15s ease;
+}
+.result-details-toggle:hover { background: rgba(255,255,255,0.04); color: var(--white); }
 
-@media(max-width:480px){
-  .how-steps{grid-template-columns:1fr}
-  .rc-stats{grid-template-columns:1fr 1fr}
-  .ops-table th:nth-child(4),.ops-table td:nth-child(4),.ops-table th:nth-child(5),.ops-table td:nth-child(5){display:none}
-  .mode-btn{padding:8px 16px}
+.result-details {
+  padding: 20px 28px; border-top: 1px solid var(--border);
+  background: rgba(0,0,0,0.2);
+}
+.result-detail-row {
+  display: flex; justify-content: space-between; padding: 8px 0;
+  font-size: 13px; border-bottom: 1px solid rgba(255,255,255,0.03);
+}
+.result-detail-row:last-child { border-bottom: none; }
+.result-detail-key { color: var(--muted); }
+.result-detail-val { color: var(--white); font-weight: 500; font-family: var(--font-mono); font-size: 12px; }
+
+.addr-display {
+  font-family: var(--font-mono); font-size: 12px; color: var(--muted);
+  padding: 10px 14px; background: rgba(0,0,0,0.3);
+  border-radius: 6px; word-break: break-all; margin-bottom: 16px;
+}
+
+.fun-footer {
+  text-align: center; color: var(--muted); font-size: 12px; margin-top: 48px;
+  line-height: 1.6;
+}
+.fun-footer a { color: var(--orange); text-decoration: none; }
+.fun-footer a:hover { text-decoration: underline; }
+
+/* Loading spinner */
+.spinner {
+  display: inline-block; width: 20px; height: 20px;
+  border: 3px solid rgba(193,125,14,0.2); border-top-color: var(--orange);
+  border-radius: 50%; animation: spin 0.8s linear infinite;
+}
+
+/* PRO MODE */
+.pro-shell {
+  padding: 0; min-height: 100vh;
+}
+.pro-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 16px 24px; border-bottom: 1px solid var(--border);
+  background: rgba(10,10,10,0.9); backdrop-filter: blur(12px);
+  position: sticky; top: 0; z-index: 10;
+}
+.pro-brand { display: flex; align-items: center; gap: 12px; }
+.pro-brand-text { font-family: var(--font-display); font-weight: 700; font-size: 22px; color: var(--orange); letter-spacing: -0.02em; }
+.pro-stats-bar {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 10px; padding: 16px 24px;
+}
+.pro-stat {
+  background: var(--card); border: 1px solid var(--border); border-radius: 8px;
+  padding: 14px 16px;
+}
+.pro-stat-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 6px; }
+.pro-stat-value { font-family: var(--font-display); font-weight: 700; font-size: 26px; letter-spacing: -0.02em; }
+.pro-stat-sub { font-size: 11px; color: var(--muted); margin-top: 4px; }
+.pro-main { padding: 16px 24px; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 900px) { .pro-main { grid-template-columns: 1fr; } }
+.pro-panel { background: var(--card); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+.pro-panel-header {
+  padding: 14px 16px; border-bottom: 1px solid var(--border);
+  font-family: var(--font-display); font-weight: 700; font-size: 13px;
+  text-transform: uppercase; letter-spacing: 0.12em;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.pro-op-row {
+  display: grid; grid-template-columns: 130px 1fr 90px 70px 60px;
+  gap: 8px; padding: 10px 16px; align-items: center;
+  border-bottom: 1px solid var(--border);
+}
+.pro-op-row:last-child { border-bottom: none; }
+.mono { font-family: var(--font-mono); font-size: 12px; }
+.risk-pill {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; padding: 2px 8px; border-radius: 4px;
+}
+.risk-pill::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: currentColor; display: inline-block; }
+.risk-CRITICAL { color: var(--red); background: rgba(217,75,43,0.12); border: 1px solid rgba(217,75,43,0.35); }
+.risk-HIGH { color: var(--orange); background: rgba(193,125,14,0.12); border: 1px solid rgba(193,125,14,0.35); }
+.risk-MEDIUM { color: var(--yellow); background: rgba(224,168,46,0.12); border: 1px solid rgba(224,168,46,0.35); }
+.risk-LOW, .risk-CLEAN { color: var(--teal); background: rgba(42,122,122,0.12); border: 1px solid rgba(42,122,122,0.35); }
+.risk-UNKNOWN { color: var(--muted); background: rgba(255,255,255,0.04); border: 1px solid var(--border); }
+
+/* WATCH MODE */
+.watch-shell {
+  max-width: 800px; margin: 0 auto; padding: 80px 20px 120px;
+}
+.watch-title {
+  font-family: var(--font-display); font-weight: 700; font-size: 28px;
+  margin-bottom: 6px; letter-spacing: -0.02em;
+}
+.watch-sub { color: var(--muted); font-size: 14px; margin-bottom: 32px; }
+.watch-empty {
+  text-align: center; padding: 60px 20px;
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 16px; color: var(--muted); font-size: 14px; line-height: 1.7;
+}
+.watch-card {
+  background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+  padding: 18px 20px; margin-bottom: 12px;
+  display: grid; grid-template-columns: 1fr auto; gap: 16px; align-items: center;
+  transition: border-color 0.15s ease;
+}
+.watch-card:hover { border-color: rgba(193,125,14,0.3); }
+.watch-card-top { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
+.watch-card-tags { margin-bottom: 8px; }
+.watch-card-stats {
+  font-size: 12px; color: var(--muted); font-family: var(--font-mono);
+}
+.watch-actions { display: flex; flex-direction: column; gap: 6px; align-items: flex-end; }
+.watch-copy-btn {
+  padding: 5px 11px; font-size: 10px; border-radius: 5px; cursor: pointer;
+  background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+  color: var(--muted); font-family: var(--font-body); letter-spacing: 0.05em;
+  text-transform: uppercase; transition: all 0.15s ease;
+}
+.watch-copy-btn:hover { color: var(--white); border-color: rgba(255,255,255,0.2); }
+
+/* DEV MODE */
+.dev-shell { padding: 24px; max-width: 1100px; margin: 0 auto 100px; }
+.dev-title {
+  font-family: var(--font-display); font-weight: 700; font-size: 32px;
+  margin-bottom: 8px; color: var(--orange); letter-spacing: -0.02em;
+}
+.dev-sub { color: var(--muted); margin-bottom: 32px; font-size: 14px; }
+.dev-section { margin-bottom: 32px; }
+.dev-section-title {
+  font-family: var(--font-display); font-weight: 700; font-size: 14px;
+  text-transform: uppercase; letter-spacing: 0.15em;
+  color: var(--muted); margin-bottom: 14px; padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+.dev-endpoint {
+  background: var(--card); border: 1px solid var(--border); border-radius: 8px;
+  padding: 16px; margin-bottom: 12px;
+}
+.dev-endpoint-method {
+  display: inline-block; font-family: var(--font-mono); font-size: 11px;
+  font-weight: 700; padding: 2px 8px; border-radius: 4px;
+  background: rgba(42,122,122,0.15); color: var(--teal);
+  margin-right: 10px; letter-spacing: 0.05em;
+}
+.dev-endpoint-path {
+  font-family: var(--font-mono); font-size: 14px; color: var(--white);
+}
+.dev-endpoint-desc { color: var(--muted); font-size: 13px; margin-top: 8px; line-height: 1.5; }
+.dev-code {
+  background: var(--bg-elev-1, #16130E); border: 1px solid var(--border); border-radius: 6px;
+  padding: 14px 16px; font-family: var(--font-mono); font-size: 12px;
+  color: var(--teal-precise); overflow-x: auto; margin-top: 10px;
+  line-height: 1.6; position: relative;
+}
+.dev-code-copy {
+  position: absolute; top: 10px; right: 10px;
+  background: rgba(255,255,255,0.06); border: 1px solid var(--border);
+  color: var(--muted); cursor: pointer; padding: 4px 10px;
+  font-family: var(--font-body); font-size: 10px; border-radius: 4px;
+  text-transform: uppercase; letter-spacing: 0.1em;
+}
+.dev-code-copy:hover { color: var(--orange); border-color: var(--orange); }
+.dev-tabs { display: flex; gap: 4px; margin-bottom: 10px; }
+.dev-tab {
+  padding: 6px 14px; background: transparent; border: 1px solid var(--border);
+  color: var(--muted); border-radius: 4px; cursor: pointer;
+  font-family: var(--font-body); font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em;
+}
+.dev-tab.active { background: var(--orange); color: var(--white); border-color: var(--orange); }
+
+/* Responsive */
+@media (max-width: 600px) {
+  .fun-headline { font-size: 26px; }
+  .fun-input-wrap { flex-direction: column; }
+  .fun-btn { padding: 16px; width: 100%; }
+  .result-emoji { font-size: 56px; }
+  .result-title { font-size: 24px; }
+  .result-stats { grid-template-columns: repeat(2, 1fr); }
+  .mode-switcher { bottom: 10px; left: 10px; }
+  .hub-nav { top: 10px; right: 10px; }
+  .pro-op-row { grid-template-columns: 100px 1fr 80px 60px; }
+  .pro-op-row > *:last-child { display: none; }
 }
 </style>
 </head>
 <body>
 <div id="root"></div>
+
 <script type="text/babel">
-const { useState, useEffect } = React;
+const { useState, useEffect, useRef, useCallback, createContext, useContext } = React;
 
-const API = window.location.hostname === 'localhost'
-  ? 'http://localhost:8081/v1'
-  : 'https://api.solsentry.app/v1';
+const API = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+  ? 'http://localhost:8081'
+  : 'https://api.solsentry.app';
+const DEFAULT_DANGER = '4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1';
+const DEFAULT_SAFE = 'So11111111111111111111111111111111111111112';
+const WL_KEY = 'solsentry_watchlist';
+const LANG_KEY = 'solsentry_lang';
+const MODE_KEY_NEW = 'solsentry_mode';
+const MODE_KEY_LEGACY_LIVE = 'ss_mode'; // migrate users coming from previous live deploy
 
-const WL_KEY  = 'solsentry_watchlist';
-const MODE_KEY = 'ss_mode';
-const LANG_KEY = 'ss_lang';
-
-/* ── i18n ── */
+// ── i18n ──────────────────────────────────────────────────────
 const T = {
-  en: {
-    easy:'Easy', pro:'Pro', dev:'Dev',
-    dashboard:'Dashboard', live:'Live',
-    eyebrow:'Solana · Operator Intelligence',
-    h1a:'Token #62. ', h1b:'T+4 seconds. ', h1c:'19 minutes.',
-    h1d:'Risk 100/100.',
-    sub:"RugCheck tells you a fire is burning. SolSentry tells you who lit it — and where they're going next.",
-    placeholder:'Wallet, operator or token address…',
-    check:'Check', checking:'Checking…',
-    how_title:'How it works',
-    s1t:'Paste address',      s1d:'Operator, dev wallet or token mint',
-    s2t:'Instant verdict',    s2d:'Risk score, rug rate and confirmed history',
-    s3t:'Lead time',          s3d:'Alerts fire before the rug — not after',
-    case_eyebrow:'Case study · 4kxscute',
-    case_fn:(n)=>`One operator. ${n}+ confirmed rugs.`,
-    case_body:'On March 12, 2026, the operator deployed token #62. SolSentry flagged HIGH RISK at T+4 seconds. The rug executed at T+23 minutes. Nineteen minutes of lead time.',
-    case_link:'Read the full timeline →',
-    follow:'Follow', following:'Following', unfollow:'Unfollow',
-    copy:'Copy', copied:'Copied!',
-    err:'Address not found or not indexed yet.',
-    score_lbl:'Risk Score', rugs_lbl:'Rugs', tok_lbl:'Tokens', rate_lbl:'Rug Rate',
-    st_scans:'Scans', st_acc:'Accuracy', st_rugs:'Rugs', st_ops:'Operators', st_serial:'Serial', st_up:'Uptime',
-    t_ops:'Operators', t_wl:'Watchlist', t_lk:'Lookup',
-    col_addr:'Address', col_level:'Risk', col_rugs:'Rugs', col_tok:'Tokens', col_rate:'Rate',
-    wl_empty_h:'No wallets followed yet',
-    wl_empty_d:'Use Easy mode to search and follow operator wallets.',
-    wl_remove:'Remove', wl_clear:'Clear all',
-    lk_ph:'Operator or token address…', lk_btn:'Look up',
-    dev_h:'Build with SolSentry',
-    dev_sub:'REST API · MCP Server · x402 micropayments',
-    ex_title:'Quick example',
-    ep_title:'REST Endpoints',
-    mcp_title:'MCP Tools',
-    px_title:'x402 Pricing',
-    px_tier:'Tier', px_call:'Per call', px_mo:'Monthly', px_lim:'Limit',
-    explain_critical:(r,to,rt)=><><strong style={{color:'var(--orange)'}}>CRITICAL RISK.</strong> This operator executed <strong>{r} confirmed rug pulls</strong> across {to} tokens — {rt}% rug rate. Extremely high probability of rug.</>,
-    explain_high:(r,to)=><><strong style={{color:'var(--yellow)'}}>HIGH RISK.</strong> {r} confirmed rugs across {to} tokens. Significant history of malicious deployments.</>,
-    explain_low:()=><><strong style={{color:'var(--teal)'}}>LOW RISK.</strong> No confirmed rugs found. Profile consistent with legitimate activity.</>,
-  },
   pt: {
-    easy:'Fácil', pro:'Pro', dev:'Dev',
-    dashboard:'Painel', live:'Ao Vivo',
-    eyebrow:'Solana · Inteligência de Operadores',
-    h1a:'Token #62. ', h1b:'T+4 segundos. ', h1c:'19 minutos.',
-    h1d:'Risco 100/100.',
-    sub:'RugCheck diz que o fogo está queimando. SolSentry diz quem acendeu — e para onde vai em seguida.',
-    placeholder:'Carteira, operador ou endereço do token…',
-    check:'Verificar', checking:'Verificando…',
-    how_title:'Como funciona',
-    s1t:'Cole o endereço', s1d:'Operador, dev wallet ou mint do token',
-    s2t:'Veredicto imediato', s2d:'Score de risco, taxa de rug e histórico confirmado',
-    s3t:'Antecipação', s3d:'Alertas disparam antes do rug — não depois',
-    case_eyebrow:'Caso real · 4kxscute',
-    case_fn:(n)=>`Um operador. ${n}+ rugs confirmados.`,
-    case_body:'Em 12 de março de 2026, o operador fez deploy do token #62. SolSentry sinalizou ALTO RISCO em T+4 segundos. O rug executou em T+23 minutos. Dezenove minutos de antecedência.',
-    case_link:'Ver a linha do tempo completa →',
-    follow:'Seguir', following:'Seguindo', unfollow:'Deixar de seguir',
-    copy:'Copiar', copied:'Copiado!',
-    err:'Endereço não encontrado ou ainda não indexado.',
-    score_lbl:'Score de Risco', rugs_lbl:'Rugs', tok_lbl:'Tokens', rate_lbl:'Taxa de Rug',
-    st_scans:'Varreduras', st_acc:'Precisão', st_rugs:'Rugs', st_ops:'Operadores', st_serial:'Seriais', st_up:'Uptime',
-    t_ops:'Operadores', t_wl:'Monitorados', t_lk:'Consulta',
-    col_addr:'Endereço', col_level:'Risco', col_rugs:'Rugs', col_tok:'Tokens', col_rate:'Taxa',
-    wl_empty_h:'Nenhuma carteira monitorada',
-    wl_empty_d:'Use o modo Fácil para buscar e seguir operadores.',
-    wl_remove:'Remover', wl_clear:'Limpar tudo',
-    lk_ph:'Endereço de operador ou token…', lk_btn:'Consultar',
-    dev_h:'Integre o SolSentry',
-    dev_sub:'API REST · Servidor MCP · Micropagamentos x402',
-    ex_title:'Exemplo rápido',
-    ep_title:'Endpoints REST',
-    mcp_title:'Ferramentas MCP',
-    px_title:'Preços x402',
-    px_tier:'Plano', px_call:'Por chamada', px_mo:'Mensal', px_lim:'Limite',
-    explain_critical:(r,to,rt)=><><strong style={{color:'var(--orange)'}}>RISCO CRÍTICO.</strong> Este operador executou <strong>{r} rug pulls confirmados</strong> em {to} tokens — {rt}% de taxa de rug. Probabilidade extremamente alta de rug.</>,
-    explain_high:(r,to)=><><strong style={{color:'var(--yellow)'}}>ALTO RISCO.</strong> {r} rugs confirmados em {to} tokens. Histórico significativo de deployments maliciosos.</>,
-    explain_low:()=><><strong style={{color:'var(--teal)'}}>BAIXO RISCO.</strong> Nenhum rug confirmado. Perfil consistente com atividade legítima.</>,
-  }
+    headline: 'Esta carteira ou token é seguro?',
+    sub: 'Cole qualquer endereço Solana e descubra em segundos se tem risco de rug pull ou golpe.',
+    placeholder: 'Cole aqui um endereço Solana...',
+    verify: 'Verificar',
+    verifying: 'Verificando',
+    invalid: 'Endereço Solana inválido. Verifique e tente de novo.',
+    apiErr: 'Erro ao consultar a API. Verifique se o servidor está rodando.',
+    examples: 'Experimente:',
+    ex_danger: '⚠️ Operador perigoso',
+    ex_safe: '✅ Token confiável (SOL)',
+    follow: '+ Seguir',
+    following: '✓ Seguindo',
+    unfollow_title: 'Deixar de seguir',
+    follow_title: 'Seguir esta carteira na watchlist',
+    details_show: '▾ Ver detalhes técnicos',
+    details_hide: '▴ Esconder detalhes técnicos',
+    operator: 'Operador',
+    token: 'Token',
+    risk_level: 'Risk Level',
+    confirmed_rugs: 'Confirmed Rugs',
+    total_tokens: 'Total Tokens',
+    rug_rate: 'Rug Rate',
+    tags: 'Tags',
+    risk_score: 'Risk Score',
+    symbol: 'Símbolo',
+    outcome: 'Resultado',
+    bundle: 'Bundle',
+    yes: 'Sim',
+    no: 'Não',
+    rugs_lbl: 'Rug Pulls',
+    tokens_lbl: 'Tokens Criados',
+    rate_lbl: 'Taxa de Golpe',
+    score_lbl: 'Risk Score',
+    result_lbl: 'Resultado',
+    pending: 'Pendente',
+    rug: 'RUG',
+    safe: 'SAFE',
+    not_found_title: 'NÃO ENCONTRADO',
+    max_caution: 'Máxima cautela',
+    not_found_body: ['Este endereço ', 'não está no banco de dados do SolSentry', '. Pode ser novo demais, nunca ter sido escaneado, ou simplesmente não gerou atividade suspeita.', 'Isso não significa que é seguro', ' — significa que não temos informação. Se você está pensando em comprar, investigue em outras ferramentas antes.'],
+    extreme_danger: 'PERIGO EXTREMO',
+    do_not_buy: '⛔ NÃO COMPRAR',
+    high_risk_title: 'RISCO ALTO',
+    avoid_buying: '⚠ Evite comprar',
+    medium_risk_title: 'RISCO MÉDIO',
+    investigate_first: 'Investigue antes',
+    low_risk_title: 'BAIXO RISCO',
+    seems_safe: 'Parece seguro',
+    token_dangerous: 'TOKEN PERIGOSO',
+    token_risky: 'TOKEN ARRISCADO',
+    max_caution_label: '⚠ Cuidado máximo',
+    token_ok: 'TOKEN OK',
+    pro_label: 'Pro',
+    mode_label: 'Modo',
+    mode_easy: 'Fácil',
+    mode_pro: 'Pro',
+    mode_dev: 'Dev',
+    mode_watch: 'Watch',
+    mode_watch_title: 'Carteiras que você está seguindo',
+    paste_placeholder: 'Paste address...',
+    check: 'Check',
+    scans_lbl: 'Scans',
+    accuracy_lbl: 'Accuracy',
+    rugs_short: 'Rugs',
+    operators_lbl: 'Operators',
+    clusters_lbl: 'Clusters',
+    runtime_lbl: 'Runtime',
+    total_tokens_sub: 'total tokens',
+    pred_sub: 'prediction',
+    confirmed_sub: 'confirmed',
+    tracked_sub: 'tracked',
+    bot_graphs_sub: 'bot graphs',
+    mainnet_sub: 'mainnet',
+    top_serial: 'Top Serial Deployers',
+    shown: 'shown',
+    loading: 'Loading…',
+    lookup_result: 'Lookup Result',
+    paste_to_analyze: 'Paste an address above to analyze.',
+    pro_footer: 'Pro mode · Data refresh 30s · For full v2 dashboard with alerts feed, timeline charts, and cluster graph, open',
+    watchlist: 'Watchlist',
+    watch_loading: 'atualizando…',
+    wallets_followed: (n) => `${n} carteira${n>1?'s':''} monitorada${n>1?'s':''} · Auto-refresh 60s`,
+    no_wallets: 'Nenhuma carteira seguida ainda',
+    watch_empty_title: 'Watchlist vazia',
+    watch_empty_msg_pre: 'Use o botão ',
+    watch_empty_msg_btn: '+ Seguir',
+    watch_empty_msg_mid: ' nos modos ',
+    watch_empty_or: ' ou ',
+    watch_empty_msg_suf: ' para adicionar carteiras aqui.',
+    op_loading: 'Carregando…',
+    op_not_found: 'Operador não encontrado nos dados',
+    remove: '✕ Remover',
+    copy: 'Copiar',
+    copied: '✓ Copiado',
+    clear_all: 'Limpar tudo',
+    refresh_now: 'Atualizar agora',
+    dev_title: 'SolSentry API Reference',
+    dev_sub: 'REST + MCP server · CORS enabled · zero auth in dev mode',
+    quick_example: 'Quick Example',
+    rest_endpoints: 'REST Endpoints',
+    mcp_tools: 'MCP Tools (Model Context Protocol)',
+    schema_op: 'Response Schema — Operator',
+    schema_tok: 'Response Schema — Token',
+    running_server: 'Running the Server',
+    found_something: 'Encontrou algo novo? Compartilhe em',
+    monitoring: 'SolSentry monitora Solana há',
+    scans_word: 'scans',
+    accuracy_word: 'de precisão',
+    rugs_confirmed: 'rugs confirmados',
+    hub_dashboard: '⬡ Dashboard',
+    hub_live: 'Live API',
+    hub_dashboard_title: 'Dashboard v2 — 12 painéis com alertas, clusters e timeline',
+    hub_live_title: 'VPS live — api.solsentry.app',
+    explain_extreme: (rugs, tokens, rate, isSerial) => (
+      <>Este criador já executou <strong className="num">{fmt(rugs)} rug pulls confirmados</strong> em <strong className="num">{fmt(tokens)} tokens</strong> lançados. Taxa de golpe: <strong className="num">{rate}%</strong>.{isSerial && <> É um <strong>serial deployer</strong> conhecido — padrão repetido de criar tokens, atrair compradores e sumir com a liquidez.</>}<br/><br/>Qualquer token novo dessa carteira tem altíssima probabilidade de ser outro golpe.</>
+    ),
+    explain_high: (rugs, tokens, rate) => (
+      <>Esta carteira tem <strong className="num">{fmt(rugs)} rug pulls confirmados</strong> em <strong className="num">{fmt(tokens)} tokens</strong> lançados.{rate >= 30 && <> Taxa de golpe: <strong className="num">{rate}%</strong>.</>}<br/><br/>Se precisar realmente interagir, use apenas valores muito pequenos — existe risco real de perder tudo.</>
+    ),
+    explain_medium: (tokens, rugs) => (
+      <>Esta carteira tem alguns sinais de alerta mas nada conclusivo. Atividade: <strong className="num">{fmt(tokens)} tokens</strong> criados{rugs > 0 && <>, <strong className="num">{fmt(rugs)}</strong> viraram rug</>}.<br/><br/>Procure por mais informações antes de investir qualquer valor significativo.</>
+    ),
+    explain_low: (tokens, rugs) => (
+      <>Esta carteira está no nosso banco de dados e <strong>não apresenta padrões claros de golpe</strong>. Atividade: <strong className="num">{fmt(tokens)} tokens</strong> criados, <strong className="num">{fmt(rugs)}</strong> rugs.<br/><br/>Isso não é garantia absoluta — no mundo cripto, nunca invista mais do que você pode perder.</>
+    ),
+    explain_token_critical: (sym, score, isScam, isBundle, flags) => (
+      <>Este token <strong>{sym ? `(${sym})` : ''} foi classificado como golpe</strong> pelo SolSentry. Score de risco: <strong className="num">{score}/100</strong>.{isScam && <> Já foi confirmado como <strong>rug pull executado</strong>.</>}{isBundle && <> Detectamos <strong>bot cluster coordenado</strong> comprando no lançamento.</>}<br/><br/>{flags && flags.length > 0 && <>Sinais detectados: {flags.slice(0,3).map(f => String(f).replace(/[^\x20-\x7E]/g,'').trim()).filter(Boolean).join(', ')}.</>}</>
+    ),
+    explain_token_high: (score, isBundle) => (
+      <>Este token tem <strong>sinais preocupantes</strong>. Score: <strong className="num">{score}/100</strong>.{isBundle && <> Bot cluster coordenado detectado.</>}<br/><br/>Só invista valores que você aceita perder completamente.</>
+    ),
+    explain_token_medium: (score) => (
+      <>Score de risco: <strong className="num">{score}/100</strong>. Alguns sinais de alerta detectados, mas não conclusivos.<br/><br/>Olhe a liquidez, holders e atividade do criador antes de decidir.</>
+    ),
+    explain_token_low: (score, isSafe) => (
+      <>Score baixo: <strong className="num">{score}/100</strong>.{isSafe && <> Confirmado como <strong>safe</strong> pelo nosso sistema de resolução.</>}<br/><br/>Lembre-se: "baixo risco" não é "sem risco". Faça sua própria pesquisa.</>
+    ),
+    no_data: 'Sem dados.',
+  },
+  en: {
+    headline: 'Is this wallet or token safe?',
+    sub: 'Paste any Solana address — get a verdict in seconds on rug pull or scam risk.',
+    placeholder: 'Paste a Solana address here...',
+    verify: 'Check',
+    verifying: 'Checking',
+    invalid: 'Invalid Solana address. Double-check and try again.',
+    apiErr: 'API error. Check that the server is running.',
+    examples: 'Try:',
+    ex_danger: '⚠️ Dangerous operator',
+    ex_safe: '✅ Trusted token (SOL)',
+    follow: '+ Follow',
+    following: '✓ Following',
+    unfollow_title: 'Unfollow',
+    follow_title: 'Follow this wallet on the watchlist',
+    details_show: '▾ Show technical details',
+    details_hide: '▴ Hide technical details',
+    operator: 'Operator',
+    token: 'Token',
+    risk_level: 'Risk Level',
+    confirmed_rugs: 'Confirmed Rugs',
+    total_tokens: 'Total Tokens',
+    rug_rate: 'Rug Rate',
+    tags: 'Tags',
+    risk_score: 'Risk Score',
+    symbol: 'Symbol',
+    outcome: 'Outcome',
+    bundle: 'Bundle',
+    yes: 'Yes',
+    no: 'No',
+    rugs_lbl: 'Rug Pulls',
+    tokens_lbl: 'Tokens Created',
+    rate_lbl: 'Rug Rate',
+    score_lbl: 'Risk Score',
+    result_lbl: 'Outcome',
+    pending: 'Pending',
+    rug: 'RUG',
+    safe: 'SAFE',
+    not_found_title: 'NOT FOUND',
+    max_caution: 'Maximum caution',
+    not_found_body: ['This address is ', 'not in the SolSentry database', '. It might be too new, never scanned, or simply has no suspicious activity yet.', 'This does not mean it is safe', ' — it means we have no data. If you are about to buy, check it in other tools first.'],
+    extreme_danger: 'EXTREME DANGER',
+    do_not_buy: '⛔ DO NOT BUY',
+    high_risk_title: 'HIGH RISK',
+    avoid_buying: '⚠ Avoid buying',
+    medium_risk_title: 'MEDIUM RISK',
+    investigate_first: 'Investigate first',
+    low_risk_title: 'LOW RISK',
+    seems_safe: 'Looks safe',
+    token_dangerous: 'DANGEROUS TOKEN',
+    token_risky: 'RISKY TOKEN',
+    max_caution_label: '⚠ Maximum caution',
+    token_ok: 'TOKEN OK',
+    pro_label: 'Pro',
+    mode_label: 'Mode',
+    mode_easy: 'Easy',
+    mode_pro: 'Pro',
+    mode_dev: 'Dev',
+    mode_watch: 'Watch',
+    mode_watch_title: 'Wallets you are following',
+    paste_placeholder: 'Paste address...',
+    check: 'Check',
+    scans_lbl: 'Scans',
+    accuracy_lbl: 'Accuracy',
+    rugs_short: 'Rugs',
+    operators_lbl: 'Operators',
+    clusters_lbl: 'Clusters',
+    runtime_lbl: 'Runtime',
+    total_tokens_sub: 'total tokens',
+    pred_sub: 'prediction',
+    confirmed_sub: 'confirmed',
+    tracked_sub: 'tracked',
+    bot_graphs_sub: 'bot graphs',
+    mainnet_sub: 'mainnet',
+    top_serial: 'Top Serial Deployers',
+    shown: 'shown',
+    loading: 'Loading…',
+    lookup_result: 'Lookup Result',
+    paste_to_analyze: 'Paste an address above to analyze.',
+    pro_footer: 'Pro mode · Data refresh 30s · For full v2 dashboard with alerts feed, timeline charts, and cluster graph, open',
+    watchlist: 'Watchlist',
+    watch_loading: 'updating…',
+    wallets_followed: (n) => `${n} wallet${n>1?'s':''} followed · Auto-refresh 60s`,
+    no_wallets: 'No wallets followed yet',
+    watch_empty_title: 'Empty watchlist',
+    watch_empty_msg_pre: 'Use the ',
+    watch_empty_msg_btn: '+ Follow',
+    watch_empty_msg_mid: ' button in the ',
+    watch_empty_or: ' or ',
+    watch_empty_msg_suf: ' modes to add wallets here.',
+    op_loading: 'Loading…',
+    op_not_found: 'Operator not found in data',
+    remove: '✕ Remove',
+    copy: 'Copy',
+    copied: '✓ Copied',
+    clear_all: 'Clear all',
+    refresh_now: 'Refresh now',
+    dev_title: 'SolSentry API Reference',
+    dev_sub: 'REST + MCP server · CORS enabled · zero auth in dev mode',
+    quick_example: 'Quick Example',
+    rest_endpoints: 'REST Endpoints',
+    mcp_tools: 'MCP Tools (Model Context Protocol)',
+    schema_op: 'Response Schema — Operator',
+    schema_tok: 'Response Schema — Token',
+    running_server: 'Running the Server',
+    found_something: 'Found something new? Share it on',
+    monitoring: 'SolSentry has been monitoring Solana for',
+    scans_word: 'scans',
+    accuracy_word: 'accuracy',
+    rugs_confirmed: 'confirmed rugs',
+    hub_dashboard: '⬡ Dashboard',
+    hub_live: 'Live API',
+    hub_dashboard_title: 'Dashboard v2 — 12 panels with alerts, clusters and timeline',
+    hub_live_title: 'VPS live — api.solsentry.app',
+    explain_extreme: (rugs, tokens, rate, isSerial) => (
+      <>This deployer already executed <strong className="num">{fmt(rugs)} confirmed rug pulls</strong> across <strong className="num">{fmt(tokens)} tokens</strong>. Rug rate: <strong className="num">{rate}%</strong>.{isSerial && <> Known <strong>serial deployer</strong> — repeated pattern of creating tokens, attracting buyers, and pulling liquidity.</>}<br/><br/>Any new token from this wallet has extremely high probability of being another rug.</>
+    ),
+    explain_high: (rugs, tokens, rate) => (
+      <>This wallet has <strong className="num">{fmt(rugs)} confirmed rug pulls</strong> across <strong className="num">{fmt(tokens)} tokens</strong>.{rate >= 30 && <> Rug rate: <strong className="num">{rate}%</strong>.</>}<br/><br/>If you really need to interact, only use very small amounts — real risk of total loss.</>
+    ),
+    explain_medium: (tokens, rugs) => (
+      <>This wallet has some warning signs but nothing conclusive. Activity: <strong className="num">{fmt(tokens)} tokens</strong> created{rugs > 0 && <>, <strong className="num">{fmt(rugs)}</strong> turned out to be rugs</>}.<br/><br/>Look for more information before investing any meaningful amount.</>
+    ),
+    explain_low: (tokens, rugs) => (
+      <>This wallet is in our database and <strong>shows no clear scam patterns</strong>. Activity: <strong className="num">{fmt(tokens)} tokens</strong> created, <strong className="num">{fmt(rugs)}</strong> rugs.<br/><br/>This is not a guarantee — in crypto, never invest more than you can lose.</>
+    ),
+    explain_token_critical: (sym, score, isScam, isBundle, flags) => (
+      <>This token <strong>{sym ? `(${sym})` : ''} was classified as a scam</strong> by SolSentry. Risk score: <strong className="num">{score}/100</strong>.{isScam && <> Already confirmed as <strong>rug pull executed</strong>.</>}{isBundle && <> We detected a <strong>coordinated bot cluster</strong> buying at launch.</>}<br/><br/>{flags && flags.length > 0 && <>Detected signals: {flags.slice(0,3).map(f => String(f).replace(/[^\x20-\x7E]/g,'').trim()).filter(Boolean).join(', ')}.</>}</>
+    ),
+    explain_token_high: (score, isBundle) => (
+      <>This token has <strong>concerning signals</strong>. Score: <strong className="num">{score}/100</strong>.{isBundle && <> Coordinated bot cluster detected.</>}<br/><br/>Only invest amounts you accept losing completely.</>
+    ),
+    explain_token_medium: (score) => (
+      <>Risk score: <strong className="num">{score}/100</strong>. Some warning signs detected, but not conclusive.<br/><br/>Check liquidity, holders and creator activity before deciding.</>
+    ),
+    explain_token_low: (score, isSafe) => (
+      <>Low score: <strong className="num">{score}/100</strong>.{isSafe && <> Confirmed as <strong>safe</strong> by our resolution system.</>}<br/><br/>Remember: "low risk" is not "no risk". Do your own research.</>
+    ),
+    no_data: 'No data.',
+  },
 };
 
-/* ── helpers ── */
-const getWL = () => { try { return JSON.parse(localStorage.getItem(WL_KEY)||'[]'); } catch { return []; } };
-const saveWL = (a) => localStorage.setItem(WL_KEY, JSON.stringify(a));
-const fmtAddr = (a) => a ? `${a.slice(0,6)}…${a.slice(-4)}` : '?';
-const fmtNum  = (n) => n >= 1000 ? `${(n/1000).toFixed(1)}K` : String(n||0);
-const fmtPct  = (n) => `${(n||0).toFixed(1)}%`;
-const fmtRuntime = (s) => { const h=Math.floor((s||0)/3600); return h>=24?`${Math.floor(h/24)}d ${h%24}h`:`${h}h`; };
-const fmtHours = (h) => { h=h||0; return h>=24?`${Math.floor(h/24)}d ${h%24}h`:`${h}h`; };
+const LangCtx = createContext(T.pt);
+const useT = () => useContext(LangCtx);
 
-const tagStyle = (tag) => {
-  const t = (tag||'').toLowerCase();
-  if (t.includes('serial')||t.includes('critical')) return {background:'rgba(255,107,0,.15)',color:'var(--orange)',border:'1px solid rgba(255,107,0,.25)'};
-  if (t.includes('fast')||t.includes('drain'))      return {background:'rgba(245,158,11,.12)',color:'var(--yellow)',border:'1px solid rgba(245,158,11,.2)'};
-  if (t.includes('bundle')||t.includes('sniper'))   return {background:'rgba(168,85,247,.12)',color:'var(--purple)',border:'1px solid rgba(168,85,247,.2)'};
-  if (t.includes('kol')||t.includes('smart'))       return {background:'rgba(0,201,167,.1)',color:'var(--teal)',border:'1px solid rgba(0,201,167,.18)'};
-  return {background:'rgba(255,255,255,.05)',color:'var(--muted)',border:'1px solid var(--border)'};
-};
+// ── API ───────────────────────────────────────────────────────
+async function fetchOperator(a) { const r = await fetch(`${API}/v1/operator/${a}`); return r.json(); }
+async function fetchToken(a) { const r = await fetch(`${API}/v1/token/${a}`); return r.json(); }
+async function fetchStats() { const r = await fetch(`${API}/v1/stats`); return r.json(); }
+async function fetchTopOps(n = 10) { const r = await fetch(`${API}/v1/top-operators?limit=${n}`); const d = await r.json(); return d.operators || []; }
 
-/* ── FollowButton ── */
-function FollowButton({ address, t }) {
-  const [on, setOn] = useState(() => getWL().includes(address));
-  const [hov, setHov] = useState(false);
-  const toggle = () => {
-    const wl = getWL();
-    const next = wl.includes(address) ? wl.filter(a=>a!==address) : [...wl, address];
-    saveWL(next);
-    setOn(!wl.includes(address));
-  };
+// ── Helpers ───────────────────────────────────────────────────
+function isValidAddr(s) {
+  if (!s) return false;
+  const t = s.trim();
+  return t.length >= 32 && t.length <= 44 && /^[1-9A-HJ-NP-Za-km-z]+$/.test(t);
+}
+function fmt(n) { if (n == null) return '—'; return typeof n === 'number' ? n.toLocaleString() : String(n); }
+function shortAddr(a) { if (!a || a.length < 12) return a || '—'; return a.slice(0,6)+'…'+a.slice(-4); }
+function getWatchlist() { try { return JSON.parse(localStorage.getItem(WL_KEY) || '[]'); } catch { return []; } }
+function saveWatchlist(wl) { localStorage.setItem(WL_KEY, JSON.stringify(wl)); }
+
+// ── Label tag helpers ─────────────────────────────────────────
+function tagStyle(tag) {
+  const t = (tag || '').toLowerCase();
+  if (t.includes('serial') || (t.includes('rug') && !t.includes('rate'))) return { color: 'var(--red)', background: 'rgba(217,75,43,0.1)', borderColor: 'rgba(217,75,43,0.3)' };
+  if (t.includes('fast') || t.includes('quick')) return { color: 'var(--orange)', background: 'rgba(193,125,14,0.1)', borderColor: 'rgba(193,125,14,0.3)' };
+  if (t.includes('bundle') || t.includes('shill')) return { color: 'var(--purple)', background: 'rgba(138,90,0,0.1)', borderColor: 'rgba(138,90,0,0.3)' };
+  if (t.includes('kol') || t.includes('smart') || t.includes('legit')) return { color: 'var(--teal)', background: 'rgba(42,122,122,0.1)', borderColor: 'rgba(42,122,122,0.3)' };
+  if (t.includes('rename') || t.includes('rebrand') || t.includes('slow') || t.includes('drain')) return { color: 'var(--yellow)', background: 'rgba(224,168,46,0.1)', borderColor: 'rgba(224,168,46,0.3)' };
+  return { color: 'var(--muted)', background: 'rgba(255,255,255,0.04)', borderColor: 'var(--border)' };
+}
+
+function LabelTag({ tag }) {
+  if (!tag) return null;
+  const style = tagStyle(tag);
+  return <span className="label-tag" style={style} title={tag}>{tag.replace(/_/g, ' ')}</span>;
+}
+
+function LabelTagGroup({ tags = [], max = 3 }) {
+  if (!tags?.length) return null;
+  const shown = tags.slice(0, max);
+  const extra = tags.length - max;
+  return (
+    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4, alignItems: 'center' }}>
+      {shown.map(t => <LabelTag key={t} tag={t} />)}
+      {extra > 0 && <span style={{ fontSize: 10, color: 'var(--muted)' }}>+{extra}</span>}
+    </div>
+  );
+}
+
+// ── Follow Button ─────────────────────────────────────────────
+function FollowButton({ wallet, small = false }) {
+  const t = useT();
+  const [following, setFollowing] = useState(() => getWatchlist().includes(wallet));
+
+  const toggle = useCallback((e) => {
+    e.stopPropagation();
+    const wl = getWatchlist();
+    const next = following ? wl.filter(w => w !== wallet) : [...wl, wallet];
+    saveWatchlist(next);
+    setFollowing(!following);
+  }, [wallet, following]);
+
   return (
     <button
-      className={`btn-sm btn-follow${on?' following':''}`}
+      className={'follow-btn ' + (small ? 'follow-sm ' : '') + (following ? 'following' : '')}
       onClick={toggle}
-      onMouseEnter={()=>setHov(true)}
-      onMouseLeave={()=>setHov(false)}
-    >{on?(hov?t.unfollow:t.following):t.follow}</button>
+      title={following ? t.unfollow_title : t.follow_title}
+    >
+      {following ? t.following : t.follow}
+    </button>
   );
 }
 
-/* ── ResultCard ── */
-function ResultCard({ data, t }) {
-  const [copied, setCopied] = useState(false);
-  const addr  = data.wallet || data.operator_address || data.address || '';
-  const score = data.risk_score   || 0;
-  const level = data.risk_level   || 'UNKNOWN';
-  const rugs  = data.confirmed_rugs || 0;
-  const toks  = data.total_tokens  || 0;
-  const rate  = data.rug_rate_pct  || 0;
-  const tags  = data.tags || data.patterns || data.risk_labels || [];
-  const lc    = level==='CRITICAL'?'critical':level==='HIGH'?'high':'low';
-  const sc    = score>=80?'critical':score>=50?'high':'low';
+// ── Rule-based AI Explainer (i18n) ────────────────────────────
+function explainRisk({ op, tok, addr, t }) {
+  const opKnown = op?.known;
+  const tokKnown = tok?.known;
 
-  let explain;
-  if (score>=80||level==='CRITICAL') explain = t.explain_critical(fmtNum(rugs), fmtNum(toks), rate.toFixed(1));
-  else if (score>=50||level==='HIGH') explain = t.explain_high(fmtNum(rugs), fmtNum(toks));
-  else explain = t.explain_low();
+  if (!opKnown && !tokKnown) {
+    const [b1, b2, b3, b4, b5] = t.not_found_body;
+    return {
+      level: 'unknown', emoji: '❓',
+      title: t.not_found_title,
+      recommendation: t.max_caution,
+      explain: <>{b1}<strong>{b2}</strong>{b3}<br/><br/><strong>{b4}</strong>{b5}</>,
+      stats: null
+    };
+  }
 
-  const copy = () => navigator.clipboard.writeText(addr).then(()=>{ setCopied(true); setTimeout(()=>setCopied(false),1500); });
+  if (opKnown) {
+    const rugs = op.confirmed_rugs || 0;
+    const tokens = op.total_tokens || 0;
+    const rate = op.rug_rate_pct || 0;
+    const isSerial = op.tags?.includes('serial_rugger') || op.tags?.includes('serial_deployer');
+    const level = op.risk_level;
 
+    const stats = [
+      { label: t.rugs_lbl,   value: fmt(rugs),   color: 'var(--red)' },
+      { label: t.tokens_lbl, value: fmt(tokens), color: 'var(--orange)' },
+      { label: t.rate_lbl,   value: rate != null ? rate + '%' : '—', color: rate >= 50 ? 'var(--red)' : 'var(--white)' },
+    ];
+
+    if (rugs >= 5 || level === 'CRITICAL') {
+      return { level: 'critical', emoji: '🔴', title: t.extreme_danger, recommendation: t.do_not_buy,
+        explain: t.explain_extreme(rugs, tokens, rate, isSerial), stats };
+    }
+    if (rugs >= 2 || level === 'HIGH') {
+      return { level: 'high', emoji: '🟠', title: t.high_risk_title, recommendation: t.avoid_buying,
+        explain: t.explain_high(rugs, tokens, rate), stats };
+    }
+    if (level === 'MEDIUM') {
+      return { level: 'medium', emoji: '🟡', title: t.medium_risk_title, recommendation: t.investigate_first,
+        explain: t.explain_medium(tokens, rugs), stats };
+    }
+    return { level: 'low', emoji: '🟢', title: t.low_risk_title, recommendation: t.seems_safe,
+      explain: t.explain_low(tokens, rugs), stats };
+  }
+
+  if (tokKnown) {
+    const score = tok.risk_score || 0;
+    const level = tok.risk_level;
+    const sym = tok.symbol;
+    const outcomeLbl = tok.final_outcome === 'confirmed_scam' ? t.rug
+                     : tok.final_outcome === 'confirmed_safe' ? t.safe
+                     : t.pending;
+
+    const stats = [
+      { label: t.score_lbl,  value: score + '/100', color: score >= 60 ? 'var(--red)' : score >= 40 ? 'var(--yellow)' : 'var(--green)' },
+      { label: t.symbol,     value: sym || '—',     color: 'var(--white)' },
+      { label: t.result_lbl, value: outcomeLbl,     color: 'var(--muted)' },
+    ];
+
+    if (level === 'CRITICAL' || score >= 80 || tok.final_outcome === 'confirmed_scam') {
+      return { level: 'critical', emoji: '🔴', title: t.token_dangerous, recommendation: t.do_not_buy,
+        explain: t.explain_token_critical(sym, score, tok.final_outcome === 'confirmed_scam', tok.is_bundle, tok.flags), stats };
+    }
+    if (level === 'HIGH' || score >= 60) {
+      return { level: 'high', emoji: '🟠', title: t.token_risky, recommendation: t.max_caution_label,
+        explain: t.explain_token_high(score, tok.is_bundle), stats };
+    }
+    if (level === 'MEDIUM' || score >= 40) {
+      return { level: 'medium', emoji: '🟡', title: t.medium_risk_title, recommendation: t.investigate_first,
+        explain: t.explain_token_medium(score), stats };
+    }
+    return { level: 'low', emoji: '🟢', title: t.token_ok, recommendation: t.seems_safe,
+      explain: t.explain_token_low(score, tok.final_outcome === 'confirmed_safe'), stats };
+  }
+
+  return { level: 'unknown', emoji: '❓', title: t.not_found_title, recommendation: t.max_caution, explain: t.no_data, stats: null };
+}
+
+// ── Shield icon ───────────────────────────────────────────────
+function Shield({ size = 32 }) {
   return (
-    <div className={`result-card ${lc}`}>
-      <div className="rc-header">
-        <span className="rc-addr">{fmtAddr(addr)}</span>
-        <span className={`risk-badge ${level}`}>{level}</span>
-      </div>
-      <div className="rc-body">
-        <div className="rc-score-row">
-          <div className={`rc-score ${sc}`}>{score}</div>
-          <div><div className="rc-stat-lbl" style={{fontSize:11}}>{t.score_lbl}</div></div>
-        </div>
-        <div className="rc-stats">
-          <div className="rc-stat">
-            <div className="rc-stat-val" style={{color:rugs>0?'var(--orange)':'var(--teal)'}}>{fmtNum(rugs)}</div>
-            <div className="rc-stat-lbl">{t.rugs_lbl}</div>
-          </div>
-          <div className="rc-stat">
-            <div className="rc-stat-val">{fmtNum(toks)}</div>
-            <div className="rc-stat-lbl">{t.tok_lbl}</div>
-          </div>
-          <div className="rc-stat">
-            <div className="rc-stat-val" style={{color:rate>70?'var(--orange)':rate>30?'var(--yellow)':'var(--teal)'}}>{fmtPct(rate)}</div>
-            <div className="rc-stat-lbl">{t.rate_lbl}</div>
-          </div>
-        </div>
-        <div className="rc-explain">{explain}</div>
-        {tags.length>0&&(
-          <div className="rc-tags">
-            {tags.slice(0,5).map(tag=>(
-              <span key={tag} className="tag" style={tagStyle(tag)}>{tag}</span>
-            ))}
-            {tags.length>5&&<span className="tag" style={{background:'rgba(255,255,255,.04)',color:'var(--muted)',border:'1px solid var(--border)'}}>+{tags.length-5}</span>}
-          </div>
-        )}
-        <div className="rc-actions">
-          <FollowButton address={addr} t={t}/>
-          <button className="btn-sm" onClick={copy}>{copied?t.copied:t.copy}</button>
-        </div>
-      </div>
+    <svg width={size} height={size} viewBox="0 0 40 40" fill="none">
+      <path d="M20 4L6 10v10c0 8.8 6 17 14 19 8-2 14-10.2 14-19V10L20 4z"
+        fill="rgba(193,125,14,0.15)" stroke="#C17D0E" strokeWidth="1.5"/>
+      <line x1="20" y1="5" x2="20" y2="33" stroke="#C17D0E" strokeWidth="1.2" opacity="0.6"/>
+      <circle cx="20" cy="20" r="4" stroke="#C17D0E" strokeWidth="1.2"/>
+      <circle cx="20" cy="20" r="1.5" fill="#C17D0E"/>
+    </svg>
+  );
+}
+
+// ── Hub Navigation (always-on, top-right) ─────────────────────
+function HubNav({ lang, onLangChange }) {
+  const t = useT();
+  // Dashboard link omitido até ops.solsentry.app existir (ver D25)
+  return (
+    <nav className="hub-nav" aria-label="Navigation hub">
+      <a href="https://api.solsentry.app/health" target="_blank" rel="noopener noreferrer" className="hub-link hub-live" title={t.hub_live_title}>
+        <span className="hub-live-dot" />
+        {t.hub_live}
+      </a>
+      <button
+        type="button"
+        className="hub-link"
+        onClick={() => onLangChange(lang === 'pt' ? 'en' : 'pt')}
+        title={lang === 'pt' ? 'Switch to English' : 'Mudar para português'}
+        aria-label="Language toggle"
+      >
+        {lang === 'pt' ? 'EN' : 'PT'}
+      </button>
+    </nav>
+  );
+}
+
+// ── Mode Switcher ─────────────────────────────────────────────
+function ModeSwitcher({ mode, onChange }) {
+  const t = useT();
+  const wlCount = getWatchlist().length;
+  return (
+    <div className="mode-switcher" role="tablist" aria-label="Mode selector">
+      <div className="mode-hint">{t.mode_label}</div>
+      <button
+        className={'mode-btn ' + (mode === 'fun' ? 'active' : '')}
+        onClick={() => onChange('fun')} role="tab" aria-selected={mode === 'fun'}
+      >
+        <span className="dot"></span> {t.mode_easy}
+      </button>
+      <button
+        className={'mode-btn ' + (mode === 'pro' ? 'active' : '')}
+        onClick={() => onChange('pro')} role="tab" aria-selected={mode === 'pro'}
+      >
+        <span className="dot"></span> {t.mode_pro}
+      </button>
+      <button
+        className={'mode-btn ' + (mode === 'dev' ? 'active' : '')}
+        onClick={() => onChange('dev')} role="tab" aria-selected={mode === 'dev'}
+      >
+        <span className="dot"></span> {t.mode_dev}
+      </button>
+      <button
+        className={'mode-btn watch-active ' + (mode === 'watch' ? 'active' : '')}
+        onClick={() => onChange('watch')} role="tab" aria-selected={mode === 'watch'}
+        title={t.mode_watch_title}
+      >
+        <span className="dot"></span> {t.mode_watch} {wlCount > 0 && <span style={{ fontSize: 10, opacity: 0.8, marginLeft: 2 }}>({wlCount})</span>}
+      </button>
     </div>
   );
 }
 
-/* ── FunMode ── */
-function FunMode({ t, stats }) {
-  const [q, setQ] = useState('');
+// ── FUN MODE ──────────────────────────────────────────────────
+function FunMode() {
+  const t = useT();
+  const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
-  const [err, setErr] = useState(null);
+  const [error, setError] = useState(null);
+  const [showDetails, setShowDetails] = useState(false);
+  const inputRef = useRef(null);
 
-  const lookup = async () => {
-    if (!q.trim()) return;
-    setLoading(true); setErr(null); setResult(null);
+  const check = useCallback(async (addr) => {
+    const a = (addr || input).trim();
+    if (!isValidAddr(a)) {
+      setError(t.invalid);
+      return;
+    }
+    setLoading(true); setError(null); setResult(null); setShowDetails(false);
     try {
-      const r = await fetch(`${API}/operator/${q.trim()}`);
-      if (!r.ok) throw new Error();
-      const d = await r.json();
-      if (!d.known) throw new Error();
-      setResult(d);
-    } catch { setErr(t.err); }
-    finally { setLoading(false); }
-  };
+      const [op, tok] = await Promise.all([
+        fetchOperator(a).catch(() => ({})),
+        fetchToken(a).catch(() => ({}))
+      ]);
+      const analysis = explainRisk({ op, tok, addr: a, t });
+      setResult({ ...analysis, addr: a, raw: { op, tok } });
+    } catch (e) {
+      setError(t.apiErr);
+    } finally {
+      setLoading(false);
+    }
+  }, [input, t]);
 
-  const caseRugs = stats ? fmtNum(stats.confirmed_rugs||7800) : '7.8K';
+  const tryExample = useCallback((addr) => {
+    setInput(addr);
+    setTimeout(() => check(addr), 100);
+  }, [check]);
 
   return (
-    <div className="page">
-      <div className="hero">
-        <p className="hero-eyebrow">{t.eyebrow}</p>
-        <h1 className="hero-h1">
-          {t.h1a}<span className="hl">{t.h1b}</span>{t.h1c}<br/>
-          <span style={{fontFamily:'monospace',fontSize:'0.78em',letterSpacing:'-.01em'}}>{t.h1d}</span>
-        </h1>
-        <p className="hero-sub">{t.sub}</p>
-        <div className="search-wrap">
+    <div className="fun-shell">
+      <div className="fun-logo">
+        <Shield size={40} />
+        <div className="fun-logo-text">SolSentry</div>
+      </div>
+
+      <h1 className="fun-headline">{t.headline}</h1>
+      <p className="fun-sub">{t.sub}</p>
+
+      <div className="fun-input-wrap">
+        <input
+          ref={inputRef}
+          className="fun-input"
+          value={input}
+          onChange={e => setInput(e.target.value)}
+          onKeyDown={e => e.key === 'Enter' && check()}
+          placeholder={t.placeholder}
+          spellCheck={false}
+          autoComplete="off"
+          aria-label={t.placeholder}
+        />
+        <button
+          className="fun-btn"
+          onClick={() => check()}
+          disabled={loading || !input.trim()}
+        >
+          {loading ? <span className="spinner" aria-label={t.verifying} /> : t.verify}
+        </button>
+      </div>
+
+      <div className="fun-examples">
+        <span style={{ fontSize: 12, color: 'var(--muted)', alignSelf: 'center', marginRight: 4 }}>{t.examples}</span>
+        <button className="fun-example" onClick={() => tryExample(DEFAULT_DANGER)}>{t.ex_danger}</button>
+        <button className="fun-example" onClick={() => tryExample(DEFAULT_SAFE)}>{t.ex_safe}</button>
+      </div>
+
+      {error && (
+        <div className="result-card fade-up" style={{ borderColor: 'rgba(217,75,43,0.5)', marginTop: 24, padding: 20 }} role="alert">
+          <div style={{ color: 'var(--red)', fontSize: 14 }}>⚠ {error}</div>
+        </div>
+      )}
+
+      {result && (
+        <div className={'result-card scale-in ' + result.level}>
+          <div className="result-header">
+            <span className="result-emoji" aria-hidden="true">{result.emoji}</span>
+            <h2 className={'result-title ' + result.level}>{result.title}</h2>
+            <div style={{ marginTop: 10 }}>
+              <span className={'result-recommendation ' + result.level}>{result.recommendation}</span>
+            </div>
+          </div>
+
+          <div className="result-body">
+            <div className="addr-display" title={result.addr}>{result.addr}</div>
+            <div className="result-explain">{result.explain}</div>
+
+            {result.raw.op?.tags?.length > 0 && (
+              <div style={{ marginBottom: 14 }}>
+                <LabelTagGroup tags={result.raw.op.tags} max={5} />
+              </div>
+            )}
+
+            {result.stats && (
+              <div className="result-stats">
+                {result.stats.map(s => (
+                  <div className="result-stat" key={s.label}>
+                    <div className="result-stat-value" style={{ color: s.color }}>{s.value}</div>
+                    <div className="result-stat-label">{s.label}</div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            <div style={{ marginTop: 16, display: 'flex', justifyContent: 'flex-end' }}>
+              <FollowButton wallet={result.addr} />
+            </div>
+          </div>
+
+          <button
+            className="result-details-toggle"
+            onClick={() => setShowDetails(!showDetails)}
+            aria-expanded={showDetails}
+          >
+            {showDetails ? t.details_hide : t.details_show}
+          </button>
+
+          {showDetails && (
+            <div className="result-details fade-up">
+              {result.raw.op?.known && (
+                <>
+                  <div style={{ fontSize: 11, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 8 }}>{t.operator}</div>
+                  <div className="result-detail-row"><span className="result-detail-key">{t.risk_level}</span><span className="result-detail-val">{result.raw.op.risk_level || '—'}</span></div>
+                  <div className="result-detail-row"><span className="result-detail-key">{t.confirmed_rugs}</span><span className="result-detail-val">{fmt(result.raw.op.confirmed_rugs)}</span></div>
+                  <div className="result-detail-row"><span className="result-detail-key">{t.total_tokens}</span><span className="result-detail-val">{fmt(result.raw.op.total_tokens)}</span></div>
+                  <div className="result-detail-row"><span className="result-detail-key">{t.rug_rate}</span><span className="result-detail-val">{result.raw.op.rug_rate_pct != null ? result.raw.op.rug_rate_pct + '%' : '—'}</span></div>
+                  <div className="result-detail-row"><span className="result-detail-key">{t.tags}</span><span className="result-detail-val">{result.raw.op.tags?.join(', ') || '—'}</span></div>
+                </>
+              )}
+              {result.raw.tok?.known && (
+                <>
+                  <div style={{ fontSize: 11, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.1em', marginTop: 16, marginBottom: 8 }}>{t.token}</div>
+                  <div className="result-detail-row"><span className="result-detail-key">{t.risk_level}</span><span className="result-detail-val">{result.raw.tok.risk_level || '—'}</span></div>
+                  <div className="result-detail-row"><span className="result-detail-key">{t.risk_score}</span><span className="result-detail-val">{result.raw.tok.risk_score ?? '—'}/100</span></div>
+                  <div className="result-detail-row"><span className="result-detail-key">{t.symbol}</span><span className="result-detail-val">{result.raw.tok.symbol || '—'}</span></div>
+                  <div className="result-detail-row"><span className="result-detail-key">{t.outcome}</span><span className="result-detail-val">{result.raw.tok.final_outcome || '—'}</span></div>
+                  <div className="result-detail-row"><span className="result-detail-key">{t.bundle}</span><span className="result-detail-val">{result.raw.tok.is_bundle ? t.yes : t.no}</span></div>
+                </>
+              )}
+            </div>
+          )}
+        </div>
+      )}
+
+      <FunFooter />
+    </div>
+  );
+}
+
+// ── FunFooter — fetches live stats so footer never goes stale ─
+function FunFooter() {
+  const t = useT();
+  const [s, setS] = useState(null);
+  useEffect(() => { fetchStats().then(setS).catch(() => {}); }, []);
+  const fmtUptime = (h) => {
+    if (!h) return '—';
+    const total = Math.floor(h * 60);
+    const d = Math.floor(total / 1440);
+    const hh = Math.floor((total % 1440) / 60);
+    return d > 0 ? `${d}d ${hh}h` : `${hh}h`;
+  };
+  return (
+    <div className="fun-footer">
+      <p>
+        {t.monitoring} {fmtUptime(s?.runtime_hours)} ·{' '}
+        {s ? fmt(s.total_predictions) : '—'} {t.scans_word} ·{' '}
+        {s?.accuracy_pct != null ? s.accuracy_pct + '%' : '—'} {t.accuracy_word} ·{' '}
+        {s ? fmt(s.confirmed_rugs) : '—'} {t.rugs_confirmed}
+      </p>
+      <p style={{ marginTop: 8 }}>
+        {t.found_something} <a href="https://twitter.com/solsentryai" target="_blank" rel="noopener noreferrer">@solsentryai</a>
+      </p>
+    </div>
+  );
+}
+
+// ── PRO MODE ──────────────────────────────────────────────────
+function ProMode() {
+  const t = useT();
+  const [stats, setStats] = useState(null);
+  const [ops, setOps] = useState([]);
+  const [query, setQuery] = useState('');
+  const [lookup, setLookup] = useState(null);
+
+  useEffect(() => {
+    fetchStats().then(setStats).catch(() => {});
+    fetchTopOps(15).then(setOps).catch(() => {});
+    const id = setInterval(() => {
+      fetchStats().then(setStats).catch(() => {});
+      fetchTopOps(15).then(setOps).catch(() => {});
+    }, 30000);
+    return () => clearInterval(id);
+  }, []);
+
+  async function runLookup() {
+    const a = query.trim();
+    if (!isValidAddr(a)) return;
+    const [op, tok] = await Promise.all([fetchOperator(a).catch(() => ({})), fetchToken(a).catch(() => ({}))]);
+    setLookup({ op, tok, addr: a });
+  }
+
+  // Format runtime as `Xd Yh` (canonical: see docs/UPTIME_CANONICAL.md)
+  const fmtUptime = (h) => {
+    if (h == null) return '…';
+    const total = Math.floor(h * 60);
+    const d = Math.floor(total / 1440);
+    const hh = Math.floor((total % 1440) / 60);
+    return d > 0 ? `${d}d ${hh}h` : `${hh}h`;
+  };
+
+  return (
+    <div className="pro-shell">
+      <header className="pro-header">
+        <div className="pro-brand">
+          <Shield size={28} />
+          <div className="pro-brand-text">SolSentry</div>
+          <span style={{ fontSize: 10, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.15em' }}>{t.pro_label}</span>
+        </div>
+        <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
           <input
-            className="search-input"
-            placeholder={t.placeholder}
-            value={q}
-            onChange={e=>setQ(e.target.value)}
-            onKeyDown={e=>e.key==='Enter'&&lookup()}
+            className="fun-input"
+            style={{ padding: '10px 14px', fontSize: 12, minWidth: 320, borderWidth: 1 }}
+            value={query}
+            onChange={e => setQuery(e.target.value)}
+            onKeyDown={e => e.key === 'Enter' && runLookup()}
+            placeholder={t.paste_placeholder}
           />
-          <button className="search-btn" onClick={lookup} disabled={loading||!q.trim()}>
-            {loading?<span className="spinner"/>:t.check}
+          <button className="fun-btn" style={{ padding: '10px 18px' }} onClick={runLookup}>{t.check}</button>
+        </div>
+      </header>
+
+      <div className="pro-stats-bar">
+        <div className="pro-stat">
+          <div className="pro-stat-label">{t.scans_lbl}</div>
+          <div className="pro-stat-value" style={{ color: 'var(--white)' }}>{stats ? fmt(stats.total_predictions) : '…'}</div>
+          <div className="pro-stat-sub">{t.total_tokens_sub}</div>
+        </div>
+        <div className="pro-stat">
+          <div className="pro-stat-label">{t.accuracy_lbl}</div>
+          <div className="pro-stat-value" style={{ color: 'var(--teal)' }}>{stats?.accuracy_pct ? stats.accuracy_pct + '%' : '…'}</div>
+          <div className="pro-stat-sub">{t.pred_sub}</div>
+        </div>
+        <div className="pro-stat">
+          <div className="pro-stat-label">{t.rugs_short}</div>
+          <div className="pro-stat-value" style={{ color: 'var(--red)' }}>{stats ? fmt(stats.confirmed_rugs) : '…'}</div>
+          <div className="pro-stat-sub">{t.confirmed_sub}</div>
+        </div>
+        <div className="pro-stat">
+          <div className="pro-stat-label">{t.operators_lbl}</div>
+          <div className="pro-stat-value" style={{ color: 'var(--orange)' }}>{stats ? fmt(stats.total_operators) : '…'}</div>
+          <div className="pro-stat-sub">{t.tracked_sub}</div>
+        </div>
+        <div className="pro-stat">
+          <div className="pro-stat-label">{t.clusters_lbl}</div>
+          <div className="pro-stat-value" style={{ color: 'var(--purple)' }}>{stats ? fmt(stats.bot_clusters) : '…'}</div>
+          <div className="pro-stat-sub">{t.bot_graphs_sub}</div>
+        </div>
+        <div className="pro-stat">
+          <div className="pro-stat-label">{t.runtime_lbl}</div>
+          <div className="pro-stat-value">{fmtUptime(stats?.runtime_hours)}</div>
+          <div className="pro-stat-sub">{t.mainnet_sub}</div>
+        </div>
+      </div>
+
+      <div className="pro-main">
+        <div className="pro-panel">
+          <div className="pro-panel-header">
+            <span>{t.top_serial}</span>
+            <span style={{ fontSize: 10, color: 'var(--muted)' }}>{ops.length} {t.shown}</span>
+          </div>
+          <div>
+            {ops.length === 0 ? (
+              <div style={{ padding: 32, textAlign: 'center', color: 'var(--muted)', fontSize: 12 }}>{t.loading}</div>
+            ) : ops.map(op => {
+              const r = op.confirmed_rugs || 0;
+              const rt = op.rug_rate_pct || 0;
+              // /v1/top-operators omits risk_level (only risk_label is set) — derive
+              // client-side from rug volume + rate (mirrors c748bb9 fix).
+              const lv = op.risk_level || (r >= 100 && rt >= 70 ? 'CRITICAL' : r >= 20 && rt >= 50 ? 'HIGH' : 'MEDIUM');
+              return (
+                <div className="pro-op-row" key={op.wallet}>
+                  <div className="mono" title={op.wallet}>{shortAddr(op.wallet)}</div>
+                  <LabelTagGroup tags={op.tags} max={2} />
+                  <span className={'risk-pill risk-' + lv}>{lv}</span>
+                  <span style={{ color: 'var(--red)', fontWeight: 700, fontFamily: 'var(--font-mono)', fontSize: 12 }}>{r}r</span>
+                  <FollowButton wallet={op.wallet} small />
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        <div className="pro-panel">
+          <div className="pro-panel-header">
+            <span>{t.lookup_result}</span>
+          </div>
+          <div style={{ padding: 16 }}>
+            {!lookup && <div style={{ color: 'var(--muted)', fontSize: 13, padding: 24, textAlign: 'center' }}>{t.paste_to_analyze}</div>}
+            {lookup && (() => {
+              const a = explainRisk({...lookup, t});
+              return (
+                <div className="fade-up">
+                  <div style={{ marginBottom: 14, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <span className="mono" style={{ color: 'var(--muted)' }}>{shortAddr(lookup.addr)}</span>
+                    <span className={'risk-pill risk-' + (lookup.op?.risk_level || lookup.tok?.risk_level || 'UNKNOWN')}>
+                      {lookup.op?.risk_level || lookup.tok?.risk_level || '—'}
+                    </span>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
+                    <span style={{ fontSize: 32 }}>{a.emoji}</span>
+                    <div>
+                      <div className={'result-title ' + a.level} style={{ fontSize: 20, marginBottom: 2 }}>{a.title}</div>
+                      <span className={'result-recommendation ' + a.level} style={{ fontSize: 10, padding: '3px 8px' }}>{a.recommendation}</span>
+                    </div>
+                  </div>
+                  {lookup.op?.tags?.length > 0 && (
+                    <div style={{ marginBottom: 12 }}>
+                      <LabelTagGroup tags={lookup.op.tags} max={4} />
+                    </div>
+                  )}
+                  {a.stats && (
+                    <div className="result-stats" style={{ marginTop: 14 }}>
+                      {a.stats.map(s => (
+                        <div className="result-stat" key={s.label}>
+                          <div className="result-stat-value" style={{ color: s.color, fontSize: 20 }}>{s.value}</div>
+                          <div className="result-stat-label">{s.label}</div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  <div style={{ marginTop: 14, fontSize: 13, color: 'rgba(255,255,255,0.75)', lineHeight: 1.6 }}>{a.explain}</div>
+                  <div style={{ marginTop: 16, display: 'flex', justifyContent: 'flex-end' }}>
+                    <FollowButton wallet={lookup.addr} />
+                  </div>
+                </div>
+              );
+            })()}
+          </div>
+        </div>
+      </div>
+
+      <div style={{ textAlign: 'center', padding: 20, color: 'var(--muted)', fontSize: 11 }}>
+        {t.pro_footer} <code style={{ color: 'var(--orange)' }}>dashboard/index.html</code>
+      </div>
+    </div>
+  );
+}
+
+// ── WATCH MODE ────────────────────────────────────────────────
+function WatchlistMode({ onModeChange }) {
+  const t = useT();
+  const [wallets, setWallets] = useState(getWatchlist);
+  const [data, setData] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [copied, setCopied] = useState(null);
+
+  const refresh = useCallback(async (ws) => {
+    if (!ws.length) return;
+    setLoading(true);
+    const results = await Promise.allSettled(ws.map(w => fetchOperator(w).then(d => [w, d])));
+    const map = {};
+    results.forEach(r => {
+      if (r.status === 'fulfilled') { const [w, d] = r.value; map[w] = d; }
+    });
+    setData(prev => ({ ...prev, ...map }));
+    setLoading(false);
+  }, []);
+
+  useEffect(() => {
+    refresh(wallets);
+    const id = setInterval(() => refresh(wallets), 60000);
+    return () => clearInterval(id);
+  }, [wallets.join(','), refresh]);
+
+  const unfollow = (wallet) => {
+    const next = wallets.filter(w => w !== wallet);
+    saveWatchlist(next);
+    setWallets(next);
+    setData(prev => { const d = {...prev}; delete d[wallet]; return d; });
+  };
+
+  const copyAddr = (wallet) => {
+    navigator.clipboard?.writeText(wallet);
+    setCopied(wallet);
+    setTimeout(() => setCopied(null), 1500);
+  };
+
+  return (
+    <div className="watch-shell">
+      <div className="watch-title">👁 {t.watchlist}</div>
+      <p className="watch-sub">
+        {wallets.length > 0
+          ? `${t.wallets_followed(wallets.length)}${loading ? ' · ' + t.watch_loading : ''}`
+          : t.no_wallets}
+      </p>
+
+      {wallets.length === 0 ? (
+        <div className="watch-empty">
+          <div style={{ fontSize: 48, marginBottom: 16 }}>📋</div>
+          <div style={{ fontWeight: 600, marginBottom: 8 }}>{t.watch_empty_title}</div>
+          <div style={{ fontSize: 13 }}>
+            {t.watch_empty_msg_pre}<strong>{t.watch_empty_msg_btn}</strong>{t.watch_empty_msg_mid}
+            <button
+              style={{ background: 'none', border: 'none', color: 'var(--orange)', cursor: 'pointer', fontFamily: 'inherit', fontSize: 'inherit', fontWeight: 700, padding: 0 }}
+              onClick={() => onModeChange('fun')}
+            >{t.mode_easy}</button>
+            {t.watch_empty_or}
+            <button
+              style={{ background: 'none', border: 'none', color: 'var(--orange)', cursor: 'pointer', fontFamily: 'inherit', fontSize: 'inherit', fontWeight: 700, padding: 0 }}
+              onClick={() => onModeChange('pro')}
+            >{t.mode_pro}</button>
+            {t.watch_empty_msg_suf}
+          </div>
+        </div>
+      ) : (
+        wallets.map(wallet => {
+          const op = data[wallet];
+          const level = op?.risk_level || 'UNKNOWN';
+          const isLoading = loading && !op;
+          return (
+            <div className="watch-card fade-up" key={wallet}>
+              <div style={{ minWidth: 0 }}>
+                <div className="watch-card-top">
+                  <span className={'risk-pill risk-' + level}>{level}</span>
+                  <span className="mono" style={{ fontSize: 12, color: 'var(--muted)', overflow: 'hidden', textOverflow: 'ellipsis' }}
+                    title={wallet}>{shortAddr(wallet)}</span>
+                  {isLoading && <span className="spinner" style={{ width: 12, height: 12, borderWidth: 2, flexShrink: 0 }} />}
+                </div>
+                {op?.tags?.length > 0 && (
+                  <div className="watch-card-tags">
+                    <LabelTagGroup tags={op.tags} max={5} />
+                  </div>
+                )}
+                <div className="watch-card-stats">
+                  {op?.known
+                    ? `${fmt(op.confirmed_rugs)} ${t.rugs_short.toLowerCase()} · ${fmt(op.total_tokens)} tokens · ${op.rug_rate_pct ?? 0}% ${t.rug_rate.toLowerCase()}`
+                    : isLoading ? t.op_loading : t.op_not_found}
+                </div>
+              </div>
+              <div className="watch-actions">
+                <button className="follow-btn follow-sm following" onClick={() => unfollow(wallet)}>{t.remove}</button>
+                <button className="watch-copy-btn" onClick={() => copyAddr(wallet)}>
+                  {copied === wallet ? t.copied : t.copy}
+                </button>
+              </div>
+            </div>
+          );
+        })
+      )}
+
+      {wallets.length > 0 && (
+        <div style={{ textAlign: 'center', marginTop: 32, fontSize: 12, color: 'var(--muted)' }}>
+          <button
+            style={{ background: 'none', border: 'none', color: 'var(--muted)', cursor: 'pointer', fontSize: 'inherit', fontFamily: 'inherit' }}
+            onClick={() => { saveWatchlist([]); setWallets([]); setData({}); }}
+          >
+            {t.clear_all}
+          </button>
+          {' · '}
+          <button
+            style={{ background: 'none', border: 'none', color: 'var(--muted)', cursor: 'pointer', fontSize: 'inherit', fontFamily: 'inherit' }}
+            onClick={() => refresh(wallets)}
+          >
+            {t.refresh_now}
           </button>
         </div>
-        {result&&<ResultCard data={result} t={t}/>}
-        {err&&<div className="error-card">{err}</div>}
-      </div>
-      <div className="how-section">
-        <div className="how-title">{t.how_title}</div>
-        <div className="how-steps">
-          {[['📋',t.s1t,t.s1d],['⚡',t.s2t,t.s2d],['🛡️',t.s3t,t.s3d]].map(([ic,ti,de])=>(
-            <div key={ti} className="how-step">
-              <div className="how-step-icon">{ic}</div>
-              <div className="how-step-title">{ti}</div>
-              <div className="how-step-desc">{de}</div>
-            </div>
-          ))}
-        </div>
-      </div>
-      <div className="case-card">
-        <div className="case-eyebrow">{t.case_eyebrow}</div>
-        <div className="case-title">{t.case_fn(caseRugs)}</div>
-        <div className="case-body">{t.case_body}</div>
-        <a href="/operator/4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1" className="case-link">{t.case_link}</a>
-      </div>
+      )}
     </div>
   );
 }
 
-/* ── ProMode ── */
-function ProMode({ t }) {
-  const [stats,   setStats]   = useState(null);
-  const [ops,     setOps]     = useState([]);
-  const [tab,     setTab]     = useState('operators');
-  const [wl,      setWl]      = useState(getWL);
-  const [wlData,  setWlData]  = useState({});
-  const [lkAddr,  setLkAddr]  = useState('');
-  const [lkRes,   setLkRes]   = useState(null);
-  const [lkLoad,  setLkLoad]  = useState(false);
-  const [lkErr,   setLkErr]   = useState(null);
-
-  useEffect(()=>{
-    const load = async()=>{
-      try {
-        const [sr, or] = await Promise.all([
-          fetch(`${API}/stats`).then(r=>r.json()),
-          fetch(`${API}/top-operators?limit=20`).then(r=>r.json()),
-        ]);
-        setStats(sr);
-        setOps(Array.isArray(or)?or:(or.operators||[]));
-      } catch {}
-    };
-    load();
-    const iv = setInterval(load, 30000);
-    return ()=>clearInterval(iv);
-  },[]);
-
-  useEffect(()=>{
-    if (tab!=='watchlist') return;
-    const cur = getWL(); setWl(cur);
-    const fetchAll = async()=>{
-      const res={};
-      await Promise.all(cur.map(async addr=>{
-        try { const r=await fetch(`${API}/operator/${addr}`); if(r.ok) res[addr]=await r.json(); } catch {}
-      }));
-      setWlData(res);
-    };
-    fetchAll();
-  },[tab]);
-
-  const removeWl = (addr) => { const n=getWL().filter(a=>a!==addr); saveWL(n); setWl(n); };
-  const clearWl  = () => { saveWL([]); setWl([]); };
-
-  const doLookup = async()=>{
-    if (!lkAddr.trim()) return;
-    setLkLoad(true); setLkErr(null); setLkRes(null);
-    try {
-      const r=await fetch(`${API}/operator/${lkAddr.trim()}`);
-      if (!r.ok) throw new Error();
-      const d=await r.json();
-      if (!d.known) throw new Error();
-      setLkRes(d);
-    } catch { setLkErr(t.err); }
-    finally { setLkLoad(false); }
-  };
-
-  return (
-    <div className="page">
-      <div className="container-wide">
-        {stats&&(
-          <div className="stats-bar">
-            {[
-              [fmtNum(stats.total_predictions), t.st_scans,  'orange'],
-              [fmtPct(stats.accuracy_pct),       t.st_acc,   'teal'],
-              [fmtNum(stats.confirmed_rugs),      t.st_rugs,  'orange'],
-              [fmtNum(stats.total_operators),     t.st_ops,   ''],
-              [fmtNum(stats.serial_ruggers),      t.st_serial,'purple'],
-              [stats.runtime_seconds?fmtRuntime(stats.runtime_seconds):fmtHours(stats.runtime_hours), t.st_up, 'teal'],
-            ].map(([v,l,c])=>(
-              <div key={l} className="stat-tile">
-                <div className={`stat-tile-val${c?' '+c:''}`}>{v}</div>
-                <div className="stat-tile-lbl">{l}</div>
-              </div>
-            ))}
-          </div>
-        )}
-        <div className="tabs">
-          {['operators','watchlist','lookup'].map(tid=>(
-            <button key={tid} className={`tab-btn${tab===tid?' active':''}`} onClick={()=>setTab(tid)}>
-              {tid==='operators'?t.t_ops:tid==='watchlist'?`${t.t_wl}${wl.length>0?` (${wl.length})`:''}`  :t.t_lk}
-            </button>
-          ))}
-        </div>
-
-        {tab==='operators'&&(
-          <div style={{overflowX:'auto'}}>
-            <table className="ops-table">
-              <thead><tr>
-                <th>{t.col_addr}</th><th>{t.col_level}</th><th>{t.col_rugs}</th><th>{t.col_tok}</th><th>{t.col_rate}</th>
-              </tr></thead>
-              <tbody>
-                {ops.slice(0,20).map((op,i)=>{
-                  const addr=op.wallet||op.operator_address||op.address||'';
-                  const r=op.confirmed_rugs||0;
-                  const to=op.total_tokens||0;
-                  const rt=op.rug_rate_pct||0;
-                  // top-operators only returns risk_label; derive level from rug volume + rate
-                  const lv = op.risk_level || (r>=100&&rt>=70?'CRITICAL':r>=20&&rt>=50?'HIGH':'MEDIUM');
-                  return (
-                    <tr key={addr||i}>
-                      <td><a href={`/operator/${addr}`} className="mono-sm" style={{color:'var(--text)'}}>{fmtAddr(addr)}</a></td>
-                      <td><span className={lv==='CRITICAL'?'badge-critical':lv==='HIGH'?'badge-high':'badge-medium'}>{lv}</span></td>
-                      <td style={{color:'var(--orange)',fontWeight:600}}>{fmtNum(r)}</td>
-                      <td>{fmtNum(to)}</td>
-                      <td><span className={`rug-pct${rt>70?' hot':rt>30?' warm':''}`}>{fmtPct(rt)}</span></td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-        )}
-
-        {tab==='watchlist'&&(
-          wl.length===0?(
-            <div className="wl-empty">
-              <div className="icon">👁️</div>
-              <div style={{fontWeight:600,marginBottom:6}}>{t.wl_empty_h}</div>
-              <div style={{fontSize:13}}>{t.wl_empty_d}</div>
-            </div>
-          ):(
-            <>
-              <div style={{display:'flex',justifyContent:'flex-end',marginBottom:12}}>
-                <button className="btn-sm" onClick={clearWl}>{t.wl_clear}</button>
-              </div>
-              <div className="wl-grid">
-                {wl.map(addr=>{
-                  const d=wlData[addr];
-                  const lv=(d?.risk_level||'').toLowerCase();
-                  return (
-                    <div key={addr} className={`wl-item${lv?' '+lv:''}`}>
-                      <span className="wl-addr">{fmtAddr(addr)}</span>
-                      {d&&<span className={d.risk_level==='CRITICAL'?'badge-critical':d.risk_level==='HIGH'?'badge-high':'badge-medium'}>{d.risk_level}</span>}
-                      {d&&<span className="wl-rugs">{fmtNum(d.confirmed_rugs||0)} rugs</span>}
-                      <button className="btn-sm btn-remove" onClick={()=>removeWl(addr)}>{t.wl_remove}</button>
-                    </div>
-                  );
-                })}
-              </div>
-            </>
-          )
-        )}
-
-        {tab==='lookup'&&(
-          <div>
-            <div className="lookup-form">
-              <input
-                className="lookup-input"
-                placeholder={t.lk_ph}
-                value={lkAddr}
-                onChange={e=>setLkAddr(e.target.value)}
-                onKeyDown={e=>e.key==='Enter'&&doLookup()}
-              />
-              <button className="btn-primary teal" onClick={doLookup} disabled={lkLoad||!lkAddr.trim()}>
-                {lkLoad?<span className="spinner"/>:t.lk_btn}
-              </button>
-            </div>
-            {lkRes&&<ResultCard data={lkRes} t={t}/>}
-            {lkErr&&<div className="error-card">{lkErr}</div>}
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
-
-/* ── DevMode ── */
-function DevMode({ t, lang }) {
-  const [ctab, setCtab] = useState('curl');
-
-  const ex = {
-    curl:'curl https://api.solsentry.app/v1/operator/4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1',
-    python:`import httpx
-r = httpx.get("https://api.solsentry.app/v1/operator/{address}")
-d = r.json()
-print(d["risk_level"], d["confirmed_rugs"])`,
-    ts:`const res = await fetch(
-  \`https://api.solsentry.app/v1/operator/\${addr}\`
-);
-const { risk_level, confirmed_rugs } = await res.json();`,
-    mcp:`// Claude / any MCP client
-Use: solsentry_scan_operator
-Input: { "address": "4kxscute…" }`,
-  };
-
-  const eps = [
-    ['GET','/v1/operator/{address}',    lang==='pt'?'Score + histórico de rugs do operador':'Operator risk score + rug history'],
-    ['GET','/v1/stats',                 lang==='pt'?'Métricas do sistema ao vivo':'Live system metrics'],
-    ['GET','/v1/top-operators',         lang==='pt'?'Top ruggers por risco confirmado':'Top ruggers by confirmed risk'],
-    ['GET','/v1/drain-trace/{address}', lang==='pt'?'Rastreia SOL pós-rug (10 hops)':'Trace SOL post-rug (10 hops)'],
-    ['GET','/health',                   lang==='pt'?'Status + invariantes do sistema':'System health + invariants'],
-    ['GET','/v1/x402/stats',            lang==='pt'?'Métricas de uso x402':'x402 usage metrics'],
+// ── DEV MODE ──────────────────────────────────────────────────
+function DevMode() {
+  const t = useT();
+  const endpoints = [
+    { method: 'GET', path: '/v1/stats', desc: 'Global network statistics: total predictions, accuracy, operators, clusters, runtime.' },
+    { method: 'GET', path: '/v1/operator/{wallet}', desc: 'Operator profile: risk level, confirmed rugs, total tokens, tags.' },
+    { method: 'GET', path: '/v1/operator/{wallet}/timeline', desc: 'Daily buckets with deployments, rugs, safe, pending for the last N days.' },
+    { method: 'GET', path: '/v1/token/{mint}', desc: 'Token risk: score, level, symbol, flags, outcome, bundle detection.' },
+    { method: 'GET', path: '/v1/top-operators?limit=N', desc: 'Top serial deployers ranked by confirmed rug count.' },
+    { method: 'GET', path: '/v1/alerts/recent?limit=N&min_risk=N', desc: 'Recent high-risk scan alerts with full metadata.' },
+    { method: 'GET', path: '/v1/clusters?min_size=N&limit=N', desc: 'Bot clusters: coordinated wallets with shared funding sources.' },
+    { method: 'GET', path: '/v1/resolutions/recent', desc: 'Recently resolved predictions — correctness tracking.' },
+    { method: 'GET', path: '/health', desc: 'Basic health check.' },
+    { method: 'GET', path: '/health/invariants', desc: 'Data consistency monitor — sentinels + schema checks.' },
   ];
 
   const mcpTools = [
-    ['solsentry_scan_operator', lang==='pt'?'Verifica risco de um endereço':'Check address risk'],
-    ['solsentry_get_stats',     lang==='pt'?'Métricas do sistema':'System metrics'],
-    ['solsentry_drain_trace',   lang==='pt'?'Rastreia fundos pós-rug':'Trace rug funds'],
-    ['solsentry_top_operators', lang==='pt'?'Lista maiores ruggers':'List top ruggers'],
+    { name: 'check_operator', desc: 'Operator risk profile query' },
+    { name: 'check_token', desc: 'Token risk analysis' },
+    { name: 'get_top_operators', desc: 'Top serial deployers list' },
+    { name: 'get_network_stats', desc: 'Global statistics' },
+    { name: 'explain_risk', desc: 'Natural language risk explanation (PT-BR)' },
   ];
 
-  const pricing = [
-    [t.px_tier==='Plano'?'Gratuito':'Free',       '—',               '—',        lang==='pt'?'10/dia':'10/day'],
-    ['x402',         lang==='pt'?'0.01–0.05 USDC':'0.01–0.05 USDC', '—',        lang==='pt'?'Pague por uso':'Pay-per-use'],
-    [lang==='pt'?'B2B Básico':'B2B Basic', '—',   '$99/'+  (lang==='pt'?'mês':'mo'), lang==='pt'?'10K varreduras':'10K scans'],
-    [lang==='pt'?'B2B Pro':'B2B Pro',      '—',   '$299/'+ (lang==='pt'?'mês':'mo'),lang==='pt'?'100K varreduras':'100K scans'],
-  ];
+  const [snippetType, setSnippetType] = useState('curl');
+  const examples = {
+    curl: `curl http://localhost:8081/v1/operator/4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1`,
+    python: `import requests
+r = requests.get('http://localhost:8081/v1/operator/4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1')
+data = r.json()
+print(data['risk_level'], data['confirmed_rugs'])`,
+    ts: `const res = await fetch('http://localhost:8081/v1/operator/4kxscute...');
+const data = await res.json();
+console.log(data.risk_level, data.confirmed_rugs);`,
+    mcp: `# From MCP-compatible client:
+tool: check_operator
+args: { wallet: "4kxscuteRLQdNi..." }
+# Returns structured risk profile`
+  };
+
+  const copyToClipboard = (text) => {
+    navigator.clipboard?.writeText(text);
+  };
 
   return (
-    <div className="page">
-      <div className="container">
-        <div style={{marginBottom:28}}>
-          <h2 style={{fontSize:22,fontWeight:800,marginBottom:6}}>{t.dev_h}</h2>
-          <p style={{color:'var(--muted)',fontSize:14}}>{t.dev_sub}</p>
-        </div>
+    <div className="dev-shell">
+      <h1 className="dev-title">{t.dev_title}</h1>
+      <p className="dev-sub">{t.dev_sub}</p>
 
-        <div className="dev-section">
-          <div className="dev-section-title">{t.ex_title}</div>
-          <div className="code-tabs">
-            {['curl','python','ts','mcp'].map(id=>(
-              <button key={id} className={`code-tab${ctab===id?' active':''}`} onClick={()=>setCtab(id)}>{id}</button>
-            ))}
+      <div className="dev-section">
+        <div className="dev-section-title">{t.quick_example}</div>
+        <div className="dev-tabs">
+          <button className={'dev-tab ' + (snippetType === 'curl' ? 'active' : '')} onClick={() => setSnippetType('curl')}>cURL</button>
+          <button className={'dev-tab ' + (snippetType === 'python' ? 'active' : '')} onClick={() => setSnippetType('python')}>Python</button>
+          <button className={'dev-tab ' + (snippetType === 'ts' ? 'active' : '')} onClick={() => setSnippetType('ts')}>TypeScript</button>
+          <button className={'dev-tab ' + (snippetType === 'mcp' ? 'active' : '')} onClick={() => setSnippetType('mcp')}>MCP</button>
+        </div>
+        <div className="dev-code">
+          <button className="dev-code-copy" onClick={() => copyToClipboard(examples[snippetType])}>Copy</button>
+          <pre style={{ whiteSpace: 'pre-wrap', margin: 0, fontFamily: 'inherit' }}>{examples[snippetType]}</pre>
+        </div>
+      </div>
+
+      <div className="dev-section">
+        <div className="dev-section-title">{t.rest_endpoints}</div>
+        {endpoints.map(e => (
+          <div className="dev-endpoint" key={e.path}>
+            <span className="dev-endpoint-method">{e.method}</span>
+            <span className="dev-endpoint-path">{e.path}</span>
+            <div className="dev-endpoint-desc">{e.desc}</div>
           </div>
-          <pre className="code-block">{ex[ctab]}</pre>
-        </div>
+        ))}
+      </div>
 
-        <div className="dev-section">
-          <div className="dev-section-title">{t.ep_title}</div>
-          <div className="endpoint-list">
-            {eps.map(([m,p,d])=>(
-              <div key={p} className="endpoint-item">
-                <span className="method">{m}</span>
-                <div>
-                  <div className="ep-path">{p}</div>
-                  <div className="ep-desc">{d}</div>
-                </div>
-              </div>
-            ))}
+      <div className="dev-section">
+        <div className="dev-section-title">{t.mcp_tools}</div>
+        {mcpTools.map(t => (
+          <div className="dev-endpoint" key={t.name}>
+            <span className="dev-endpoint-method" style={{ background: 'rgba(138,90,0,0.15)', color: 'var(--purple)' }}>TOOL</span>
+            <span className="dev-endpoint-path">{t.name}</span>
+            <div className="dev-endpoint-desc">{t.desc}</div>
           </div>
+        ))}
+        <div className="dev-code" style={{ marginTop: 12 }}>
+          <button className="dev-code-copy" onClick={() => copyToClipboard('python run_mcp.py --transport http --port 8080')}>Copy</button>
+          <span style={{ color: 'var(--muted)' }}># start MCP server:</span><br/>
+          python run_mcp.py --transport http --port 8080
         </div>
+      </div>
 
-        <div className="dev-section">
-          <div className="dev-section-title">{t.mcp_title}</div>
-          <p style={{fontSize:12,color:'var(--muted)',marginBottom:10}}>
-            {'npm i @solsentry/mcp · '}
-            <a href="https://www.npmjs.com/package/@solsentry/mcp" style={{color:'var(--purple)'}} target="_blank" rel="noopener">
-              npmjs.com/package/@solsentry/mcp
-            </a>
-          </p>
-          <div className="mcp-list">
-            {mcpTools.map(([n,d])=>(
-              <div key={n} className="mcp-item">
-                <span className="mcp-name">{n}</span>
-                <span className="mcp-desc">{d}</span>
-              </div>
-            ))}
-          </div>
+      <div className="dev-section">
+        <div className="dev-section-title">{t.schema_op}</div>
+        <div className="dev-code">
+          <button className="dev-code-copy" onClick={() => copyToClipboard(`{
+  "wallet": "4kxscuteRLQdNi...",
+  "known": true,
+  "risk_level": "CRITICAL",
+  "risk_label": "serial_rugger",
+  "confirmed_rugs": 343,
+  "total_tokens": 349,
+  "rug_rate_pct": 98.28,
+  "tags": ["serial_rugger", "fast_deployer"],
+  "rank": 1,
+  "first_seen": 1741780800,
+  "last_seen": 1745136000
+}`)}>Copy</button>
+<pre style={{ whiteSpace: 'pre-wrap', margin: 0, fontFamily: 'inherit', color: 'var(--teal-precise)' }}>{`{
+  "wallet": "4kxscuteRLQdNi...",
+  "known": true,
+  "risk_level": "CRITICAL",
+  "risk_label": "serial_rugger",
+  "confirmed_rugs": 343,
+  "total_tokens": 349,
+  "rug_rate_pct": 98.28,
+  "tags": ["serial_rugger", "fast_deployer"],
+  "rank": 1,
+  "first_seen": 1741780800,
+  "last_seen": 1745136000
+}`}</pre>
         </div>
+      </div>
 
-        <div className="dev-section">
-          <div className="dev-section-title">{t.px_title}</div>
-          <table className="pricing-table">
-            <thead><tr>
-              <th>{t.px_tier}</th>
-              <th>{t.px_call}</th>
-              <th>{t.px_mo}</th>
-              <th>{t.px_lim}</th>
-            </tr></thead>
-            <tbody>
-              {pricing.map(([tier,call,mo,lim])=>(
-                <tr key={tier}>
-                  <td style={{fontWeight:600}}>{tier}</td>
-                  <td className="price-val">{call}</td>
-                  <td>{mo}</td>
-                  <td style={{color:'var(--muted)'}}>{lim}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+      <div className="dev-section">
+        <div className="dev-section-title">{t.schema_tok}</div>
+        <div className="dev-code">
+<pre style={{ whiteSpace: 'pre-wrap', margin: 0, fontFamily: 'inherit', color: 'var(--teal-precise)' }}>{`{
+  "mint": "...",
+  "known": true,
+  "risk_level": "CRITICAL",
+  "risk_score": 95,
+  "symbol": "RUG",
+  "final_outcome": "confirmed_scam",
+  "is_bundle": true,
+  "flags": ["MINT_AUTH_ACTIVE", "FREEZE_AUTH_ACTIVE", "BUNDLE_EXIT"]
+}`}</pre>
+        </div>
+      </div>
+
+      <div className="dev-section">
+        <div className="dev-section-title">{t.running_server}</div>
+        <div className="dev-code">
+<pre style={{ whiteSpace: 'pre-wrap', margin: 0, fontFamily: 'inherit' }}>{`# REST API only (default for dashboard)
+python run_mcp.py --api-only --api-port 8081
+
+# Full MCP + REST
+python run_mcp.py --transport http --port 8080 --api-port 8081
+
+# MCP stdio (for Claude Desktop / Cursor)
+python run_mcp.py --transport stdio`}</pre>
         </div>
       </div>
     </div>
   );
 }
 
-/* ── App ── */
+// ── App ───────────────────────────────────────────────────────
 function App() {
-  const [mode, setMode] = useState(() => localStorage.getItem(MODE_KEY)||'easy');
-  const [lang, setLang] = useState(() => localStorage.getItem(LANG_KEY)||'pt');
-  const [stats, setStats] = useState(null);
-  const t = T[lang]||T.pt;
+  // Mode migration: if user came from previous live deploy (ss_mode key),
+  // honor that selection instead of forcing them back to 'fun'.
+  const [mode, setMode] = useState(() => {
+    const stored = localStorage.getItem(MODE_KEY_NEW)
+              || localStorage.getItem(MODE_KEY_LEGACY_LIVE)
+              || 'fun';
+    // Live used 'easy' instead of 'fun' — normalize.
+    return stored === 'easy' ? 'fun' : stored;
+  });
+  const [lang, setLang] = useState(() => {
+    const stored = localStorage.getItem(LANG_KEY) || localStorage.getItem('ss_lang') || 'pt';
+    return stored === 'en' ? 'en' : 'pt';
+  });
 
-  useEffect(()=>{ localStorage.setItem(MODE_KEY,mode); },[mode]);
-  useEffect(()=>{ localStorage.setItem(LANG_KEY,lang); },[lang]);
+  const changeMode = useCallback((m) => {
+    setMode(m);
+    localStorage.setItem(MODE_KEY_NEW, m);
+  }, []);
 
-  useEffect(()=>{
-    fetch(`${API}/stats`).then(r=>r.json()).then(setStats).catch(()=>{});
-  },[]);
+  const changeLang = useCallback((l) => {
+    setLang(l);
+    localStorage.setItem(LANG_KEY, l);
+    document.documentElement.lang = l === 'en' ? 'en' : 'pt-BR';
+  }, []);
 
-  const modes=[
-    {id:'easy',label:t.easy,ac:'active-easy'},
-    {id:'pro', label:t.pro, ac:'active-pro'},
-    {id:'dev', label:t.dev, ac:'active-dev'},
-  ];
+  const t = T[lang] || T.pt;
 
   return (
-    <>
-      <nav className="topbar">
-        <span className="topbar-logo"><span>Sol</span>Sentry</span>
-        <div className="topbar-spacer"/>
-        <a href="https://ops.solsentry.app" className="topbar-link">{t.dashboard}</a>
-        <a href="https://api.solsentry.app/health" target="_blank" rel="noopener" className="topbar-link">
-          <span className="dot-live" aria-hidden="true"/>
-          {t.live}
-        </a>
-        <button className={`lang-btn${lang==='pt'?' active':''}`} onClick={()=>setLang('pt')}>PT</button>
-        <button className={`lang-btn${lang==='en'?' active':''}`} onClick={()=>setLang('en')}>EN</button>
-      </nav>
-
-      {mode==='easy'&&<FunMode t={t} stats={stats}/>}
-      {mode==='pro' &&<ProMode t={t}/>}
-      {mode==='dev' &&<DevMode t={t} lang={lang}/>}
-
-      <nav className="mode-bar">
-        {modes.map(m=>(
-          <button key={m.id} className={`mode-btn${mode===m.id?' '+m.ac:''}`} onClick={()=>setMode(m.id)}>
-            {m.label}
-          </button>
-        ))}
-      </nav>
-    </>
+    <LangCtx.Provider value={t}>
+      {mode === 'fun'   && <FunMode />}
+      {mode === 'pro'   && <ProMode />}
+      {mode === 'dev'   && <DevMode />}
+      {mode === 'watch' && <WatchlistMode onModeChange={changeMode} />}
+      <ModeSwitcher mode={mode} onChange={changeMode} />
+      <HubNav lang={lang} onLangChange={changeLang} />
+    </LangCtx.Provider>
   );
 }
 
-ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
 </script>
 </body>
 </html>
