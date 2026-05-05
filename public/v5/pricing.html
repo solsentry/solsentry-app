@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<script>
+    // Init lang: ?lang=pt|en > localStorage > default 'en'
+    const urlLang = new URLSearchParams(location.search).get('lang');
+    const savedLang = localStorage.getItem('lang');
+    const lang = urlLang || savedLang || 'en';
+    document.documentElement.lang = lang === 'pt' ? 'pt-BR' : 'en';
+    document.documentElement.dataset.lang = lang;
+    if (urlLang) localStorage.setItem('lang', urlLang);
+    
+    // Init theme
+    document.documentElement.dataset.theme = localStorage.getItem('theme') || 'dark';
+  </script>
+<script src="_i18n.js"></script>
+<link href="_tokens.css" rel="stylesheet"/>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Pricing — SolSentry Plans | SolSentry</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&amp;family=DM+Sans:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --amber-core: #C17D0E;
+      --amber-bright: #D9962E;
+      --amber-burnt: #8A5A00;
+      --dark-bg: #100E0A;
+      --cream: #F2EDE4;
+      --teal: #2A7A7A;
+      --red: #D94B2B;
+      --green: #2D8659;
+      --yellow: #D4A017;
+      --muted: #9A9A9A;
+      --border: rgba(255,255,255,0.08);
+      --card-bg: rgba(255,255,255,0.03);
+    }
+    
+    body {
+      background: var(--dark-bg);
+      color: var(--cream);
+      font-family: 'DM Sans', sans-serif;
+      line-height: 1.6;
+    }
+    
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+    
+    header {
+      background: rgba(0,0,0,0.4);
+      border-bottom: 1px solid var(--border);
+      padding: 20px 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 20px; color: var(--amber-core); }
+    .logo span { color: var(--amber-bright); }
+    
+    nav a { color: var(--cream); text-decoration: none; margin: 0 20px; font-size: 14px; }
+    nav a:hover { color: var(--amber-core); }
+    
+    .hero {
+      padding: 60px 0;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+    }
+    
+    .hero h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: 48px;
+      font-weight: 800;
+      margin-bottom: 20px;
+    }
+    
+    .hero p {
+      font-size: 18px;
+      color: var(--muted);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      padding: 60px 0;
+    }
+    
+    .pricing-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      transition: all 0.3s;
+    }
+    
+    .pricing-card:hover {
+      border-color: var(--amber-core);
+      background: rgba(193,125,14,0.05);
+      transform: translateY(-5px);
+    }
+    
+    .pricing-card.featured {
+      border: 2px solid var(--amber-core);
+      background: linear-gradient(135deg, rgba(193,125,14,0.1), rgba(138,90,0,0.05));
+      transform: scale(1.05);
+    }
+    
+    .pricing-tier {
+      font-family: 'Syne', sans-serif;
+      font-size: 24px;
+      font-weight: 800;
+      margin-bottom: 10px;
+      color: var(--cream);
+    }
+    
+    .pricing-subtitle {
+      font-size: 12px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 20px;
+    }
+    
+    .pricing-price {
+      font-family: 'Syne', sans-serif;
+      font-size: 48px;
+      font-weight: 800;
+      color: var(--amber-core);
+      margin-bottom: 5px;
+    }
+    
+    .pricing-price span {
+      font-size: 18px;
+      color: var(--muted);
+      font-weight: 400;
+    }
+    
+    .pricing-period {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 30px;
+      padding-bottom: 30px;
+      border-bottom: 1px solid var(--border);
+    }
+    
+    .pricing-features {
+      list-style: none;
+      margin-bottom: 30px;
+      flex-grow: 1;
+    }
+    
+    .pricing-features li {
+      padding: 10px 0;
+      font-size: 14px;
+      color: var(--cream);
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+    }
+    
+    .pricing-features li:before {
+      content: "✓ ";
+      color: var(--green);
+      font-weight: 800;
+      margin-right: 10px;
+    }
+    
+    .pricing-features li.disabled {
+      color: var(--muted);
+      opacity: 0.5;
+    }
+    
+    .pricing-features li.disabled:before {
+      content: "✗ ";
+      color: var(--muted);
+    }
+    
+    .cta-button {
+      background: var(--amber-core);
+      color: var(--dark-bg);
+      border: none;
+      padding: 16px 32px;
+      border-radius: 12px;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      transition: all 0.3s;
+      width: 100%;
+    }
+    
+    .cta-button:hover {
+      background: var(--amber-bright);
+      transform: translateY(-2px);
+    }
+    
+    .cta-button.outline {
+      background: transparent;
+      color: var(--amber-core);
+      border: 2px solid var(--amber-core);
+    }
+    
+    .cta-button.outline:hover {
+      background: rgba(193,125,14,0.1);
+    }
+    
+    .faq {
+      padding: 60px 0;
+      border-top: 1px solid var(--border);
+    }
+    
+    .faq h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: 32px;
+      font-weight: 800;
+      margin-bottom: 40px;
+      text-align: center;
+    }
+    
+    .faq-item {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    
+    .faq-question {
+      font-weight: 600;
+      color: var(--cream);
+      margin-bottom: 10px;
+      cursor: pointer;
+    }
+    
+    .faq-answer {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+    
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 40px 0;
+      text-align: center;
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 60px;
+    }
+    
+    @media (max-width: 768px) {
+      .hero h1 { font-size: 32px; }
+      .pricing-grid { grid-template-columns: 1fr; }
+      .pricing-card.featured { transform: scale(1); }
+      nav { display: none; }
+    }
+  </style>
+<style>
+    .lang-toggle {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--fg-3);
+      padding: var(--space-2) var(--space-3);
+      border-radius: var(--radius-md);
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      transition: all var(--dur-base) var(--ease-out);
+      margin-left: var(--space-2);
+      cursor: pointer;
+    }
+    .lang-toggle:hover {
+      border-color: var(--amber-core);
+      color: var(--amber-core);
+    }
+  </style>
+</head>
+<body>
+<header>
+<div class="container">
+<div class="header-content">
+<div class="logo" data-en="Sol" data-pt="Sol">Sol<span data-en="Sentry" data-pt="Sentry">Sentry</span></div>
+<nav>
+<a data-en="Home" data-pt="Início" href="index.html">Home</a>
+<a data-en="Dashboard" data-pt="Dashboard" href="dashboard.html">Dashboard</a>
+<a data-en="Scan" data-pt="Scan" href="scan.html">Scan</a>
+<button class="nav-theme-toggle" onclick="document.documentElement.dataset.theme = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light'; localStorage.setItem('theme', document.documentElement.dataset.theme);">☀️/🌙</button>
+</nav>
+</div>
+</div>
+</header>
+<main>
+<div class="container">
+<section class="hero">
+<h1 data-en="Simple, Transparent Plans" data-pt="Planos Simples e Transparentes">Simple, Transparent Plans</h1>
+<p data-en="Choose the plan that fits your risk profile. No surprises, no long contracts." data-pt="Escolha o plano que melhor se adequa ao seu nível de risco. Sem surpresas, sem contratos longos.">Choose the plan that fits your risk profile. No surprises, no long contracts.</p>
+</section>
+<section class="pricing-grid">
+<div class="pricing-card">
+<div class="pricing-tier" data-en="Free" data-pt="Free">Free</div>
+<div class="pricing-subtitle" data-en="For curious users" data-pt="Para curiosos">For curious users</div>
+<div class="pricing-price">$0<span data-en="/month" data-pt="/mês">/month</span></div>
+<div class="pricing-period" data-en="Free forever" data-pt="Sempre gratuito">Free forever</div>
+<ul class="pricing-features">
+<li data-en="50 scans/month" data-pt="50 scans/mês">50 scans/month</li>
+<li data-en="Basic risk (0-100)" data-pt="Risco básico (0-100)">Basic risk (0-100)</li>
+<li data-en="7-day history" data-pt="Histórico de 7 dias">7-day history</li>
+<li class="disabled" data-en="Real-time alerts" data-pt="Alertas em tempo real">Real-time alerts</li>
+<li class="disabled" data-en="Network analysis" data-pt="Análise de rede">Network analysis</li>
+<li class="disabled" data-en="Priority support" data-pt="Suporte prioritário">Priority support</li>
+</ul>
+<button class="cta-button outline" data-en="Start Free" data-pt="Começar Grátis">Start Free</button>
+</div>
+<div class="pricing-card featured">
+<div class="pricing-tier" data-en="Pro" data-pt="Pro">Pro</div>
+<div class="pricing-subtitle" data-en="Most popular" data-pt="Mais popular">Most popular</div>
+<div class="pricing-price">$29<span data-en="/month" data-pt="/mês">/month</span></div>
+<div class="pricing-period" data-en="Monthly billing" data-pt="Faturamento mensal">Monthly billing</div>
+<ul class="pricing-features">
+<li data-en="5,000 scans/month" data-pt="5.000 scans/mês">5,000 scans/month</li>
+<li data-en="Advanced risk + AI" data-pt="Risco avançado + IA">Advanced risk + AI</li>
+<li data-en="Full history" data-pt="Histórico completo">Full history</li>
+<li data-en="Real-time alerts" data-pt="Alertas em tempo real">Real-time alerts</li>
+<li data-en="Basic network analysis" data-pt="Análise de rede básica">Basic network analysis</li>
+<li class="disabled" data-en="Priority support" data-pt="Suporte prioritário">Priority support</li>
+</ul>
+<button class="cta-button" data-en="Subscribe to Pro" data-pt="Assinar Pro">Subscribe to Pro</button>
+</div>
+<div class="pricing-card">
+<div class="pricing-tier" data-en="Enterprise" data-pt="Enterprise">Enterprise</div>
+<div class="pricing-subtitle" data-en="For teams" data-pt="Para equipes">For teams</div>
+<div class="pricing-price" data-en="Custom" data-pt="Customizado">Custom<span data-en="/year" data-pt="/ano">/year</span></div>
+<div class="pricing-period" data-en="Contact for quote" data-pt="Contato para cotação">Contact for quote</div>
+<ul class="pricing-features">
+<li data-en="Unlimited scans" data-pt="Scans ilimitados">Unlimited scans</li>
+<li data-en="Risk + full forensics" data-pt="Risco + forensics completo">Risk + full forensics</li>
+<li data-en="Unlimited history" data-pt="Histórico ilimitado">Unlimited history</li>
+<li data-en="Webhook/API alerts" data-pt="Alertas webhook/API">Webhook/API alerts</li>
+<li data-en="Advanced network analysis" data-pt="Análise de rede avançada">Advanced network analysis</li>
+<li data-en="Dedicated 24/7 support" data-pt="Suporte 24/7 dedicado">Dedicated 24/7 support</li>
+</ul>
+<button class="cta-button outline" data-en="Contact Sales" data-pt="Falar com Vendas">Contact Sales</button>
+</div>
+</section>
+<section class="faq">
+<h2 data-en="Frequently Asked Questions" data-pt="Perguntas Frequentes">Frequently Asked Questions</h2>
+<div class="faq-item">
+<div class="faq-question" data-en="Can I upgrade or downgrade at any time?" data-pt="Posso fazer upgrade ou downgrade a qualquer momento?">Can I upgrade or downgrade at any time?</div>
+<div class="faq-answer" data-en="Yes — you can change plans anytime. We'll prorate your invoice." data-pt="Sim! Você pode mudar de plano a qualquer momento. Ajustaremos sua fatura proporcionalmente.">Yes — you can change plans anytime. We'll prorate your invoice.</div>
+</div>
+<div class="faq-item">
+<div class="faq-question" data-en="What is SolSentry's accuracy rate?" data-pt="Qual é a taxa de acurácia do SolSentry?">What is SolSentry's accuracy rate?</div>
+<div class="faq-answer" data-en="We maintain an 87.7% accuracy rate on rug pull detection. That means 9 in 10 alerts are confirmed." data-pt="Mantemos uma taxa de acurácia de 87.7% em detecção de rug pulls. Isso significa que 9 em 10 alertas são confirmados.">We maintain an 87.7% accuracy rate on rug pull detection. That means 9 in 10 alerts are confirmed.</div>
+</div>
+<div class="faq-item">
+<div class="faq-question" data-en="Do you offer a trial period?" data-pt="Oferecemos período de teste?">Do you offer a trial period?</div>
+<div class="faq-answer" data-en="Yes — start with the Free plan and explore SolSentry with no time limits. Upgrade when you're ready." data-pt="Sim! Comece com o plano Free e explore o SolSentry sem limites de tempo. Faça upgrade quando estiver pronto.">Yes — start with the Free plan and explore SolSentry with no time limits. Upgrade when you're ready.</div>
+</div>
+<div class="faq-item">
+<div class="faq-question" data-en="How does support work?" data-pt="Como funciona o suporte?">How does support work?</div>
+<div class="faq-answer" data-en="Pro customers get email support. Enterprise customers get 24/7 support via Telegram and Discord." data-pt="Clientes Pro têm acesso a suporte por email. Clientes Enterprise recebem suporte 24/7 via Telegram e Discord.">Pro customers get email support. Enterprise customers get 24/7 support via Telegram and Discord.</div>
+</div>
+</section>
+</div>
+</main>
+<footer>
+<div class="container">
+<p data-en="© 2026 SolSentry. Operator-risk intelligence for Solana." data-pt="© 2026 SolSentry. Operador risk intelligence para Solana.">© 2026 SolSentry. Operator-risk intelligence for Solana.</p>
+</div>
+</footer>
+</body>
+</html>

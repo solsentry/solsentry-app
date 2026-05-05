@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<script>
+    // Init lang: ?lang=pt|en > localStorage > default 'en'
+    const urlLang = new URLSearchParams(location.search).get('lang');
+    const savedLang = localStorage.getItem('lang');
+    const lang = urlLang || savedLang || 'en';
+    document.documentElement.lang = lang === 'pt' ? 'pt-BR' : 'en';
+    document.documentElement.dataset.lang = lang;
+    if (urlLang) localStorage.setItem('lang', urlLang);
+    
+    // Init theme
+    document.documentElement.dataset.theme = localStorage.getItem('theme') || 'dark';
+  </script>
+<script src="_i18n.js"></script>
+<link href="_tokens.css" rel="stylesheet"/>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Case 4kxscute — 1,714 Rugs — SolSentry</title>
+<link href="_tokens.css" rel="stylesheet"/>
+<style>
+    /* ── CASE HERO ── */
+    .case-hero {
+      min-height: 60vh;
+      display: flex; align-items: flex-end;
+      padding: var(--space-20) var(--space-8) var(--space-12);
+      position: relative;
+      overflow: hidden;
+    }
+    .case-hero-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background:
+        radial-gradient(ellipse 60% 80% at 80% 50%, rgba(220,38,38,0.08) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 60% at 20% 30%, rgba(193,125,14,0.06) 0%, transparent 70%);
+    }
+    .case-hero-inner {
+      max-width: var(--container-max); margin: 0 auto; width: 100%;
+      position: relative; z-index: 1;
+    }
+    .case-eyebrow {
+      display: flex; align-items: center; gap: var(--space-3);
+      margin-bottom: var(--space-6); flex-wrap: wrap;
+    }
+    .case-eyebrow-label {
+      font-family: var(--font-mono); font-size: var(--text-xs);
+      color: var(--fg-4); text-transform: uppercase; letter-spacing: 0.1em;
+    }
+
+    .case-headline {
+      font-family: var(--font-display); font-weight: 800;
+      font-size: clamp(2rem, 5vw, 4rem);
+      line-height: 1.0; letter-spacing: -0.03em;
+      color: var(--fg-1); margin-bottom: var(--space-6);
+      max-width: 800px;
+    }
+    .case-headline em { font-style: normal; color: var(--status-critical); }
+    .case-headline span { color: var(--amber-core); }
+
+    .case-deck {
+      font-size: var(--text-lg); color: var(--fg-2);
+      line-height: 1.65; max-width: 640px;
+      margin-bottom: var(--space-8);
+    }
+
+    /* ── HERO STATS ROW ── */
+    .hero-stats {
+      display: flex; gap: var(--space-8); flex-wrap: wrap;
+      padding: var(--space-8) 0;
+      border-top: 1px solid var(--border);
+    }
+    .hero-stat {
+      display: flex; flex-direction: column; gap: var(--space-2);
+    }
+    .hero-stat-val {
+      font-family: var(--font-display); font-weight: 800;
+      font-size: var(--text-4xl); line-height: 1;
+      color: var(--fg-1);
+    }
+    .hero-stat-val.red    { color: var(--status-critical); }
+    .hero-stat-val.amber  { color: var(--amber-core); }
+    .hero-stat-label {
+      font-size: var(--text-sm); color: var(--fg-3);
+      font-family: var(--font-display); font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.06em;
+    }
+
+    /* ── BODY LAYOUT ── */
+    .case-body {
+      max-width: var(--container-max); margin: 0 auto;
+      padding: var(--space-16) var(--space-8);
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: var(--space-12);
+    }
+    @media (max-width: 1024px) { .case-body { grid-template-columns: 1fr; } }
+
+    /* ── NARRATIVE ── */
+    .narrative { max-width: 680px; }
+    .narrative h2 {
+      font-family: var(--font-display); font-weight: 700;
+      font-size: var(--text-2xl); color: var(--fg-1);
+      letter-spacing: -0.02em; margin-bottom: var(--space-5);
+      margin-top: var(--space-12);
+    }
+    .narrative h2:first-child { margin-top: 0; }
+    .narrative p {
+      font-size: var(--text-base); color: var(--fg-2);
+      line-height: 1.75; margin-bottom: var(--space-5);
+    }
+    .narrative strong { color: var(--fg-1); }
+    .narrative code {
+      font-family: var(--font-mono); font-size: var(--text-sm);
+      color: var(--amber-core); background: var(--amber-core-tint);
+      padding: 2px 6px; border-radius: var(--radius-sm);
+    }
+
+    /* Pull quote */
+    .pull-quote {
+      border-left: 3px solid var(--amber-core);
+      padding: var(--space-5) var(--space-6);
+      background: var(--amber-core-tint);
+      border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+      margin: var(--space-8) 0;
+    }
+    .pull-quote p {
+      font-family: var(--font-display); font-weight: 700;
+      font-size: var(--text-xl); color: var(--fg-1);
+      line-height: 1.3; margin: 0;
+    }
+    .pull-quote cite {
+      display: block; font-size: var(--text-sm);
+      color: var(--fg-3); margin-top: var(--space-3);
+      font-style: normal; font-family: var(--font-mono);
+    }
+
+    /* ── TIMELINE ── */
+    .event-timeline { margin: var(--space-8) 0; }
+    .event-timeline-title {
+      font-family: var(--font-display); font-weight: 700;
+      font-size: var(--text-base); color: var(--fg-1);
+      margin-bottom: var(--space-6);
+      text-transform: uppercase; letter-spacing: 0.06em;
+    }
+    .event-row {
+      display: grid;
+      grid-template-columns: 80px 1fr;
+      gap: var(--space-5);
+      position: relative;
+      padding-bottom: var(--space-6);
+    }
+    .event-row::before {
+      content: "";
+      position: absolute;
+      left: 39px; top: 28px; bottom: 0;
+      width: 2px;
+      background: var(--border);
+    }
+    .event-row:last-child::before { display: none; }
+    .event-time {
+      font-family: var(--font-mono); font-size: var(--text-xs);
+      color: var(--fg-4); text-align: right; padding-top: 6px;
+      line-height: 1.4;
+    }
+    .event-content {
+      display: flex; flex-direction: column; gap: var(--space-2);
+    }
+    .event-dot-wrap {
+      position: absolute; left: 32px; top: 4px;
+      width: 16px; height: 16px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .event-dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .event-label {
+      font-family: var(--font-display); font-weight: 700;
+      font-size: var(--text-sm); color: var(--fg-1);
+    }
+    .event-desc {
+      font-size: var(--text-sm); color: var(--fg-3); line-height: 1.55;
+    }
+
+    /* ── SIDEBAR ── */
+    .case-sidebar { display: flex; flex-direction: column; gap: var(--space-6); }
+
+    .sidebar-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); overflow: hidden;
+    }
+    .sidebar-card-header {
+      padding: var(--space-4) var(--space-5);
+      border-bottom: 1px solid var(--border);
+      font-family: var(--font-display); font-weight: 700;
+      font-size: var(--text-sm); color: var(--fg-1);
+    }
+    .sidebar-card-body { padding: var(--space-5); }
+
+    /* Rug rate bar */
+    .rug-rate-bar {
+      height: 8px; background: var(--surface-2);
+      border-radius: var(--radius-pill); overflow: hidden;
+      margin: var(--space-3) 0;
+    }
+    .rug-rate-fill {
+      height: 100%; border-radius: var(--radius-pill);
+      background: linear-gradient(90deg, var(--amber-core), var(--status-critical));
+      transition: width 1s var(--ease-out);
+    }
+
+    /* Operator mini card */
+    .op-mini {
+      display: flex; align-items: center; gap: var(--space-4);
+      padding: var(--space-4); background: var(--bg);
+      border: 1px solid var(--border); border-radius: var(--radius-lg);
+      margin-bottom: var(--space-4);
+    }
+    .op-mini-icon {
+      width: 40px; height: 40px; border-radius: var(--radius-md);
+      background: var(--status-critical-tint);
+      border: 1px solid rgba(220,38,38,0.3);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; flex-shrink: 0;
+    }
+    .op-mini-name {
+      font-family: var(--font-mono); font-size: var(--text-sm);
+      color: var(--fg-1); font-weight: 600;
+    }
+    .op-mini-sub { font-size: var(--text-xs); color: var(--fg-4); }
+
+    /* CTA */
+    .case-cta-btn {
+      display: block; width: 100%;
+      padding: var(--space-4) var(--space-5);
+      background: var(--amber-core); color: var(--fg-on-brand);
+      border: none; border-radius: var(--radius-md);
+      font-family: var(--font-display); font-weight: 700;
+      font-size: var(--text-sm); letter-spacing: 0.04em;
+      text-align: center;
+      transition: background var(--dur-base) var(--ease-out);
+    }
+    .case-cta-btn:hover { background: var(--amber-core-400); }
+
+    /* ── BOTTOM SECTION ── */
+    .case-bottom {
+      max-width: var(--container-max); margin: 0 auto;
+      padding: 0 var(--space-8) var(--space-20);
+    }
+    .why-matters {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); padding: var(--space-10);
+    }
+    .why-matters h2 {
+      font-family: var(--font-display); font-weight: 700;
+      font-size: var(--text-2xl); color: var(--fg-1);
+      margin-bottom: var(--space-6);
+    }
+    .why-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-6);
+    }
+    @media (max-width: 768px) { .why-grid { grid-template-columns: 1fr; } }
+    .why-item { display: flex; flex-direction: column; gap: var(--space-3); }
+    .why-item-icon {
+      font-family: var(--font-mono); font-size: var(--text-xl);
+      color: var(--amber-core);
+    }
+    .why-item h3 {
+      font-family: var(--font-display); font-weight: 700;
+      font-size: var(--text-base); color: var(--fg-1);
+    }
+    .why-item p { font-size: var(--text-sm); color: var(--fg-3); line-height: 1.6; }
+  </style>
+<style>
+    .lang-toggle {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--fg-3);
+      padding: var(--space-2) var(--space-3);
+      border-radius: var(--radius-md);
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      transition: all var(--dur-base) var(--ease-out);
+      margin-left: var(--space-2);
+      cursor: pointer;
+    }
+    .lang-toggle:hover {
+      border-color: var(--amber-core);
+      color: var(--amber-core);
+    }
+  </style>
+</head>
+<body>
+<!-- NAV -->
+<nav class="nav">
+<div class="nav-inner">
+<a class="nav-logo" data-en="SolSentry" data-pt="SolSentry" href="index.html">
+<img alt="SolSentry logo" src="logo_final.png"/>
+        SolSentry
+      </a>
+<div class="nav-links">
+<a data-en="Operators" data-pt="Operadores" href="operator.html">Operators</a>
+<a data-en="Drain Trace" data-pt="Drain Trace" href="drain-trace.html">Drain Trace</a>
+<a class="active" data-en="Cases" data-pt="Cases" href="case-4kxscute.html">Cases</a>
+<a data-en="Docs" data-pt="Docs" href="#">Docs</a>
+<button class="nav-theme-toggle" onclick="document.documentElement.dataset.theme = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light'; localStorage.setItem('theme', document.documentElement.dataset.theme);">☀️/🌙</button>
+<button class="nav-btn" data-en="Try Free" data-pt="Testar Grátis">Try Free</button>
+</div>
+</div>
+</nav>
+<!-- CASE HERO -->
+<section class="case-hero grain-hero">
+<div class="case-hero-bg"></div>
+<div class="case-hero-inner">
+<div class="case-eyebrow">
+<span class="badge badge-critical" data-en="CASE STUDY" data-pt="CASE STUDY">CASE STUDY</span>
+<span class="case-eyebrow-label" data-en="March 12, 2026 · Solana Mainnet" data-pt="12 de março de 2026 · Mainnet Solana">March 12, 2026 · Solana Mainnet</span>
+</div>
+<h1 class="case-headline" data-en="Token #62." data-pt="Token #62.">
+      Token #62.<br/>
+      T+<em>4</em> seconds.<br/>
+<span data-en="19 minutes" data-pt="19 minutos">19 minutes</span> ahead of time.
+    </h1>
+<p class="case-deck" data-en="How SolSentry identified the operator" data-pt="Como SolSentry identificou o operador">
+      How SolSentry identified the operator <code>4kxscute</code> — responsible for
+      <strong data-en="1,714 confirmed rugs" data-pt="1.714 rugs confirmados">1,714 confirmed rugs</strong>— and fired CRITICAL alert 19 minutes before the rug happened.</p>
+<div class="hero-stats">
+<div class="hero-stat">
+<div class="hero-stat-val red">1.714</div>
+<div class="hero-stat-label" data-en="confirmed rugs" data-pt="Rugs confirmados">confirmed rugs</div>
+</div>
+<div class="hero-stat">
+<div class="hero-stat-val amber" data-en="T+4s" data-pt="T+4s">T+4s</div>
+<div class="hero-stat-label" data-en="Alert time" data-pt="Tempo de alerta">Alert time</div>
+</div>
+<div class="hero-stat">
+<div class="hero-stat-val" data-en="19 min" data-pt="19 min">19 min</div>
+<div class="hero-stat-label" data-en="Lead time" data-pt="Lead time">Lead time</div>
+</div>
+<div class="hero-stat">
+<div class="hero-stat-val red">100/100</div>
+<div class="hero-stat-label" data-en="Risk score" data-pt="Risk score">Risk score</div>
+</div>
+<div class="hero-stat">
+<div class="hero-stat-val amber">87.7%</div>
+<div class="hero-stat-label" data-en="rug rate" data-pt="Taxa de rug">rug rate</div>
+</div>
+</div>
+</div>
+</section>
+<!-- BODY -->
+<div class="case-body">
+<!-- LEFT: Narrative -->
+<div class="narrative">
+<h2 data-en="The operator" data-pt="O operador">The operator</h2>
+<p data-en="is not a typical rugger. With" data-pt="não é um rugger comum. Com">
+<code>4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1</code>is not a typical rugger. With<strong data-en="1,714 confirmed rugs" data-pt="1.714 rugs confirmados">1,714 confirmed rugs</strong>across 1,957 deployed tokens, he operates at an 87.7% rug rate — almost 9 in 10 tokens he creates end in a rug.</p>
+<p data-en="The tags" data-pt="As tags">
+      The tags <strong data-en="rebrand_artist" data-pt="rebrand_artist">rebrand_artist</strong> e <strong data-en="fast_deployer" data-pt="fast_deployer">fast_deployer</strong>describe the pattern: he recycles names, symbols, and narratives across tokens to deceive buyers who don't recognize the wallet address. SolSentry identifies the<em data-en="operator" data-pt="operador">operator</em>, not the token — so even if he changes the project name, the wallet stays flagged.</p>
+<div class="pull-quote">
+<p data-en='"RugCheck tells you a fire is burning.' data-pt='"RugCheck tells you a fire is burning.'>"RugCheck tells you a fire is burning.<br/>SolSentry tells you who lit it."</p>
+<cite data-en="— SolSentry design principle" data-pt="— Princípio de design do SolSentry">— SolSentry design principle</cite>
+</div>
+<h2 data-en="March 12, 2026 — token #62" data-pt="12 de março de 2026 — o token #62">March 12, 2026 — token #62</h2>
+<p data-en="At 14:37 UTC," data-pt="Às 14:37 UTC,">
+      At 14:37 UTC, <code>4kxscute</code>deployed his 62nd token on Solana mainnet. He already had 61 confirmed rugs in his history. SolSentry recognized the wallet instantly.</p>
+<!-- Event Timeline -->
+<div class="event-timeline">
+<div class="event-timeline-title" data-en="Event timeline" data-pt="Timeline do evento">Event timeline</div>
+<div class="event-row">
+<div class="event-time" data-en="T+0:00" data-pt="T+0:00">T+0:00</div>
+<div class="event-dot-wrap"><div class="event-dot" style="background:var(--fg-4);"></div></div>
+<div class="event-content">
+<div class="event-label" data-en="Token deploy" data-pt="Deploy do token">Token deploy</div>
+<div class="event-desc" data-en="Operator 4kxscute deploys token #62 (mint: Bk9q…rT5) on Solana mainnet." data-pt="Operador 4kxscute deploya token #62 (mint: Bk9q…rT5) na mainnet Solana.">Operator 4kxscute deploys token #62 (mint: Bk9q…rT5) on Solana mainnet.</div>
+</div>
+</div>
+<div class="event-row">
+<div class="event-time" data-en="T+0:04" data-pt="T+0:04">T+0:04</div>
+<div class="event-dot-wrap"><div class="event-dot" style="background:var(--status-critical);box-shadow:0 0 8px var(--status-critical);"></div></div>
+<div class="event-content">
+<div class="event-label" data-en="🚨 CRITICAL ALERT fired" data-pt="🚨 CRITICAL ALERT disparado" style="color:var(--status-critical);">🚨 CRITICAL ALERT fired</div>
+<div class="event-desc" data-en="SolSentry detects the wallet, cross-references 61 confirmed rugs in history, calculates risk score 100/100. Alert sent via Telegram bot in" data-pt="SolSentry detecta a wallet, cruza com histórico de 61 rugs confirmados, calcula risk score 100/100. Alerta enviado via Telegram bot em">SolSentry detects the wallet, cross-references 61 confirmed rugs in history, calculates risk score 100/100. Alert sent via Telegram bot in <strong data-en="4 seconds" data-pt="4 segundos">4 seconds</strong>.</div>
+</div>
+</div>
+<div class="event-row">
+<div class="event-time" data-en="T+0:23" data-pt="T+0:23">T+0:23</div>
+<div class="event-dot-wrap"><div class="event-dot" style="background:var(--status-warning);"></div></div>
+<div class="event-content">
+<div class="event-label" data-en="Rug executed" data-pt="Rug executado" style="color:var(--status-warning);">Rug executed</div>
+<div class="event-desc" data-en="Operator drains liquidity. Anyone subscribed to the bot got the alert" data-pt="Operador drena a liquidez. Quem estava inscrito no bot recebeu o alerta">Operator drains liquidity. Anyone subscribed to the bot got the alert <strong data-en="19 minutes before" data-pt="19 minutos antes">19 minutes before</strong>.</div>
+</div>
+</div>
+<div class="event-row">
+<div class="event-time" data-en="T+19:23" data-pt="T+19:23">T+19:23</div>
+<div class="event-dot-wrap"><div class="event-dot" style="background:var(--status-critical);"></div></div>
+<div class="event-content">
+<div class="event-label" data-en="Liquidity drained" data-pt="Liquidez drenada" style="color:var(--status-critical);">Liquidity drained</div>
+<div class="event-desc" data-en="Token collapses to zero. Buyers without the alert lose. Buyers with the alert exited first." data-pt="Token colapsa para zero. Compradores sem o alerta perdem. Compradores com o alerta saíram antes.">Token collapses to zero. Buyers without the alert lose. Buyers with the alert exited first.</div>
+</div>
+</div>
+<div class="event-row">
+<div class="event-time" data-en="Today" data-pt="Hoje">Today</div>
+<div class="event-dot-wrap"><div class="event-dot" style="background:var(--amber-core);box-shadow:0 0 8px var(--amber-core);"></div></div>
+<div class="event-content">
+<div class="event-label" data-en="1,714 confirmed rugs" data-pt="1.714 rugs confirmados" style="color:var(--amber-core);">1,714 confirmed rugs</div>
+<div class="event-desc" data-en="The operator is still active. SolSentry keeps tracking. Every new deploy is detected in seconds." data-pt="O operador continua ativo. SolSentry continua rastreando. Cada novo deploy é detectado em segundos.">The operator is still active. SolSentry keeps tracking. Every new deploy is detected in seconds.</div>
+</div>
+</div>
+</div>
+<h2 data-en="Why it matters" data-pt="Por que isso importa">Why it matters</h2>
+<p data-en="The 4-second alert isn't luck — it's architecture. SolSentry monitors Solana mainnet in real time, cross-referencing every new deploy against a database of" data-pt="O alerta de 4 segundos não é sorte — é arquitetura. SolSentry monitora a mainnet Solana em tempo real, cruzando cada novo deploy com um banco de dados de">The 4-second alert isn't luck — it's architecture. SolSentry monitors Solana mainnet in real time, cross-referencing every new deploy against a database of<strong data-en="3,617 operators tracked" data-pt="3.617 operadores rastreados">3,617 operators tracked</strong> e <strong data-en="27,889 wallets monitored" data-pt="27.889 wallets monitoradas">27,889 wallets monitored</strong>.
+    </p>
+<p data-en="The difference between RugCheck and SolSentry isn't speed — it's operator intelligence. RugCheck analyzes the token. SolSentry analyzes" data-pt="A diferença entre RugCheck e SolSentry não é velocidade — é inteligência de operador. RugCheck analisa o token. SolSentry analisa">The difference between RugCheck and SolSentry isn't speed — it's operator intelligence. RugCheck analyzes the token. SolSentry analyzes<em data-en="who deployed it" data-pt="quem deployou">who deployed it</em>. When the same operator creates 1,957 tokens, the 62nd iteration is detected in 4 seconds because the prior 61 are already in the database.</p>
+<p data-en="That's what &quot;operator-risk intelligence&quot; means: it doesn't react to the token, it anticipates the operator." data-pt='Isso é o que significa "operator-risk intelligence": não reage ao token, antecipa o operador.'>
+      That's what "operator-risk intelligence" means: it doesn't react to the token, it anticipates the operator.
+    </p>
+</div>
+<!-- RIGHT: Sidebar -->
+<div class="case-sidebar">
+<!-- Operator card -->
+<div class="sidebar-card">
+<div class="sidebar-card-header" data-en="Operator" data-pt="Operador">Operator</div>
+<div class="sidebar-card-body">
+<div class="op-mini">
+<div class="op-mini-icon">⚠</div>
+<div>
+<div class="op-mini-name" data-en="4kxscute…pH1" data-pt="4kxscute…pH1">4kxscute…pH1</div>
+<div class="op-mini-sub" data-en="ID: fa8262f76a867118" data-pt="ID: fa8262f76a867118">ID: fa8262f76a867118</div>
+</div>
+</div>
+<div class="op-tags" style="margin-bottom:var(--space-4);">
+<span class="tag" data-en="⚡ rebrand_artist" data-pt="⚡ rebrand_artist">⚡ rebrand_artist</span>
+<span class="tag" data-en="⚡ fast_deployer" data-pt="⚡ fast_deployer">⚡ fast_deployer</span>
+</div>
+<div style="margin-bottom:var(--space-3);">
+<div style="display:flex;justify-content:space-between;font-size:var(--text-xs);color:var(--fg-3);margin-bottom:var(--space-2);">
+<span data-en="rug rate" data-pt="Taxa de rug">rug rate</span>
+<span style="color:var(--status-critical);font-weight:700;">87.7%</span>
+</div>
+<div class="rug-rate-bar">
+<div class="rug-rate-fill" style="width:87.7%;"></div>
+</div>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-3);">
+<div style="text-align:center;padding:var(--space-3);background:var(--bg);border-radius:var(--radius-md);">
+<div style="font-family:var(--font-mono);font-size:var(--text-xl);font-weight:700;color:var(--status-critical);">1.714</div>
+<div data-en="Rugs" data-pt="Rugs" style="font-size:var(--text-xs);color:var(--fg-4);">Rugs</div>
+</div>
+<div style="text-align:center;padding:var(--space-3);background:var(--bg);border-radius:var(--radius-md);">
+<div style="font-family:var(--font-mono);font-size:var(--text-xl);font-weight:700;color:var(--fg-1);">1.957</div>
+<div data-en="Tokens" data-pt="Tokens" style="font-size:var(--text-xs);color:var(--fg-4);">Tokens</div>
+</div>
+</div>
+<a data-en="View full profile →" data-pt="Ver perfil completo →" href="operator.html" onmouseout="this.style.background='none'" onmouseover="this.style.background='var(--amber-core-tint)'" style="display:block;margin-top:var(--space-4);padding:var(--space-3);text-align:center;border:1px solid var(--amber-core-line);border-radius:var(--radius-md);font-size:var(--text-sm);color:var(--amber-core);font-family:var(--font-display);font-weight:700;transition:all var(--dur-base);">
+          View full profile →
+        </a>
+</div>
+</div>
+<!-- Alert replay -->
+<div class="sidebar-card">
+<div class="sidebar-card-header" data-en="Original alert — T+0:04" data-pt="Alerta original — T+0:04">Original alert — T+0:04</div>
+<div class="sidebar-card-body" style="font-family:var(--font-mono);font-size:var(--text-xs);">
+<div data-en="🤖 SolSentry Bot · Mainnet · 2026-03-12 14:37:04 UTC" data-pt="🤖 SolSentry Bot · Mainnet · 2026-03-12 14:37:04 UTC" style="color:var(--fg-4);margin-bottom:var(--space-3);">🤖 SolSentry Bot · Mainnet · 2026-03-12 14:37:04 UTC</div>
+<div data-en="🚨 CRITICAL ALERT" data-pt="🚨 CRITICAL ALERT" style="color:var(--status-critical);font-weight:700;margin-bottom:var(--space-2);">🚨 CRITICAL ALERT</div>
+<div data-en="Operator:" data-pt="Operator:" style="color:var(--fg-2);margin-bottom:var(--space-1);">Operator: <span data-en="4kxscute…pH1" data-pt="4kxscute…pH1" style="color:var(--amber-core);">4kxscute…pH1</span></div>
+<div data-en="Token:" data-pt="Token:" style="color:var(--fg-2);margin-bottom:var(--space-1);">Token: <span data-en="Bk9q…rT5" data-pt="Bk9q…rT5" style="color:var(--amber-core);">Bk9q…rT5</span></div>
+<div data-en="Risk Score:" data-pt="Risk Score:" style="color:var(--fg-2);margin-bottom:var(--space-1);">Risk Score: <span style="color:var(--status-critical);font-weight:700;">100 / 100</span></div>
+<div data-en="Prior rugs:" data-pt="Prior rugs:" style="color:var(--fg-2);margin-bottom:var(--space-1);">Prior rugs: <span data-en="61 confirmed" data-pt="61 confirmed" style="color:var(--status-critical);">61 confirmed</span></div>
+<div data-en="Latency:" data-pt="Latency:" style="color:var(--fg-2);margin-bottom:var(--space-1);">Latency: <span data-en="4s" data-pt="4s" style="color:var(--status-safe);">4s</span></div>
+<div data-en="Tags: rebrand_artist · fast_deployer" data-pt="Tags: rebrand_artist · fast_deployer" style="color:var(--fg-4);border-top:1px solid var(--border);padding-top:var(--space-3);margin-top:var(--space-3);">
+          Tags: rebrand_artist · fast_deployer
+        </div>
+</div>
+</div>
+<!-- CTA -->
+<div class="sidebar-card">
+<div class="sidebar-card-body">
+<p data-en="Get alerts like this in real time via Telegram or API." data-pt="Receba alertas como esse em tempo real via Telegram ou API." style="font-size:var(--text-sm);color:var(--fg-3);margin-bottom:var(--space-4);">
+          Get alerts like this in real time via Telegram or API.
+        </p>
+<a class="case-cta-btn" data-en="Enable free alerts" data-pt="Ativar alertas grátis" href="#">Enable free alerts</a>
+<a data-en="View case drain trace →" data-pt="Ver drain trace do caso →" href="drain-trace.html" onmouseout="this.style.color='var(--fg-3)'" onmouseover="this.style.color='var(--fg-1)'" style="display:block;margin-top:var(--space-3);padding:var(--space-3);text-align:center;font-size:var(--text-sm);color:var(--fg-3);transition:color var(--dur-base);">
+          View case drain trace →
+        </a>
+</div>
+</div>
+</div>
+</div>
+<!-- WHY IT MATTERS -->
+<div class="case-bottom">
+<div class="why-matters">
+<h2 data-en="Why the 4kxscute case defines SolSentry" data-pt="Por que o case 4kxscute define o SolSentry">Why the 4kxscute case defines SolSentry</h2>
+<div class="why-grid">
+<div class="why-item">
+<div class="why-item-icon">⚡</div>
+<h3 data-en="Preemptive, not reactive" data-pt="Pré-emptivo, não reativo">Preemptive, not reactive</h3>
+<p data-en="Alert fired at deploy time — not after the rug. 4-second latency, real mainnet, no lab." data-pt="O alerta disparou no momento do deploy — não depois do rug. 4 segundos de latência, mainnet real, sem laboratório.">Alert fired at deploy time — not after the rug. 4-second latency, real mainnet, no lab.</p>
+</div>
+<div class="why-item">
+<div class="why-item-icon">◎</div>
+<h3 data-en="Operator, not token" data-pt="Operador, não token">Operator, not token</h3>
+<p data-en="Even if the operator changes the name, symbol, or narrative, the wallet stays flagged. 1,957 tokens, one identity." data-pt="Mesmo que o operador mude o nome, o símbolo ou a narrativa, a wallet continua flagged. 1.957 tokens, uma identidade.">Even if the operator changes the name, symbol, or narrative, the wallet stays flagged. 1,957 tokens, one identity.</p>
+</div>
+<div class="why-item">
+<div class="why-item-icon">◈</div>
+<h3 data-en="Real data, no hype" data-pt="Dados reais, sem hype">Real data, no hype</h3>
+<p data-en="1,714 confirmed rugs. 87.7% rate. 19 minutes lead time. All on-chain verifiable. No promises, only evidence." data-pt="1.714 rugs confirmados. 87.7% de taxa. 19 minutos de lead time. Tudo verificável on-chain. Sem promessas, só evidências.">1,714 confirmed rugs. 87.7% rate. 19 minutes lead time. All on-chain verifiable. No promises, only evidence.</p>
+</div>
+</div>
+</div>
+</div>
+<script>
+  const toggle = document.getElementById('themeToggle');
+  const saved = localStorage.getItem('ss-theme') || 'dark';
+  if (saved === 'light') { document.documentElement.setAttribute('data-theme','light'); toggle.textContent = '☾'; }
+  toggle.addEventListener('click', () => {
+    const current = document.documentElement.getAttribute('data-theme');
+    if (current === 'light') {
+      document.documentElement.removeAttribute('data-theme');
+      localStorage.setItem('ss-theme','dark');
+      toggle.textContent = '☀';
+    } else {
+      document.documentElement.setAttribute('data-theme','light');
+      localStorage.setItem('ss-theme','light');
+      toggle.textContent = '☾';
+    }
+  });
+</script>
+</body>
+</html>
