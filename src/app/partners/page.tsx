@@ -32,8 +32,8 @@ export default async function PartnersPage() {
           sub={
             <>
               SolSentry is a solo-founded autonomous threat intelligence system
-              for Solana. 210+ hours of continuous mainnet runtime, 24,000+
-              scans resolved, 86.4% accuracy with zero confirmed false positives
+              for Solana. 559+ hours of continuous mainnet runtime, 45,000+
+              scans resolved, 87.5% accuracy with zero confirmed false positives
               at CRITICAL risk. Built for Colosseum Frontier 2026. Looking for
               enterprise partners, ecosystem integrators, and security teams.
             </>

@@ -102,14 +102,14 @@ export default async function SubmitPage() {
             }}
           >
             {[
-              ["Runtime", `${(stats?.runtime_hours ?? 210).toLocaleString()}h`],
-              ["Scans resolved", (stats?.resolved ?? 24630).toLocaleString()],
-              ["Accuracy", `${(stats?.accuracy_pct ?? 86.4).toFixed(1)}%`],
+              ["Runtime", `${(stats?.runtime_hours ?? 559).toLocaleString()}h`],
+              ["Scans resolved", (stats?.resolved ?? 43354).toLocaleString()],
+              ["Accuracy", `${(stats?.accuracy_pct ?? 87.5).toFixed(1)}%`],
               [
                 "Resolve rate",
-                `${(stats?.resolve_rate_pct ?? 95.5).toFixed(1)}%`,
+                `${(stats?.resolve_rate_pct ?? 94.5).toFixed(1)}%`,
               ],
-              ["Operators", (stats?.total_operators ?? 1345).toLocaleString()],
+              ["Operators", (stats?.total_operators ?? 4127).toLocaleString()],
               [
                 "Serial ruggers",
                 (stats?.serial_ruggers ?? 408).toLocaleString(),
@@ -720,7 +720,7 @@ export default async function SubmitPage() {
               },
               {
                 t: "2. Accuracy is publicly audited",
-                d: `Every prediction gets resolved against on-chain outcome. ${(stats?.resolve_rate_pct ?? 95.5).toFixed(1)}% resolve rate. ${(stats?.accuracy_pct ?? 86.4).toFixed(1)}% accuracy on ${(stats?.resolved ?? 24630).toLocaleString()} resolved. Zero confirmed false positives at CRITICAL. The ledger is the product.`,
+                d: `Every prediction gets resolved against on-chain outcome. ${(stats?.resolve_rate_pct ?? 94.5).toFixed(1)}% resolve rate. ${(stats?.accuracy_pct ?? 87.5).toFixed(1)}% accuracy on ${(stats?.resolved ?? 43354).toLocaleString()} resolved. Zero confirmed false positives at CRITICAL. The ledger is the product.`,
                 link: "/resolutions",
                 linkLabel: "Outcome stream",
               },

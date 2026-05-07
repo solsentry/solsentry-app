@@ -11,6 +11,8 @@ const TTL = {
   clusters: 120,
   cluster: 120,
   x402: 300,
+  hunters: 30,
+  dossier: 300,
 } as const;
 
 export interface NetworkStats {
@@ -260,6 +262,55 @@ export async function fetchDrainTrace(
   return safeFetch<DrainTrace>(
     `/v1/drain-trace/${encodeURIComponent(wallet)}`,
     60,
+  );
+}
+
+export interface HuntersActive {
+  count_total: number;
+  count_hunting: number;
+  hunters: {
+    agent_id: string;
+    target_wallet: string;
+    origin_token?: string;
+    risk_score: number;
+    generation: number;
+    label?: string | null;
+    discoveries_total?: number;
+    total_sol_moved?: number;
+    hunt_count?: number;
+    last_activity_age_s?: number;
+  }[];
+}
+
+export async function fetchHuntersActive(): Promise<HuntersActive | null> {
+  return safeFetch<HuntersActive>("/v1/hunters/active", TTL.hunters);
+}
+
+export async function fetchHuntersActiveCount(): Promise<number | undefined> {
+  const data = await fetchHuntersActive();
+  return data?.count_total;
+}
+
+export interface Dossier {
+  wallet: string;
+  built_at?: string;
+  schema_version?: number;
+  operator_id?: string | null;
+  risk_level?: string | null;
+  rug_rate_pct?: number | null;
+  total_tokens?: number | null;
+  confirmed_rugs?: number | null;
+  genesis?: unknown;
+  first_funder?: unknown;
+  second_funder?: unknown;
+  cex_exits?: unknown[];
+  identity?: unknown;
+}
+
+export async function fetchDossier(wallet: string): Promise<Dossier | null> {
+  return safeFetch<Dossier>(
+    `/v1/dossier/${encodeURIComponent(wallet)}`,
+    TTL.dossier,
   );
 }
 

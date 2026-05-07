@@ -31,7 +31,7 @@ export default async function Home() {
             <p className="hero-sub">
               Autonomous threat intelligence for Solana. Detects serial rug
               operators, bot clusters, and malicious launches before your users
-              lose funds. 210+ hours continuous mainnet. 86% accuracy. Zero
+              lose funds. 559+ hours continuous mainnet. 87.5% accuracy. Zero
               confirmed false positives at CRITICAL risk.
             </p>
 

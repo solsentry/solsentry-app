@@ -1605,6 +1605,15 @@ function App() {
   });
 
   const changeMode = useCallback((m) => {
+    // Pro / Dev / Watch live in the Next.js app routes. Easy stays here.
+    if (m === 'pro' || m === 'dev' || m === 'watch') {
+      const target = m === 'pro' ? '/dashboard'
+                    : m === 'dev' ? '/api'
+                    : '/watchlist';
+      const lang = localStorage.getItem(LANG_KEY) || 'pt';
+      window.location.href = target + '?lang=' + encodeURIComponent(lang);
+      return;
+    }
     setMode(m);
     localStorage.setItem(MODE_KEY_NEW, m);
   }, []);

@@ -90,8 +90,8 @@ const EXAMPLES: Example[] = [
     a: (
       <>
         Taxa de acerto (<code>was_correct</code>) está em{" "}
-        <strong style={{ color: "var(--brand-orange)" }}>86.4%</strong> sobre{" "}
-        <strong>24,630 previsões resolvidas</strong>. Resolve rate de 95.5%.
+        <strong style={{ color: "var(--brand-orange)" }}>87.5%</strong> sobre{" "}
+        <strong>43,354 previsões resolvidas</strong>. Resolve rate de 94.5%.
         Zero falsos positivos confirmados em CRITICAL risk. Os erros são todos
         stealth-rug (falsos negativos). Feed público em{" "}
         <a href="/resolutions">/resolutions</a>.

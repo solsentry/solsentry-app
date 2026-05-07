@@ -3,11 +3,13 @@ import { NextRequest, NextResponse } from "next/server";
 // Promote sds7 static HTML to the site root (no /v3 prefix).
 //
 // Rewrites (URL stays the same in the browser, content swapped):
-//   /              → /index.html
-//   /dashboard     → /dashboard.html
+//   /              → /index.html        (fun-style Easy mode)
 //   /explorer      → /explorer.html
 //   /everything    → /everything.html
 //   /docs          → /docs.html        (overrides the old Next.js /docs)
+//
+// /dashboard is NOT rewritten — it's the Next.js Pro hub from the (pro)
+// route group (left sidebar, live metrics, hunter status).
 //
 // 301 redirect: any /v3/* request → strip /v3 prefix.
 //
@@ -18,7 +20,6 @@ import { NextRequest, NextResponse } from "next/server";
 
 const REWRITES: Record<string, string> = {
   "/": "/index.html",
-  "/dashboard": "/dashboard.html",
   "/explorer": "/explorer.html",
   "/everything": "/everything.html",
   "/docs": "/docs.html",
@@ -45,7 +46,6 @@ export function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     "/",
-    "/dashboard",
     "/explorer",
     "/everything",
     "/docs",

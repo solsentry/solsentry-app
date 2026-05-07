@@ -105,6 +105,12 @@ button {
 .spin { animation: spin 800ms linear infinite; }
 @keyframes spin { from { transform: rotate(0); } to { transform: rotate(360deg); } }
 
+/* Pro dashboard pulse — used by HunterStatus + SideNav live indicator */
+@keyframes sol-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.55; transform: scale(1.25); }
+}
+
 /* Layout containers */
 .container {
   max-width: 1200px;
