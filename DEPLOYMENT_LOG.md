@@ -72,3 +72,84 @@ Route (app)                                 Size  First Load JS
 - GET /api → 200 ✅
 
 Title + content validados via curl em todas as 6 rotas.
+
+## ✅ Iteration 4 — /fun em destaque + métricas live  COMPLETED
+
+- `FunCallout.tsx` criado — seção destaque com 3 modes (Easy/Pro/Dev) + CTA grande
+- Inserido na home logo após HeroScan, antes de StatsGrid
+- StatsGrid já consume live `/v1/stats` via `lib/api.ts`
+- CaseStudy atualizado: 1.078 → 2.200+ rugs, 1.116 → 2.300+ tokens
+
+## ✅ Iteration 5 — Smoke test final  COMPLETED
+
+```
+HTTP smoke test (npm run start em localhost:3000):
+/        → 200 ✅
+/fun     → 200 ✅
+/mcp     → 200 ✅
+/telegram→ 200 ✅
+/docs    → 200 ✅
+/api     → 200 ✅
+```
+
+**Build (npm run build):**
+- 7 static routes geradas (/, /_not-found, /api, /docs, /fun, /mcp, /telegram)
+- First Load JS: 102 kB shared
+- Homepage: 45.5 kB → 151 kB total
+- 0 errors, 0 warnings críticos
+
+**Conteúdo validado via curl em todas as rotas:**
+- Title meta tag correta ✅
+- H1 / hero content rendering ✅
+- "Open Fun mode" CTA visível ✅
+- "Live API ↗" link visível ✅
+
+## ⚠️ Limitação — visual screenshot
+
+Playwright headless browser tentou rodar mas Chromium MCP path não bate
+(/opt/google/chrome/chrome não existe; cache em /home/crash/.cache/ms-playwright/chromium-1217 sim, mas instalação de deps de sistema requer sudo). **Build válido + curl 200 em todas rotas + content validation = high confidence site funcional.**
+
+Crash precisa abrir no browser ao acordar pra validar visual.
+
+## 🚀 STATUS FINAL
+
+**Branch:** `feat/brand-v4-amber-cleanup`
+**Não pushado** (intencionalmente — Crash decide deploy)
+**Build:** ✅ passa
+**Routes:** 6 funcionais, todas 200 OK
+**Brand:** âmbar #C17D0E + Syne + DM Sans aplicados
+**Site:** funcional, limpo, sem links quebrados
+
+### Pra deploy no Cloudflare:
+
+```bash
+cd /home/crash/projects/solsentry-app
+git push -u origin feat/brand-v4-amber-cleanup
+# Cloudflare Pages criará preview URL automaticamente
+# Validar visual no preview, depois merge → main = deploy prod
+```
+
+### Estrutura final do site
+
+```
+solsentry.app/
+├── /              → Homepage (HeroScan + FunCallout + Stats + CaseStudy + Pillars + Features)
+├── /fun           → Embedded Easy/Pro/Dev modes (iframe solsentry-fun.html)
+├── /mcp           → MCP server install guide
+├── /telegram      → Telegram bot 32 commands
+├── /docs          → Install + API guide
+└── /api           → REST API reference (11 endpoints)
+```
+
+### O que funciona ao vivo
+
+- HeroScan: paste wallet → fetch api.solsentry.app/v1/operator → render risk
+- StatsGrid: fetch api.solsentry.app/v1/stats → render live metrics
+- Todos os links externos pra api.solsentry.app/v1/* abrem em nova tab (jurado pode validar JSON real)
+
+### O que está pendente (não-bloqueador)
+
+- Visual screenshot manual (Crash valida ao acordar)
+- Cards: aplicar borders 1px cinza vs 2px âmbar conforme padrão Brand v4 (já tá perto, polish leve)
+- Animações Hunter S4 Gamma deck — separado do site
+

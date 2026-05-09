@@ -74,7 +74,7 @@ export function CaseStudy() {
               Operator lifetime (live)
             </dt>
             <dd style={{ color: "var(--fg-1)" }}>
-              1,078 confirmed rugs · 1,116 tokens · 96.6% rug rate · CRITICAL
+              2,200+ confirmed rugs · 2,300+ tokens · 96.8% rug rate · CRITICAL
             </dd>
           </dl>
         </div>

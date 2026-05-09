@@ -6,6 +6,7 @@ import { CaseStudy } from "@/components/CaseStudy";
 import { InstallCarousel } from "@/components/InstallCarousel";
 import { PillarGrid } from "@/components/PillarGrid";
 import { FeatureSurface } from "@/components/FeatureSurface";
+import { FunCallout } from "@/components/FunCallout";
 import { HeroScan } from "@/components/HeroScan";
 import Link from "next/link";
 
@@ -65,9 +66,10 @@ export default async function Home() {
           </div>
         </section>
 
+        <FunCallout />
         <StatsGrid stats={stats} />
-        <PillarGrid />
         <CaseStudy />
+        <PillarGrid />
         <FeatureSurface />
       </main>
       <Footer />
