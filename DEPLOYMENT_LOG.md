@@ -275,3 +275,91 @@ M  DEPLOYMENT_LOG.md          (this section)
 
 Every page that fetches data uses `safeFetch<T>` (existing in `api.ts`) which catches network errors and returns `null`. The pages render `<ApiError endpoint="..." />` instead of crashing — the user sees a clear box with the endpoint URL pre-formatted as a clickable link, so debugging the API takes one click.
 
+
+## ✅ Iteration 7 — Brand assets aplicados  COMPLETED
+
+**Logo 3D âmbar (de `sds/v4/manus_delivery_r5_FINAL/site-mockup/`):**
+- `/public/logo-3d.png` (4.5MB) — full quality
+- `/public/logo-3d.webp` (372KB) — Nav usa essa
+- Nav.tsx: `<img src="/logo-3d.webp" width=28 height=28 borderRadius=4 />`
+
+**Favicons multi-resolução (de `sds/v4/manus_delivery_r5_FINAL/favicon/`):**
+- `/favicon.ico` (10KB)
+- `/favicon-32.png`, `/favicon-192.png`, `/favicon-512.png`
+- `/favicon.svg` atualizado pra âmbar #C17D0E
+
+**OG cards (de `sds/v4/manus_delivery_r5_FINAL/og-cards/`):**
+- `/og/og-default.png` (Twitter card 1200×630)
+- `/og/og-avatar.png`, `/og/og-telegram.png`, `/og/og-twitter-banner.png`
+- `layout.tsx`: openGraph + twitter metadata com imagens
+
+**SVG legacy:**
+- `/logo-shield.svg` cor atualizada de #FF6B00 → #C17D0E (mantido como fallback)
+
+## ✅ Iteration 8 — Push + Deploy  IN PROGRESS
+
+```
+Commits no branch feat/brand-v4-amber-cleanup (4 total):
+1eec7b5 feat(brand): apply 3D amber logo + favicons + OG cards
+3dd683d feat(app): 12 tool pages + restore truncated globals.css
+f99d8a8 feat(site): add FunCallout, update CaseStudy with live numbers
+63cc25f feat(site): brand v4 amber cleanup + fix middleware rewrites
+
+Pushed origin → fast-forward merged to main → push origin main:
+   eb2a61d..1eec7b5  main -> main
+```
+
+GitHub Actions Build & Deploy rodando (~3-5 min). Cloudflare Pages OpenNext build.
+
+**Smoke test prod (parcial — deploy ainda em progresso):**
+- / → 200 ✅
+- /fun → 200 ✅
+- /dashboard → 200 ✅
+- /alerts → 200 ✅
+- /clusters → 200 ✅
+- /mcp → 200 ✅
+- /operator/4kxscute... → 200 ✅
+- /drain/4kxscute... → 200 ✅
+- /token/So111... → 200 ✅
+- /top-operators → 404 (deploy ainda subindo)
+- /architecture → 404 (idem)
+- /wallets → 404 (idem)
+- /tokens → 404 (idem)
+- /network/[wallet] → 404 (idem)
+
+Monitor configurado pra alertar quando /top-operators voltar 200.
+
+## 🚀 DEPLOY LIVE — solsentry.app
+
+**Status: TODOS OS 18 ROUTES 200 OK em produção** ✅
+
+```
+✅ /
+✅ /fun
+✅ /mcp
+✅ /telegram
+✅ /docs
+✅ /api
+✅ /dashboard
+✅ /alerts
+✅ /top-operators
+✅ /clusters
+✅ /architecture
+✅ /tokens
+✅ /wallets
+✅ /operator/[wallet]   (live: CRITICAL · 2,291 rugs · 2,337 tokens · 98.0%)
+✅ /drain/[wallet]
+✅ /token/[mint]
+✅ /network/[wallet]
+✅ /clusters/[id]
+```
+
+Live data validation 4kxscute (prod):
+- Risk level: CRITICAL ✅
+- Confirmed rugs: 2,291 ✅
+- Total tokens: 2,337 ✅
+- Rug rate: 98.0% ✅
+- Tags: fast_deployer, rebrand_artist ✅
+
+Site oficial: **https://solsentry.app** — live e funcional pra Demo Day.
+

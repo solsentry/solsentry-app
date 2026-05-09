@@ -15,6 +15,17 @@ const TTL = {
   dossier: 300,
 } as const;
 
+export interface AccuracyTrendPoint {
+  hour: string;
+  accuracy: number;
+  resolved: number;
+}
+
+export interface ScansTrendPoint {
+  hour: string;
+  scans: number;
+}
+
 export interface NetworkStats {
   total_predictions: number;
   pending: number;
@@ -30,6 +41,12 @@ export interface NetworkStats {
   wallet_profiles_tracked: number;
   bot_clusters: number;
   runtime_hours: number;
+  accuracy_trend_24h?: AccuracyTrendPoint[];
+  scans_trend_24h?: ScansTrendPoint[];
+  dev_wallet_coverage_pct?: number;
+  avg_resolve_latency_hours?: number;
+  last_scan_at?: number;
+  last_resolution_at?: number;
 }
 
 export interface Operator {
@@ -339,6 +356,27 @@ export async function fetchDossier(wallet: string): Promise<Dossier | null> {
     `/v1/dossier/${encodeURIComponent(wallet)}`,
     TTL.dossier,
   );
+}
+
+export interface BrainSkill {
+  name?: string;
+  description?: string;
+  tp?: number;
+  fp?: number;
+  precision?: number;
+  precision_pct?: number;
+  fired?: number;
+  invariant?: string;
+  [key: string]: unknown;
+}
+
+export interface BrainSkillsResponse {
+  skills?: BrainSkill[];
+  [key: string]: unknown;
+}
+
+export async function fetchBrainSkills(): Promise<BrainSkillsResponse | null> {
+  return safeFetch<BrainSkillsResponse>("/v1/brain/skills", 120);
 }
 
 export function truncate(addr: string, head = 6, tail = 4): string {
