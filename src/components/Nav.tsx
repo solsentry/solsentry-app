@@ -1,8 +1,8 @@
 import Link from "next/link";
 
 const NAV_LINKS = [
+  { label: "Live", href: "/live" },
   { label: "Dashboard", href: "/dashboard" },
-  { label: "Alerts", href: "/alerts" },
   { label: "Top operators", href: "/top-operators" },
   { label: "Clusters", href: "/clusters" },
   { label: "MCP", href: "/mcp" },
@@ -29,14 +29,10 @@ export function Nav() {
               {l.label}
             </Link>
           ))}
-          <a
-            href="https://api.solsentry.app/v1/stats"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="nav-cta"
-          >
-            Live API ↗
-          </a>
+          <Link href="/about">About</Link>
+          <Link href="/pro" className="nav-cta">
+            Pro mode →
+          </Link>
         </div>
       </div>
     </nav>

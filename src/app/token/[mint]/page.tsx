@@ -5,6 +5,7 @@ import { Section } from "@/components/Section";
 import { RiskBadge } from "@/components/RiskBadge";
 import { AddrLink } from "@/components/AddrLink";
 import { ApiError } from "@/components/ApiError";
+import { SenaModal } from "@/components/SenaModal";
 import { fetchToken, truncate } from "@/lib/api";
 import Link from "next/link";
 
@@ -63,6 +64,18 @@ export default async function TokenPage({ params }: PageProps) {
           }
         >
           <div style={{ display: "flex", gap: 12, marginTop: 16, flexWrap: "wrap" }}>
+            {tok && (
+              <SenaModal
+                subject={{
+                  kind: "token",
+                  mint,
+                  symbol: tok.symbol,
+                  riskLevel: tok.risk_level,
+                  riskScore: tok.risk_score,
+                  flags: tok.flags,
+                }}
+              />
+            )}
             <a
               href={`https://api.solsentry.app/v1/token/${mint}`}
               target="_blank"

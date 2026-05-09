@@ -4,6 +4,7 @@ import { PageHeader } from "@/components/PageHeader";
 import { Section } from "@/components/Section";
 import { AddrLink } from "@/components/AddrLink";
 import { ApiError } from "@/components/ApiError";
+import { NetworkSvg } from "@/components/NetworkSvg";
 import { fetchOperatorNetwork, truncate } from "@/lib/api";
 import Link from "next/link";
 
@@ -80,9 +81,22 @@ export default async function NetworkPage({ params }: PageProps) {
           <>
             {net.nodes && net.nodes.length > 0 && (
               <Section
+                eyebrow="Live graph"
+                title="Operator graph (real-time)"
+                sub={`${net.nodes.length} nodes · ${net.edges?.length ?? 0} edges. Center node = this operator. Inner ring = hop-1. Outer ring = hop-2+. Hover for labels.`}
+              >
+                <NetworkSvg
+                  center={wallet}
+                  nodes={net.nodes}
+                  edges={net.edges ?? []}
+                />
+              </Section>
+            )}
+            {net.nodes && net.nodes.length > 0 && (
+              <Section
                 eyebrow={`${net.nodes.length} nodes`}
-                title="Wallets in the bounded graph"
-                sub="A simple list rendering — production graph viz coming post-Demo Day."
+                title="Adjacency list"
+                sub="Same data as above, in tabular form. Click a wallet to inspect its profile."
               >
                 <div
                   style={{

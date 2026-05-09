@@ -4,6 +4,7 @@ import { PageHeader } from "@/components/PageHeader";
 import { Section } from "@/components/Section";
 import { AddrLink } from "@/components/AddrLink";
 import { ApiError } from "@/components/ApiError";
+import { SenaModal } from "@/components/SenaModal";
 import { fetchDrainTrace, truncate, fmtUnixAge } from "@/lib/api";
 import Link from "next/link";
 
@@ -81,6 +82,18 @@ export default async function DrainPage({ params }: PageProps) {
           }
         >
           <div style={{ display: "flex", gap: 12, marginTop: 16, flexWrap: "wrap" }}>
+            {trace && (
+              <SenaModal
+                subject={{
+                  kind: "drain",
+                  wallet,
+                  hopCount: trace.hop_count,
+                  totalSolDrained: trace.total_sol_drained,
+                  reachedCex: trace.reached_cex,
+                  reachedMixer: trace.reached_mixer,
+                }}
+              />
+            )}
             <a
               href={`https://api.solsentry.app/v1/drain-trace/${wallet}`}
               target="_blank"
