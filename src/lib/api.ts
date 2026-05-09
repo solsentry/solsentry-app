@@ -293,20 +293,123 @@ export async function fetchInvariants(): Promise<InvariantsCheck | null> {
   return safeFetch<InvariantsCheck>("/health/invariants", 30);
 }
 
+export interface OperatorNetworkNode {
+  address: string;
+  type?: string;
+  risk?: number;
+  label?: string;
+  isRoot?: boolean;
+}
+
 export interface OperatorNetwork {
   wallet: string;
-  nodes: { address: string; type?: string; risk?: number }[];
+  nodes: OperatorNetworkNode[];
   edges: { from: string; to: string; weight?: number; kind?: string }[];
-  [key: string]: unknown;
+}
+
+interface ApiNetworkNode {
+  id?: string;
+  kind?: string;
+  wallet?: string;
+  mint?: string;
+  address?: string;
+  label?: string;
+  risk_level?: string;
+  risk_score?: number;
+  risk?: number;
+  is_root?: boolean;
+  type?: string;
+}
+
+interface ApiNetworkEdge {
+  from?: string;
+  to?: string;
+  source?: string;
+  target?: string;
+  weight?: number;
+  kind?: string;
+}
+
+interface ApiNetworkResponse {
+  root?: string;
+  wallet?: string;
+  nodes?: ApiNetworkNode[];
+  edges?: ApiNetworkEdge[];
 }
 
 export async function fetchOperatorNetwork(
   wallet: string,
 ): Promise<OperatorNetwork | null> {
-  return safeFetch<OperatorNetwork>(
+  const raw = await safeFetch<ApiNetworkResponse>(
     `/v1/operator/${encodeURIComponent(wallet)}/network`,
     120,
   );
+  if (!raw) return null;
+
+  const rawNodes = Array.isArray(raw.nodes) ? raw.nodes : [];
+  const rawEdges = Array.isArray(raw.edges) ? raw.edges : [];
+
+  // Normalize: API returns nodes with id/kind/wallet/mint/risk_score.
+  // Component expects address/type/risk.
+  const nodes: OperatorNetworkNode[] = [];
+  for (const n of rawNodes) {
+    const address =
+      n.address ||
+      n.wallet ||
+      n.mint ||
+      (typeof n.id === "string"
+        ? n.id.replace(/^(op_|tok_|cluster_|kol_)/, "")
+        : "");
+    if (!address) continue;
+    const type =
+      n.type ||
+      n.kind ||
+      (typeof n.id === "string" && n.id.startsWith("tok_")
+        ? "token"
+        : typeof n.id === "string" && n.id.startsWith("cluster_")
+          ? "cluster"
+          : typeof n.id === "string" && n.id.startsWith("kol_")
+            ? "kol"
+            : "operator");
+    nodes.push({
+      address,
+      type,
+      risk: n.risk ?? n.risk_score,
+      label: n.label,
+      isRoot: n.is_root === true,
+    });
+  }
+
+  // Build address lookup so we can map edge endpoints (which use the
+  // prefixed id form) to plain addresses.
+  const idToAddress = new Map<string, string>();
+  rawNodes.forEach((n) => {
+    const address =
+      n.address ||
+      n.wallet ||
+      n.mint ||
+      (typeof n.id === "string"
+        ? n.id.replace(/^(op_|tok_|cluster_|kol_)/, "")
+        : "");
+    if (n.id && address) idToAddress.set(n.id, address);
+    if (address) idToAddress.set(address, address);
+  });
+
+  const edges: { from: string; to: string; weight?: number; kind?: string }[] = [];
+  for (const e of rawEdges) {
+    const fromRaw = e.from || e.source || "";
+    const toRaw = e.to || e.target || "";
+    const from = idToAddress.get(fromRaw) || fromRaw;
+    const to = idToAddress.get(toRaw) || toRaw;
+    if (!from || !to) continue;
+    edges.push({ from, to, weight: e.weight, kind: e.kind });
+  }
+
+  return {
+    wallet: raw.root || raw.wallet || wallet,
+    nodes,
+    edges,
+  };
 }
 
 export interface HuntersActive {
