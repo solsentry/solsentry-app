@@ -101,6 +101,9 @@ export default async function OperatorPage({ params }: PageProps) {
             >
               Full JSON ↗
             </a>
+            <Link href={`/network/${wallet}`} className="btn-ghost">
+              Organograma →
+            </Link>
             <Link href={`/drain/${wallet}`} className="btn-ghost">
               Trace drain
             </Link>
