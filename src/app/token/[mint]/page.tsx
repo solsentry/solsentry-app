@@ -244,19 +244,23 @@ export default async function TokenPage({ params }: PageProps) {
                       </span>
                     )}
                   </div>
-                  {tok.operator && tok.operator !== tok.dev_wallet && (
-                    <>
-                      <div
-                        className="label-tag"
-                        style={{ marginBottom: 8 }}
-                      >
-                        Operator ID
-                      </div>
-                      <div>
-                        <AddrLink addr={tok.operator} head={10} tail={6} />
-                      </div>
-                    </>
-                  )}
+                  {tok.operator && (() => {
+                    const opAddr =
+                      typeof tok.operator === "string"
+                        ? tok.operator
+                        : tok.operator.wallet;
+                    if (!opAddr || opAddr === tok.dev_wallet) return null;
+                    return (
+                      <>
+                        <div className="label-tag" style={{ marginBottom: 8 }}>
+                          Operator wallet
+                        </div>
+                        <div>
+                          <AddrLink addr={opAddr} head={10} tail={6} />
+                        </div>
+                      </>
+                    );
+                  })()}
                   {tok.dev_wallet && (
                     <div style={{ marginTop: 20, display: "flex", gap: 12, flexWrap: "wrap" }}>
                       <Link

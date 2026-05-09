@@ -141,6 +141,14 @@ export interface OperatorTimeline {
   tokens: TimelineToken[];
 }
 
+export interface TokenOperatorRef {
+  wallet?: string;
+  risk_level?: string;
+  risk_label?: string;
+  confirmed_rugs?: number;
+  total_tokens?: number;
+}
+
 export interface Token {
   mint: string;
   known: boolean;
@@ -150,7 +158,7 @@ export interface Token {
   flags?: string[];
   is_bundle?: boolean;
   dev_wallet?: string | null;
-  operator?: string | null;
+  operator?: TokenOperatorRef | string | null;
   symbol?: string | null;
   predicted_at?: string | null;
 }

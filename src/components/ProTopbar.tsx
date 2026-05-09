@@ -78,9 +78,13 @@ export function ProTopbar() {
     e.preventDefault();
     const q = query.trim();
     if (!q) return;
-    // Solana addresses are base58, 32-44 chars; if it looks like a token, route to /token, else /operator
     if (q.length >= 32 && q.length <= 44) {
-      router.push(`/operator/${q}`);
+      // Heuristic for token vs wallet:
+      // Pump.fun mints end in "pump", Bonk-style in "bonk", etc → /token
+      // Otherwise default to /operator (most common Solana wallet)
+      const isToken =
+        /pump$/i.test(q) || /moon$/i.test(q) || /bonk$/i.test(q);
+      router.push(isToken ? `/token/${q}` : `/operator/${q}`);
       return;
     }
     setQuery("");
