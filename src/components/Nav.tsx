@@ -1,10 +1,12 @@
 import Link from "next/link";
 
 const NAV_LINKS = [
-  { label: "Fun mode", href: "/fun" },
+  { label: "Dashboard", href: "/dashboard" },
+  { label: "Alerts", href: "/alerts" },
+  { label: "Top operators", href: "/top-operators" },
+  { label: "Clusters", href: "/clusters" },
   { label: "MCP", href: "/mcp" },
   { label: "Telegram", href: "/telegram" },
-  { label: "Docs", href: "/docs" },
 ];
 
 export function Nav() {

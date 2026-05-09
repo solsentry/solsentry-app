@@ -153,3 +153,125 @@ solsentry.app/
 - Cards: aplicar borders 1px cinza vs 2px âmbar conforme padrão Brand v4 (já tá perto, polish leve)
 - Animações Hunter S4 Gamma deck — separado do site
 
+
+---
+
+## Iteration 6+ — Tool pages (Demo Day BR sprint, May 9 2026)
+
+### Context
+
+Demo Day BR começa em horas. Site precisava virar de landing-only pra **public tool** com páginas reais por capability. Todas usam server components, fetch direto api.solsentry.app, revalidate 30-300s. Stack mantida: Next.js 15 + CSS vars + classes globais (sem Tailwind, sem novas deps).
+
+### Bug crítico fixed primeiro
+
+Commit anterior (`63cc25f`) truncou `src/app/globals.css` de 1401 → 215 linhas — manteve só `:root` + typography mas removeu **TODAS** as classes de layout (`.container`, `.btn-primary`, `.panel`, `.section-pad`, `.eyebrow`, `.stats-grid`, `.lb-row`, `.alert-item`, `.timeline`, etc). Pages compilavam mas renderizavam SEM ESTILO.
+
+Restored: extraí `lines 105-1272` do commit `2a31ce3` (versão pré-truncate) e appendei ao novo globals.css. Os legacy refs `--brand-orange-*` resolvem via aliases pra `--brand-amber-*` definidos na v4 — paleta âmbar mantida intacta. Final: 1383 LOC.
+
+### Páginas novas (12)
+
+| Tier | Path | Type | Source endpoint |
+|------|------|------|-----------------|
+| P0 | `/operator/[wallet]` | dynamic | `/v1/operator/{w}` + `/timeline` + `/network` |
+| P0 | `/token/[mint]` | dynamic | `/v1/token/{m}` |
+| P0 | `/drain/[wallet]` | dynamic | `/v1/drain-trace/{w}` |
+| P0 | `/alerts` | static (revalidate 30s) | `/v1/alerts/recent?limit=50` |
+| P0 | `/top-operators` | static (revalidate 5m) | `/v1/top-operators?limit=50` |
+| P1 | `/clusters` | static (revalidate 2m) | `/v1/clusters?limit=50` |
+| P1 | `/clusters/[id]` | dynamic | `/v1/cluster/{id}` |
+| P1 | `/dashboard` | static (revalidate 30s) | `/v1/stats` + `/health/invariants` + `/v1/alerts/recent?limit=10` |
+| P2 | `/architecture` | static | (no fetch — pure content) |
+| P2 | `/network/[wallet]` | dynamic | `/v1/operator/{w}/network` |
+| P2 | `/tokens` | static (revalidate 30s) | `/v1/alerts/recent` + `/v1/resolutions/recent` |
+| P2 | `/wallets` | static (revalidate 60s) | `/v1/stats` |
+
+### Componentes novos
+
+- `src/components/RiskBadge.tsx` — pill com cor por nível (CRITICAL → red, HIGH → warning, etc)
+- `src/components/AddrLink.tsx` — wrapper truncate + link interno pra `/operator/{addr}`
+- `src/components/ApiError.tsx` — empty state padrão quando fetch retorna null, mostra endpoint pra debug
+
+### `src/lib/api.ts` adicionado
+
+- `fetchInvariants()` → `/health/invariants`
+- `fetchOperatorNetwork(wallet)` → `/v1/operator/{w}/network`
+
+(Demais helpers — `fetchOperator`, `fetchToken`, `fetchDrainTrace`, `fetchAlertsRecent`, `fetchTopOperators`, `fetchClusters`, `fetchCluster` — já existiam no file.)
+
+### Nav atualizada
+
+Limpou nav pra 6 itens prioritários:
+```
+Dashboard · Alerts · Top operators · Clusters · MCP · Telegram   [Live API ↗]
+```
+
+(Removidos `/fun` e `/docs` do nav primário — continuam acessíveis via footer e homepage CTAs.)
+
+### Validation
+
+```
+npm run build → 19 routes OK (16 prerendered + 3 server-rendered dynamic)
+
+Production server smoke test (curl localhost:3000):
+200  /
+200  /operator/4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1
+200  /token/SoLfooBarMint
+200  /drain/4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1
+200  /alerts
+200  /top-operators
+200  /clusters
+200  /dashboard
+200  /architecture
+200  /network/4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1
+200  /tokens
+200  /wallets
+200  /telegram
+200  /mcp
+
+Content checks (live API data flows through):
+- /operator/4kxscute… → renders CRITICAL badge + 1059 confirmed rugs + rug_rate
+- /top-operators → renders leaderboard rows with rank/wallet/rugs
+- /dashboard → renders runtime + tokens scanned + accuracy + INVARIANT status from /health/invariants
+- /drain/4kxscute… → renders hops + reached_cex + reached_mixer + SOL drained
+```
+
+### Skipped / not done
+
+- **Telegram page revamp**: brief said "make sure all major commands listed grouped by Scan/Track/Investigate/Wallet/Hunters/Alerts/Settings". Existing `/telegram` (483 LOC) already has 7 groups covering the same surface ("Scan & analyze", "Status & monitoring", "ALife hunters", "Entities & KOLs", "Bulk & admin", "Genome & evolution", "Content"). Risk of regression > value of restructuring under deadline. Left intact.
+- **Network graph viz**: `/network/[wallet]` renders adjacency as a simple node list + edge list (no SVG/canvas graph). Brief explicitly required no new deps.
+- **Cluster detail wallet enumeration**: shows `sample_wallets` (or `operators`) up to 60 entries — full member list past that is in the JSON.
+
+### Known soft issues
+
+- `/dashboard` may render "INVARIANT VIOLATION" depending on live API state — this is real signal from `/health/invariants`, not a UI bug. The error block now displays the failures + JSON detail to the user.
+- `/token/SoLfooBarMint` (the smoke test mint) returns `known: false` from the API → page renders the "Not yet scanned" empty state correctly.
+- Internal links from `/operator/[wallet]` timeline go to `/token/[mint]` — those mints will be resolved server-side on click.
+
+### Files touched
+
+```
+A  src/app/operator/[wallet]/page.tsx
+A  src/app/token/[mint]/page.tsx
+A  src/app/drain/[wallet]/page.tsx
+A  src/app/alerts/page.tsx
+A  src/app/top-operators/page.tsx
+A  src/app/clusters/page.tsx
+A  src/app/clusters/[id]/page.tsx
+A  src/app/dashboard/page.tsx
+A  src/app/architecture/page.tsx
+A  src/app/network/[wallet]/page.tsx
+A  src/app/tokens/page.tsx
+A  src/app/wallets/page.tsx
+A  src/components/RiskBadge.tsx
+A  src/components/AddrLink.tsx
+A  src/components/ApiError.tsx
+M  src/lib/api.ts             (+ fetchInvariants, fetchOperatorNetwork)
+M  src/components/Nav.tsx     (refreshed link set)
+M  src/app/globals.css        (215 → 1383 LOC: restored layout classes truncated by 63cc25f)
+M  DEPLOYMENT_LOG.md          (this section)
+```
+
+### How the API errors are handled
+
+Every page that fetches data uses `safeFetch<T>` (existing in `api.ts`) which catches network errors and returns `null`. The pages render `<ApiError endpoint="..." />` instead of crashing — the user sees a clear box with the endpoint URL pre-formatted as a clickable link, so debugging the API takes one click.
+

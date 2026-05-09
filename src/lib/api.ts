@@ -265,6 +265,33 @@ export async function fetchDrainTrace(
   );
 }
 
+export interface InvariantsCheck {
+  ok: boolean;
+  checks?: Record<string, unknown>;
+  failures?: string[];
+  [key: string]: unknown;
+}
+
+export async function fetchInvariants(): Promise<InvariantsCheck | null> {
+  return safeFetch<InvariantsCheck>("/health/invariants", 30);
+}
+
+export interface OperatorNetwork {
+  wallet: string;
+  nodes: { address: string; type?: string; risk?: number }[];
+  edges: { from: string; to: string; weight?: number; kind?: string }[];
+  [key: string]: unknown;
+}
+
+export async function fetchOperatorNetwork(
+  wallet: string,
+): Promise<OperatorNetwork | null> {
+  return safeFetch<OperatorNetwork>(
+    `/v1/operator/${encodeURIComponent(wallet)}/network`,
+    120,
+  );
+}
+
 export interface HuntersActive {
   count_total: number;
   count_hunting: number;
