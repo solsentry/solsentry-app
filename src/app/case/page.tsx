@@ -11,7 +11,7 @@ interface FlowNode {
   id: string;
   label: string;
   sub?: string;
-  type: "root" | "cohort" | "hub" | "exit" | "actor";
+  type: "root" | "cohort" | "legit" | "hub" | "exit" | "actor";
   count?: string;
   amount?: string;
   highlight?: boolean;
@@ -26,7 +26,15 @@ const NODES: FlowNode[] = [
     type: "root",
     amount: "$2.5M+ in disbursements",
   },
-  // Tier 2 — cohort
+  // Tier 2 — legit recipients (control contrast)
+  {
+    id: "legit_pool",
+    label: "22 legitimate payments",
+    sub: "varied amounts · independent destinations",
+    type: "legit",
+    count: "22 of 118",
+  },
+  // Tier 2 — same-band cohort (suspicious)
   {
     id: "cohort_a",
     label: "Recipient A",
@@ -107,28 +115,37 @@ const NODES: FlowNode[] = [
   },
 ];
 
-const EDGES: [string, string][] = [
-  ["payer", "cohort_a"],
-  ["payer", "cohort_b"],
-  ["payer", "cohort_c"],
-  ["payer", "cohort_d"],
-  ["payer", "cohort_e"],
-  ["cohort_a", "hub_1"],
-  ["cohort_b", "hub_1"],
-  ["cohort_c", "hub_2"],
-  ["cohort_d", "hub_3"],
-  ["cohort_e", "hub_4"],
-  ["hub_1", "exit_1"],
-  ["hub_1", "exit_2"],
-  ["hub_2", "exit_1"],
-  ["hub_3", "exit_2"],
-  ["hub_4", "exit_2"],
-  ["exit_1", "actor_1"],
-  ["exit_2", "actor_1"],
+interface FlowEdge {
+  from: string;
+  to: string;
+  weight?: number;
+  kind?: "legit" | "alert";
+}
+
+const EDGES: FlowEdge[] = [
+  { from: "payer", to: "legit_pool", weight: 1.5, kind: "legit" },
+  { from: "payer", to: "cohort_a", weight: 2, kind: "alert" },
+  { from: "payer", to: "cohort_b", weight: 2, kind: "alert" },
+  { from: "payer", to: "cohort_c", weight: 2, kind: "alert" },
+  { from: "payer", to: "cohort_d", weight: 2, kind: "alert" },
+  { from: "payer", to: "cohort_e", weight: 5, kind: "alert" },
+  { from: "cohort_a", to: "hub_1", weight: 2, kind: "alert" },
+  { from: "cohort_b", to: "hub_1", weight: 2, kind: "alert" },
+  { from: "cohort_c", to: "hub_2", weight: 2, kind: "alert" },
+  { from: "cohort_d", to: "hub_3", weight: 2, kind: "alert" },
+  { from: "cohort_e", to: "hub_4", weight: 5, kind: "alert" },
+  { from: "hub_1", to: "exit_1", weight: 3, kind: "alert" },
+  { from: "hub_1", to: "exit_2", weight: 3, kind: "alert" },
+  { from: "hub_2", to: "exit_1", weight: 2, kind: "alert" },
+  { from: "hub_3", to: "exit_2", weight: 2, kind: "alert" },
+  { from: "hub_4", to: "exit_2", weight: 5, kind: "alert" },
+  { from: "exit_1", to: "actor_1", weight: 4, kind: "alert" },
+  { from: "exit_2", to: "actor_1", weight: 5, kind: "alert" },
 ];
 
 const TIER_Y: Record<FlowNode["type"], number> = {
   root: 60,
+  legit: 200,
   cohort: 200,
   hub: 360,
   exit: 520,
@@ -138,64 +155,94 @@ const TIER_Y: Record<FlowNode["type"], number> = {
 const NODE_W = 180;
 const NODE_H = 64;
 
+// Palette mirrors internal/marketing/brand/sds/v4/06_ia_completa/case_viz_prototype.html
 function nodeStyleFor(t: FlowNode["type"], highlight?: boolean) {
   if (highlight) {
     return {
-      bg: "rgba(255, 68, 68, 0.10)",
-      border: "var(--status-critical)",
-      color: "var(--status-critical)",
+      bg: "rgba(229, 87, 87, 0.18)",
+      border: "#e55757",
+      color: "#ff8a8a",
+      shadow: "0 0 28px rgba(229, 87, 87, 0.45)",
     };
   }
   switch (t) {
     case "root":
       return {
-        bg: "rgba(193, 125, 14, 0.12)",
-        border: "var(--brand-amber)",
-        color: "var(--brand-amber)",
+        bg: "rgba(111, 163, 216, 0.14)",
+        border: "#6fa3d8",
+        color: "#9bc1e8",
+        shadow: "0 0 24px rgba(111, 163, 216, 0.25)",
+      };
+    case "legit":
+      return {
+        bg: "rgba(108, 174, 110, 0.14)",
+        border: "#6cae6e",
+        color: "#90c992",
+        shadow: "none",
       };
     case "cohort":
       return {
-        bg: "var(--surface-2)",
-        border: "var(--border-strong)",
-        color: "var(--fg-2)",
+        bg: "rgba(229, 87, 87, 0.10)",
+        border: "#e55757",
+        color: "#f0a4a4",
+        shadow: "none",
       };
     case "hub":
       return {
-        bg: "rgba(216, 149, 48, 0.08)",
-        border: "var(--brand-amber-400)",
-        color: "var(--brand-amber-400)",
+        bg: "rgba(217, 122, 31, 0.20)",
+        border: "#f4a460",
+        color: "#f4a460",
+        shadow: "0 0 18px rgba(244, 164, 96, 0.20)",
       };
     case "exit":
       return {
-        bg: "rgba(168, 85, 247, 0.08)",
-        border: "var(--brand-purple)",
-        color: "var(--brand-purple)",
+        bg: "rgba(169, 136, 217, 0.16)",
+        border: "#a988d9",
+        color: "#c2a8e6",
+        shadow: "none",
       };
     case "actor":
       return {
-        bg: "rgba(255, 68, 68, 0.10)",
-        border: "var(--status-critical)",
-        color: "var(--status-critical)",
+        bg: "rgba(229, 87, 87, 0.20)",
+        border: "#e55757",
+        color: "#ff8a8a",
+        shadow: "0 0 28px rgba(229, 87, 87, 0.45)",
       };
   }
 }
 
-function laneXPositions(nodes: FlowNode[], type: FlowNode["type"], canvasW: number) {
+function laneXPositions(
+  nodes: FlowNode[],
+  type: FlowNode["type"],
+  canvasW: number,
+  align: "left" | "center" | "right" = "center",
+  margin = 80,
+) {
   const lane = nodes.filter((n) => n.type === type);
   const total = lane.length;
   const totalW = total * NODE_W + (total - 1) * 24;
-  const startX = (canvasW - totalW) / 2;
+  let startX: number;
+  if (align === "left") startX = margin;
+  else if (align === "right") startX = canvasW - totalW - margin;
+  else startX = (canvasW - totalW) / 2;
   return lane.map((n, i) => ({ id: n.id, x: startX + i * (NODE_W + 24) }));
 }
 
 export default function casePage() {
-  const CANVAS_W = 1200;
+  const CANVAS_W = 1280;
   const CANVAS_H = 760;
 
-  // Calculate positions per lane (centered)
-  const lanePos = (["root", "cohort", "hub", "exit", "actor"] as const).flatMap((t) =>
-    laneXPositions(NODES, t, CANVAS_W),
-  );
+  // Calculate positions per lane.
+  // Tier 2 splits into LEGIT (left side, green pool) and COHORT (right side, red ring)
+  // to mirror the case_viz_prototype contrast: legitimate vs same-band cluster.
+  const lanePos = [
+    ...laneXPositions(NODES, "root", CANVAS_W, "center"),
+    ...laneXPositions(NODES, "legit", CANVAS_W, "left", 60),
+    ...laneXPositions(NODES, "cohort", CANVAS_W, "right", 60),
+    ...laneXPositions(NODES, "hub", CANVAS_W, "center"),
+    ...laneXPositions(NODES, "exit", CANVAS_W, "center"),
+    ...laneXPositions(NODES, "actor", CANVAS_W, "center"),
+  ];
   const xMap: Record<string, number> = {};
   lanePos.forEach((p) => {
     xMap[p.id] = p.x;
@@ -289,10 +336,53 @@ export default function casePage() {
           </div>
         </header>
 
+        {/* Legend matches tabela/2.png + case_viz_prototype palette */}
         <div
           style={{
-            background: "var(--surface)",
-            border: "1px solid var(--border)",
+            display: "flex",
+            gap: 16,
+            flexWrap: "wrap",
+            marginBottom: 12,
+            padding: "10px 14px",
+            background: "rgba(22, 19, 16, 0.6)",
+            border: "1px solid #2a2520",
+            borderRadius: 8,
+            fontSize: 11,
+            fontFamily: "var(--font-mono)",
+            color: "#8a8275",
+            letterSpacing: "0.06em",
+          }}
+        >
+          {[
+            { color: "#6fa3d8", label: "PAYER" },
+            { color: "#6cae6e", label: "LEGIT (22)" },
+            { color: "#e55757", label: "DIVERSION (96)" },
+            { color: "#f4a460", label: "HUB" },
+            { color: "#a988d9", label: "EXIT" },
+            { color: "#ff5e3a", label: "CONTROLLING ID" },
+          ].map((l) => (
+            <span
+              key={l.label}
+              style={{ display: "inline-flex", alignItems: "center", gap: 6 }}
+            >
+              <span
+                style={{
+                  width: 9,
+                  height: 9,
+                  borderRadius: 2,
+                  background: l.color,
+                  boxShadow: `0 0 8px ${l.color}`,
+                }}
+              />
+              {l.label}
+            </span>
+          ))}
+        </div>
+
+        <div
+          style={{
+            background: "#0e0c0a",
+            border: "1px solid #2a2520",
             borderRadius: 8,
             overflow: "auto",
             marginBottom: 24,
@@ -302,26 +392,23 @@ export default function casePage() {
             viewBox={`0 0 ${CANVAS_W} ${CANVAS_H}`}
             width="100%"
             height="auto"
-            style={{ display: "block", minWidth: 800 }}
+            style={{ display: "block", minWidth: 900, background: "#0e0c0a" }}
           >
             <defs>
-              <marker
-                id="ar"
-                viewBox="0 0 10 10"
-                refX="9"
-                refY="5"
-                markerWidth="6"
-                markerHeight="6"
-                orient="auto"
-              >
-                <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--border-strong)" />
-              </marker>
+              <linearGradient id="alertGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#f4a460" stopOpacity="0.6" />
+                <stop offset="100%" stopColor="#e55757" stopOpacity="0.55" />
+              </linearGradient>
+              <linearGradient id="legitGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#6cae6e" stopOpacity="0.55" />
+                <stop offset="100%" stopColor="#6cae6e" stopOpacity="0.30" />
+              </linearGradient>
             </defs>
 
             {/* Lane labels */}
             {[
               { type: "root" as const, label: "TIER 1 · PAYER" },
-              { type: "cohort" as const, label: "TIER 2 · GRANT RECIPIENTS (96 in same band)" },
+              { type: "cohort" as const, label: "TIER 2 · 22 LEGIT  ◇  96 SAME-BAND COHORT" },
               { type: "hub" as const, label: "TIER 3 · LAUNDERING HUBS (auto-routed)" },
               { type: "exit" as const, label: "TIER 4 · EXITS (CEX + DEX bot)" },
               { type: "actor" as const, label: "TIER 5 · CONTROLLING IDENTITY" },
@@ -332,30 +419,34 @@ export default function casePage() {
                 y={TIER_Y[type] + NODE_H / 2 + 4}
                 fontSize="10"
                 fontFamily="var(--font-mono)"
-                fill="var(--fg-3)"
-                letterSpacing="0.12em"
+                fill="#8a8275"
+                letterSpacing="0.14em"
               >
                 {label}
               </text>
             ))}
 
-            {/* Edges */}
-            {EDGES.map(([from, to], i) => {
-              const fromNode = NODES.find((n) => n.id === from);
-              const toNode = NODES.find((n) => n.id === to);
+            {/* Edges (sankey-style: stroke width proportional to weight, color by kind) */}
+            {EDGES.map((edge, i) => {
+              const fromNode = NODES.find((n) => n.id === edge.from);
+              const toNode = NODES.find((n) => n.id === edge.to);
               if (!fromNode || !toNode) return null;
-              const x1 = xMap[from] + NODE_W / 2;
+              const x1 = xMap[edge.from] + NODE_W / 2;
               const y1 = TIER_Y[fromNode.type] + NODE_H;
-              const x2 = xMap[to] + NODE_W / 2;
+              const x2 = xMap[edge.to] + NODE_W / 2;
               const y2 = TIER_Y[toNode.type];
+              const isLegit = edge.kind === "legit";
+              const stroke = isLegit ? "url(#legitGrad)" : "url(#alertGrad)";
+              const width = Math.max(2, (edge.weight ?? 1) * 1.6);
               return (
                 <path
                   key={i}
                   d={`M ${x1} ${y1} C ${x1} ${(y1 + y2) / 2}, ${x2} ${(y1 + y2) / 2}, ${x2} ${y2}`}
-                  stroke="var(--border-strong)"
-                  strokeWidth="1.5"
+                  stroke={stroke}
+                  strokeWidth={width}
+                  strokeLinecap="round"
                   fill="none"
-                  opacity="0.55"
+                  opacity={isLegit ? 0.55 : 0.7}
                 />
               );
             })}
@@ -365,6 +456,8 @@ export default function casePage() {
               const s = nodeStyleFor(node.type, node.highlight);
               const x = xMap[node.id];
               const y = TIER_Y[node.type];
+              const isAccent =
+                node.highlight || node.type === "root" || node.type === "actor";
               return (
                 <foreignObject
                   key={node.id}
@@ -378,14 +471,15 @@ export default function casePage() {
                       width: NODE_W,
                       height: NODE_H,
                       background: s.bg,
-                      border: `${node.highlight || node.type === "root" ? 2 : 1}px solid ${s.border}`,
-                      borderRadius: 8,
+                      border: `${isAccent ? 2 : 1.5}px solid ${s.border}`,
+                      borderRadius: 6,
                       padding: "8px 12px",
                       display: "flex",
                       flexDirection: "column",
                       justifyContent: "center",
                       gap: 2,
-                      boxShadow: node.highlight || node.type === "root" ? `0 0 24px ${s.bg}` : "none",
+                      boxShadow: s.shadow,
+                      backdropFilter: "blur(2px)",
                     }}
                   >
                     <div
@@ -395,6 +489,7 @@ export default function casePage() {
                         fontSize: 13,
                         color: s.color,
                         letterSpacing: "-0.01em",
+                        lineHeight: 1.2,
                       }}
                     >
                       {node.label}
@@ -404,7 +499,8 @@ export default function casePage() {
                         style={{
                           fontFamily: "var(--font-body)",
                           fontSize: 10,
-                          color: "var(--fg-3)",
+                          color: "#8a8275",
+                          lineHeight: 1.3,
                         }}
                       >
                         {node.sub}
@@ -415,7 +511,7 @@ export default function casePage() {
                         style={{
                           fontFamily: "var(--font-mono)",
                           fontSize: 10,
-                          color: "var(--fg-2)",
+                          color: "#f4a460",
                           fontWeight: 600,
                         }}
                       >

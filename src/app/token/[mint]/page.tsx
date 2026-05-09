@@ -6,6 +6,7 @@ import { RiskBadge } from "@/components/RiskBadge";
 import { AddrLink } from "@/components/AddrLink";
 import { ApiError } from "@/components/ApiError";
 import { SenaModal } from "@/components/SenaModal";
+import { TokenEnrichment } from "@/components/TokenEnrichment";
 import { fetchToken, truncate } from "@/lib/api";
 import Link from "next/link";
 
@@ -106,6 +107,16 @@ export default async function TokenPage({ params }: PageProps) {
         {!tok && (
           <Section eyebrow="API error" title="Could not load token">
             <ApiError endpoint={`/v1/token/${mint}`} />
+          </Section>
+        )}
+
+        {tok && (
+          <Section
+            eyebrow="Market data"
+            title="Live price & liquidity"
+            sub="Real-time data from DexScreener — name, logo, price, market cap, volume, holders activity. Independent from SolSentry's risk scanner."
+          >
+            <TokenEnrichment mint={mint} />
           </Section>
         )}
 
