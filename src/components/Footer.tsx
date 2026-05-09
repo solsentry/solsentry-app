@@ -5,45 +5,36 @@ const COLS = [
     title: "Product",
     links: [
       { label: "Fun mode", href: "/fun" },
-      { label: "Operator lookup", href: "/operator" },
-      { label: "Token lookup", href: "/token" },
-      { label: "Drain tracer", href: "/drain" },
-      { label: "Bot clusters", href: "/clusters" },
-      { label: "Alerts feed", href: "/alerts" },
-      { label: "Resolutions", href: "/resolutions" },
-      { label: "Leaderboard", href: "/leaderboard" },
-    ],
-  },
-  {
-    title: "Tools",
-    links: [
-      { label: "Telegram bot", href: "/telegram" },
       { label: "MCP server", href: "/mcp" },
-      { label: "REST API", href: "/api" },
-      { label: "Ask SolSentry", href: "/ask" },
-      { label: "Watchlist", href: "/watchlist" },
-      { label: "Labels", href: "/labels" },
-      { label: "Self-check", href: "/me" },
+      { label: "Telegram bot", href: "/telegram" },
+      { label: "Docs", href: "/docs" },
     ],
   },
   {
-    title: "Learn",
+    title: "API",
     links: [
-      { label: "Docs", href: "/docs" },
-      { label: "Glossary", href: "/glossary" },
-      { label: "Compare", href: "/compare" },
-      { label: "Roadmap", href: "/roadmap" },
+      { label: "Live stats", href: "https://api.solsentry.app/v1/stats" },
+      {
+        label: "Operator lookup",
+        href: "https://api.solsentry.app/v1/operator/4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1",
+      },
+      { label: "Health", href: "https://api.solsentry.app/health" },
+    ],
+  },
+  {
+    title: "Code",
+    links: [
+      { label: "GitHub · solsentry-app", href: "https://github.com/solsentry/solsentry-app" },
+      { label: "GitHub · solsentry-mcp", href: "https://github.com/solsentry/solsentry-mcp" },
+      { label: "NPM · @solsentry/mcp", href: "https://www.npmjs.com/package/@solsentry/mcp" },
     ],
   },
   {
     title: "Talk",
     links: [
-      { label: "Partners", href: "/partners" },
-      { label: "Contact", href: "/contact" },
       { label: "X · @solsentryai", href: "https://x.com/solsentryai" },
       { label: "Telegram · @solsentryai", href: "https://t.me/solsentryai" },
-      { label: "GitHub", href: "https://github.com/solsentry" },
-      { label: "NPM", href: "https://www.npmjs.com/package/@solsentry/mcp" },
+      { label: "Crash · @crashdiniz", href: "https://x.com/crashdiniz" },
     ],
   },
 ];
@@ -80,7 +71,7 @@ export function Footer() {
                 style={{
                   width: 10,
                   height: 10,
-                  background: "var(--brand-orange)",
+                  background: "var(--brand-amber)",
                   borderRadius: 999,
                   display: "inline-block",
                 }}
@@ -109,34 +100,13 @@ export function Footer() {
               Autonomous threat intelligence for Solana. RugCheck tells you a
               fire is burning. SolSentry tells you who lit it.
             </p>
-            <div
-              style={{
-                display: "flex",
-                gap: 6,
-                marginTop: 20,
-                flexWrap: "wrap",
-              }}
-            >
-              <span className="pillar-chip prevent" style={{ fontSize: 9 }}>
-                PREVENT
-              </span>
-              <span className="pillar-chip track" style={{ fontSize: 9 }}>
-                TRACK
-              </span>
-              <span className="pillar-chip explain" style={{ fontSize: 9 }}>
-                EXPLAIN
-              </span>
-              <span className="pillar-chip evolve" style={{ fontSize: 9 }}>
-                EVOLVE
-              </span>
-            </div>
           </div>
 
           {COLS.map((col) => (
             <div key={col.title}>
               <div
                 className="label-tag"
-                style={{ marginBottom: 14, color: "var(--brand-orange)" }}
+                style={{ marginBottom: 14, color: "var(--brand-amber)" }}
               >
                 {col.title}
               </div>

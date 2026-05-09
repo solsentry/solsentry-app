@@ -45,14 +45,14 @@ export default async function Home() {
                 flexWrap: "wrap",
               }}
             >
-              <Link href="/telegram" className="btn-primary">
-                Try the bot →
+              <Link href="/fun" className="btn-primary">
+                Open Fun mode →
               </Link>
-              <Link href="/compare" className="btn-ghost">
-                How it compares
+              <Link href="/telegram" className="btn-ghost">
+                Try the bot
               </Link>
-              <Link href="/partners" className="btn-ghost">
-                For partners
+              <Link href="/mcp" className="btn-ghost">
+                MCP server
               </Link>
             </div>
 

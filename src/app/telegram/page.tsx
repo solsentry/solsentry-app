@@ -269,7 +269,7 @@ export default function TelegramPage() {
             <>
               Paste a wallet.
               <br />
-              <span style={{ color: "var(--brand-orange)" }}>
+              <span style={{ color: "var(--brand-amber)" }}>
                 Get the intel back.
               </span>
             </>
@@ -370,7 +370,7 @@ export default function TelegramPage() {
               <div
                 className="label-tag"
                 style={{
-                  color: "var(--brand-orange)",
+                  color: "var(--brand-amber)",
                   letterSpacing: "0.2em",
                   paddingBottom: 8,
                   borderBottom: "1px solid var(--border)",

@@ -17,7 +17,7 @@ export function CaseStudy() {
               }}
             >
               Operator{" "}
-              <span className="mono" style={{ color: "var(--brand-orange)" }}>
+              <span className="mono" style={{ color: "var(--brand-amber)" }}>
                 4kxscute...
               </span>{" "}
               had already rugged 61 tokens. On deployment #62, SolSentry flagged
@@ -48,7 +48,7 @@ export function CaseStudy() {
             >
               Verify yourself:
               <br />
-              <code style={{ color: "var(--brand-orange)", userSelect: "all" }}>
+              <code style={{ color: "var(--brand-amber)", userSelect: "all" }}>
                 curl
                 https://api.solsentry.app/v1/operator/4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1
               </code>

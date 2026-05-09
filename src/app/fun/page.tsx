@@ -19,7 +19,7 @@ export default function FunPage() {
           title={
             <>
               Is this wallet{" "}
-              <span style={{ color: "var(--brand-orange)" }}>safe</span>?
+              <span style={{ color: "var(--brand-amber)" }}>safe</span>?
             </>
           }
           sub={
@@ -84,7 +84,7 @@ export default function FunPage() {
               href="https://api.solsentry.app/v1/stats"
               target="_blank"
               rel="noreferrer"
-              style={{ color: "var(--brand-orange)" }}
+              style={{ color: "var(--brand-amber)" }}
             >
               api.solsentry.app
             </a>{" "}
@@ -99,7 +99,7 @@ export default function FunPage() {
                 t: "Easy",
                 d: "Big emoji, one-line verdict, plain-English explanation. Built for people who have never opened a token scanner before.",
                 tag: "Default · consumers",
-                color: "var(--brand-orange)",
+                color: "var(--brand-amber)",
               },
               {
                 t: "Pro",

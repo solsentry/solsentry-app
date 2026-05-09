@@ -1,35 +1,34 @@
 import type { Metadata } from "next";
-import { WalletProviders } from "@/components/WalletProviders";
 import "./globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "SolSentry — The security relay",
+    default: "SolSentry — Operator intelligence for Solana",
     template: "%s · SolSentry",
   },
   description:
-    "Solana threat intelligence. Operator risk, rug pull detection, serial deployer tracking. Install via npx @solsentry/mcp or query api.solsentry.app.",
+    "Autonomous threat intelligence for Solana. Operator risk, rug pull detection, serial deployer tracking. Install via npx @solsentry/mcp or query api.solsentry.app.",
   metadataBase: new URL("https://solsentry.app"),
   openGraph: {
     type: "website",
     url: "https://solsentry.app",
-    title: "SolSentry — The security relay",
+    title: "SolSentry — Operator intelligence for Solana",
     description:
-      "What Pyth is to prices, SolSentry is to operator risk. Post-deploy threat intelligence for Solana.",
+      "RugCheck tells you a fire is burning. SolSentry tells you who lit it. Operator-centric threat intelligence — live mainnet.",
     siteName: "SolSentry",
   },
   twitter: {
     card: "summary_large_image",
-    title: "SolSentry — The security relay",
+    title: "SolSentry — Operator intelligence for Solana",
     description:
-      "What Pyth is to prices, SolSentry is to operator risk. Post-deploy threat intelligence for Solana.",
+      "RugCheck tells you a fire is burning. SolSentry tells you who lit it.",
   },
   robots: { index: true, follow: true },
   icons: { icon: "/favicon.svg" },
 };
 
 export const viewport = {
-  themeColor: "#0A0A0A",
+  themeColor: "#100E0A",
 };
 
 export default function RootLayout({
@@ -39,9 +38,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>
-        <WalletProviders>{children}</WalletProviders>
-      </body>
+      <body>{children}</body>
     </html>
   );
 }

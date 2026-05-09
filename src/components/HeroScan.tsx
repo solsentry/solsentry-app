@@ -41,7 +41,7 @@ const SAMPLES = [
 const RISK_ICON: Record<string, { icon: typeof Skull; color: string }> = {
   CRITICAL: { icon: Skull, color: "var(--status-critical)" },
   HIGH: { icon: ShieldAlert, color: "var(--status-warning)" },
-  MEDIUM: { icon: AlertTriangle, color: "var(--brand-orange)" },
+  MEDIUM: { icon: AlertTriangle, color: "var(--brand-amber)" },
   LOW: { icon: ShieldCheck, color: "var(--brand-teal)" },
   CLEAN: { icon: ShieldCheck, color: "var(--brand-teal)" },
   UNKNOWN: { icon: Activity, color: "var(--fg-3)" },
@@ -108,7 +108,7 @@ export function HeroScan() {
               style={{
                 width: "100%",
                 background: "var(--surface)",
-                border: "1px solid var(--brand-orange-line)",
+                border: "1px solid var(--brand-amber-line)",
                 borderRadius: "var(--radius-sm)",
                 padding: "14px 18px 14px 42px",
                 color: "var(--fg-1)",
@@ -311,7 +311,7 @@ export function HeroScan() {
                 />
                 <MetricCell
                   icon={
-                    <Coins size={14} style={{ color: "var(--brand-orange)" }} />
+                    <Coins size={14} style={{ color: "var(--brand-amber)" }} />
                   }
                   label="Total tokens"
                   value={data.total_tokens ?? 0}
@@ -383,22 +383,26 @@ export function HeroScan() {
                   ))}
                 </div>
                 <div style={{ display: "flex", gap: 14 }}>
-                  <Link
-                    href={`/operator/${data.wallet}`}
+                  <a
+                    href={`https://api.solsentry.app/v1/operator/${data.wallet}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     style={{
                       fontFamily: "var(--font-body)",
                       fontWeight: 600,
                       fontSize: 11,
                       letterSpacing: "0.1em",
                       textTransform: "uppercase",
-                      color: "var(--brand-orange)",
+                      color: "var(--brand-amber)",
                       textDecoration: "none",
                     }}
                   >
-                    Full profile →
-                  </Link>
-                  <Link
-                    href={`/drain/${data.wallet}`}
+                    Full JSON ↗
+                  </a>
+                  <a
+                    href={`https://api.solsentry.app/v1/drain-trace/${data.wallet}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     style={{
                       fontFamily: "var(--font-body)",
                       fontWeight: 600,
@@ -409,8 +413,8 @@ export function HeroScan() {
                       textDecoration: "none",
                     }}
                   >
-                    Trace drain →
-                  </Link>
+                    Trace drain ↗
+                  </a>
                 </div>
               </div>
             )}

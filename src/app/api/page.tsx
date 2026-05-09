@@ -201,7 +201,7 @@ export default async function ApiPage() {
           title={
             <>
               11 endpoints.{" "}
-              <span style={{ color: "var(--brand-orange)" }}>No API key</span>.
+              <span style={{ color: "var(--brand-amber)" }}>No API key</span>.
               JSON in, JSON out.
             </>
           }
@@ -311,7 +311,7 @@ export default async function ApiPage() {
               <div
                 className="label-tag"
                 style={{
-                  color: "var(--brand-orange)",
+                  color: "var(--brand-amber)",
                   letterSpacing: "0.2em",
                   paddingBottom: 8,
                   borderBottom: "1px solid var(--border)",

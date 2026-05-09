@@ -147,7 +147,7 @@ if (op.risk_level === "CRITICAL") {
               style={{ color: "var(--fg-2)", marginBottom: 24, maxWidth: 720 }}
             >
               No install. Free for read-only endpoints. Live at{" "}
-              <code style={{ color: "var(--brand-orange)" }}>
+              <code style={{ color: "var(--brand-amber)" }}>
                 api.solsentry.app
               </code>
               .

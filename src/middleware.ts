@@ -1,29 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
-// Promote sds7 static HTML to the site root (no /v3 prefix).
-//
-// Rewrites (URL stays the same in the browser, content swapped):
-//   /              → /index.html        (fun-style Easy mode)
-//   /explorer      → /explorer.html
-//   /everything    → /everything.html
-//   /docs          → /docs.html        (overrides the old Next.js /docs)
-//
-// /dashboard is NOT rewritten — it's the Next.js Pro hub from the (pro)
-// route group (left sidebar, live metrics, hunter status).
-//
-// 301 redirect: any /v3/* request → strip /v3 prefix.
-//
-// Everything else (/contact, /compare, /api, /mcp, /roadmap, /partners,
-// /telegram, /submit, /alerts, /clusters, /resolutions, /token, /operator,
-// /me, /drain, /fun, /glossary, /labels, /leaderboard, /watchlist, /ask,
-// /cluster) stays on the existing Next.js pages.
-
-const REWRITES: Record<string, string> = {
-  "/": "/index.html",
-  "/explorer": "/explorer.html",
-  "/everything": "/everything.html",
-  "/docs": "/docs.html",
-};
+// All routes use Next.js pages (no static HTML rewrites).
+// /v3/* is redirected to root for backwards compatibility.
 
 export function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
@@ -35,20 +13,9 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(url, 301);
   }
 
-  const target = REWRITES[path];
-  if (target) {
-    return NextResponse.rewrite(new URL(target, request.url));
-  }
-
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: [
-    "/",
-    "/explorer",
-    "/everything",
-    "/docs",
-    "/v3/:path*",
-  ],
+  matcher: ["/v3/:path*"],
 };

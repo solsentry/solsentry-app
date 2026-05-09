@@ -3,35 +3,39 @@ import Link from "next/link";
 const PILLARS = [
   {
     label: "PREVENT",
-    color: "var(--brand-orange)",
+    color: "var(--brand-amber)",
     title: "Fast scanner",
     desc: "Risk score on every new Solana deploy in under 2 seconds. Holders, authorities, concentration, serial-deployer match.",
-    link: "/operator",
-    linkLabel: "Lookup a wallet",
+    link: "/fun",
+    linkLabel: "Open Fun mode",
+    external: false,
   },
   {
     label: "TRACK",
     color: "var(--brand-teal)",
     title: "Drain + cluster graph",
     desc: "10-hop SOL flow tracking through bridges and DEXes. Operator-to-cluster social graph cross-referenced on every scan.",
-    link: "/drain",
-    linkLabel: "Trace a drain",
+    link: "https://api.solsentry.app/v1/drain-trace/4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1",
+    linkLabel: "Trace live ↗",
+    external: true,
   },
   {
     label: "EXPLAIN",
-    color: "var(--brand-white)",
+    color: "var(--brand-cream)",
     title: "AI-powered explainer",
     desc: "Alerts written in plain language — PT-BR or EN. Why the score, which flags fired, what the operator did last time. Provider-agnostic.",
-    link: "/ask",
-    linkLabel: "Ask SolSentry",
+    link: "/telegram",
+    linkLabel: "Try on Telegram",
+    external: false,
   },
   {
     label: "EVOLVE",
     color: "var(--brand-purple)",
     title: "ALife hunter agents",
-    desc: "30 agents, 7-gene DNA. They mutate, reproduce, and get culled based on prediction accuracy. Inspired by Tierra and Avida.",
-    link: "/telegram",
-    linkLabel: "/hunters on Telegram",
+    desc: "Hunters with 7-gene DNA. They mutate, reproduce, and get culled based on prediction accuracy. Inspired by Tierra and Avida.",
+    link: "/mcp",
+    linkLabel: "MCP integration",
+    external: false,
   },
 ];
 
@@ -81,20 +85,39 @@ export function PillarGrid() {
               >
                 {p.desc}
               </p>
-              <Link
-                href={p.link}
-                style={{
-                  fontFamily: "var(--font-body)",
-                  fontWeight: 600,
-                  fontSize: 12,
-                  letterSpacing: "0.1em",
-                  textTransform: "uppercase",
-                  color: p.color,
-                  textDecoration: "none",
-                }}
-              >
-                {p.linkLabel} →
-              </Link>
+              {p.external ? (
+                <a
+                  href={p.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    fontFamily: "var(--font-body)",
+                    fontWeight: 600,
+                    fontSize: 12,
+                    letterSpacing: "0.1em",
+                    textTransform: "uppercase",
+                    color: p.color,
+                    textDecoration: "none",
+                  }}
+                >
+                  {p.linkLabel}
+                </a>
+              ) : (
+                <Link
+                  href={p.link}
+                  style={{
+                    fontFamily: "var(--font-body)",
+                    fontWeight: 600,
+                    fontSize: 12,
+                    letterSpacing: "0.1em",
+                    textTransform: "uppercase",
+                    color: p.color,
+                    textDecoration: "none",
+                  }}
+                >
+                  {p.linkLabel} →
+                </Link>
+              )}
             </div>
           ))}
         </div>

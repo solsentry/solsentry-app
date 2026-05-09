@@ -85,7 +85,7 @@ export default function MCPPage() {
           title={
             <>
               SolSentry in your{" "}
-              <span style={{ color: "var(--brand-orange)" }}>AI agent</span>.
+              <span style={{ color: "var(--brand-amber)" }}>AI agent</span>.
             </>
           }
           sub={
@@ -136,11 +136,11 @@ export default function MCPPage() {
                 }}
               >
                 Add to{" "}
-                <code style={{ color: "var(--brand-orange)" }}>
+                <code style={{ color: "var(--brand-amber)" }}>
                   ~/.claude/claude_desktop_config.json
                 </code>{" "}
                 or your project&rsquo;s{" "}
-                <code style={{ color: "var(--brand-orange)" }}>.mcp.json</code>:
+                <code style={{ color: "var(--brand-amber)" }}>.mcp.json</code>:
               </p>
               <div className="code-block">{CLAUDE_CONFIG}</div>
             </div>
@@ -157,7 +157,7 @@ export default function MCPPage() {
                 }}
               >
                 Add to{" "}
-                <code style={{ color: "var(--brand-orange)" }}>
+                <code style={{ color: "var(--brand-amber)" }}>
                   ~/.cursor/mcp.json
                 </code>{" "}
                 or workspace settings:
@@ -170,12 +170,12 @@ export default function MCPPage() {
             className="panel"
             style={{
               marginTop: 24,
-              borderLeft: "3px solid var(--brand-orange)",
+              borderLeft: "3px solid var(--brand-amber)",
             }}
           >
             <div
               className="label-tag"
-              style={{ color: "var(--brand-orange)", marginBottom: 10 }}
+              style={{ color: "var(--brand-amber)", marginBottom: 10 }}
             >
               First use
             </div>
