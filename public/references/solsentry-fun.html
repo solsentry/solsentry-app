@@ -355,19 +355,37 @@ function explainRisk({ op, tok, addr }) {
   const tokKnown = tok?.known;
 
   if (!opKnown && !tokKnown) {
+    const isPumpFun = /pump$/i.test(addr);
+    const isMoon = /moon$/i.test(addr);
+    const knownMint = isPumpFun || isMoon;
     return {
       level: 'unknown',
-      emoji: '❓',
-      title: 'NOT FOUND',
-      recommendation: 'Maximum caution',
+      emoji: knownMint ? '🆕' : '❓',
+      title: knownMint ? 'NEW LAUNCH' : 'NOT FOUND',
+      recommendation: knownMint ? 'Investigate before buying' : 'Maximum caution',
       explain: <>
-        This address <strong>is not in the SolSentry database</strong>.
-        It might be too new, never scanned, or simply has not generated suspicious activity.
-        <br/><br/>
-        <strong>That does not mean it is safe</strong> — it means we have no information.
-        If you are planning to buy, investigate with other tools first.
+        {knownMint ? (
+          <>
+            This looks like a <strong>{isPumpFun ? 'Pump.fun' : 'meme'} token</strong> that hasn't been scanned by SolSentry yet.
+            <br/><br/>
+            <strong>Most Pump.fun tokens fail or rug within hours.</strong> Use the links below to investigate before buying.
+          </>
+        ) : (
+          <>
+            This address <strong>is not in the SolSentry database</strong>.
+            It might be too new, never scanned, or simply has not generated suspicious activity.
+            <br/><br/>
+            <strong>That does not mean it is safe</strong> — it means we have no information.
+            If you are planning to buy, investigate with other tools first.
+          </>
+        )}
       </>,
-      stats: null
+      stats: null,
+      externalLinks: [
+        { label: 'Solscan', href: `https://solscan.io/token/${addr}` },
+        { label: 'DexScreener', href: `https://dexscreener.com/solana/${addr}` },
+        { label: 'RugCheck', href: `https://rugcheck.xyz/tokens/${addr}` },
+      ],
     };
   }
 
@@ -659,6 +677,32 @@ function FunMode() {
                     <div className="result-stat-value" style={{ color: s.color }}>{s.value}</div>
                     <div className="result-stat-label">{s.label}</div>
                   </div>
+                ))}
+              </div>
+            )}
+
+            {result.externalLinks && (
+              <div style={{ marginTop: 20, display: 'flex', gap: 10, flexWrap: 'wrap', justifyContent: 'center' }}>
+                {result.externalLinks.map(l => (
+                  <a
+                    key={l.label}
+                    href={l.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      padding: '8px 16px',
+                      background: 'rgba(193,125,14,0.1)',
+                      border: '1px solid rgba(193,125,14,0.3)',
+                      borderRadius: 6,
+                      color: 'var(--orange)',
+                      fontSize: 13,
+                      fontWeight: 600,
+                      textDecoration: 'none',
+                      letterSpacing: '0.02em',
+                    }}
+                  >
+                    {l.label} ↗
+                  </a>
                 ))}
               </div>
             )}

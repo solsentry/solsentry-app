@@ -1381,3 +1381,14 @@ html, body {
   .list-row :nth-child(1), .list-row :nth-child(4), .list-row :nth-child(5) { display: none; }
   .compare-table th:not(:first-child), .compare-table td:not(:first-child) { font-size: 11px; padding: 10px 6px; }
 }
+
+
+/* === Sena modal animations === */
+@keyframes sena-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes sena-slide {
+  from { transform: translateX(40px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
