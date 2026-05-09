@@ -15,11 +15,11 @@ export function Nav() {
       <div className="container nav-inner">
         <Link href="/" className="nav-brand">
           <img
-            src="/logo-shield.svg"
-            alt=""
-            width={22}
-            height={22}
-            style={{ display: "block" }}
+            src="/logo-3d.webp"
+            alt="SolSentry"
+            width={28}
+            height={28}
+            style={{ display: "block", borderRadius: 4 }}
           />
           SolSentry
         </Link>

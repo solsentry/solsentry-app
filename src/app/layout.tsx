@@ -16,15 +16,32 @@ export const metadata: Metadata = {
     description:
       "RugCheck tells you a fire is burning. SolSentry tells you who lit it. Operator-centric threat intelligence — live mainnet.",
     siteName: "SolSentry",
+    images: [
+      {
+        url: "/og/og-default.png",
+        width: 1200,
+        height: 630,
+        alt: "SolSentry — Operator intelligence for Solana",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "SolSentry — Operator intelligence for Solana",
     description:
       "RugCheck tells you a fire is burning. SolSentry tells you who lit it.",
+    images: ["/og/og-default.png"],
   },
   robots: { index: true, follow: true },
-  icons: { icon: "/favicon.svg" },
+  icons: {
+    icon: [
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/favicon-32.png", type: "image/png", sizes: "32x32" },
+      { url: "/favicon-192.png", type: "image/png", sizes: "192x192" },
+    ],
+    apple: "/favicon-512.png",
+    shortcut: "/favicon.ico",
+  },
 };
 
 export const viewport = {
