@@ -1,5 +1,3 @@
-import { Nav } from "@/components/Nav";
-import { Footer } from "@/components/Footer";
 import { PageHeader } from "@/components/PageHeader";
 import { Section } from "@/components/Section";
 import { RiskBadge } from "@/components/RiskBadge";
@@ -7,6 +5,7 @@ import { AddrLink } from "@/components/AddrLink";
 import { ApiError } from "@/components/ApiError";
 import { fetchAlertsRecent, fmtUnixAge, fmtAgeSeconds } from "@/lib/api";
 import Link from "next/link";
+import { ProShell } from "@/components/ProShell";
 
 export const revalidate = 30;
 
@@ -20,8 +19,7 @@ export default async function AlertsPage() {
   const alerts = await fetchAlertsRecent(50);
 
   return (
-    <>
-      <Nav />
+    <ProShell>
       <main>
         <PageHeader
           eyebrow="Live alert feed · refreshes every 30s"
@@ -136,7 +134,6 @@ export default async function AlertsPage() {
           )}
         </Section>
       </main>
-      <Footer />
-    </>
+    </ProShell>
   );
 }

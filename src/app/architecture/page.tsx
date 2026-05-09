@@ -1,7 +1,6 @@
-import { Nav } from "@/components/Nav";
-import { Footer } from "@/components/Footer";
 import { PageHeader } from "@/components/PageHeader";
 import { Section } from "@/components/Section";
+import { ProShell } from "@/components/ProShell";
 
 export const metadata = {
   title: "Architecture — how SolSentry works",
@@ -77,8 +76,7 @@ function Arrow({ down = false }: { down?: boolean }) {
 
 export default function ArchitecturePage() {
   return (
-    <>
-      <Nav />
+    <ProShell>
       <main>
         <PageHeader
           eyebrow="System architecture · v2.3.21"
@@ -207,8 +205,7 @@ export default function ArchitecturePage() {
           </div>
         </Section>
       </main>
-      <Footer />
-    </>
+    </ProShell>
   );
 }
 

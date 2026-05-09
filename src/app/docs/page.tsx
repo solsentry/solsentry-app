@@ -1,5 +1,4 @@
-import { Nav } from "@/components/Nav";
-import { Footer } from "@/components/Footer";
+import { ProShell } from "@/components/ProShell";
 
 export const metadata = {
   title: "Install & API",
@@ -9,8 +8,7 @@ export const metadata = {
 
 export default function DocsPage() {
   return (
-    <>
-      <Nav />
+    <ProShell>
       <main>
         <section className="hero" style={{ padding: "80px 0 48px" }}>
           <div className="container">
@@ -260,7 +258,6 @@ curl https://api.solsentry.app/v1/drain-trace/<wallet>`}</pre>
           </div>
         </section>
       </main>
-      <Footer />
-    </>
+    </ProShell>
   );
 }

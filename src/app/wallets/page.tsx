@@ -1,9 +1,8 @@
-import { Nav } from "@/components/Nav";
-import { Footer } from "@/components/Footer";
 import { PageHeader } from "@/components/PageHeader";
 import { Section } from "@/components/Section";
 import { fetchStats, fmtInt, fmtPct } from "@/lib/api";
 import Link from "next/link";
+import { ProShell } from "@/components/ProShell";
 
 export const revalidate = 60;
 
@@ -17,8 +16,7 @@ export default async function WalletsPage() {
   const stats = await fetchStats();
 
   return (
-    <>
-      <Nav />
+    <ProShell>
       <main>
         <PageHeader
           eyebrow="Wallet profiles"
@@ -180,8 +178,7 @@ export default async function WalletsPage() {
           </div>
         </Section>
       </main>
-      <Footer />
-    </>
+    </ProShell>
   );
 }
 

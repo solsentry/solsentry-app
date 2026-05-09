@@ -1,5 +1,3 @@
-import { Nav } from "@/components/Nav";
-import { Footer } from "@/components/Footer";
 import { PageHeader } from "@/components/PageHeader";
 import { Section } from "@/components/Section";
 import { RiskBadge } from "@/components/RiskBadge";
@@ -11,6 +9,7 @@ import {
   truncate,
 } from "@/lib/api";
 import Link from "next/link";
+import { ProShell } from "@/components/ProShell";
 
 export const revalidate = 30;
 
@@ -27,8 +26,7 @@ export default async function TokensPage() {
   ]);
 
   return (
-    <>
-      <Nav />
+    <ProShell>
       <main>
         <PageHeader
           eyebrow="Recent tokens · 30 alerts + 30 resolutions"
@@ -146,7 +144,6 @@ export default async function TokensPage() {
           </div>
         </Section>
       </main>
-      <Footer />
-    </>
+    </ProShell>
   );
 }

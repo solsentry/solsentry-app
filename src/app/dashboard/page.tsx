@@ -1,5 +1,3 @@
-import { Nav } from "@/components/Nav";
-import { Footer } from "@/components/Footer";
 import { PageHeader } from "@/components/PageHeader";
 import { Section } from "@/components/Section";
 import { ApiError } from "@/components/ApiError";
@@ -11,6 +9,7 @@ import {
   fmtPct,
 } from "@/lib/api";
 import Link from "next/link";
+import { ProShell } from "@/components/ProShell";
 
 export const revalidate = 30;
 
@@ -28,8 +27,7 @@ export default async function DashboardPage() {
   ]);
 
   return (
-    <>
-      <Nav />
+    <ProShell>
       <main>
         <PageHeader
           eyebrow="Live ops · refreshes every 30s"
@@ -238,8 +236,7 @@ export default async function DashboardPage() {
           </Section>
         )}
       </main>
-      <Footer />
-    </>
+    </ProShell>
   );
 }
 

@@ -1,11 +1,10 @@
-import { Nav } from "@/components/Nav";
-import { Footer } from "@/components/Footer";
 import { PageHeader } from "@/components/PageHeader";
 import { Section } from "@/components/Section";
 import { RiskBadge } from "@/components/RiskBadge";
 import { ApiError } from "@/components/ApiError";
 import { fetchTopOperators, fmtInt, fmtPct, truncate } from "@/lib/api";
 import Link from "next/link";
+import { ProShell } from "@/components/ProShell";
 
 export const revalidate = 300;
 
@@ -19,8 +18,7 @@ export default async function TopOperatorsPage() {
   const ops = await fetchTopOperators(50);
 
   return (
-    <>
-      <Nav />
+    <ProShell>
       <main>
         <PageHeader
           eyebrow="Operator leaderboard · top 50"
@@ -130,7 +128,6 @@ export default async function TopOperatorsPage() {
           </div>
         </Section>
       </main>
-      <Footer />
-    </>
+    </ProShell>
   );
 }

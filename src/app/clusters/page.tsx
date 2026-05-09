@@ -1,11 +1,10 @@
-import { Nav } from "@/components/Nav";
-import { Footer } from "@/components/Footer";
 import { PageHeader } from "@/components/PageHeader";
 import { Section } from "@/components/Section";
 import { RiskBadge } from "@/components/RiskBadge";
 import { ApiError } from "@/components/ApiError";
 import { fetchClusters, fmtInt, fmtUnixAge } from "@/lib/api";
 import Link from "next/link";
+import { ProShell } from "@/components/ProShell";
 
 export const revalidate = 120;
 
@@ -19,8 +18,7 @@ export default async function ClustersPage() {
   const { clusters, total_clusters } = await fetchClusters(50);
 
   return (
-    <>
-      <Nav />
+    <ProShell>
       <main>
         <PageHeader
           eyebrow={`Bot cluster registry · ${total_clusters} total`}
@@ -127,8 +125,7 @@ export default async function ClustersPage() {
           )}
         </Section>
       </main>
-      <Footer />
-    </>
+    </ProShell>
   );
 }
 
