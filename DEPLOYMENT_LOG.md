@@ -1,4 +1,54 @@
 # SolSentry Site — Deployment Log
+
+## feat/site-expansion-may09
+
+**Started:** 2026-05-09 ~08:30 BRT (Demo Day BR ~12:00)
+**Goal:** Major site expansion — homepage = Easy mode iframe, full Pro dashboard with sidebar, Sena modal, live feed, KOL radar, brain skills audit, x402 ledger, notifications hub.
+**Constraint:** Stability + speed. Build must stay green. Merge fast-forward to main when smoke-tested.
+
+### Routes added (8)
+- `/` — replaced. Full-screen iframe of `/references/solsentry-fun.html` with Pro/Dev/About floating controls.
+- `/about` — original marketing homepage moved here (preserved verbatim, new metadata).
+- `/pro` — Nansen/SolScanner-inspired dashboard with sidebar, topbar (search + health + sound + alerts bell + unread badge), 24h sparklines for accuracy and scans, recent CRITICAL feed, top operators, top clusters.
+- `/live` — 5s polling alert stream. Sound (Web Audio double-beep, no audio file). Browser notifications (built-in API). Threshold toggle (HIGH+/CRITICAL). Pause/resume. localStorage prefs.
+- `/skills` — `/v1/brain/skills` audit. TP/FP/precision color-coded (green ≥75, amber 40–75, red <40).
+- `/x402` — `/v1/x402/stats` payment ledger. Total queries, USDC billed, unique clients, by-tool histogram.
+- `/kols` — top-50 operator radar. Avatar, rug rate, tags, "Track" button → localStorage watchlist.
+- `/notifications` — settings hub for sound/notify/threshold + Discord webhook (UI placeholder) + email digest (UI placeholder). All localStorage.
+
+### Components added (7)
+- `ProSidebar` — sticky 220px sidebar, 13 nav items, active-state highlight.
+- `ProTopbar` — search input (routes /operator/{wallet}), live health probe (/health every 30s), sound toggle, unread alerts badge (5s polling).
+- `ProShell` — composes Sidebar + Topbar + content area.
+- `Sparkbars` — pure-SVG bar sparkline, no new dep.
+- `SenaModal` — slides from right, PT-BR explanation generated client-side from operator/token/drain data. NO LLM call. Tag→Portuguese dictionary inline. Wired into `/operator/[wallet]`, `/token/[mint]`, `/drain/[wallet]`.
+- `NetworkSvg` — pure-SVG 2-ring graph layout (center / hop-1 / hop-2), hover-to-label, color by risk. Replaces "coming soon" placeholder on `/network/[wallet]`. No new dep.
+- `TrackButton` — localStorage-backed watchlist toggle.
+
+### Modified pages
+- `/operator/[wallet]`, `/token/[mint]`, `/drain/[wallet]` — added "🔥 Chamar Sena" CTA button at the top.
+- `/network/[wallet]` — real-time SVG graph above existing adjacency list.
+- `/telegram` — added 8 commands (`/probe`, `/investigate`, `/intel`, `/recover`, `/me`, `/labels`, `/lang`, `/subscribe`).
+- `Nav` — reordered: Live, Dashboard, Top operators, Clusters, MCP, Telegram, About, "Pro mode →" CTA.
+
+### API library additions
+- `accuracy_trend_24h`, `scans_trend_24h`, `dev_wallet_coverage_pct`, `avg_resolve_latency_hours`, `last_scan_at`, `last_resolution_at` added to `NetworkStats`.
+- `fetchBrainSkills()` → `/v1/brain/skills`.
+
+### Build status
+- 26 routes total, all green. Bundle <= 110 kB First Load JS on the heaviest page (`/live`).
+- No new dependencies added (Web Audio + browser Notifications + SVG only).
+- Smoke-tested 24 routes all 200 OK on `npm start -p 3030`.
+
+### Known follow-ups (not blocking Demo Day)
+- Discord webhook backend wiring.
+- Email subscribe backend wiring.
+- Force-directed graph layout (current is concentric rings — adequate for small graphs).
+- Some Pro pages still use old `Nav`/`Footer` shell (docs/architecture/api). Sidebar coverage applies to new routes only.
+- Live feed initial load pulls 50 alerts; subsequent polls dedupe by `mint+predicted_at`.
+
+---
+
 ## feat/brand-v4-amber-cleanup
 
 **Started:** 2026-05-09 ~05:00 BRT
