@@ -36,7 +36,7 @@ const TRACKS: SideTrack[] = [
     status: "submitted",
     integration:
       "Operator-graph threat intelligence on Solana — first threat-intel API on x402 leaderboard.",
-    proof: "Live API verifiable: api.solsentry.app/v1/stats · 18,752 confirmed rugs · zero false positives at CRITICAL.",
+    proof: "Live API verifiable: api.solsentry.app/v1/stats · 21,711 confirmed rugs · 96.6% CRITICAL precision (audit-grade).",
     evidenceUrl: "https://api.solsentry.app/v1/stats",
   },
   {

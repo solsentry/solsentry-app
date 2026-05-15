@@ -77,7 +77,7 @@ export default async function DashboardPage() {
               <Card
                 label="Accuracy"
                 value={fmtPct(stats.accuracy_pct, 1)}
-                meta="zero false positives at CRITICAL"
+                meta="96.6% CRITICAL precision · 98.9% HIGH"
               />
               <Card
                 label="HIGH+ alerts"

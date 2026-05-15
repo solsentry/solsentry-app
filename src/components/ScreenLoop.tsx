@@ -306,7 +306,7 @@ function BigNumberPanel({ stats }: { stats: Stats | null }) {
           marginTop: 12,
         }}
       >
-        Zero false positives at CRITICAL · {fmtN(stats?.confirmed_rugs)} confirmed rugs
+        96.6% CRITICAL precision · {fmtN(stats?.confirmed_rugs)} confirmed rugs
       </div>
     </div>
   );

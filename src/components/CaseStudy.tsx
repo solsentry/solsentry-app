@@ -2,9 +2,9 @@ export function CaseStudy() {
   return (
     <section className="case">
       <div className="container">
-        <span className="section-kicker">Case study · 2026-03-12</span>
+        <span className="section-kicker">Case study · live operator</span>
         <h2 className="section-title" style={{ marginBottom: 40 }}>
-          19 minutes of warning
+          One operator, 2,939 tokens, 90.6% rug rate
         </h2>
 
         <div className="case-grid">
@@ -20,9 +20,11 @@ export function CaseStudy() {
               <span className="mono" style={{ color: "var(--brand-amber)" }}>
                 4kxscute...
               </span>{" "}
-              had already rugged 61 tokens. On deployment #62, SolSentry flagged
-              it as HIGH RISK four minutes after launch. The operator executed
-              the rug 19 minutes later.
+              has deployed 2,939 tokens to date — 2,662 confirmed rugs, 1
+              confirmed safe, 276 pending. Since coverage start on April 8, 2026
+              (first dev_wallet match), every subsequent deployment triggers a
+              sub-50ms CRITICAL classification at scan time, before any on-chain
+              rug signal exists.
             </p>
             <p
               style={{
@@ -56,25 +58,25 @@ export function CaseStudy() {
           </div>
 
           <dl className="case-timeline">
-            <dt>T+0:00</dt>
-            <dd>Token #62 deployed by 4kxscute</dd>
-            <dt>T+0:04</dt>
-            <dd>SolSentry HIGH RISK alert · score 100/100</dd>
-            <dt>T+0:23</dt>
+            <dt>Coverage start</dt>
+            <dd>April 8, 2026 · 16:27 UTC — first dev_wallet match</dd>
+            <dt>Detection</dt>
+            <dd>Sub-50ms cached operator lookup · CRITICAL at scan time</dd>
+            <dt style={{ color: "var(--status-critical)" }}>Verdict</dt>
             <dd style={{ color: "var(--status-critical)" }}>
-              Operator executes rug pull
+              Every subsequent deployment by this wallet → CRITICAL before any on-chain rug signal exists
             </dd>
             <dt style={{ marginTop: 20, color: "var(--brand-teal)" }}>
-              Lead time
+              Detection mode
             </dt>
-            <dd style={{ color: "var(--fg-1)", fontSize: 20, fontWeight: 600 }}>
-              19 minutes
+            <dd style={{ color: "var(--fg-1)", fontSize: 18, fontWeight: 600 }}>
+              Operator-history-driven (no per-token narrative)
             </dd>
             <dt style={{ color: "var(--brand-teal)" }}>
-              Operator lifetime (live)
+              Operator lifetime (live · May 14)
             </dt>
             <dd style={{ color: "var(--fg-1)" }}>
-              2,200+ confirmed rugs · 2,300+ tokens · 96.8% rug rate · CRITICAL
+              2,662 confirmed rugs · 2,939 tokens · 90.6% rug rate (99.96% over resolved) · CRITICAL
             </dd>
           </dl>
         </div>
