@@ -3,7 +3,7 @@ import Link from "next/link";
 export const metadata = {
   title: "SolSentry — Solana threat intel · operator-centric",
   description:
-    "Paste a Solana token or wallet. SolSentry shows who's behind it — serial rug operators, bot clusters, drain history. 559+h continuous mainnet.",
+    "Paste a Solana token or wallet. SolSentry shows who's behind it — serial rug operators, bot clusters, drain history. Live mainnet operator threat intelligence.",
 };
 
 export default function HomePage() {
