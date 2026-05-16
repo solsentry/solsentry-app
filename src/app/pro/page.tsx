@@ -1,5 +1,7 @@
 import { ProShell } from "@/components/ProShell";
-import { Sparkbars } from "@/components/Sparkbars";
+import { ProTierCard } from "@/components/pro/ProTierCard";
+import { TierMatrix } from "@/components/pro/TierMatrix";
+import { ClusterPreview } from "@/components/pro/ClusterPreview";
 import {
   fetchStats,
   fetchAlertsRecent,
@@ -7,392 +9,512 @@ import {
   fetchClusters,
   fmtInt,
   fmtPct,
-  fmtUnixAge,
+  truncate,
+  type Alert,
+  type TopOperator,
 } from "@/lib/api";
 import Link from "next/link";
 
 export const revalidate = 30;
 
 export const metadata = {
-  title: "Pro mode — SolSentry dashboard",
+  title: "Pro mode — SolSentry",
   description:
-    "Pro dashboard: live operator intel, alerts, leaderboard, clusters, and brain skills. Inspired by SolScanner + Nansen.",
+    "Pro mode: AI investigation playground, saved studies, watchlist, x402 credits. Operator-first power-user dashboard.",
 };
 
 export default async function ProOverviewPage() {
   const [stats, alerts, operators, clustersResp] = await Promise.all([
     fetchStats(),
-    fetchAlertsRecent(10),
-    fetchTopOperators(5),
-    fetchClusters(5),
+    fetchAlertsRecent(20),
+    fetchTopOperators(10),
+    fetchClusters(8),
   ]);
 
-  const accuracyValues = (stats?.accuracy_trend_24h ?? []).map(
-    (p) => Math.round(p.accuracy * 1000) / 10,
-  );
-  const scansValues = (stats?.scans_trend_24h ?? []).map((p) => p.scans);
+  const criticalAlerts = alerts
+    .filter((a) => a.risk_level === "CRITICAL")
+    .slice(0, 20);
 
   return (
     <ProShell>
-      <div style={{ maxWidth: 1280, margin: "0 auto" }}>
-        <header style={{ marginBottom: 24 }}>
-          <div
-            style={{
-              fontFamily: "var(--font-mono)",
-              fontSize: 11,
-              color: "var(--brand-amber)",
-              letterSpacing: "0.08em",
-              marginBottom: 6,
-            }}
-          >
-            PRO · OVERVIEW · refreshes every 30s
-          </div>
-          <h1
-            style={{
-              fontFamily: "var(--font-display)",
-              fontWeight: 700,
-              fontSize: 36,
-              letterSpacing: "-0.02em",
-              margin: 0,
-              color: "var(--fg-1)",
-            }}
-          >
-            Mainnet command center
-          </h1>
-          <p
-            style={{
-              color: "var(--fg-2)",
-              marginTop: 8,
-              fontSize: 14,
-              lineHeight: 1.6,
-            }}
-          >
-            {stats
-              ? `${fmtInt(stats.runtime_hours)}h continuous on Hetzner. ${fmtInt(stats.total_predictions)} scans · ${fmtPct(stats.accuracy_pct, 1)} accuracy on ${fmtPct(stats.resolve_rate_pct, 1)} resolved.`
-              : "Loading live metrics…"}
-          </p>
-        </header>
-
-        {stats && (
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
-              gap: 12,
-              marginBottom: 24,
-            }}
-          >
-            <Metric label="Runtime" value={`${fmtInt(stats.runtime_hours)}h`} accent="amber" />
-            <Metric label="Scans" value={fmtInt(stats.total_predictions)} />
-            <Metric label="Accuracy" value={fmtPct(stats.accuracy_pct, 1)} />
-            <Metric
-              label="HIGH+ alerts"
-              value={fmtInt(stats.high_risk_alerts)}
-              accent="critical"
-            />
-            <Metric label="Operators" value={fmtInt(stats.total_operators)} />
-            <Metric label="Bot clusters" value={fmtInt(stats.bot_clusters)} />
-            <Metric label="Confirmed rugs" value={fmtInt(stats.confirmed_rugs)} />
-            <Metric label="Wallets profiled" value={fmtInt(stats.wallet_profiles_tracked)} />
-          </div>
-        )}
-
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: 16,
-            marginBottom: 24,
-          }}
+      <div style={{ maxWidth: 1320, margin: "0 auto" }}>
+        <Header stats={stats} />
+        <KpiStrip stats={stats} />
+        <TierIntro />
+        <TierPanels />
+        <DataCanvas alerts={criticalAlerts} operators={operators} />
+        <Section
+          title="Cluster index"
+          subtitle={`${(clustersResp.total_clusters ?? clustersResp.clusters.length).toLocaleString()} bot clusters mapped`}
         >
-          <Panel title="Accuracy · last 24h" subtitle="hourly resolved %">
-            <Sparkbars values={accuracyValues} height={120} />
-          </Panel>
-          <Panel title="Scans · last 24h" subtitle="hourly throughput">
-            <Sparkbars
-              values={scansValues}
-              height={120}
-              color="var(--brand-teal)"
-            />
-          </Panel>
-        </div>
-
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: 16,
-            marginBottom: 24,
-          }}
+          <ClusterPreview clusters={clustersResp.clusters} />
+        </Section>
+        <Section
+          title="Free · Pro · Sentinel"
+          subtitle="Pricing locked Phase 5 — Pro and Sentinel tiers in private beta"
         >
-          <Panel
-            title="Recent CRITICAL alerts"
-            subtitle={`${alerts.length} live · click for full feed`}
-            href="/live"
-            cta="Live feed →"
-          >
-            <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
-              {alerts.slice(0, 8).map((a, i) => (
-                <li
-                  key={`${a.mint}-${i}`}
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    padding: "8px 0",
-                    borderBottom: "1px solid var(--border-soft)",
-                    gap: 12,
-                  }}
-                >
-                  <Link
-                    href={`/token/${a.mint}`}
-                    style={{
-                      color: "var(--fg-2)",
-                      textDecoration: "none",
-                      fontFamily: "var(--font-mono)",
-                      fontSize: 12,
-                      flex: 1,
-                      minWidth: 0,
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    {a.mint}
-                  </Link>
-                  <span
-                    style={{
-                      fontSize: 10,
-                      fontFamily: "var(--font-mono)",
-                      padding: "2px 6px",
-                      borderRadius: 3,
-                      color:
-                        a.risk_level === "CRITICAL"
-                          ? "var(--status-critical)"
-                          : "var(--brand-amber)",
-                      background:
-                        a.risk_level === "CRITICAL"
-                          ? "var(--status-critical-tint)"
-                          : "var(--brand-amber-tint)",
-                      letterSpacing: "0.06em",
-                      fontWeight: 600,
-                    }}
-                  >
-                    {a.risk_level}
-                  </span>
-                  <span
-                    style={{
-                      fontSize: 10,
-                      fontFamily: "var(--font-mono)",
-                      color: "var(--fg-3)",
-                      width: 50,
-                      textAlign: "right",
-                    }}
-                  >
-                    {a.age_seconds ? fmtUnixAge(Date.now() / 1000 - a.age_seconds) : "—"}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </Panel>
-
-          <Panel
-            title="Top operators"
-            subtitle="by confirmed rugs"
-            href="/top-operators"
-            cta="Full leaderboard →"
-          >
-            <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
-              {operators.slice(0, 5).map((op) => (
-                <li
-                  key={op.wallet}
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    padding: "8px 0",
-                    borderBottom: "1px solid var(--border-soft)",
-                    gap: 8,
-                  }}
-                >
-                  <Link
-                    href={`/operator/${op.wallet}`}
-                    style={{
-                      color: "var(--fg-1)",
-                      textDecoration: "none",
-                      fontFamily: "var(--font-mono)",
-                      fontSize: 12,
-                      flex: 1,
-                      minWidth: 0,
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    #{op.rank} {op.wallet.slice(0, 10)}…
-                  </Link>
-                  <span
-                    style={{
-                      fontSize: 11,
-                      fontFamily: "var(--font-mono)",
-                      color: "var(--status-critical)",
-                    }}
-                  >
-                    {fmtInt(op.confirmed_rugs)} rugs
-                  </span>
-                  <span
-                    style={{
-                      fontSize: 11,
-                      fontFamily: "var(--font-mono)",
-                      color: "var(--brand-amber)",
-                      width: 50,
-                      textAlign: "right",
-                    }}
-                  >
-                    {op.rug_rate_pct.toFixed(0)}%
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </Panel>
-        </div>
-
-        <Panel
-          title="Top bot clusters"
-          subtitle={`${clustersResp.total_clusters.toLocaleString()} mapped`}
-          href="/clusters"
-          cta="All clusters →"
-        >
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))",
-              gap: 10,
-            }}
-          >
-            {clustersResp.clusters.slice(0, 5).map((c) => (
-              <Link
-                key={c.cluster_id}
-                href={`/clusters/${c.cluster_id}`}
-                style={{
-                  padding: 12,
-                  background: "var(--surface)",
-                  border: "1px solid var(--border)",
-                  borderRadius: 6,
-                  textDecoration: "none",
-                  color: "var(--fg-1)",
-                }}
-              >
-                <div
-                  style={{
-                    fontFamily: "var(--font-mono)",
-                    fontSize: 11,
-                    color: "var(--fg-3)",
-                    marginBottom: 4,
-                  }}
-                >
-                  {c.cluster_id}
-                </div>
-                <div
-                  style={{
-                    fontFamily: "var(--font-display)",
-                    fontWeight: 700,
-                    fontSize: 22,
-                    color: "var(--fg-1)",
-                    letterSpacing: "-0.01em",
-                  }}
-                >
-                  {c.size}
-                </div>
-                <div
-                  style={{
-                    fontSize: 11,
-                    color: "var(--fg-3)",
-                    fontFamily: "var(--font-mono)",
-                  }}
-                >
-                  wallets · {fmtInt(c.associated_rugs ?? 0)} rugs
-                </div>
-              </Link>
-            ))}
-          </div>
-        </Panel>
+          <TierMatrix />
+        </Section>
+        <FooterStrip />
       </div>
     </ProShell>
   );
 }
 
-function Metric({
-  label,
-  value,
-  accent,
+function Header({
+  stats,
 }: {
-  label: string;
-  value: string;
-  accent?: "amber" | "critical";
+  stats: Awaited<ReturnType<typeof fetchStats>>;
 }) {
-  const color =
-    accent === "amber"
-      ? "var(--brand-amber)"
-      : accent === "critical"
-        ? "var(--status-critical)"
-        : "var(--fg-1)";
   return (
-    <div
-      style={{
-        padding: 14,
-        background: "var(--surface)",
-        border: "1px solid var(--border)",
-        borderRadius: 6,
-      }}
-    >
+    <header style={{ marginBottom: 20 }}>
       <div
         style={{
-          fontSize: 10,
           fontFamily: "var(--font-mono)",
-          color: "var(--fg-3)",
+          fontSize: 11,
+          color: "var(--brand-amber)",
           letterSpacing: "0.08em",
-          textTransform: "uppercase",
           marginBottom: 6,
         }}
       >
-        {label}
+        PRO MODE · OVERVIEW · refresh 30s
       </div>
-      <div
+      <h1
         style={{
           fontFamily: "var(--font-display)",
-          fontSize: 26,
           fontWeight: 700,
-          color,
+          fontSize: 34,
           letterSpacing: "-0.02em",
+          margin: 0,
+          color: "var(--fg-1)",
         }}
       >
-        {value}
-      </div>
+        AI co-pilot · watchlist · unlimited scans
+      </h1>
+      <p
+        style={{
+          color: "var(--fg-2)",
+          marginTop: 8,
+          fontSize: 13,
+          lineHeight: 1.6,
+          maxWidth: 780,
+        }}
+      >
+        {stats
+          ? `${fmtInt(stats.runtime_hours)}h continuous mainnet · ${fmtInt(stats.total_predictions)} predictions · ${fmtPct(stats.accuracy_pct, 1)} aggregate accuracy on ${fmtPct(stats.resolve_rate_pct, 1)} resolved.`
+          : "Loading live metrics…"}
+      </p>
+    </header>
+  );
+}
+
+function KpiStrip({
+  stats,
+}: {
+  stats: Awaited<ReturnType<typeof fetchStats>>;
+}) {
+  const items: { label: string; value: string; accent?: "amber" | "critical" }[] =
+    stats
+      ? [
+          { label: "Operators", value: fmtInt(stats.total_operators) },
+          {
+            label: "Confirmed rugs",
+            value: fmtInt(stats.confirmed_rugs),
+            accent: "critical",
+          },
+          { label: "Predictions", value: fmtInt(stats.total_predictions) },
+          {
+            label: "CRITICAL precision",
+            value: fmtPct(stats.accuracy_pct, 1),
+            accent: "amber",
+          },
+          {
+            label: "Resolve rate",
+            value: fmtPct(stats.resolve_rate_pct, 1),
+          },
+          {
+            label: "Mainnet hours",
+            value: `${fmtInt(stats.runtime_hours)}h`,
+            accent: "amber",
+          },
+        ]
+      : Array.from({ length: 6 }, () => ({ label: "—", value: "—" }));
+
+  return (
+    <div
+      style={{
+        display: "grid",
+        gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))",
+        gap: 10,
+        marginBottom: 24,
+      }}
+    >
+      {items.map((m) => (
+        <div
+          key={m.label}
+          style={{
+            padding: "12px 14px",
+            background: "var(--surface)",
+            border: "1px solid var(--border)",
+            borderRadius: 6,
+          }}
+        >
+          <div
+            style={{
+              fontSize: 10,
+              fontFamily: "var(--font-mono)",
+              color: "var(--fg-3)",
+              letterSpacing: "0.08em",
+              textTransform: "uppercase",
+              marginBottom: 4,
+            }}
+          >
+            {m.label}
+          </div>
+          <div
+            style={{
+              fontFamily: "var(--font-display)",
+              fontSize: 22,
+              fontWeight: 700,
+              letterSpacing: "-0.02em",
+              color:
+                m.accent === "amber"
+                  ? "var(--brand-amber)"
+                  : m.accent === "critical"
+                    ? "var(--status-critical)"
+                    : "var(--fg-1)",
+            }}
+          >
+            {m.value}
+          </div>
+        </div>
+      ))}
     </div>
   );
 }
 
-function Panel({
+function TierIntro() {
+  return (
+    <div
+      style={{
+        padding: "14px 16px",
+        background: "var(--brand-amber-tint)",
+        border: "1px solid var(--brand-amber-line)",
+        borderRadius: 8,
+        marginBottom: 14,
+        display: "flex",
+        gap: 16,
+        alignItems: "center",
+        flexWrap: "wrap",
+      }}
+    >
+      <span
+        style={{
+          fontFamily: "var(--font-mono)",
+          fontSize: 10,
+          color: "var(--brand-amber)",
+          letterSpacing: "0.08em",
+          fontWeight: 600,
+        }}
+      >
+        WHAT IS PRO
+      </span>
+      <span style={{ fontSize: 13, color: "var(--fg-1)", flex: 1, minWidth: 260 }}>
+        Free shows the verdict. Pro shows the work — chain of evidence, multi-wallet
+        comparisons, persistent investigations, watchlist alerts, x402 credits.
+      </span>
+      <Link
+        href="mailto:hello@solsentry.app?subject=Pro%20beta%20access"
+        style={{
+          fontFamily: "var(--font-mono)",
+          fontSize: 12,
+          color: "var(--brand-amber)",
+          textDecoration: "none",
+          border: "1px solid var(--brand-amber-line)",
+          padding: "6px 12px",
+          borderRadius: 4,
+          background: "var(--surface)",
+        }}
+      >
+        Get notified →
+      </Link>
+    </div>
+  );
+}
+
+function TierPanels() {
+  return (
+    <div
+      style={{
+        display: "grid",
+        gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+        gap: 10,
+        marginBottom: 28,
+      }}
+    >
+      <ProTierCard
+        icon="◈"
+        title="Playground"
+        href="/pro/playground"
+        status="soon"
+        blurb="Free-form prompt to Sena. Multi-wallet compare, drain-trace, dossier — chained tool calls with credit estimate before execute."
+      />
+      <ProTierCard
+        icon="≡"
+        title="Studies"
+        href="/pro/studies"
+        status="soon"
+        blurb="Persistent saved investigations. Re-run on demand, attach notes, share with team."
+      />
+      <ProTierCard
+        icon="⚠"
+        title="Watchlist"
+        href="/alerts"
+        status="live"
+        blurb="Pin operators, wallets, tokens. Push + Telegram + email alerts when risk changes or new deploys are detected."
+      />
+      <ProTierCard
+        icon="$"
+        title="Credits"
+        href="/pro/credits"
+        status="live"
+        blurb="x402 balance, per-endpoint history, monthly bundles. CSV export for accounting."
+      />
+    </div>
+  );
+}
+
+function DataCanvas({
+  alerts,
+  operators,
+}: {
+  alerts: Alert[];
+  operators: TopOperator[];
+}) {
+  return (
+    <div
+      style={{
+        display: "grid",
+        gridTemplateColumns: "minmax(0, 1.6fr) minmax(0, 1fr)",
+        gap: 16,
+        marginBottom: 24,
+      }}
+    >
+      <Section
+        title="Recent CRITICAL detections"
+        subtitle={
+          alerts.length > 0
+            ? `${alerts.length} live · click row for full token`
+            : "No CRITICAL alerts in window"
+        }
+        href="/live"
+        cta="Live feed →"
+        flush
+      >
+        <AlertsTable alerts={alerts} />
+      </Section>
+      <Section
+        title="Top serial operators"
+        subtitle="ranked by confirmed rugs"
+        href="/top-operators"
+        cta="Leaderboard →"
+        flush
+      >
+        <OperatorsTable operators={operators.slice(0, 10)} />
+      </Section>
+    </div>
+  );
+}
+
+function AlertsTable({ alerts }: { alerts: Alert[] }) {
+  if (!alerts.length) {
+    return (
+      <EmptyState
+        line="No CRITICAL detections in current window."
+        hint="Endpoint /v1/alerts is live but no rows match the filter right now."
+      />
+    );
+  }
+  return (
+    <div style={{ overflowX: "auto" }}>
+      <table
+        style={{
+          width: "100%",
+          borderCollapse: "collapse",
+          fontFamily: "var(--font-mono)",
+          fontSize: 12,
+        }}
+      >
+        <thead>
+          <tr style={{ color: "var(--fg-3)" }}>
+            <Th>Age</Th>
+            <Th align="left">Token</Th>
+            <Th align="left">Operator</Th>
+            <Th align="right">Risk</Th>
+          </tr>
+        </thead>
+        <tbody>
+          {alerts.map((a, i) => (
+            <tr
+              key={`${a.mint}-${i}`}
+              style={{
+                background: i % 2 === 0 ? "transparent" : "var(--bg-elev-1)",
+                borderTop: "1px solid var(--border-soft)",
+              }}
+            >
+              <Td>{a.age_seconds != null ? fmtAge(a.age_seconds) : "—"}</Td>
+              <Td align="left">
+                <Link
+                  href={`/token/${a.mint}`}
+                  style={{
+                    color: "var(--fg-1)",
+                    textDecoration: "none",
+                  }}
+                >
+                  {a.symbol ? (
+                    <>
+                      <span style={{ fontWeight: 600 }}>{a.symbol}</span>
+                      <span style={{ color: "var(--fg-3)" }}>
+                        {" "}
+                        · {truncate(a.mint, 4, 4)}
+                      </span>
+                    </>
+                  ) : (
+                    truncate(a.mint, 6, 4)
+                  )}
+                </Link>
+              </Td>
+              <Td align="left">
+                {a.dev_wallet ? (
+                  <Link
+                    href={`/operator/${a.dev_wallet}`}
+                    style={{
+                      color: a.dev_known ? "var(--status-critical)" : "var(--fg-2)",
+                      textDecoration: "none",
+                    }}
+                  >
+                    {truncate(a.dev_wallet, 4, 4)}
+                    {a.dev_confirmed_rugs ? (
+                      <span style={{ color: "var(--fg-3)" }}>
+                        {" "}
+                        · {fmtInt(a.dev_confirmed_rugs)}r
+                      </span>
+                    ) : null}
+                  </Link>
+                ) : (
+                  <span style={{ color: "var(--fg-3)" }}>unknown</span>
+                )}
+              </Td>
+              <Td align="right">
+                <span
+                  style={{
+                    color:
+                      a.risk_level === "CRITICAL"
+                        ? "var(--status-critical)"
+                        : "var(--brand-amber)",
+                    fontWeight: 600,
+                  }}
+                >
+                  {a.risk_score}
+                </span>
+              </Td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+function OperatorsTable({ operators }: { operators: TopOperator[] }) {
+  if (!operators.length) {
+    return (
+      <EmptyState
+        line="Leaderboard temporarily empty."
+        hint="Endpoint /v1/operators/top is live; refresh in a few seconds."
+      />
+    );
+  }
+  return (
+    <div style={{ overflowX: "auto" }}>
+      <table
+        style={{
+          width: "100%",
+          borderCollapse: "collapse",
+          fontFamily: "var(--font-mono)",
+          fontSize: 12,
+        }}
+      >
+        <thead>
+          <tr style={{ color: "var(--fg-3)" }}>
+            <Th>#</Th>
+            <Th align="left">Wallet</Th>
+            <Th align="right">Rugs</Th>
+            <Th align="right">Rate</Th>
+          </tr>
+        </thead>
+        <tbody>
+          {operators.map((op, i) => (
+            <tr
+              key={op.wallet}
+              style={{
+                background: i % 2 === 0 ? "transparent" : "var(--bg-elev-1)",
+                borderTop: "1px solid var(--border-soft)",
+              }}
+            >
+              <Td>{op.rank}</Td>
+              <Td align="left">
+                <Link
+                  href={`/operator/${op.wallet}`}
+                  style={{
+                    color: "var(--fg-1)",
+                    textDecoration: "none",
+                  }}
+                >
+                  {truncate(op.wallet, 4, 4)}
+                </Link>
+              </Td>
+              <Td align="right">
+                <span style={{ color: "var(--status-critical)" }}>
+                  {fmtInt(op.confirmed_rugs)}
+                </span>
+              </Td>
+              <Td align="right">
+                <span style={{ color: "var(--brand-amber)", fontWeight: 600 }}>
+                  {op.rug_rate_pct.toFixed(0)}%
+                </span>
+              </Td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+function Section({
   title,
   subtitle,
   href,
   cta,
   children,
+  flush,
 }: {
   title: string;
   subtitle?: string;
   href?: string;
   cta?: string;
   children: React.ReactNode;
+  flush?: boolean;
 }) {
   return (
-    <div
+    <section
       style={{
         padding: 18,
         background: "var(--surface)",
         border: "1px solid var(--border)",
         borderRadius: 8,
+        marginBottom: flush ? 0 : 24,
       }}
     >
       <div
@@ -401,13 +523,14 @@ function Panel({
           justifyContent: "space-between",
           alignItems: "baseline",
           marginBottom: 14,
+          gap: 12,
         }}
       >
-        <div>
+        <div style={{ minWidth: 0 }}>
           <div
             style={{
               fontFamily: "var(--font-display)",
-              fontSize: 16,
+              fontSize: 15,
               fontWeight: 700,
               color: "var(--fg-1)",
               letterSpacing: "-0.01em",
@@ -436,6 +559,7 @@ function Panel({
               color: "var(--brand-amber)",
               textDecoration: "none",
               fontFamily: "var(--font-mono)",
+              whiteSpace: "nowrap",
             }}
           >
             {cta}
@@ -443,6 +567,119 @@ function Panel({
         )}
       </div>
       {children}
+    </section>
+  );
+}
+
+function EmptyState({ line, hint }: { line: string; hint: string }) {
+  return (
+    <div
+      style={{
+        padding: "24px 12px",
+        textAlign: "center",
+        color: "var(--fg-3)",
+        fontSize: 12,
+        fontFamily: "var(--font-mono)",
+      }}
+    >
+      <div style={{ marginBottom: 6 }}>{line}</div>
+      <div style={{ fontSize: 11, color: "var(--fg-3)", opacity: 0.7 }}>{hint}</div>
     </div>
   );
+}
+
+function FooterStrip() {
+  return (
+    <div
+      style={{
+        marginTop: 24,
+        padding: "12px 16px",
+        background: "var(--bg-elev-1)",
+        border: "1px solid var(--border-soft)",
+        borderRadius: 6,
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        gap: 16,
+        flexWrap: "wrap",
+        fontFamily: "var(--font-mono)",
+        fontSize: 11,
+        color: "var(--fg-3)",
+      }}
+    >
+      <span>Anonymous session · upgrade to track quota</span>
+      <div style={{ display: "flex", gap: 14 }}>
+        <Link href="/docs" style={footerLink}>
+          Docs
+        </Link>
+        <Link href="/api" style={footerLink}>
+          API
+        </Link>
+        <Link href="/mcp" style={footerLink}>
+          MCP
+        </Link>
+        <Link href="/architecture" style={footerLink}>
+          Architecture
+        </Link>
+      </div>
+    </div>
+  );
+}
+
+const footerLink = {
+  color: "var(--brand-amber)",
+  textDecoration: "none",
+} as const;
+
+function Th({
+  children,
+  align = "center",
+}: {
+  children: React.ReactNode;
+  align?: "left" | "center" | "right";
+}) {
+  return (
+    <th
+      style={{
+        textAlign: align,
+        padding: "8px 10px",
+        fontWeight: 600,
+        fontSize: 10,
+        letterSpacing: "0.08em",
+        textTransform: "uppercase",
+        color: "var(--fg-3)",
+        borderBottom: "1px solid var(--border-soft)",
+      }}
+    >
+      {children}
+    </th>
+  );
+}
+
+function Td({
+  children,
+  align = "center",
+}: {
+  children: React.ReactNode;
+  align?: "left" | "center" | "right";
+}) {
+  return (
+    <td
+      style={{
+        textAlign: align,
+        padding: "8px 10px",
+        color: "var(--fg-2)",
+        whiteSpace: "nowrap",
+      }}
+    >
+      {children}
+    </td>
+  );
+}
+
+function fmtAge(seconds: number): string {
+  if (seconds < 60) return `${Math.floor(seconds)}s`;
+  if (seconds < 3600) return `${Math.floor(seconds / 60)}m`;
+  if (seconds < 86400) return `${Math.floor(seconds / 3600)}h`;
+  return `${Math.floor(seconds / 86400)}d`;
 }
