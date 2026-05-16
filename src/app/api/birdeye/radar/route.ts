@@ -12,7 +12,7 @@ import { NextResponse } from "next/server";
 const BIRDEYE_BASE = "https://public-api.birdeye.so";
 const SOLSENTRY_API = "https://api.solsentry.app";
 
-export const runtime = "edge";
+// runtime: default Node.js (OpenNext Cloudflare doesn't support inline edge runtime)
 export const revalidate = 60; // 1 min cache to be polite
 
 interface BirdeyeToken {
