@@ -169,8 +169,8 @@ export default async function ShareOperatorPage({ params }: PageProps) {
             ) : (
               <span style={{ color: "var(--fg-2)", fontSize: 14 }}>
                 {op
-                  ? "Wallet not flagged · no operator history on file."
-                  : "Could not resolve operator from API."}
+                  ? "Wallet not flagged · no operator history on file yet."
+                  : "Operator data temporarily unavailable. Refresh in a few seconds — the API may be warming up the cache."}
               </span>
             )}
           </div>
