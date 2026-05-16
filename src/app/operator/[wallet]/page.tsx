@@ -6,6 +6,7 @@ import { RiskBadge } from "@/components/RiskBadge";
 import { AddrLink } from "@/components/AddrLink";
 import { ApiError } from "@/components/ApiError";
 import { SenaModal } from "@/components/SenaModal";
+import { SenaLauncher } from "@/components/SenaLauncher";
 import { ActivityHeatmap } from "@/components/ActivityHeatmap";
 import { CopyShareLink } from "@/components/CopyShareLink";
 import {
@@ -313,6 +314,22 @@ export default async function OperatorPage({ params }: PageProps) {
           </Section>
         )}
       </main>
+      {op && (
+        <SenaLauncher
+          entity={{
+            type: "operator",
+            id: wallet,
+            summary: {
+              riskLevel: op.risk_level,
+              riskScore: op.risk_score,
+              confirmedRugs: op.confirmed_rugs,
+              totalTokens: op.total_tokens,
+              rugRatePct: op.rug_rate_pct,
+              tags: op.tags,
+            },
+          }}
+        />
+      )}
       <Footer />
     </>
   );
