@@ -6,6 +6,8 @@ import { RiskBadge } from "@/components/RiskBadge";
 import { AddrLink } from "@/components/AddrLink";
 import { ApiError } from "@/components/ApiError";
 import { SenaModal } from "@/components/SenaModal";
+import { ActivityHeatmap } from "@/components/ActivityHeatmap";
+import { CopyShareLink } from "@/components/CopyShareLink";
 import {
   fetchOperator,
   fetchOperatorTimeline,
@@ -101,6 +103,7 @@ export default async function OperatorPage({ params }: PageProps) {
             >
               Full JSON ↗
             </a>
+            <CopyShareLink wallet={wallet} />
             <Link href={`/network/${wallet}`} className="btn-ghost">
               Organograma →
             </Link>
@@ -213,6 +216,12 @@ export default async function OperatorPage({ params }: PageProps) {
                 </div>
               )}
             </div>
+          </Section>
+        )}
+
+        {timeline?.tokens && timeline.tokens.length > 0 && (
+          <Section eyebrow="Activity" title="Deployment heatmap · last 365 days">
+            <ActivityHeatmap tokens={timeline.tokens} />
           </Section>
         )}
 
