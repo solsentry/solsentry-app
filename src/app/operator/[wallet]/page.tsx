@@ -157,19 +157,23 @@ export default async function OperatorPage({ params }: PageProps) {
                   <RiskBadge level={op.risk_level} size="lg" />
                   <div>
                     <div className="label-tag" style={{ marginBottom: 4 }}>
-                      Risk score
+                      Threat level
                     </div>
                     <div
                       style={{
                         fontFamily: "var(--font-display)",
                         fontWeight: 700,
                         fontSize: 28,
-                        color: "var(--fg-1)",
+                        color:
+                          op.risk_level === "CRITICAL"
+                            ? "var(--status-critical)"
+                            : op.risk_level === "HIGH"
+                              ? "var(--brand-amber)"
+                              : "var(--fg-1)",
                         letterSpacing: "-0.01em",
                       }}
                     >
-                      {op.risk_score ?? "—"}
-                      <span style={{ color: "var(--fg-3)", fontSize: 16 }}> / 100</span>
+                      {op.risk_level ?? "—"}
                     </div>
                   </div>
                 </div>
