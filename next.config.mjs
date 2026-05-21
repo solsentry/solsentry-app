@@ -5,6 +5,12 @@ const nextConfig = {
   env: {
     NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL || "https://api.solsentry.app",
   },
+  async redirects() {
+    return [
+      { source: "/casen", destination: "/casos/casen-grants", permanent: true },
+      { source: "/casen/:path*", destination: "/casos/casen-grants/:path*", permanent: true },
+    ];
+  },
   async headers() {
     return [
       {

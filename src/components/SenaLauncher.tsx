@@ -3,8 +3,14 @@
 import { useRef, useState } from "react";
 import { SenaDrawer, type SenaEntity } from "./SenaDrawer";
 
-export function SenaLauncher({ entity }: { entity: SenaEntity }) {
-  const [open, setOpen] = useState(false);
+export function SenaLauncher({
+  entity,
+  initialOpen = false,
+}: {
+  entity: SenaEntity;
+  initialOpen?: boolean;
+}) {
+  const [open, setOpen] = useState(initialOpen);
   const buttonRef = useRef<HTMLButtonElement | null>(null);
 
   return (

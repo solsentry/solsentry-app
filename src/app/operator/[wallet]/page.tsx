@@ -26,6 +26,7 @@ const SAMPLE_WALLET = "4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1";
 
 interface PageProps {
   params: Promise<{ wallet: string }>;
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
 }
 
 export async function generateMetadata({ params }: PageProps) {
@@ -36,8 +37,11 @@ export async function generateMetadata({ params }: PageProps) {
   };
 }
 
-export default async function OperatorPage({ params }: PageProps) {
+export default async function OperatorPage({ params, searchParams }: PageProps) {
   const { wallet } = await params;
+  const sp = searchParams ? await searchParams : {};
+  // ?sena=1 deep-link from the landing — pop Sena drawer open on arrival.
+  const senaAutoOpen = sp.sena === "1" || sp.sena === "true";
 
   const [op, timeline, network] = await Promise.all([
     fetchOperator(wallet),
@@ -157,23 +161,19 @@ export default async function OperatorPage({ params }: PageProps) {
                   <RiskBadge level={op.risk_level} size="lg" />
                   <div>
                     <div className="label-tag" style={{ marginBottom: 4 }}>
-                      Threat level
+                      Risk score
                     </div>
                     <div
                       style={{
                         fontFamily: "var(--font-display)",
                         fontWeight: 700,
                         fontSize: 28,
-                        color:
-                          op.risk_level === "CRITICAL"
-                            ? "var(--status-critical)"
-                            : op.risk_level === "HIGH"
-                              ? "var(--brand-amber)"
-                              : "var(--fg-1)",
+                        color: "var(--fg-1)",
                         letterSpacing: "-0.01em",
                       }}
                     >
-                      {op.risk_level ?? "—"}
+                      {op.risk_score ?? "—"}
+                      <span style={{ color: "var(--fg-3)", fontSize: 16 }}> / 100</span>
                     </div>
                   </div>
                 </div>
@@ -320,6 +320,7 @@ export default async function OperatorPage({ params }: PageProps) {
       </main>
       {op && (
         <SenaLauncher
+          initialOpen={senaAutoOpen}
           entity={{
             type: "operator",
             id: wallet,

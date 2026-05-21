@@ -4,7 +4,8 @@ import { PageHeader } from "@/components/PageHeader";
 import { Section } from "@/components/Section";
 import { AddrLink } from "@/components/AddrLink";
 import { ApiError } from "@/components/ApiError";
-import { GraphSwitcher } from "@/components/GraphSwitcher";
+import { OperatorTreeStatic } from "@/components/OperatorTreeStatic";
+import { networkToTree } from "@/lib/adapters/toTreeData";
 import { fetchOperatorNetwork, truncate } from "@/lib/api";
 import Link from "next/link";
 
@@ -82,14 +83,10 @@ export default async function NetworkPage({ params }: PageProps) {
             {net.nodes && net.nodes.length > 0 && (
               <Section
                 eyebrow="Live graph"
-                title="Operator graph (real-time)"
-                sub={`${net.nodes.length} nodes · ${net.edges?.length ?? 0} edges. Center node = this operator. Inner ring = hop-1. Outer ring = hop-2+. Hover for labels.`}
+                title="Organograma (hierarchical)"
+                sub={`${net.nodes.length} nodes · ${net.edges?.length ?? 0} edges. Center = this operator. Direct children shown by default · click cards with + to drill deeper · hover cards for full address.`}
               >
-                <GraphSwitcher
-                  center={wallet}
-                  nodes={net.nodes}
-                  edges={net.edges ?? []}
-                />
+                <OperatorTreeStatic data={networkToTree(net)} />
               </Section>
             )}
             {net.nodes && net.nodes.length > 0 && (
