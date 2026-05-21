@@ -28,6 +28,8 @@
   },
   "devDependencies": {
     "@opennextjs/cloudflare": "^1.19.3",
+    "@types/d3-force": "^3.0.10",
+    "@types/d3-hierarchy": "^3.1.7",
     "@types/node": "^22.10.2",
     "@types/react": "^19.0.1",
     "@types/react-dom": "^19.0.2",
