@@ -1,9 +1,9 @@
 "use client";
 
 // SolSentry wallet provider — wraps @solana/wallet-adapter-react for
-// Phantom / Solflare / Backpack. Mainnet by default; override via
-// NEXT_PUBLIC_SOLANA_RPC env. Modal CSS is imported from
-// @solana/wallet-adapter-react-ui — only loaded inside this client tree.
+// Phantom / Solflare. Backpack adapter removed: @solana/wallet-adapter-wallets
+// dropped BackpackWalletAdapter in 2024 (Backpack pushes their own SDK).
+// Mainnet by default; override via NEXT_PUBLIC_SOLANA_RPC env.
 
 import { useMemo, type ReactNode } from "react";
 import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
@@ -15,7 +15,6 @@ import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
 import {
   PhantomWalletAdapter,
   SolflareWalletAdapter,
-  BackpackWalletAdapter,
 } from "@solana/wallet-adapter-wallets";
 import { clusterApiUrl } from "@solana/web3.js";
 
@@ -39,7 +38,6 @@ export function SolSentryWalletProvider({ children, endpoint }: Props) {
     () => [
       new PhantomWalletAdapter(),
       new SolflareWalletAdapter(),
-      new BackpackWalletAdapter(),
     ],
     [],
   );
