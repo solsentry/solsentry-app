@@ -3,8 +3,12 @@
 // Login page. Primary: Sign-In-With-Solana via wallet adapter.
 // Secondary: email magic-link form (Phase 2.2, posts to /v1/auth/magic-link/request for now —
 // will be wired to /v1/auth/email/request when that lands).
+//
+// Note: WalletModalProvider deep inside SolSentryWalletProvider uses
+// useSearchParams, which trips Next 14 static prerender CSR-bailout.
+// Wrap the whole tree in <Suspense> to satisfy that requirement.
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { SolSentryWalletProvider } from "@/lib/wallet/SolSentryWalletProvider";
 import { ConnectWalletButton } from "@/components/auth/ConnectWalletButton";
 
@@ -96,6 +100,20 @@ function EmailForm() {
 }
 
 export default function LoginPage() {
+  return (
+    <Suspense
+      fallback={
+        <main className="login-shell">
+          <div className="login-card">Loading…</div>
+        </main>
+      }
+    >
+      <LoginInner />
+    </Suspense>
+  );
+}
+
+function LoginInner() {
   return (
     <SolSentryWalletProvider>
       <main className="login-shell">
