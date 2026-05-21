@@ -1,137 +1,73 @@
-import Link from "next/link";
+// Landing page — v4 native React/Next.js implementation.
+// Replaces the v3 iframe wrapper that pointed at /references/solsentry-fun.html.
+//
+// Server component. Fetches live stats + top operator from api.solsentry.app
+// with revalidate windows tuned to the upstream cache. Passes serialized
+// payloads to the client shell which owns lang/theme state.
+//
+// Spec: internal/codex/16_SITE_RESTRUCTURE_PLAN.md §2
+
+import { fetchStats, fetchTopOperators } from "@/lib/api";
+import { Footer } from "@/components/Footer";
+import { LandingClient } from "@/components/landing/LandingClient";
+import type { LiveStatsPayload } from "@/components/landing/LiveStatsBar";
+import type { TopOperatorPayload } from "@/components/landing/OperatorOfDay";
+
+export const revalidate = 60;
 
 export const metadata = {
-  title: "SolSentry — Solana threat intel · operator-centric",
+  title: "SolSentry — operator threat intelligence for Solana",
   description:
-    "Paste a Solana token or wallet. SolSentry shows who's behind it — serial rug operators, bot clusters, drain history. Live mainnet operator threat intelligence.",
+    "Paste a Solana wallet or token mint. SolSentry tells you who's behind it — every token that operator deployed, every confirmed rug, every cluster.",
+  openGraph: {
+    title: "SolSentry — operator threat intelligence for Solana",
+    description:
+      "RugCheck tells you a fire is burning. SolSentry tells you who lit it.",
+    images: ["/og/og-default.png"],
+  },
 };
 
-export default function HomePage() {
+const FALLBACK_TOP_OP = "4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1";
+
+export default async function HomePage() {
+  // Both fetches go through safeFetch — they return null instead of throwing.
+  // We run them in parallel; either can be null without taking the page down.
+  const [stats, topOps] = await Promise.all([
+    fetchStats(),
+    fetchTopOperators(1),
+  ]);
+
+  const statsPayload: LiveStatsPayload = stats
+    ? {
+        ok: true,
+        totalPredictions: stats.total_predictions,
+        accuracyPct: stats.accuracy_pct,
+        runtimeHours: stats.runtime_hours,
+        operators: stats.total_operators,
+        rugs: stats.confirmed_rugs,
+      }
+    : { ok: false };
+
+  const top = topOps[0];
+  const opPayload: TopOperatorPayload = top
+    ? {
+        ok: true,
+        wallet: top.wallet,
+        confirmedRugs: top.confirmed_rugs,
+        totalTokens: top.total_tokens,
+        rugRatePct: top.rug_rate_pct,
+        tags: top.tags,
+      }
+    : {
+        ok: true,
+        wallet: FALLBACK_TOP_OP,
+        isFallback: true,
+      };
+
   return (
-    <main
-      style={{
-        position: "fixed",
-        inset: 0,
-        background: "var(--bg)",
-        overflow: "hidden",
-      }}
-    >
-      <iframe
-        src="/references/solsentry-fun.html"
-        title="SolSentry — Easy mode"
-        style={{
-          position: "absolute",
-          inset: 0,
-          width: "100%",
-          height: "100%",
-          border: 0,
-          background: "var(--bg)",
-        }}
-      />
-
-      <div
-        style={{
-          position: "fixed",
-          top: 14,
-          left: 16,
-          zIndex: 10,
-          display: "flex",
-          alignItems: "center",
-          gap: 10,
-          background: "rgba(16, 14, 10, 0.78)",
-          backdropFilter: "blur(8px)",
-          WebkitBackdropFilter: "blur(8px)",
-          padding: "8px 12px",
-          borderRadius: 10,
-          border: "1px solid var(--border)",
-        }}
-      >
-        <Link
-          href="/about"
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 8,
-            color: "var(--fg-1)",
-            textDecoration: "none",
-            fontFamily: "var(--font-display)",
-            fontWeight: 700,
-            fontSize: 14,
-            letterSpacing: "-0.01em",
-          }}
-          aria-label="About SolSentry"
-        >
-          <img
-            src="/logo-3d.webp"
-            alt=""
-            width={24}
-            height={24}
-            style={{ display: "block", borderRadius: 4 }}
-          />
-          SolSentry
-        </Link>
-      </div>
-
-      <div
-        style={{
-          position: "fixed",
-          top: 14,
-          right: 16,
-          zIndex: 10,
-          display: "flex",
-          gap: 8,
-          background: "rgba(16, 14, 10, 0.78)",
-          backdropFilter: "blur(8px)",
-          WebkitBackdropFilter: "blur(8px)",
-          padding: 6,
-          borderRadius: 10,
-          border: "1px solid var(--border)",
-        }}
-      >
-        <Link
-          href="/about"
-          style={{
-            padding: "6px 10px",
-            color: "var(--fg-2)",
-            textDecoration: "none",
-            fontSize: 12,
-            fontFamily: "var(--font-mono)",
-            borderRadius: 6,
-          }}
-        >
-          About
-        </Link>
-        <Link
-          href="/pro"
-          style={{
-            padding: "6px 12px",
-            background: "var(--brand-amber-tint)",
-            color: "var(--brand-amber)",
-            textDecoration: "none",
-            fontSize: 12,
-            fontFamily: "var(--font-mono)",
-            fontWeight: 600,
-            borderRadius: 6,
-            border: "1px solid var(--brand-amber-line)",
-          }}
-        >
-          Pro mode →
-        </Link>
-        <Link
-          href="/api"
-          style={{
-            padding: "6px 12px",
-            color: "var(--fg-2)",
-            textDecoration: "none",
-            fontSize: 12,
-            fontFamily: "var(--font-mono)",
-            borderRadius: 6,
-            border: "1px solid var(--border)",
-          }}
-        >
-          Dev mode →
-        </Link>
-      </div>
-    </main>
+    <>
+      <LandingClient stats={statsPayload} topOperator={opPayload} />
+      <Footer />
+    </>
   );
 }

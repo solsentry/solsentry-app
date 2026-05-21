@@ -55,7 +55,21 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <head>
+        <link
+          rel="preload"
+          as="image"
+          href="/logo-3d.webp"
+          type="image/webp"
+          fetchPriority="high"
+        />
+      </head>
+      <body>
+        <a href="#main" className="skip-link">
+          Skip to main content
+        </a>
+        {children}
+      </body>
     </html>
   );
 }

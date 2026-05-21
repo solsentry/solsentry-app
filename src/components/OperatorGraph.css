@@ -1,0 +1,80 @@
+/* OperatorGraph.css — Haradrim-style animations + tier glow.
+ *
+ * Adapted from Haradrim (github.com/mertimus/haradrim, MIT, Mert Mumtaz).
+ * Color tokens swapped to SolSentry v4 canonical Âmbar palette.
+ */
+
+.operator-graph-container {
+  position: relative;
+}
+
+/* Center node — slow pulse */
+@keyframes center-node-pulse {
+  0%, 100% {
+    box-shadow: 0 0 24px rgba(193, 125, 14, 0.6),
+                0 0 48px rgba(193, 125, 14, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 32px rgba(193, 125, 14, 0.8),
+                0 0 64px rgba(193, 125, 14, 0.4);
+  }
+}
+
+/* Top-5 by degree — subtle "whale" pulse */
+@keyframes whale-pulse {
+  0%, 100% { box-shadow: 0 0 14px var(--whale-rgb, rgba(193, 125, 14, 0.5)); }
+  50%      { box-shadow: 0 0 20px var(--whale-rgb, rgba(193, 125, 14, 0.7)); }
+}
+
+.op-node-center {
+  animation: center-node-pulse 2.2s ease-in-out infinite;
+}
+
+.op-node-tier1 {
+  animation: whale-pulse 3.4s ease-in-out infinite;
+}
+
+.op-node-tier2 {
+  box-shadow: 0 0 8px var(--whale-rgb, rgba(193, 125, 14, 0.35));
+}
+
+.op-node-tier3 {
+  /* No glow for distant nodes — keep performance light */
+}
+
+/* Edge reveal animation on mount */
+@keyframes connection-edge-reveal {
+  from { opacity: 0; stroke-dasharray: 4 4; }
+  to   { opacity: var(--edge-opacity, 0.35); stroke-dasharray: 0 0; }
+}
+
+.connection-edge-reveal path {
+  animation: connection-edge-reveal 0.6s ease-out forwards;
+}
+
+/* Tooltip hover toggle */
+.conn-edge-tooltip {
+  opacity: 0;
+  transition: opacity 120ms ease;
+  pointer-events: none;
+}
+
+.connection-edge-group:hover .conn-edge-tooltip {
+  opacity: 1;
+}
+
+.connection-edge-group:hover path[stroke="#FFFFFF"],
+.connection-edge-group:hover path[stroke="#ffffff"] {
+  stroke: var(--brand-amber, #C17D0E) !important;
+  stroke-width: calc(var(--edge-thickness, 1) * 1.8) !important;
+}
+
+/* React Flow viewport background */
+.operator-graph-container .react-flow__background {
+  background-color: var(--surface, #100E0A);
+}
+
+/* Hide xyflow attribution (we put our own) */
+.operator-graph-container .react-flow__attribution {
+  display: none;
+}
