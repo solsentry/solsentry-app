@@ -1,4 +1,4 @@
-import { Nav } from "@/components/Nav";
+import { SiteTopbar } from "@/components/SiteTopbar";
 import { Footer } from "@/components/Footer";
 
 export const metadata = {
@@ -133,7 +133,7 @@ export default function SideTrackPage() {
 
   return (
     <>
-      <Nav />
+      <SiteTopbar />
       <main style={{ maxWidth: "1100px", margin: "0 auto", padding: "4rem 1.5rem" }}>
         <section style={{ marginBottom: "3rem" }}>
           <span

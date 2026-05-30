@@ -1,3 +1,13 @@
+/* Tailwind v4 + shadcn/ui foundation. MUST stay before any other rule
+   (@import is only valid at the top of a stylesheet). Preflight lands in
+   @layer base; all SolSentry rules below are UNLAYERED and therefore win the
+   cascade over preflight — existing 31 components are unaffected. */
+@import "tailwindcss";
+@import "tw-animate-css";
+
+/* Dark is our default. `dark:` utilities apply unless <html data-theme="light">. */
+@custom-variant dark (&:where(:root:not([data-theme="light"]), :root:not([data-theme="light"]) *));
+
 /* ============================================================
    SolSentry — Colors & Type Tokens (BRAND v4 — AMBER)
    Dark-theme only. Flat. No gradients.
@@ -141,6 +151,88 @@
   /* ---------- GRID / LAYOUT ---------- */
   --container-max: 1280px;
   --grid-line: rgba(193, 125, 14, 0.04);
+
+  /* ---------- shadcn/ui token bridge → SolSentry AMBER brand ----------
+     shadcn primitives reference these names; we point them at existing brand
+     vars so v0/shadcn components inherit the SolSentry theme automatically.
+     They flip with the light theme for free (the brand vars below redefine on
+     html[data-theme="light"], and these reference them via var()).
+     --border already exists above with matching semantics — reused, not redefined. */
+  --background: var(--bg);
+  --foreground: var(--fg-1);
+  --card: var(--surface);
+  --card-foreground: var(--fg-1);
+  --popover: var(--bg-elev-1);
+  --popover-foreground: var(--fg-1);
+  --primary: var(--brand-amber);
+  --primary-foreground: var(--fg-on-brand);
+  --secondary: var(--surface-2);
+  --secondary-foreground: var(--fg-1);
+  --muted: var(--surface-2);
+  --muted-foreground: var(--fg-3);
+  --accent: var(--surface-3);
+  --accent-foreground: var(--fg-1);
+  --destructive: var(--status-critical);
+  --destructive-foreground: var(--fg-1);
+  --input: var(--border);
+  --ring: var(--brand-amber);
+  --radius: 6px;
+  /* chart palette = SolSentry risk ramp (critical→safe) */
+  --chart-1: var(--status-critical);
+  --chart-2: var(--brand-amber-400);
+  --chart-3: var(--status-warning);
+  --chart-4: var(--brand-teal);
+  --chart-5: var(--brand-purple);
+  /* sidebar (Pro shell) */
+  --sidebar: var(--bg-elev-1);
+  --sidebar-foreground: var(--fg-1);
+  --sidebar-primary: var(--brand-amber);
+  --sidebar-primary-foreground: var(--fg-on-brand);
+  --sidebar-accent: var(--surface-2);
+  --sidebar-accent-foreground: var(--fg-1);
+  --sidebar-border: var(--border);
+  --sidebar-ring: var(--brand-amber);
+}
+
+/* Expose the shadcn token bridge as Tailwind color utilities (bg-background,
+   text-foreground, border-border, bg-primary, …). `inline` keeps them as
+   var() refs so the light-theme flip works at runtime. Radius intentionally
+   omitted — shadcn components inherit the app's existing --radius-* scale. */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --font-sans: var(--font-body);
+  --font-mono: var(--font-mono);
 }
 
 /* ============================================================
@@ -1480,10 +1572,52 @@ html[data-theme="light"] .landing-chrome {
   flex-wrap: wrap;
 }
 
+/* Mode tabs — consistent rounded rectangle style */
+.landing-mode-tabs {
+  display: inline-flex;
+  align-items: center;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 2px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.02em;
+  margin-right: 4px;
+}
+.mode-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 5px 11px;
+  border-radius: 6px;
+  color: var(--fg-3);
+  text-decoration: none;
+  transition: all 120ms var(--ease-out);
+  white-space: nowrap;
+}
+.mode-tab:hover:not(.active) {
+  color: var(--fg-1);
+  background: var(--surface-3);
+}
+.mode-tab.active {
+  background: var(--brand-amber);
+  color: var(--fg-on-brand);
+  font-weight: 600;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.2);
+}
+.mode-tab.locked {
+  opacity: 0.65;
+  cursor: pointer;
+}
+.mode-tab.locked:hover {
+  opacity: 0.9;
+}
+
 .landing-toggle {
   display: inline-flex;
   border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
+  border-radius: 6px;
   overflow: hidden;
   background: var(--surface);
 }
