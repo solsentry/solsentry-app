@@ -7,11 +7,7 @@ export interface CreditPackCardProps {
   bonusPct?: number;
 }
 
-export function CreditPackCard({
-  price,
-  credits,
-  bonusPct,
-}: CreditPackCardProps) {
+export function CreditPackCard({ price, credits, bonusPct }: CreditPackCardProps) {
   return (
     <div
       style={{

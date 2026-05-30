@@ -3,8 +3,7 @@
 import { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
-const API_BASE =
-  process.env.NEXT_PUBLIC_API_BASE || "https://api.solsentry.app";
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "https://api.solsentry.app";
 
 function VerifyInner() {
   const router = useRouter();

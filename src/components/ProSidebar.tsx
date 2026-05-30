@@ -86,9 +86,7 @@ export function ProSidebar() {
 
       <nav style={{ display: "flex", flexDirection: "column", gap: 2 }}>
         {PRO_LINKS.map((l) => {
-          const active =
-            pathname === l.href ||
-            (l.href !== "/pro" && pathname?.startsWith(l.href));
+          const active = pathname === l.href || (l.href !== "/pro" && pathname?.startsWith(l.href));
           return (
             <Link
               key={l.href}
@@ -101,9 +99,7 @@ export function ProSidebar() {
                 fontSize: 13,
                 color: active ? "var(--brand-amber)" : "var(--fg-2)",
                 background: active ? "var(--brand-amber-tint)" : "transparent",
-                border: active
-                  ? "1px solid var(--brand-amber-line)"
-                  : "1px solid transparent",
+                border: active ? "1px solid var(--brand-amber-line)" : "1px solid transparent",
                 borderRadius: 6,
                 textDecoration: "none",
                 fontFamily: "var(--font-body)",
@@ -139,13 +135,9 @@ export function ProSidebar() {
         }}
       >
         <div style={{ marginBottom: 4 }}>
-          api.solsentry.app{" "}
-          <span style={{ color: "var(--brand-teal)" }}>● live</span>
+          api.solsentry.app <span style={{ color: "var(--brand-teal)" }}>● live</span>
         </div>
-        <Link
-          href="/about"
-          style={{ color: "var(--fg-3)", textDecoration: "none" }}
-        >
+        <Link href="/about" style={{ color: "var(--fg-3)", textDecoration: "none" }}>
           About →
         </Link>
       </div>

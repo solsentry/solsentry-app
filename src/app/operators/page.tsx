@@ -25,7 +25,12 @@ export default async function OperatorsDirectoryPage() {
           sub="Dense table of Solana operators ranked by confirmed rug count. Filter by risk band, search by wallet prefix, click any row for the full profile."
         >
           <div style={{ display: "flex", gap: 12, marginTop: 16, flexWrap: "wrap" }}>
-            <a href="https://api.solsentry.app/v1/top-operators?limit=50" target="_blank" rel="noopener noreferrer" className="btn-ghost">
+            <a
+              href="https://api.solsentry.app/v1/top-operators?limit=50"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-ghost"
+            >
               Full JSON ↗
             </a>
           </div>
@@ -33,7 +38,10 @@ export default async function OperatorsDirectoryPage() {
 
         <Section eyebrow={`${ops.length} operators`} title="Browse">
           {ops.length === 0 ? (
-            <ApiError endpoint="/v1/top-operators?limit=50" message="No operators returned. The endpoint may be temporarily unavailable." />
+            <ApiError
+              endpoint="/v1/top-operators?limit=50"
+              message="No operators returned. The endpoint may be temporarily unavailable."
+            />
           ) : (
             <OperatorsTable initial={ops} />
           )}

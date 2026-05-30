@@ -44,9 +44,7 @@ export default async function ClusterPage({ params }: PageProps) {
               >
                 {id}
               </span>
-              {cluster
-                ? `${cluster.size} coordinated wallets`
-                : "Cluster lookup"}
+              {cluster ? `${cluster.size} coordinated wallets` : "Cluster lookup"}
             </>
           }
           sub={
@@ -80,9 +78,7 @@ export default async function ClusterPage({ params }: PageProps) {
                 className="panel"
                 style={{
                   borderColor:
-                    cluster.risk_level === "CRITICAL"
-                      ? "var(--status-critical)"
-                      : "var(--border)",
+                    cluster.risk_level === "CRITICAL" ? "var(--status-critical)" : "var(--border)",
                   padding: 0,
                   overflow: "hidden",
                 }}
@@ -99,9 +95,7 @@ export default async function ClusterPage({ params }: PageProps) {
                   }}
                 >
                   <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-                    {cluster.risk_level && (
-                      <RiskBadge level={cluster.risk_level} size="lg" />
-                    )}
+                    {cluster.risk_level && <RiskBadge level={cluster.risk_level} size="lg" />}
                     {cluster.risk_score != null && (
                       <div>
                         <div className="label-tag" style={{ marginBottom: 4 }}>
@@ -116,24 +110,16 @@ export default async function ClusterPage({ params }: PageProps) {
                           }}
                         >
                           {cluster.risk_score}
-                          <span style={{ color: "var(--fg-3)", fontSize: 16 }}>
-                            {" "}/ 100
-                          </span>
+                          <span style={{ color: "var(--fg-3)", fontSize: 16 }}> / 100</span>
                         </div>
                       </div>
                     )}
                   </div>
                 </div>
 
-                <div
-                  style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)" }}
-                >
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)" }}>
                   <Cell label="Wallets" value={fmtInt(cluster.size)} />
-                  <Cell
-                    label="Rugs"
-                    value={fmtInt(cluster.associated_rugs)}
-                    accent="critical"
-                  />
+                  <Cell label="Rugs" value={fmtInt(cluster.associated_rugs)} accent="critical" />
                   <Cell label="Tokens" value={fmtInt(cluster.associated_tokens)} />
                   <Cell
                     label="Funding"
@@ -180,18 +166,15 @@ export default async function ClusterPage({ params }: PageProps) {
                 <div
                   style={{
                     display: "grid",
-                    gridTemplateColumns:
-                      "repeat(auto-fill, minmax(260px, 1fr))",
+                    gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))",
                     gap: 12,
                   }}
                 >
-                  {(cluster.sample_wallets || cluster.operators || [])
-                    .slice(0, 60)
-                    .map((w) => (
-                      <div key={w} className="panel" style={{ padding: 14 }}>
-                        <AddrLink addr={w} head={8} tail={5} />
-                      </div>
-                    ))}
+                  {(cluster.sample_wallets || cluster.operators || []).slice(0, 60).map((w) => (
+                    <div key={w} className="panel" style={{ padding: 14 }}>
+                      <AddrLink addr={w} head={8} tail={5} />
+                    </div>
+                  ))}
                 </div>
               </Section>
             )}
@@ -202,15 +185,7 @@ export default async function ClusterPage({ params }: PageProps) {
   );
 }
 
-function Cell({
-  label,
-  value,
-  accent,
-}: {
-  label: string;
-  value: string;
-  accent?: "critical";
-}) {
+function Cell({ label, value, accent }: { label: string; value: string; accent?: "critical" }) {
   return (
     <div
       style={{
@@ -229,8 +204,7 @@ function Cell({
           fontFamily: "var(--font-display)",
           fontWeight: 700,
           fontSize: 24,
-          color:
-            accent === "critical" ? "var(--status-critical)" : "var(--fg-1)",
+          color: accent === "critical" ? "var(--status-critical)" : "var(--fg-1)",
           letterSpacing: "-0.01em",
           lineHeight: 1.1,
           wordBreak: "break-word",

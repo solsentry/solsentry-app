@@ -17,10 +17,7 @@ export function HowItWorks({ copy }: Props) {
   ];
 
   return (
-    <section
-      className="landing-section landing-how"
-      aria-labelledby="how-title"
-    >
+    <section className="landing-section landing-how" aria-labelledby="how-title">
       <header className="landing-section__head">
         <span className="landing-eyebrow">{copy.howEyebrow}</span>
         <h2 id="how-title" className="landing-section__title">

@@ -1,13 +1,7 @@
 import { PageHeader } from "@/components/PageHeader";
 import { Section } from "@/components/Section";
 import { ApiError } from "@/components/ApiError";
-import {
-  fetchStats,
-  fetchInvariants,
-  fetchAlertsRecent,
-  fmtInt,
-  fmtPct,
-} from "@/lib/api";
+import { fetchStats, fetchInvariants, fetchAlertsRecent, fmtInt, fmtPct } from "@/lib/api";
 import Link from "next/link";
 import { ProShell } from "@/components/ProShell";
 
@@ -33,8 +27,7 @@ export default async function DashboardPage() {
           eyebrow="Live ops · refreshes every 30s"
           title={
             <>
-              Mainnet scanner{" "}
-              <span style={{ color: "var(--brand-amber)" }}>health</span>
+              Mainnet scanner <span style={{ color: "var(--brand-amber)" }}>health</span>
             </>
           }
           sub={
@@ -68,7 +61,12 @@ export default async function DashboardPage() {
             <ApiError endpoint="/v1/stats" />
           ) : (
             <div className="stats-grid">
-              <Card label="Runtime" value={`${fmtInt(stats.runtime_hours)}h`} meta="continuous mainnet" accent="amber" />
+              <Card
+                label="Runtime"
+                value={`${fmtInt(stats.runtime_hours)}h`}
+                meta="continuous mainnet"
+                accent="amber"
+              />
               <Card
                 label="Tokens scanned"
                 value={fmtInt(stats.total_predictions)}
@@ -116,9 +114,7 @@ export default async function DashboardPage() {
             <div
               className="panel"
               style={{
-                borderColor: invariants.ok
-                  ? "var(--brand-teal)"
-                  : "var(--status-critical)",
+                borderColor: invariants.ok ? "var(--brand-teal)" : "var(--status-critical)",
               }}
             >
               <div
@@ -132,9 +128,7 @@ export default async function DashboardPage() {
                 <span
                   className="status-dot"
                   style={{
-                    background: invariants.ok
-                      ? "var(--brand-teal)"
-                      : "var(--status-critical)",
+                    background: invariants.ok ? "var(--brand-teal)" : "var(--status-critical)",
                   }}
                 />
                 <span
@@ -142,9 +136,7 @@ export default async function DashboardPage() {
                     fontFamily: "var(--font-display)",
                     fontSize: 22,
                     fontWeight: 700,
-                    color: invariants.ok
-                      ? "var(--brand-teal)"
-                      : "var(--status-critical)",
+                    color: invariants.ok ? "var(--brand-teal)" : "var(--status-critical)",
                   }}
                 >
                   {invariants.ok ? "ALL INVARIANTS PASSING" : "INVARIANT VIOLATION"}
@@ -202,11 +194,7 @@ export default async function DashboardPage() {
           <Section eyebrow="Live feed · last 10" title="Recent alerts">
             <div className="alerts-list">
               {alerts.map((a, i) => (
-                <Link
-                  key={`${a.mint}-${i}`}
-                  href={`/token/${a.mint}`}
-                  className="alert-item"
-                >
+                <Link key={`${a.mint}-${i}`} href={`/token/${a.mint}`} className="alert-item">
                   <div className="alert-head">
                     <span
                       className={`risk-badge ${a.risk_level}`}

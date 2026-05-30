@@ -31,9 +31,7 @@ export default async function ProOverviewPage() {
     fetchClusters(8),
   ]);
 
-  const criticalAlerts = alerts
-    .filter((a) => a.risk_level === "CRITICAL")
-    .slice(0, 20);
+  const criticalAlerts = alerts.filter((a) => a.risk_level === "CRITICAL").slice(0, 20);
 
   return (
     <ProShell>
@@ -61,11 +59,7 @@ export default async function ProOverviewPage() {
   );
 }
 
-function Header({
-  stats,
-}: {
-  stats: Awaited<ReturnType<typeof fetchStats>>;
-}) {
+function Header({ stats }: { stats: Awaited<ReturnType<typeof fetchStats>> }) {
   return (
     <header style={{ marginBottom: 20 }}>
       <div
@@ -108,37 +102,32 @@ function Header({
   );
 }
 
-function KpiStrip({
-  stats,
-}: {
-  stats: Awaited<ReturnType<typeof fetchStats>>;
-}) {
-  const items: { label: string; value: string; accent?: "amber" | "critical" }[] =
-    stats
-      ? [
-          { label: "Operators", value: fmtInt(stats.total_operators) },
-          {
-            label: "Confirmed rugs",
-            value: fmtInt(stats.confirmed_rugs),
-            accent: "critical",
-          },
-          { label: "Predictions", value: fmtInt(stats.total_predictions) },
-          {
-            label: "CRITICAL precision",
-            value: fmtPct(stats.accuracy_pct, 1),
-            accent: "amber",
-          },
-          {
-            label: "Resolve rate",
-            value: fmtPct(stats.resolve_rate_pct, 1),
-          },
-          {
-            label: "Mainnet hours",
-            value: `${fmtInt(stats.runtime_hours)}h`,
-            accent: "amber",
-          },
-        ]
-      : Array.from({ length: 6 }, () => ({ label: "—", value: "—" }));
+function KpiStrip({ stats }: { stats: Awaited<ReturnType<typeof fetchStats>> }) {
+  const items: { label: string; value: string; accent?: "amber" | "critical" }[] = stats
+    ? [
+        { label: "Operators", value: fmtInt(stats.total_operators) },
+        {
+          label: "Confirmed rugs",
+          value: fmtInt(stats.confirmed_rugs),
+          accent: "critical",
+        },
+        { label: "Predictions", value: fmtInt(stats.total_predictions) },
+        {
+          label: "CRITICAL precision",
+          value: fmtPct(stats.accuracy_pct, 1),
+          accent: "amber",
+        },
+        {
+          label: "Resolve rate",
+          value: fmtPct(stats.resolve_rate_pct, 1),
+        },
+        {
+          label: "Mainnet hours",
+          value: `${fmtInt(stats.runtime_hours)}h`,
+          accent: "amber",
+        },
+      ]
+    : Array.from({ length: 6 }, () => ({ label: "—", value: "—" }));
 
   return (
     <div
@@ -220,8 +209,8 @@ function TierIntro() {
         WHAT IS PRO
       </span>
       <span style={{ fontSize: 13, color: "var(--fg-1)", flex: 1, minWidth: 260 }}>
-        Free shows the verdict. Pro shows the work — chain of evidence, multi-wallet
-        comparisons, persistent investigations, watchlist alerts, x402 credits.
+        Free shows the verdict. Pro shows the work — chain of evidence, multi-wallet comparisons,
+        persistent investigations, watchlist alerts, x402 credits.
       </span>
       <Link
         href="mailto:hello@solsentry.app?subject=Pro%20beta%20access"
@@ -284,13 +273,7 @@ function TierPanels() {
   );
 }
 
-function DataCanvas({
-  alerts,
-  operators,
-}: {
-  alerts: Alert[];
-  operators: TopOperator[];
-}) {
+function DataCanvas({ alerts, operators }: { alerts: Alert[]; operators: TopOperator[] }) {
   return (
     <div
       style={{
@@ -374,10 +357,7 @@ function AlertsTable({ alerts }: { alerts: Alert[] }) {
                   {a.symbol ? (
                     <>
                       <span style={{ fontWeight: 600 }}>{a.symbol}</span>
-                      <span style={{ color: "var(--fg-3)" }}>
-                        {" "}
-                        · {truncate(a.mint, 4, 4)}
-                      </span>
+                      <span style={{ color: "var(--fg-3)" }}> · {truncate(a.mint, 4, 4)}</span>
                     </>
                   ) : (
                     truncate(a.mint, 6, 4)
@@ -409,9 +389,7 @@ function AlertsTable({ alerts }: { alerts: Alert[] }) {
                 <span
                   style={{
                     color:
-                      a.risk_level === "CRITICAL"
-                        ? "var(--status-critical)"
-                        : "var(--brand-amber)",
+                      a.risk_level === "CRITICAL" ? "var(--status-critical)" : "var(--brand-amber)",
                     fontWeight: 600,
                   }}
                 >
@@ -475,9 +453,7 @@ function OperatorsTable({ operators }: { operators: TopOperator[] }) {
                 </Link>
               </Td>
               <Td align="right">
-                <span style={{ color: "var(--status-critical)" }}>
-                  {fmtInt(op.confirmed_rugs)}
-                </span>
+                <span style={{ color: "var(--status-critical)" }}>{fmtInt(op.confirmed_rugs)}</span>
               </Td>
               <Td align="right">
                 <span style={{ color: "var(--brand-amber)", fontWeight: 600 }}>

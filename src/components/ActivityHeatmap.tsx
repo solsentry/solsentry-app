@@ -16,8 +16,8 @@ interface Props {
 }
 
 interface DayBucket {
-  date: string;       // YYYY-MM-DD
-  ts: number;         // Unix seconds at day start
+  date: string; // YYYY-MM-DD
+  ts: number; // Unix seconds at day start
   count: number;
   rugs: number;
 }
@@ -50,7 +50,7 @@ function cellColor(count: number, maxCount: number): string {
   if (ratio < 0.4) return "rgba(193, 125, 14, 0.45)"; // amber 45%
   if (ratio < 0.6) return "rgba(193, 125, 14, 0.65)"; // amber 65%
   if (ratio < 0.8) return "rgba(217, 150, 46, 0.85)"; // amber-light 85%
-  return "rgba(220, 38, 38, 0.85)";                    // critical red 85%
+  return "rgba(220, 38, 38, 0.85)"; // critical red 85%
 }
 
 export function ActivityHeatmap({ tokens, days = 365, className }: Props) {
@@ -131,7 +131,7 @@ export function ActivityHeatmap({ tokens, days = 365, className }: Props) {
   const CELL = 12;
   const GAP = 3;
   const PAD_LEFT = 28; // weekday labels
-  const PAD_TOP = 18;  // month labels
+  const PAD_TOP = 18; // month labels
   const W = PAD_LEFT + weeks.length * (CELL + GAP);
   const H = PAD_TOP + 7 * (CELL + GAP);
 
@@ -199,11 +199,7 @@ export function ActivityHeatmap({ tokens, days = 365, className }: Props) {
         <Stat label="confirmed rugs" value={totalRugs.toLocaleString()} accent="critical" />
         <Stat label="peak day" value={maxCount.toLocaleString()} accent="amber" />
         {busiestDay && busiestDay.count > 0 && (
-          <Stat
-            label="busiest"
-            value={formatDateLabel(busiestDay.ts)}
-            accent="amber"
-          />
+          <Stat label="busiest" value={formatDateLabel(busiestDay.ts)} accent="amber" />
         )}
       </div>
 
@@ -268,11 +264,7 @@ export function ActivityHeatmap({ tokens, days = 365, className }: Props) {
                     height={CELL}
                     rx={2}
                     fill={color}
-                    stroke={
-                      cell.count > 0
-                        ? "rgba(242,237,228,0.08)"
-                        : "transparent"
-                    }
+                    stroke={cell.count > 0 ? "rgba(242,237,228,0.08)" : "transparent"}
                     strokeWidth={cell.count > 0 ? 0.5 : 0}
                   >
                     <title>{tooltip}</title>
@@ -304,10 +296,7 @@ export function ActivityHeatmap({ tokens, days = 365, className }: Props) {
               width: CELL,
               height: CELL,
               borderRadius: 2,
-              background: cellColor(
-                step === 0 ? 0 : Math.ceil((step / 5) * maxCount),
-                maxCount,
-              ),
+              background: cellColor(step === 0 ? 0 : Math.ceil((step / 5) * maxCount), maxCount),
               border: step === 0 ? "1px dashed rgba(242,237,228,0.15)" : "none",
             }}
           />

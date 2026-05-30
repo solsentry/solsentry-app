@@ -31,11 +31,7 @@ interface RenderProps {
   setTheme: (t: Theme) => void;
 }
 
-export function LandingShell({
-  children,
-}: {
-  children: (props: RenderProps) => React.ReactNode;
-}) {
+export function LandingShell({ children }: { children: (props: RenderProps) => React.ReactNode }) {
   const [lang, setLangState] = useState<Lang>(DEFAULT_LANG);
   const [theme, setThemeState] = useState<Theme>("dark");
   const [mounted, setMounted] = useState(false);

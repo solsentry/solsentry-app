@@ -67,10 +67,7 @@ export default async function ClustersPage() {
                       marginBottom: 12,
                     }}
                   >
-                    <span
-                      className="label-tag"
-                      style={{ color: "var(--brand-amber)" }}
-                    >
+                    <span className="label-tag" style={{ color: "var(--brand-amber)" }}>
                       {c.cluster_id.slice(0, 16)}
                     </span>
                     {c.risk_level && <RiskBadge level={c.risk_level} size="sm" />}
@@ -84,16 +81,9 @@ export default async function ClustersPage() {
                     }}
                   >
                     <Stat label="Wallets" value={fmtInt(c.size)} />
-                    <Stat
-                      label="Rugs"
-                      value={fmtInt(c.associated_rugs)}
-                      accent="critical"
-                    />
+                    <Stat label="Rugs" value={fmtInt(c.associated_rugs)} accent="critical" />
                     <Stat label="Tokens" value={fmtInt(c.associated_tokens)} />
-                    <Stat
-                      label="Risk"
-                      value={c.risk_score != null ? `${c.risk_score}` : "—"}
-                    />
+                    <Stat label="Risk" value={c.risk_score != null ? `${c.risk_score}` : "—"} />
                   </div>
                   <div
                     style={{
@@ -102,8 +92,7 @@ export default async function ClustersPage() {
                       fontFamily: "var(--font-mono)",
                     }}
                   >
-                    First seen {fmtUnixAge(c.first_seen)} · Last seen{" "}
-                    {fmtUnixAge(c.last_seen)}
+                    First seen {fmtUnixAge(c.first_seen)} · Last seen {fmtUnixAge(c.last_seen)}
                   </div>
                   {c.funding_source_classification && (
                     <div
@@ -129,15 +118,7 @@ export default async function ClustersPage() {
   );
 }
 
-function Stat({
-  label,
-  value,
-  accent,
-}: {
-  label: string;
-  value: string;
-  accent?: "critical";
-}) {
+function Stat({ label, value, accent }: { label: string; value: string; accent?: "critical" }) {
   return (
     <div>
       <div className="label-tag" style={{ marginBottom: 4, fontSize: 9 }}>

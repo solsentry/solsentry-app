@@ -84,22 +84,18 @@ export default function MCPPage() {
           eyebrow="MCP server · @solsentry/mcp v0.1.1"
           title={
             <>
-              SolSentry in your{" "}
-              <span style={{ color: "var(--brand-amber)" }}>AI agent</span>.
+              SolSentry in your <span style={{ color: "var(--brand-amber)" }}>AI agent</span>.
             </>
           }
           sub={
             <>
-              Install once, query forever. Seven tools. Works in Claude Code,
-              Cursor, Windsurf, Zed, or anything that speaks the Model Context
-              Protocol. Your AI now knows every known Solana rug operator and
-              can cite them by wallet.
+              Install once, query forever. Seven tools. Works in Claude Code, Cursor, Windsurf, Zed,
+              or anything that speaks the Model Context Protocol. Your AI now knows every known
+              Solana rug operator and can cite them by wallet.
             </>
           }
         >
-          <div
-            style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 8 }}
-          >
+          <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 8 }}>
             <a
               href="https://www.npmjs.com/package/@solsentry/mcp"
               target="_blank"
@@ -117,11 +113,7 @@ export default function MCPPage() {
           </div>
         </PageHeader>
 
-        <Section
-          eyebrow="Install"
-          title="One command. Two config lines."
-          id="install"
-        >
+        <Section eyebrow="Install" title="One command. Two config lines." id="install">
           <div className="grid-2" style={{ alignItems: "start" }}>
             <div>
               <div className="label-tag" style={{ marginBottom: 10 }}>
@@ -156,11 +148,8 @@ export default function MCPPage() {
                   lineHeight: 1.6,
                 }}
               >
-                Add to{" "}
-                <code style={{ color: "var(--brand-amber)" }}>
-                  ~/.cursor/mcp.json
-                </code>{" "}
-                or workspace settings:
+                Add to <code style={{ color: "var(--brand-amber)" }}>~/.cursor/mcp.json</code> or
+                workspace settings:
               </p>
               <div className="code-block">{CURSOR_CONFIG}</div>
             </div>
@@ -173,10 +162,7 @@ export default function MCPPage() {
               borderLeft: "3px solid var(--brand-amber)",
             }}
           >
-            <div
-              className="label-tag"
-              style={{ color: "var(--brand-amber)", marginBottom: 10 }}
-            >
+            <div className="label-tag" style={{ color: "var(--brand-amber)", marginBottom: 10 }}>
               First use
             </div>
             <pre
@@ -267,32 +253,22 @@ export default function MCPPage() {
           <ol className="step-list">
             <li>
               <strong>Restart the agent</strong>
-              MCP servers load at startup. Re-launch Claude Code / Cursor after
-              editing the config.
+              MCP servers load at startup. Re-launch Claude Code / Cursor after editing the config.
             </li>
             <li>
               <strong>Verify Node is available</strong>
-              <code>npx</code> needs Node 18+. Run{" "}
-              <code>npx @solsentry/mcp --version</code> in a terminal to confirm
-              the binary installs.
+              <code>npx</code> needs Node 18+. Run <code>npx @solsentry/mcp --version</code> in a
+              terminal to confirm the binary installs.
             </li>
             <li>
               <strong>Check the API is reachable</strong>
-              <code>curl https://api.solsentry.app/health</code> should return{" "}
-              <code>200 OK</code>. If not, the MCP will surface a network error
-              on first tool call.
+              <code>curl https://api.solsentry.app/health</code> should return <code>200 OK</code>.
+              If not, the MCP will surface a network error on first tool call.
             </li>
             <li>
               <strong>Still stuck?</strong>
-              Reach out —{" "}
-              <a href="mailto:hello@solsentry.app">
-                hello@solsentry.app
-              </a> or{" "}
-              <a
-                href="https://t.me/solsentryai"
-                target="_blank"
-                rel="noreferrer"
-              >
+              Reach out — <a href="mailto:hello@solsentry.app">hello@solsentry.app</a> or{" "}
+              <a href="https://t.me/solsentryai" target="_blank" rel="noreferrer">
                 @solsentryai
               </a>
               . MCP is early — bug reports are welcome.

@@ -74,9 +74,7 @@ export function LandingHero({ copy, lang }: Props) {
       )}
 
       <div className="landing-scan__samples">
-        <span className="landing-scan__samples-label">
-          {copy.heroTrySample}
-        </span>
+        <span className="landing-scan__samples-label">{copy.heroTrySample}</span>
         {SAMPLES.map((s) => (
           <button key={s.value} type="button" onClick={() => go(s.value)}>
             {s.label[lang]}

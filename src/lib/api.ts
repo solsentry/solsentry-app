@@ -197,10 +197,7 @@ export interface DrainTrace {
   latency_ms?: number;
 }
 
-async function safeFetch<T>(
-  path: string,
-  revalidate: number,
-): Promise<T | null> {
+async function safeFetch<T>(path: string, revalidate: number): Promise<T | null> {
   try {
     const res = await fetch(`${API_URL}${path}`, { next: { revalidate } });
     if (!res.ok) return null;
@@ -223,15 +220,10 @@ export async function fetchTopOperators(limit = 10): Promise<TopOperator[]> {
 }
 
 export async function fetchOperator(wallet: string): Promise<Operator | null> {
-  return safeFetch<Operator>(
-    `/v1/operator/${encodeURIComponent(wallet)}`,
-    TTL.operator,
-  );
+  return safeFetch<Operator>(`/v1/operator/${encodeURIComponent(wallet)}`, TTL.operator);
 }
 
-export async function fetchOperatorTimeline(
-  wallet: string,
-): Promise<OperatorTimeline | null> {
+export async function fetchOperatorTimeline(wallet: string): Promise<OperatorTimeline | null> {
   return safeFetch<OperatorTimeline>(
     `/v1/operator/${encodeURIComponent(wallet)}/timeline`,
     TTL.timeline,
@@ -243,16 +235,11 @@ export async function fetchToken(mint: string): Promise<Token | null> {
 }
 
 export async function fetchAlertsRecent(limit = 20): Promise<Alert[]> {
-  const data = await safeFetch<{ alerts: Alert[] }>(
-    `/v1/alerts/recent?limit=${limit}`,
-    TTL.alerts,
-  );
+  const data = await safeFetch<{ alerts: Alert[] }>(`/v1/alerts/recent?limit=${limit}`, TTL.alerts);
   return data?.alerts ?? [];
 }
 
-export async function fetchResolutionsRecent(
-  limit = 20,
-): Promise<Resolution[]> {
+export async function fetchResolutionsRecent(limit = 20): Promise<Resolution[]> {
   const data = await safeFetch<{ resolutions: Resolution[] }>(
     `/v1/resolutions/recent?limit=${limit}`,
     TTL.resolutions,
@@ -271,23 +258,15 @@ export async function fetchClusters(
 }
 
 export async function fetchCluster(clusterId: string): Promise<Cluster | null> {
-  return safeFetch<Cluster>(
-    `/v1/cluster/${encodeURIComponent(clusterId)}`,
-    TTL.cluster,
-  );
+  return safeFetch<Cluster>(`/v1/cluster/${encodeURIComponent(clusterId)}`, TTL.cluster);
 }
 
 export async function fetchX402Stats(): Promise<X402Stats | null> {
   return safeFetch<X402Stats>("/v1/x402/stats", TTL.x402);
 }
 
-export async function fetchDrainTrace(
-  wallet: string,
-): Promise<DrainTrace | null> {
-  return safeFetch<DrainTrace>(
-    `/v1/drain-trace/${encodeURIComponent(wallet)}`,
-    60,
-  );
+export async function fetchDrainTrace(wallet: string): Promise<DrainTrace | null> {
+  return safeFetch<DrainTrace>(`/v1/drain-trace/${encodeURIComponent(wallet)}`, 60);
 }
 
 export interface InvariantsCheck {
@@ -345,9 +324,7 @@ interface ApiNetworkResponse {
   edges?: ApiNetworkEdge[];
 }
 
-export async function fetchOperatorNetwork(
-  wallet: string,
-): Promise<OperatorNetwork | null> {
+export async function fetchOperatorNetwork(wallet: string): Promise<OperatorNetwork | null> {
   const raw = await safeFetch<ApiNetworkResponse>(
     `/v1/operator/${encodeURIComponent(wallet)}/network`,
     120,
@@ -365,9 +342,7 @@ export async function fetchOperatorNetwork(
       n.address ||
       n.wallet ||
       n.mint ||
-      (typeof n.id === "string"
-        ? n.id.replace(/^(op_|tok_|cluster_|kol_)/, "")
-        : "");
+      (typeof n.id === "string" ? n.id.replace(/^(op_|tok_|cluster_|kol_)/, "") : "");
     if (!address) continue;
     const type =
       n.type ||
@@ -396,9 +371,7 @@ export async function fetchOperatorNetwork(
       n.address ||
       n.wallet ||
       n.mint ||
-      (typeof n.id === "string"
-        ? n.id.replace(/^(op_|tok_|cluster_|kol_)/, "")
-        : "");
+      (typeof n.id === "string" ? n.id.replace(/^(op_|tok_|cluster_|kol_)/, "") : "");
     if (n.id && address) idToAddress.set(n.id, address);
     if (address) idToAddress.set(address, address);
   });
@@ -463,10 +436,7 @@ export interface Dossier {
 }
 
 export async function fetchDossier(wallet: string): Promise<Dossier | null> {
-  return safeFetch<Dossier>(
-    `/v1/dossier/${encodeURIComponent(wallet)}`,
-    TTL.dossier,
-  );
+  return safeFetch<Dossier>(`/v1/dossier/${encodeURIComponent(wallet)}`, TTL.dossier);
 }
 
 export interface BrainSkill {

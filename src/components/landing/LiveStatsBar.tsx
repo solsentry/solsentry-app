@@ -91,12 +91,7 @@ export function LiveStatsBar({ copy, lang, stats }: Props) {
       <ul className="landing-stats__grid">
         {cells.map((c) => (
           <li key={c.label}>
-            <a
-              href={c.href}
-              target="_blank"
-              rel="noreferrer"
-              className="landing-stats__cell"
-            >
+            <a href={c.href} target="_blank" rel="noreferrer" className="landing-stats__cell">
               <span className="landing-stats__label">{c.label}</span>
               <span className="landing-stats__value">{c.value}</span>
             </a>

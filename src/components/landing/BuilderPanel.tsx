@@ -38,10 +38,7 @@ export function BuilderPanel({ copy }: Props) {
   ];
 
   return (
-    <section
-      className="landing-section landing-build"
-      aria-labelledby="build-title"
-    >
+    <section className="landing-section landing-build" aria-labelledby="build-title">
       <header className="landing-section__head">
         <span className="landing-eyebrow">{copy.buildEyebrow}</span>
         <h2 id="build-title" className="landing-section__title">

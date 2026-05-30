@@ -36,7 +36,8 @@ const TRACKS: SideTrack[] = [
     status: "submitted",
     integration:
       "Operator-graph threat intelligence on Solana — first threat-intel API on x402 leaderboard.",
-    proof: "Live API verifiable: api.solsentry.app/v1/stats · 21,711 confirmed rugs · 96.6% CRITICAL precision (audit-grade).",
+    proof:
+      "Live API verifiable: api.solsentry.app/v1/stats · 21,711 confirmed rugs · 96.6% CRITICAL precision (audit-grade).",
     evidenceUrl: "https://api.solsentry.app/v1/stats",
   },
   {
@@ -46,7 +47,8 @@ const TRACKS: SideTrack[] = [
     status: "submitted",
     integration:
       "SolSentry MCP server (NPM @solsentry/mcp) demonstrates zero-install developer ergonomics on Solana.",
-    proof: "Verifiable: npx @solsentry/mcp (7 tools live, MCP-native, Claude Desktop/Cursor compatible).",
+    proof:
+      "Verifiable: npx @solsentry/mcp (7 tools live, MCP-native, Claude Desktop/Cursor compatible).",
     evidenceUrl: "https://www.npmjs.com/package/@solsentry/mcp",
   },
   {
@@ -56,7 +58,8 @@ const TRACKS: SideTrack[] = [
     status: "deployed",
     integration:
       "RPC Fast endpoints integrated into SolSentry's 23-endpoint RPC pool (clients/rpc/pool.py) · round-robin with Helius, Alchemy, QuickNode, Chainstack.",
-    proof: "Live config visible in production logs · 75+ scans served via RPC Fast endpoints since deploy.",
+    proof:
+      "Live config visible in production logs · 75+ scans served via RPC Fast endpoints since deploy.",
   },
   {
     partner: "Cloak",
@@ -65,15 +68,15 @@ const TRACKS: SideTrack[] = [
     status: "in_progress",
     integration:
       "Cloak SDK integration scaffold (integrations/cloak/) · mainnet proof TX pending execution. Frame: 'privacy without impunity' — Cloak hides sender, SolSentry verifies destination.",
-    proof: "Devnet integration ready · mainnet proof TX scheduled post-submit · evidence will be linked here.",
+    proof:
+      "Devnet integration ready · mainnet proof TX scheduled post-submit · evidence will be linked here.",
   },
   {
     partner: "Umbra",
     track: "Privacy · Stealth Addresses",
     reward: "TBA",
     status: "in_progress",
-    integration:
-      "Umbra SDK integration (clients/umbra.py) · mainnet proof TX pending execution.",
+    integration: "Umbra SDK integration (clients/umbra.py) · mainnet proof TX pending execution.",
     proof: "Code shipped · mainnet TX scheduled post-submit · evidence will be linked here.",
   },
   {
@@ -83,15 +86,15 @@ const TRACKS: SideTrack[] = [
     status: "deployed",
     integration:
       "Covalent integration (clients/covalent.py) live in production · wallet portfolio enrichment for OperatorProfile.",
-    proof: "Wallet profiles populated with Covalent 'portfolio' field · live verifiable in /v1/operator/{wallet}.",
+    proof:
+      "Wallet profiles populated with Covalent 'portfolio' field · live verifiable in /v1/operator/{wallet}.",
   },
   {
     partner: "Zerion",
     track: "Wallet API",
     reward: "TBA",
     status: "in_progress",
-    integration:
-      "Zerion CLI integration (clients/zerion.py) · agent compose flow scaffolded.",
+    integration: "Zerion CLI integration (clients/zerion.py) · agent compose flow scaffolded.",
     proof: "API key signup pending · integration code ready · proof updated post-submit.",
   },
   {
@@ -167,11 +170,11 @@ export default function SideTrackPage() {
               maxWidth: "65ch",
             }}
           >
-            Live verification page for SolSentry&apos;s Frontier 2026 side track submissions.
-            Each integration links to verifiable proof — REST endpoints, NPM packages, mainnet
+            Live verification page for SolSentry&apos;s Frontier 2026 side track submissions. Each
+            integration links to verifiable proof — REST endpoints, NPM packages, mainnet
             transactions. Proofs marked &quot;pending&quot; are scheduled for execution post-submit
-            window and will be updated here. Judges can verify each claim via the linked endpoint
-            or evidence URL.
+            window and will be updated here. Judges can verify each claim via the linked endpoint or
+            evidence URL.
           </p>
           <p
             style={{
@@ -321,7 +324,14 @@ export default function SideTrackPage() {
           >
             For Judges
           </h3>
-          <p style={{ fontSize: "0.9rem", lineHeight: 1.6, color: "var(--text-dim)", marginTop: "0.75rem" }}>
+          <p
+            style={{
+              fontSize: "0.9rem",
+              lineHeight: 1.6,
+              color: "var(--text-dim)",
+              marginTop: "0.75rem",
+            }}
+          >
             This page is updated continuously as integrations advance from <em>submitted</em> →
             <em> in_progress</em> → <em>deployed</em> → <em>verified</em>. Every claim made in
             Frontier 2026 submission forms is verifiable via the linked endpoints or upcoming
