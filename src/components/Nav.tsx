@@ -1,40 +1,46 @@
-import Link from "next/link";
+"use client";
 
-const NAV_LINKS = [
-  { label: "Live", href: "/live" },
-  { label: "Dashboard", href: "/dashboard" },
-  { label: "Top operators", href: "/top-operators" },
-  { label: "Clusters", href: "/clusters" },
-  { label: "MCP", href: "/mcp" },
-  { label: "Telegram", href: "/telegram" },
-];
+import { useRouter } from "next/navigation";
+import { SolSentrySearch } from "@/components/SolSentrySearch";
+import { detectKind, routeFor } from "@/components/AISearchBar";
+import { SiteTopbar } from "@/components/SiteTopbar";
 
+/**
+ * Shared navigation for all internal pages.
+ *
+ * Topbar: Always uses <SiteTopbar /> — the single source of truth
+ * (exactly the same as the homepage).
+ *
+ * Extra navigation links (Live, MCP, Telegram, etc.) live only in the footer.
+ * The only thing added here on internal pages is a compact search bar.
+ */
 export function Nav() {
+  const router = useRouter();
+
+  const handleSearch = (value: string) => {
+    const kind = detectKind(value);
+    const target = routeFor(kind, value);
+    if (target) {
+      router.push(target);
+    } else {
+      router.push(`/lookup?addr=${encodeURIComponent(value)}`);
+    }
+  };
+
   return (
     <nav className="nav">
       <div className="container nav-inner">
-        <Link href="/" className="nav-brand">
-          <img
-            src="/logo-3d.webp"
-            alt="SolSentry"
-            width={28}
-            height={28}
-            style={{ display: "block", borderRadius: 4 }}
+        <SiteTopbar />
+
+        {/* Compact search — only on internal pages (homepage has its own big search) */}
+        <div className="hidden md:block" style={{ flex: '0 1 260px', minWidth: 0, marginLeft: 16 }}>
+          <SolSentrySearch 
+            variant="nav" 
+            onSearch={handleSearch}
           />
-          SolSentry
-        </Link>
-        <div className="nav-links">
-          {NAV_LINKS.map((l) => (
-            <Link key={l.href} href={l.href}>
-              {l.label}
-            </Link>
-          ))}
-          <Link href="/about">About</Link>
-          <Link href="/pro" className="nav-cta">
-            Pro mode →
-          </Link>
         </div>
       </div>
     </nav>
   );
 }
+

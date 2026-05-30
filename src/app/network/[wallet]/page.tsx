@@ -1,11 +1,10 @@
-import { Nav } from "@/components/Nav";
+import { SiteTopbar } from "@/components/SiteTopbar";
 import { Footer } from "@/components/Footer";
 import { PageHeader } from "@/components/PageHeader";
 import { Section } from "@/components/Section";
 import { AddrLink } from "@/components/AddrLink";
 import { ApiError } from "@/components/ApiError";
-import { OperatorTreeStatic } from "@/components/OperatorTreeStatic";
-import { networkToTree } from "@/lib/adapters/toTreeData";
+import { TraceNetworkGraph, type TraceWalletNode, type TraceFlowEdge } from "@/components/TraceNetworkGraph";
 import { fetchOperatorNetwork, truncate } from "@/lib/api";
 import Link from "next/link";
 
@@ -29,7 +28,7 @@ export default async function NetworkPage({ params }: PageProps) {
 
   return (
     <>
-      <Nav />
+      <SiteTopbar />
       <main>
         <PageHeader
           eyebrow="Operator network · adjacency view"
@@ -83,10 +82,33 @@ export default async function NetworkPage({ params }: PageProps) {
             {net.nodes && net.nodes.length > 0 && (
               <Section
                 eyebrow="Live graph"
-                title="Organograma (hierarchical)"
-                sub={`${net.nodes.length} nodes · ${net.edges?.length ?? 0} edges. Center = this operator. Direct children shown by default · click cards with + to drill deeper · hover cards for full address.`}
+                title="Network Trace"
+                sub="Organograma estruturado com nós ricos (fluxo de dinheiro + relacionamentos). Clique nos nós para ver detalhes completos."
               >
-                <OperatorTreeStatic data={networkToTree(net)} />
+                <div style={{ marginBottom: 8, fontSize: 12, color: 'var(--fg-3)' }}>
+                  {net.nodes.length} nós · {(net.edges || []).length} conexões — Alta densidade de informação, experiência premium
+                </div>
+
+                <TraceNetworkGraph
+                  centerWallet={wallet}
+                  nodes={net.nodes.map((n: any, i: number) => ({
+                    id: n.address,
+                    address: n.address,
+                    label: truncate(n.address, 4, 4),
+                    type: n.address === wallet ? "operator" : (n.type || "wallet"),
+                    risk: n.risk,
+                    column: n.address === wallet ? 0 : (i % 5) - 2,
+                    tag: n.type,
+                  }))}
+                  edges={(net.edges || []).map((e: any, i: number) => ({
+                    id: `e${i}`,
+                    source: e.from || e.source,
+                    target: e.to || e.target,
+                    amount: e.weight ? Math.round(e.weight * 120) : undefined,
+                    kind: e.kind,
+                  }))}
+                  height={620}
+                />
               </Section>
             )}
             {net.nodes && net.nodes.length > 0 && (

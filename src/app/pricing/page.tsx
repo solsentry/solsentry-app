@@ -3,7 +3,7 @@
 // Spec: internal/marketing/strategy/WIREFRAME_v5.md §2.9
 // TODO: switch hardcoded values to /v1/pricing endpoint when backend ships.
 
-import { Nav } from "@/components/Nav";
+import { SiteTopbar } from "@/components/SiteTopbar";
 import { Footer } from "@/components/Footer";
 import { PricingCard } from "@/components/pricing/PricingCard";
 import { CreditPackCard } from "@/components/pricing/CreditPackCard";
@@ -81,7 +81,7 @@ const FAQ_ITEMS = [
 export default function PricingPage() {
   return (
     <>
-      <Nav />
+      <SiteTopbar />
       <main>
         {/* ───────────── HERO ───────────── */}
         <section style={{ padding: "80px 0 40px" }}>
