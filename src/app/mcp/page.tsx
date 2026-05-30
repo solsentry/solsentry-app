@@ -1,4 +1,4 @@
-import { Nav } from "@/components/Nav";
+import { SiteTopbar } from "@/components/SiteTopbar";
 import { Footer } from "@/components/Footer";
 import { PageHeader } from "@/components/PageHeader";
 import { Section } from "@/components/Section";
@@ -78,7 +78,7 @@ beyond the MCP server install.`;
 export default function MCPPage() {
   return (
     <>
-      <Nav />
+      <SiteTopbar />
       <main>
         <PageHeader
           eyebrow="MCP server · @solsentry/mcp v0.1.1"

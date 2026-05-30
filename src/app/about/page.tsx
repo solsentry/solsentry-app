@@ -8,7 +8,7 @@
 // Spec: internal/codex/16_SITE_RESTRUCTURE_PLAN.md §3
 
 import { fetchStats } from "@/lib/api";
-import { Nav } from "@/components/Nav";
+import { SiteTopbar } from "@/components/SiteTopbar";
 import { Footer } from "@/components/Footer";
 import Link from "next/link";
 
@@ -47,7 +47,7 @@ export default async function AboutPage() {
 
   return (
     <>
-      <Nav />
+      <SiteTopbar />
       <main>
         {/* ───────────── §1 HERO ───────────── */}
         <section className="hero">

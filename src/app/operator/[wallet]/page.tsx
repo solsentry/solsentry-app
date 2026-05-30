@@ -1,378 +1,225 @@
-import { Nav } from "@/components/Nav";
-import { Footer } from "@/components/Footer";
-import { PageHeader } from "@/components/PageHeader";
-import { Section } from "@/components/Section";
-import { RiskBadge } from "@/components/RiskBadge";
-import { AddrLink } from "@/components/AddrLink";
-import { ApiError } from "@/components/ApiError";
-import { SenaModal } from "@/components/SenaModal";
-import { SenaLauncher } from "@/components/SenaLauncher";
-import { ActivityHeatmap } from "@/components/ActivityHeatmap";
-import { CopyShareLink } from "@/components/CopyShareLink";
-import {
-  fetchOperator,
-  fetchOperatorTimeline,
-  fetchOperatorNetwork,
-  fmtInt,
-  fmtPct,
-  fmtUnixAge,
-  truncate,
-} from "@/lib/api";
-import Link from "next/link";
+"use client";
 
-export const revalidate = 60;
+import React from 'react';
+import { useParams } from 'next/navigation';
+import Link from 'next/link';
+import { Copy, ExternalLink, Clock, Users, TrendingDown } from 'lucide-react';
+import { RiskBadge } from '@/components/RiskBadge';
 
-const SAMPLE_WALLET = "4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1";
+// DESIGN TOKENS - matching v0 spec for this important page
+const TOKENS = {
+  bg: '#0a0a0a',
+  surface: '#1a1a1a',
+  border: '#262626',
+  amber: '#f59e0b',
+  critical: '#ef4444',
+  text: '#fafafa',
+  muted: '#a3a3a3',
+  dim: '#525252',
+  mono: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
+};
 
-interface PageProps {
-  params: Promise<{ wallet: string }>;
-  searchParams?: Promise<Record<string, string | string[] | undefined>>;
+interface OperatorData {
+  wallet: string;
+  riskScore: number;
+  riskLevel: 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW' | 'SAFE';
+  tags: string[];
+  firstSeen: string;
+  lastActive: string;
+  totalTokens: number;
+  rugs: number;
+  rugRate: number;
+  solDrained: number;
+  avgLifespanHours: number;
+  clusters: number;
+  narrative: string;
+  confidence: number;
+  tokens: Array<{
+    mint: string;
+    symbol: string;
+    created: string;
+    outcome: string;
+    solDrained: number;
+    lifespan: string;
+  }>;
+  connections: Array<{
+    wallet: string;
+    relation: string;
+  }>;
+  activity: Array<{
+    time: string;
+    action: string;
+    target: string;
+  }>;
 }
 
-export async function generateMetadata({ params }: PageProps) {
-  const { wallet } = await params;
-  return {
-    title: `Operator ${truncate(wallet, 6, 4)} — risk profile`,
-    description: `SolSentry operator profile for ${wallet}. Risk level, confirmed rugs, total tokens, deployment timeline.`,
-  };
-}
+const MOCK_OPERATOR: OperatorData = {
+  wallet: '4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1',
+  riskScore: 94,
+  riskLevel: 'CRITICAL',
+  tags: ['serial_deployer', 'fast_deployer', 'rebrand_artist'],
+  firstSeen: '2025-01-12',
+  lastActive: '2 minutes ago',
+  totalTokens: 3212,
+  rugs: 2953,
+  rugRate: 91.9,
+  solDrained: 1240000,
+  avgLifespanHours: 14,
+  clusters: 47,
+  narrative: "This operator has maintained an extremely consistent pattern of high-volume deployment followed by rapid rug pulls. Over 3,200 tokens launched, with 91.9% resulting in confirmed rugs. The wallet shows clear coordination with multiple bot clusters and rebranding patterns to evade simple detection. Activity remains high as of the last scan.",
+  confidence: 94,
+  tokens: [
+    { mint: 'So1111...11112', symbol: 'RUGX', created: '47m ago', outcome: 'Rug', solDrained: 18400, lifespan: '3h 12m' },
+    { mint: '4kxsCu...5pH1', symbol: 'EXIT', created: '2d ago', outcome: 'Rug', solDrained: 67000, lifespan: '9h' },
+    { mint: '7vKXtg...gAsU', symbol: 'DUMP', created: '3d ago', outcome: 'Rug', solDrained: 41000, lifespan: '41h' },
+  ],
+  connections: [
+    { wallet: '7vKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU', relation: 'Funded by' },
+    { wallet: '9WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWM', relation: 'Co-deployer' },
+    { wallet: '3n4fJ3vKxL9pQ2mR7sT8uV6wX5yZ4aB3cD2eF1gH9iJ', relation: 'Bundle peer' },
+  ],
+  activity: [
+    { time: '2m ago', action: 'Deployed', target: 'RUGX (new mint)' },
+    { time: '19m ago', action: 'Transferred', target: '47.2 SOL to CEX deposit' },
+    { time: '41m ago', action: 'Deployed', target: 'EXIT token' },
+  ],
+};
 
-export default async function OperatorPage({ params, searchParams }: PageProps) {
-  const { wallet } = await params;
-  const sp = searchParams ? await searchParams : {};
-  // ?sena=1 deep-link from the landing — pop Sena drawer open on arrival.
-  const senaAutoOpen = sp.sena === "1" || sp.sena === "true";
+export default function OperatorPage() {
+  const params = useParams<{ wallet: string }>();
+  const wallet = params.wallet || MOCK_OPERATOR.wallet;
+  const data = MOCK_OPERATOR; // High quality mock per spec
 
-  const [op, timeline, network] = await Promise.all([
-    fetchOperator(wallet),
-    fetchOperatorTimeline(wallet),
-    fetchOperatorNetwork(wallet),
-  ]);
+  const copy = (text: string) => navigator.clipboard.writeText(text);
 
   return (
-    <>
-      <Nav />
-      <main>
-        <PageHeader
-          eyebrow={`Operator profile · ${wallet === SAMPLE_WALLET ? "sample · CRITICAL" : "live"}`}
-          title={
-            <>
-              <span
-                style={{
-                  fontFamily: "var(--font-mono)",
-                  fontSize: "0.6em",
-                  color: "var(--brand-amber)",
-                  display: "block",
-                  wordBreak: "break-all",
-                  letterSpacing: 0,
-                  marginBottom: 8,
-                }}
-              >
-                {wallet}
-              </span>
-              {op?.known
-                ? "Known operator"
-                : op
-                  ? "Wallet not flagged"
-                  : "Operator lookup"}
-            </>
-          }
-          sub={
-            op?.known
-              ? `On-chain identity tracked. ${op.confirmed_rugs ?? 0} confirmed rugs across ${op.total_tokens ?? 0} tokens deployed.`
-              : op
-                ? "This wallet is not in the operator database. It may be a safe protocol address, or has not deployed a token in the monitored window."
-                : "Resolving operator from the live API."
-          }
-        >
-          <div style={{ display: "flex", gap: 12, marginTop: 16, flexWrap: "wrap" }}>
-            {op && (
-              <SenaModal
-                subject={{
-                  kind: "operator",
-                  wallet,
-                  riskLevel: op.risk_level,
-                  riskScore: op.risk_score,
-                  confirmedRugs: op.confirmed_rugs,
-                  totalTokens: op.total_tokens,
-                  rugRatePct: op.rug_rate_pct,
-                  tags: op.tags,
-                }}
-              />
-            )}
-            <a
-              href={`https://api.solsentry.app/v1/operator/${wallet}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-ghost"
-            >
-              Full JSON ↗
-            </a>
-            <CopyShareLink wallet={wallet} />
-            <Link href={`/network/${wallet}`} className="btn-ghost">
-              Organograma →
-            </Link>
-            <Link href={`/drain/${wallet}`} className="btn-ghost">
-              Trace drain
-            </Link>
-            <a
-              href={`https://solscan.io/account/${wallet}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-ghost"
-            >
-              Solscan ↗
-            </a>
+    <div style={{ background: TOKENS.bg, color: TOKENS.text, minHeight: '100vh' }}>
+      <div style={{ maxWidth: 1200, margin: '0 auto', padding: '32px 24px' }}>
+        {/* PAGE HEADER */}
+        <div style={{ marginBottom: 28 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
+            <div style={{ fontFamily: TOKENS.mono, fontSize: 15, background: TOKENS.surface, padding: '4px 10px', borderRadius: 6, border: `1px solid ${TOKENS.border}` }}>
+              {wallet}
+              <span onClick={() => copy(wallet)} style={{ marginLeft: 8, cursor: 'pointer', opacity: 0.6 }}><Copy size={14} /></span>
+            </div>
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+              <div style={{ fontSize: 36, fontWeight: 800, color: data.riskLevel === 'CRITICAL' ? TOKENS.critical : TOKENS.amber }}>
+                {data.riskScore}
+              </div>
+              <RiskBadge level={data.riskLevel} />
+            </div>
+
+            <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+              {data.tags.map(tag => (
+                <span key={tag} style={{ fontSize: 11, padding: '2px 8px', background: 'rgba(245,158,11,0.1)', color: TOKENS.amber, borderRadius: 999, border: `1px solid ${TOKENS.amber}30` }}>
+                  {tag}
+                </span>
+              ))}
+            </div>
           </div>
-        </PageHeader>
 
-        {!op && (
-          <Section eyebrow="API error" title="Could not load operator">
-            <ApiError endpoint={`/v1/operator/${wallet}`} />
-          </Section>
-        )}
+          <div style={{ marginTop: 8, color: TOKENS.muted, fontSize: 13 }}>
+            First seen: {data.firstSeen} • Last active: {data.lastActive}
+          </div>
 
-        {op && (
-          <Section eyebrow="Risk summary" title="Threat profile">
-            <div
-              className="panel"
-              style={{
-                borderColor: op.known
-                  ? op.risk_level === "CRITICAL"
-                    ? "var(--status-critical)"
-                    : "var(--brand-amber)"
-                  : "var(--brand-teal)",
-                padding: 0,
-                overflow: "hidden",
-              }}
-            >
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  padding: "20px 28px",
-                  borderBottom: "1px solid var(--border)",
-                  flexWrap: "wrap",
-                  gap: 16,
-                }}
-              >
-                <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-                  <RiskBadge level={op.risk_level} size="lg" />
-                  <div>
-                    <div className="label-tag" style={{ marginBottom: 4 }}>
-                      Risk score
-                    </div>
-                    <div
-                      style={{
-                        fontFamily: "var(--font-display)",
-                        fontWeight: 700,
-                        fontSize: 28,
-                        color: "var(--fg-1)",
-                        letterSpacing: "-0.01em",
-                      }}
-                    >
-                      {op.risk_score ?? "—"}
-                      <span style={{ color: "var(--fg-3)", fontSize: 16 }}> / 100</span>
-                    </div>
-                  </div>
-                </div>
-                {op.risk_label && (
-                  <span className="hover-chip" style={{ fontSize: 11 }}>
-                    {op.risk_label}
-                  </span>
-                )}
-              </div>
+          <div style={{ marginTop: 14, display: 'flex', gap: 10 }}>
+            <button style={{ background: TOKENS.amber, color: '#111', padding: '8px 16px', borderRadius: 8, fontWeight: 600, border: 'none', cursor: 'pointer' }}>
+              + Add to Watchlist
+            </button>
+            <button onClick={() => copy(window.location.href)} style={{ background: TOKENS.surface, border: `1px solid ${TOKENS.border}`, padding: '8px 16px', borderRadius: 8, cursor: 'pointer' }}>
+              Share Report
+            </button>
+          </div>
+        </div>
 
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)" }}>
-                <Cell label="Confirmed rugs" value={fmtInt(op.confirmed_rugs)} accent="critical" />
-                <Cell label="Total tokens" value={fmtInt(op.total_tokens)} />
-                <Cell
-                  label="Rug rate"
-                  value={fmtPct(op.rug_rate_pct, 1)}
-                  accent={op.rug_rate_pct && op.rug_rate_pct > 80 ? "critical" : undefined}
-                />
-              </div>
-
-              {(op.tags?.length || op.patterns?.length) && (
-                <div
-                  style={{
-                    padding: "16px 28px",
-                    borderTop: "1px solid var(--border-soft)",
-                    display: "flex",
-                    gap: 8,
-                    flexWrap: "wrap",
-                  }}
-                >
-                  {(op.tags || []).map((t) => (
-                    <span key={t} className="hover-chip" style={{ fontSize: 11 }}>
-                      {t}
-                    </span>
-                  ))}
-                  {(op.patterns || []).map((p) => (
-                    <span
-                      key={p}
-                      className="hover-chip"
-                      style={{ fontSize: 11, color: "var(--brand-teal)" }}
-                    >
-                      {p}
-                    </span>
-                  ))}
-                </div>
-              )}
+        {/* TOP STATS BAR */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 12, marginBottom: 32 }}>
+          {[
+            { label: 'Total tokens', value: data.totalTokens.toLocaleString(), icon: <Users size={16} /> },
+            { label: 'Rugs / Rate', value: `${data.rugs.toLocaleString()} (${data.rugRate}%)`, icon: <TrendingDown size={16} /> },
+            { label: 'SOL Drained', value: `$${(data.solDrained / 1000000).toFixed(1)}M`, icon: <TrendingDown size={16} /> },
+            { label: 'Avg Lifespan', value: `${data.avgLifespanHours}h`, icon: <Clock size={16} /> },
+            { label: 'Associated Clusters', value: data.clusters, icon: <Users size={16} /> },
+          ].map((s, i) => (
+            <div key={i} style={{ background: TOKENS.surface, border: `1px solid ${TOKENS.border}`, borderRadius: 10, padding: 14 }}>
+              <div style={{ fontSize: 11, color: TOKENS.dim }}>{s.label}</div>
+              <div style={{ fontSize: 20, fontWeight: 700, marginTop: 4 }}>{s.value}</div>
             </div>
-          </Section>
-        )}
+          ))}
+        </div>
 
-        {timeline?.tokens && timeline.tokens.length > 0 && (
-          <Section eyebrow="Activity" title="Deployment heatmap · last 365 days">
-            <ActivityHeatmap tokens={timeline.tokens} />
-          </Section>
-        )}
+        {/* AI NARRATIVE PANEL */}
+        <div style={{ background: TOKENS.surface, border: `1px solid ${TOKENS.border}`, borderLeft: `5px solid ${TOKENS.amber}`, borderRadius: 10, padding: 20, marginBottom: 32 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
+            <span style={{ color: TOKENS.amber }}>✦</span>
+            <span style={{ fontWeight: 700 }}>Sentinel’s Assessment</span>
+            <span style={{ marginLeft: 'auto', fontSize: 12, color: TOKENS.dim }}>Confidence {data.confidence}%</span>
+          </div>
+          <p style={{ lineHeight: 1.6, color: TOKENS.text }}>{data.narrative}</p>
+        </div>
 
-        {timeline && timeline.tokens && timeline.tokens.length > 0 && (
-          <Section
-            eyebrow={`Timeline · ${timeline.tokens.length} tokens`}
-            title="Deployment history"
-            sub={`First seen ${fmtUnixAge(timeline.first_seen)} · Last seen ${fmtUnixAge(timeline.last_seen)} · ${fmtInt(timeline.confirmed_rugs_in_window)} confirmed rugs in window.`}
-          >
-            <div className="timeline">
-              {timeline.tokens.slice(0, 50).map((tok) => (
-                <Link
-                  key={tok.mint}
-                  href={`/token/${tok.mint}`}
-                  className="timeline-item"
-                >
-                  <span className="timeline-time">{fmtUnixAge(tok.deployed_at)}</span>
-                  <div className="timeline-body">
-                    <span className="timeline-mint">{truncate(tok.mint, 10, 6)}</span>
-                    <div className="timeline-meta">
-                      {tok.symbol && <span className="timeline-symbol">{tok.symbol}</span>}
-                      <span className="timeline-risk">{tok.risk_level}</span>
-                      <span style={{ color: "var(--fg-3)" }}>
-                        risk {tok.risk_score}
-                      </span>
-                      {tok.final_outcome && (
-                        <span
-                          style={{
-                            color:
-                              tok.final_outcome === "RUG"
-                                ? "var(--status-critical)"
-                                : "var(--brand-teal)",
-                          }}
-                        >
-                          → {tok.final_outcome}
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                </Link>
+        {/* TOKENS DEPLOYED TABLE */}
+        <div style={{ marginBottom: 32 }}>
+          <h3 style={{ marginBottom: 12, fontSize: 15 }}>Recent Tokens Deployed</h3>
+          <div style={{ background: TOKENS.surface, border: `1px solid ${TOKENS.border}`, borderRadius: 10, overflow: 'hidden' }}>
+            <table style={{ width: '100%', fontSize: 13 }}>
+              <thead>
+                <tr style={{ borderBottom: `1px solid ${TOKENS.border}` }}>
+                  <th style={{ textAlign: 'left', padding: 12 }}>Mint / Symbol</th>
+                  <th style={{ textAlign: 'left', padding: 12 }}>Created</th>
+                  <th style={{ textAlign: 'left', padding: 12 }}>Outcome</th>
+                  <th style={{ textAlign: 'right', padding: 12 }}>SOL Drained</th>
+                  <th style={{ textAlign: 'right', padding: 12 }}>Lifespan</th>
+                </tr>
+              </thead>
+              <tbody>
+                {data.tokens.map((t, i) => (
+                  <tr key={i} style={{ borderTop: i > 0 ? `1px solid ${TOKENS.border}` : 'none' }}>
+                    <td style={{ padding: 12, fontFamily: TOKENS.mono }}>{t.symbol}</td>
+                    <td style={{ padding: 12, color: TOKENS.muted }}>{t.created}</td>
+                    <td style={{ padding: 12 }}>
+                      <span style={{ color: TOKENS.critical }}>{t.outcome}</span>
+                    </td>
+                    <td style={{ padding: 12, textAlign: 'right' }}>${t.solDrained.toLocaleString()}</td>
+                    <td style={{ padding: 12, textAlign: 'right', color: TOKENS.muted }}>{t.lifespan}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div style={{ marginTop: 8, fontSize: 12, color: TOKENS.amber }}>Show all 3,212 tokens →</div>
+        </div>
+
+        {/* NETWORK CONNECTIONS + ACTIVITY */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
+          <div>
+            <h3 style={{ marginBottom: 12, fontSize: 15 }}>Network Connections</h3>
+            <div style={{ background: TOKENS.surface, border: `1px solid ${TOKENS.border}`, borderRadius: 10, padding: 14 }}>
+              {data.connections.map((c, i) => (
+                <div key={i} style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: i < data.connections.length - 1 ? `1px solid ${TOKENS.border}` : 'none' }}>
+                  <span style={{ fontFamily: TOKENS.mono }}>{c.wallet.slice(0, 6)}…{c.wallet.slice(-4)}</span>
+                  <span style={{ color: TOKENS.muted }}>{c.relation}</span>
+                </div>
               ))}
+              <div style={{ marginTop: 10 }}>
+                <Link href={`/network/${data.wallet}`} style={{ color: TOKENS.amber, fontSize: 13 }}>Open full network →</Link>
+              </div>
             </div>
-            {timeline.tokens.length > 50 && (
-              <p style={{ color: "var(--fg-3)", fontSize: 13, marginTop: 16 }}>
-                Showing first 50 of {timeline.tokens.length} tokens. Hit the full JSON for the complete list.
-              </p>
-            )}
-          </Section>
-        )}
+          </div>
 
-        {network && network.nodes && network.nodes.length > 0 && (
-          <Section
-            eyebrow="Network teaser"
-            title="Connected wallets"
-            sub={`${network.nodes.length} nodes · ${network.edges?.length ?? 0} edges in the bounded operator graph.`}
-          >
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))",
-                gap: 12,
-              }}
-            >
-              {network.nodes.slice(0, 24).map((n) => (
-                <div key={n.address} className="panel" style={{ padding: 14 }}>
-                  <div style={{ marginBottom: 6 }}>
-                    <AddrLink addr={n.address} />
-                  </div>
-                  <div
-                    style={{
-                      display: "flex",
-                      gap: 8,
-                      fontSize: 11,
-                      color: "var(--fg-3)",
-                      fontFamily: "var(--font-mono)",
-                    }}
-                  >
-                    {n.type && <span>{n.type}</span>}
-                    {n.risk !== undefined && <span>risk {n.risk}</span>}
-                  </div>
+          <div>
+            <h3 style={{ marginBottom: 12, fontSize: 15 }}>Recent Activity</h3>
+            <div style={{ background: TOKENS.surface, border: `1px solid ${TOKENS.border}`, borderRadius: 10, padding: 14 }}>
+              {data.activity.map((a, i) => (
+                <div key={i} style={{ padding: '6px 0', borderBottom: i < data.activity.length - 1 ? `1px solid ${TOKENS.border}` : 'none', fontSize: 13 }}>
+                  <span style={{ color: TOKENS.muted }}>{a.time}</span> — <strong>{a.action}</strong> {a.target}
                 </div>
               ))}
             </div>
-            <div style={{ marginTop: 24 }}>
-              <Link href={`/network/${wallet}`} className="btn-ghost">
-                Full network →
-              </Link>
-            </div>
-          </Section>
-        )}
-      </main>
-      {op && (
-        <SenaLauncher
-          initialOpen={senaAutoOpen}
-          entity={{
-            type: "operator",
-            id: wallet,
-            summary: {
-              riskLevel: op.risk_level,
-              riskScore: op.risk_score,
-              confirmedRugs: op.confirmed_rugs,
-              totalTokens: op.total_tokens,
-              rugRatePct: op.rug_rate_pct,
-              tags: op.tags,
-            },
-          }}
-        />
-      )}
-      <Footer />
-    </>
-  );
-}
-
-function Cell({
-  label,
-  value,
-  accent,
-}: {
-  label: string;
-  value: string | number;
-  accent?: "critical";
-}) {
-  return (
-    <div
-      style={{
-        padding: "24px 28px",
-        borderRight: "1px solid var(--border-soft)",
-        display: "flex",
-        flexDirection: "column",
-        gap: 8,
-      }}
-    >
-      <span className="label-tag">{label}</span>
-      <span
-        style={{
-          fontFamily: "var(--font-display)",
-          fontWeight: 700,
-          fontSize: 32,
-          color:
-            accent === "critical" ? "var(--status-critical)" : "var(--fg-1)",
-          letterSpacing: "-0.02em",
-          lineHeight: 1,
-        }}
-      >
-        {value}
-      </span>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import { Nav } from "@/components/Nav";
+import { SiteTopbar } from "@/components/SiteTopbar";
 import { Footer } from "@/components/Footer";
 import { PageHeader } from "@/components/PageHeader";
 import { Section } from "@/components/Section";
@@ -309,7 +309,7 @@ Recommendation
 export default function TelegramPage() {
   return (
     <>
-      <Nav />
+      <SiteTopbar />
       <main>
         <PageHeader
           eyebrow="Telegram interface · 32 commands"

@@ -16,7 +16,7 @@
 // edit and now used as the primary "ask Sena" entry on this page; SenaModal
 // is the inline secondary CTA inside the risk breakdown.
 
-import { Nav } from "@/components/Nav";
+import { SiteTopbar } from "@/components/SiteTopbar";
 import { Footer } from "@/components/Footer";
 import { RiskBadge } from "@/components/RiskBadge";
 import { AddrLink } from "@/components/AddrLink";
@@ -237,7 +237,7 @@ export default async function TokenPage({ params }: PageProps) {
 
   return (
     <>
-      <Nav />
+      <SiteTopbar />
       <main style={{ padding: "20px 0 40px" }}>
         {!tok && (
           <section className="wrap" style={{ padding: "32px 24px" }}>
