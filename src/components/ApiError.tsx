@@ -12,10 +12,7 @@ export function ApiError({ endpoint, message }: Props) {
         background: "rgba(255,68,68,0.06)",
       }}
     >
-      <div
-        className="label-tag"
-        style={{ color: "var(--status-critical)", marginBottom: 10 }}
-      >
+      <div className="label-tag" style={{ color: "var(--status-critical)", marginBottom: 10 }}>
         API unavailable
       </div>
       <p style={{ color: "var(--fg-2)", fontSize: 14, lineHeight: 1.6 }}>

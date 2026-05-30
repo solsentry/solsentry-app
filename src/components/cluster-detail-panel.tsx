@@ -1,27 +1,27 @@
-'use client'
+"use client";
 
-import Link from 'next/link'
-import { BotCluster, ClusterWallet, RISK_COLORS, SelectedItem } from '@/lib/cluster-data'
-import { ArrowRight, Copy, ExternalLink, ChevronLeft } from 'lucide-react'
-import { useState } from 'react'
+import Link from "next/link";
+import { BotCluster, ClusterWallet, RISK_COLORS, SelectedItem } from "@/lib/cluster-data";
+import { ArrowRight, Copy, ExternalLink, ChevronLeft } from "lucide-react";
+import { useState } from "react";
 
 interface DetailPanelProps {
-  selectedItem: SelectedItem
-  onClose: () => void
+  selectedItem: SelectedItem;
+  onClose: () => void;
 }
 
 export function ClusterDetailPanel({ selectedItem, onClose }: DetailPanelProps) {
-  const [copiedAddress, setCopiedAddress] = useState<string | null>(null)
+  const [copiedAddress, setCopiedAddress] = useState<string | null>(null);
 
   const copyToClipboard = async (address: string) => {
-    await navigator.clipboard.writeText(address)
-    setCopiedAddress(address)
-    setTimeout(() => setCopiedAddress(null), 2000)
-  }
+    await navigator.clipboard.writeText(address);
+    setCopiedAddress(address);
+    setTimeout(() => setCopiedAddress(null), 2000);
+  };
 
   const truncateAddress = (address: string) => {
-    return `${address.slice(0, 6)}...${address.slice(-4)}`
-  }
+    return `${address.slice(0, 6)}...${address.slice(-4)}`;
+  };
 
   if (!selectedItem) {
     return (
@@ -32,13 +32,13 @@ export function ClusterDetailPanel({ selectedItem, onClose }: DetailPanelProps) 
           <p className="text-xs mt-1 text-[#3f3f46]">Click to view details</p>
         </div>
       </div>
-    )
+    );
   }
 
   // Wallet detail view
-  if (selectedItem.type === 'wallet') {
-    const { wallet, parentCluster } = selectedItem
-    
+  if (selectedItem.type === "wallet") {
+    const { wallet, parentCluster } = selectedItem;
+
     return (
       <div className="h-full flex flex-col animate-in slide-in-from-right-4 duration-300">
         {/* Back to cluster link */}
@@ -87,15 +87,23 @@ export function ClusterDetailPanel({ selectedItem, onClose }: DetailPanelProps) 
         {/* Wallet stats */}
         <div className="grid grid-cols-2 gap-3 mb-4">
           <div className="bg-popover rounded-md p-3 border border-border">
-            <div className="text-[10px] text-muted-foreground/60 uppercase tracking-wider mb-1">Deploys</div>
-            <div className="font-mono text-foreground text-lg">{wallet.deploys.toLocaleString()}</div>
+            <div className="text-[10px] text-muted-foreground/60 uppercase tracking-wider mb-1">
+              Deploys
+            </div>
+            <div className="font-mono text-foreground text-lg">
+              {wallet.deploys.toLocaleString()}
+            </div>
           </div>
           <div className="bg-popover rounded-md p-3 border border-border">
-            <div className="text-[10px] text-muted-foreground/60 uppercase tracking-wider mb-1">Rugs</div>
+            <div className="text-[10px] text-muted-foreground/60 uppercase tracking-wider mb-1">
+              Rugs
+            </div>
             <div className="font-mono text-foreground text-lg">{wallet.rugs.toLocaleString()}</div>
           </div>
           <div className="col-span-2 bg-popover rounded-md p-3 border border-border">
-            <div className="text-[10px] text-muted-foreground/60 uppercase tracking-wider mb-1">Rug Rate</div>
+            <div className="text-[10px] text-muted-foreground/60 uppercase tracking-wider mb-1">
+              Rug Rate
+            </div>
             <div className="font-mono text-2xl" style={{ color: RISK_COLORS[parentCluster.risk] }}>
               {wallet.rugRate.toFixed(1)}%
             </div>
@@ -104,18 +112,26 @@ export function ClusterDetailPanel({ selectedItem, onClose }: DetailPanelProps) 
 
         {/* Parent cluster info */}
         <div className="mb-4">
-          <div className="text-[10px] text-muted-foreground/60 uppercase tracking-wider mb-2">Parent Cluster</div>
+          <div className="text-[10px] text-muted-foreground/60 uppercase tracking-wider mb-2">
+            Parent Cluster
+          </div>
           <div className="bg-popover rounded-md p-3 border border-border">
             <div className="flex items-center justify-between">
-              <span className="font-mono text-foreground text-sm">Cluster #{parentCluster.clusterId}</span>
-              <span className="text-[10px] text-muted-foreground/60">{parentCluster.walletCount} wallets</span>
+              <span className="font-mono text-foreground text-sm">
+                Cluster #{parentCluster.clusterId}
+              </span>
+              <span className="text-[10px] text-muted-foreground/60">
+                {parentCluster.walletCount} wallets
+              </span>
             </div>
           </div>
         </div>
 
         {/* Full address */}
         <div className="mb-4">
-          <div className="text-[10px] text-muted-foreground/60 uppercase tracking-wider mb-2">Full Address</div>
+          <div className="text-[10px] text-muted-foreground/60 uppercase tracking-wider mb-2">
+            Full Address
+          </div>
           <div className="bg-popover rounded-md p-2 border border-border font-mono text-[10px] text-muted-foreground break-all">
             {wallet.address}
           </div>
@@ -141,11 +157,11 @@ export function ClusterDetailPanel({ selectedItem, onClose }: DetailPanelProps) 
           </Link>
         </div>
       </div>
-    )
+    );
   }
 
   // Cluster detail view
-  const cluster = selectedItem.cluster
+  const cluster = selectedItem.cluster;
 
   return (
     <div className="h-full flex flex-col animate-in slide-in-from-right-4 duration-300">
@@ -174,19 +190,31 @@ export function ClusterDetailPanel({ selectedItem, onClose }: DetailPanelProps) 
       {/* Stats grid */}
       <div className="grid grid-cols-2 gap-3 mb-4">
         <div className="bg-popover rounded-md p-3 border border-border">
-          <div className="text-[10px] text-muted-foreground/60 uppercase tracking-wider mb-1">Wallets</div>
+          <div className="text-[10px] text-muted-foreground/60 uppercase tracking-wider mb-1">
+            Wallets
+          </div>
           <div className="font-mono text-foreground text-lg">{cluster.walletCount}</div>
         </div>
         <div className="bg-popover rounded-md p-3 border border-border">
-          <div className="text-[10px] text-muted-foreground/60 uppercase tracking-wider mb-1">Total Deploys</div>
-          <div className="font-mono text-foreground text-lg">{cluster.totalDeploys.toLocaleString()}</div>
+          <div className="text-[10px] text-muted-foreground/60 uppercase tracking-wider mb-1">
+            Total Deploys
+          </div>
+          <div className="font-mono text-foreground text-lg">
+            {cluster.totalDeploys.toLocaleString()}
+          </div>
         </div>
         <div className="bg-popover rounded-md p-3 border border-border">
-          <div className="text-[10px] text-muted-foreground/60 uppercase tracking-wider mb-1">Total Rugs</div>
-          <div className="font-mono text-foreground text-lg">{cluster.totalRugs.toLocaleString()}</div>
+          <div className="text-[10px] text-muted-foreground/60 uppercase tracking-wider mb-1">
+            Total Rugs
+          </div>
+          <div className="font-mono text-foreground text-lg">
+            {cluster.totalRugs.toLocaleString()}
+          </div>
         </div>
         <div className="bg-popover rounded-md p-3 border border-border">
-          <div className="text-[10px] text-muted-foreground/60 uppercase tracking-wider mb-1">Rug Rate</div>
+          <div className="text-[10px] text-muted-foreground/60 uppercase tracking-wider mb-1">
+            Rug Rate
+          </div>
           <div className="font-mono text-lg" style={{ color: RISK_COLORS[cluster.risk] }}>
             {cluster.rugRate.toFixed(1)}%
           </div>
@@ -195,7 +223,9 @@ export function ClusterDetailPanel({ selectedItem, onClose }: DetailPanelProps) 
 
       {/* Tags */}
       <div className="mb-4">
-        <div className="text-[10px] text-muted-foreground/60 uppercase tracking-wider mb-2">Tags</div>
+        <div className="text-[10px] text-muted-foreground/60 uppercase tracking-wider mb-2">
+          Tags
+        </div>
         <div className="flex flex-wrap gap-1.5">
           {cluster.tags.map((tag) => (
             <span
@@ -210,7 +240,9 @@ export function ClusterDetailPanel({ selectedItem, onClose }: DetailPanelProps) 
 
       {/* Top wallets */}
       <div className="flex-1 min-h-0">
-        <div className="text-[10px] text-muted-foreground/60 uppercase tracking-wider mb-2">Top 3 Wallets</div>
+        <div className="text-[10px] text-muted-foreground/60 uppercase tracking-wider mb-2">
+          Top 3 Wallets
+        </div>
         <div className="space-y-2">
           {cluster.topWallets.map((wallet, index) => (
             <div
@@ -219,7 +251,9 @@ export function ClusterDetailPanel({ selectedItem, onClose }: DetailPanelProps) 
             >
               <div className="flex items-center justify-between mb-1.5">
                 <div className="flex items-center gap-2">
-                  <span className="text-[10px] text-muted-foreground/60 font-mono">#{index + 1}</span>
+                  <span className="text-[10px] text-muted-foreground/60 font-mono">
+                    #{index + 1}
+                  </span>
                   <span className="font-mono text-[11px] text-foreground">
                     {truncateAddress(wallet.address)}
                   </span>
@@ -260,5 +294,5 @@ export function ClusterDetailPanel({ selectedItem, onClose }: DetailPanelProps) 
         <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
       </Link>
     </div>
-  )
+  );
 }

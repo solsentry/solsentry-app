@@ -31,9 +31,7 @@ export function PricingCard({
   highlighted = false,
   badge,
 }: PricingCardProps) {
-  const borderStyle = highlighted
-    ? "1px solid var(--brand-amber)"
-    : "1px solid var(--border)";
+  const borderStyle = highlighted ? "1px solid var(--brand-amber)" : "1px solid var(--border)";
   const bgStyle = highlighted
     ? "linear-gradient(180deg, var(--brand-amber-tint), transparent 60%), var(--bg-elev-1)"
     : "var(--bg-elev-1)";
@@ -98,11 +96,7 @@ export function PricingCard({
           >
             {price}
           </span>
-          {priceSuffix && (
-            <span style={{ fontSize: 14, color: "var(--fg-3)" }}>
-              {priceSuffix}
-            </span>
-          )}
+          {priceSuffix && <span style={{ fontSize: 14, color: "var(--fg-3)" }}>{priceSuffix}</span>}
         </div>
         <p
           style={{
@@ -167,9 +161,7 @@ export function PricingCard({
           textDecoration: "none",
           background: highlighted ? "var(--brand-amber)" : "transparent",
           color: highlighted ? "var(--fg-on-brand)" : "var(--fg-1)",
-          border: highlighted
-            ? "1px solid var(--brand-amber)"
-            : "1px solid var(--border-strong)",
+          border: highlighted ? "1px solid var(--brand-amber)" : "1px solid var(--border-strong)",
           transition: "background 0.15s",
         }}
       >

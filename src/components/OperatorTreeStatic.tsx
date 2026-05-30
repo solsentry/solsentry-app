@@ -16,12 +16,12 @@ interface Props {
 
 // v4 canonical palette
 const COLOR: Record<TreeNode["type"], string> = {
-  root: "#C17D0E",      // brand-amber
+  root: "#C17D0E", // brand-amber
   operator: "#C17D0E",
-  alert: "#DC2626",     // status-critical
-  warning: "#D9962E",   // amber-light
-  hub: "#A988D9",       // brand-purple
-  legit: "#2A7A7A",     // brand-teal
+  alert: "#DC2626", // status-critical
+  warning: "#D9962E", // amber-light
+  hub: "#A988D9", // brand-purple
+  legit: "#2A7A7A", // brand-teal
   wallet: "rgba(242,237,228,0.45)",
 };
 
@@ -90,13 +90,12 @@ export function OperatorTreeStatic({ data, height = 600 }: Props) {
   // Compute D3 tidy-tree layout
   const { positions, width, vbY, vbH } = useMemo(() => {
     const h = hierarchy<MutableTreeNode>(root, (d) => d.children);
-    const layout = tree<MutableTreeNode>().nodeSize([
-      NODE_H + GAP_Y,
-      NODE_W + GAP_X,
-    ]);
+    const layout = tree<MutableTreeNode>().nodeSize([NODE_H + GAP_Y, NODE_W + GAP_X]);
     layout(h);
 
-    let minY = Infinity, maxY = -Infinity, maxX = 0;
+    let minY = Infinity,
+      maxY = -Infinity,
+      maxX = 0;
     h.each((n) => {
       const p = n as HierarchyPointNode<MutableTreeNode>;
       if (p.x < minY) minY = p.x;
@@ -168,10 +167,8 @@ export function OperatorTreeStatic({ data, height = 600 }: Props) {
         {nodes.map((n) => {
           const d = n.data;
           const c = COLOR[d.type];
-          const hasCollapsed =
-            (d.collapsedChildren && d.collapsedChildren.length > 0) || false;
-          const hasExpandedChildren =
-            (d.children && d.children.length > 0 && d._expanded) || false;
+          const hasCollapsed = (d.collapsedChildren && d.collapsedChildren.length > 0) || false;
+          const hasExpandedChildren = (d.children && d.children.length > 0 && d._expanded) || false;
           const isClickable = hasCollapsed || hasExpandedChildren;
 
           return (
@@ -295,8 +292,7 @@ export function OperatorTreeStatic({ data, height = 600 }: Props) {
         }}
       >
         tidy-tree organograma · click cards with{" "}
-        <span style={{ color: "var(--brand-amber, #C17D0E)" }}>+</span> to
-        expand
+        <span style={{ color: "var(--brand-amber, #C17D0E)" }}>+</span> to expand
       </div>
     </div>
   );

@@ -15,10 +15,7 @@ interface Props {
 
 export function SenaTeaser({ copy, targetWallet }: Props) {
   return (
-    <section
-      className="landing-section landing-sena"
-      aria-labelledby="sena-title"
-    >
+    <section className="landing-section landing-sena" aria-labelledby="sena-title">
       <header className="landing-section__head">
         <span className="landing-eyebrow">{copy.senaEyebrow}</span>
         <h2 id="sena-title" className="landing-section__title">
@@ -37,10 +34,7 @@ export function SenaTeaser({ copy, targetWallet }: Props) {
 
         <div className="landing-sena__body">
           <p className="landing-sena__bubble">{copy.senaSample}</p>
-          <Link
-            href={`/operator/${targetWallet}?sena=1`}
-            className="landing-sena__cta"
-          >
+          <Link href={`/operator/${targetWallet}?sena=1`} className="landing-sena__cta">
             {copy.senaCta}
           </Link>
           <p className="landing-sena__hint">{copy.senaHint}</p>

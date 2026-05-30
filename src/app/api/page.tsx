@@ -100,8 +100,7 @@ const ENDPOINTS: { group: string; items: Endpoint[] }[] = [
         method: "GET",
         path: "/v1/resolutions/recent?limit=20",
         desc: "Outcome stream — was_correct flag, final classification, resolution latency.",
-        example:
-          "curl https://api.solsentry.app/v1/resolutions/recent?limit=50",
+        example: "curl https://api.solsentry.app/v1/resolutions/recent?limit=50",
       },
     ],
   },
@@ -200,23 +199,19 @@ export default async function ApiPage() {
           eyebrow={`REST API · api.solsentry.app · v1`}
           title={
             <>
-              11 endpoints.{" "}
-              <span style={{ color: "var(--brand-amber)" }}>No API key</span>.
-              JSON in, JSON out.
+              11 endpoints. <span style={{ color: "var(--brand-amber)" }}>No API key</span>. JSON
+              in, JSON out.
             </>
           }
           sub={
             <>
-              Public read tier is free. 30s cache on the edge. Rate-limited per
-              IP for abuse prevention. For high-volume / enterprise access
-              (guaranteed rate, webhooks, SLA), reach out at{" "}
-              <a href="mailto:hello@solsentry.app">hello@solsentry.app</a>.
+              Public read tier is free. 30s cache on the edge. Rate-limited per IP for abuse
+              prevention. For high-volume / enterprise access (guaranteed rate, webhooks, SLA),
+              reach out at <a href="mailto:hello@solsentry.app">hello@solsentry.app</a>.
             </>
           }
         >
-          <div
-            style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 8 }}
-          >
+          <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 8 }}>
             <a href="#endpoints" className="btn-primary">
               Endpoints
             </a>
@@ -246,9 +241,7 @@ export default async function ApiPage() {
               >
                 {(stats?.runtime_hours ?? 0).toLocaleString()}h
               </div>
-              <div style={{ fontSize: 11, color: "var(--fg-3)" }}>
-                continuous runtime
-              </div>
+              <div style={{ fontSize: 11, color: "var(--fg-3)" }}>continuous runtime</div>
             </div>
             <div className="panel">
               <div className="label-tag">Endpoints</div>
@@ -262,9 +255,7 @@ export default async function ApiPage() {
               >
                 11
               </div>
-              <div style={{ fontSize: 11, color: "var(--fg-3)" }}>
-                public v1 routes
-              </div>
+              <div style={{ fontSize: 11, color: "var(--fg-3)" }}>public v1 routes</div>
             </div>
             <div className="panel">
               <div className="label-tag">Latency</div>
@@ -278,9 +269,7 @@ export default async function ApiPage() {
               >
                 &lt; 50ms
               </div>
-              <div style={{ fontSize: 11, color: "var(--fg-3)" }}>
-                p95, cached responses
-              </div>
+              <div style={{ fontSize: 11, color: "var(--fg-3)" }}>p95, cached responses</div>
             </div>
             <div className="panel">
               <div className="label-tag">Auth</div>
@@ -294,18 +283,12 @@ export default async function ApiPage() {
               >
                 None
               </div>
-              <div style={{ fontSize: 11, color: "var(--fg-3)" }}>
-                for public read endpoints
-              </div>
+              <div style={{ fontSize: 11, color: "var(--fg-3)" }}>for public read endpoints</div>
             </div>
           </div>
         </Section>
 
-        <Section
-          eyebrow="Endpoint reference"
-          title="Every route, every method"
-          id="endpoints"
-        >
+        <Section eyebrow="Endpoint reference" title="Every route, every method" id="endpoints">
           {ENDPOINTS.map((group) => (
             <div key={group.group} style={{ marginBottom: 36 }}>
               <div
@@ -323,9 +306,7 @@ export default async function ApiPage() {
               {group.items.map((e) => (
                 <div key={e.path} className="cmd-row">
                   <div>
-                    <span className={`http-method ${e.method.toLowerCase()}`}>
-                      {e.method}
-                    </span>
+                    <span className={`http-method ${e.method.toLowerCase()}`}>{e.method}</span>
                     <div style={{ marginTop: 6 }}>
                       <code>{e.path}</code>
                     </div>
@@ -346,10 +327,7 @@ export default async function ApiPage() {
                   </div>
                   <div>
                     <div className="desc">{e.desc}</div>
-                    <div
-                      className="code-block"
-                      style={{ marginTop: 10, fontSize: 12 }}
-                    >
+                    <div className="code-block" style={{ marginTop: 10, fontSize: 12 }}>
                       {e.example}
                     </div>
                   </div>
@@ -359,11 +337,7 @@ export default async function ApiPage() {
           ))}
         </Section>
 
-        <Section
-          eyebrow="Code samples"
-          title="Copy-paste integrations"
-          id="samples"
-        >
+        <Section eyebrow="Code samples" title="Copy-paste integrations" id="samples">
           <div className="grid-3">
             <div>
               <div className="label-tag" style={{ marginBottom: 10 }}>
@@ -397,15 +371,11 @@ export default async function ApiPage() {
           title="Per-query micro-payments for premium tools"
           sub="Some MCP tools (high-cost lookups, premium classifications) will be gated by x402 — a Solana-native per-request micropayment protocol. No subscription. You pay only for what you query. Free tier remains free."
         >
-          <div
-            className="panel"
-            style={{ borderLeft: "3px solid var(--brand-purple)" }}
-          >
+          <div className="panel" style={{ borderLeft: "3px solid var(--brand-purple)" }}>
             <p style={{ color: "var(--fg-2)", fontSize: 15, lineHeight: 1.7 }}>
-              x402 is standardized 402-Payment-Required header signed with SPL
-              USDC on Solana. SolSentry returns a 402 with an x-amount and
-              x-payment-asset header; your client signs a micro-transfer; we
-              return the response and ledger-record the payment. Public
+              x402 is standardized 402-Payment-Required header signed with SPL USDC on Solana.
+              SolSentry returns a 402 with an x-amount and x-payment-asset header; your client signs
+              a micro-transfer; we return the response and ledger-record the payment. Public
               aggregates are always free.
             </p>
             <p style={{ color: "var(--fg-3)", fontSize: 13, marginTop: 12 }}>

@@ -33,14 +33,10 @@ export function Nav() {
         <SiteTopbar />
 
         {/* Compact search — only on internal pages (homepage has its own big search) */}
-        <div className="hidden md:block" style={{ flex: '0 1 260px', minWidth: 0, marginLeft: 16 }}>
-          <SolSentrySearch 
-            variant="nav" 
-            onSearch={handleSearch}
-          />
+        <div className="hidden md:block" style={{ flex: "0 1 260px", minWidth: 0, marginLeft: 16 }}>
+          <SolSentrySearch variant="nav" onSearch={handleSearch} />
         </div>
       </div>
     </nav>
   );
 }
-

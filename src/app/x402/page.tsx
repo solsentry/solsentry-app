@@ -40,10 +40,9 @@ export default async function X402Page() {
             First Solana threat-intel API on x402
           </h1>
           <p style={{ color: "var(--fg-2)", fontSize: 14, marginTop: 6, lineHeight: 1.6 }}>
-            x402 is the open standard for pay-per-call HTTP. No API keys, no
-            subscriptions — your client signs a USDC payment instruction with
-            the request and the response includes the on-chain settlement.
-            Every call is a row in this ledger.
+            x402 is the open standard for pay-per-call HTTP. No API keys, no subscriptions — your
+            client signs a USDC payment instruction with the request and the response includes the
+            on-chain settlement. Every call is a row in this ledger.
           </p>
         </header>
 
@@ -64,15 +63,10 @@ export default async function X402Page() {
             label="USDC billed"
             value={stats ? `$${stats.total_usdc_billed.toFixed(2)}` : "—"}
           />
-          <Stat
-            label="Unique clients"
-            value={stats?.unique_clients?.toLocaleString() ?? "—"}
-          />
+          <Stat label="Unique clients" value={stats?.unique_clients?.toLocaleString() ?? "—"} />
           <Stat
             label="Tools monetized"
-            value={
-              stats ? Object.keys(stats.by_tool ?? {}).length.toString() : "—"
-            }
+            value={stats ? Object.keys(stats.by_tool ?? {}).length.toString() : "—"}
           />
         </div>
 
@@ -196,10 +190,9 @@ export default async function X402Page() {
             How to pay-per-call
           </div>
           <p style={{ color: "var(--fg-2)", fontSize: 13, lineHeight: 1.6, margin: 0 }}>
-            Set the <code style={{ fontFamily: "var(--font-mono)" }}>X-PAYMENT</code>{" "}
-            header to a signed Solana USDC transfer to the SolSentry treasury.
-            The endpoint replies with the data + a confirmed signature. ATXP,
-            MCPay, and any x402 client work out of the box.
+            Set the <code style={{ fontFamily: "var(--font-mono)" }}>X-PAYMENT</code> header to a
+            signed Solana USDC transfer to the SolSentry treasury. The endpoint replies with the
+            data + a confirmed signature. ATXP, MCPay, and any x402 client work out of the box.
           </p>
           <a
             href="https://api.solsentry.app/v1/x402/stats"
@@ -222,15 +215,7 @@ export default async function X402Page() {
   );
 }
 
-function Stat({
-  label,
-  value,
-  accent,
-}: {
-  label: string;
-  value: string;
-  accent?: "amber";
-}) {
+function Stat({ label, value, accent }: { label: string; value: string; accent?: "amber" }) {
   return (
     <div
       style={{

@@ -67,12 +67,8 @@ export function ProTierCard({
             letterSpacing: "0.06em",
             fontWeight: 600,
             color: isSoon ? "var(--fg-3)" : "var(--brand-amber)",
-            background: isSoon
-              ? "var(--bg-elev-1)"
-              : "var(--brand-amber-tint)",
-            border: isSoon
-              ? "1px solid var(--border-soft)"
-              : "1px solid var(--brand-amber-line)",
+            background: isSoon ? "var(--bg-elev-1)" : "var(--brand-amber-tint)",
+            border: isSoon ? "1px solid var(--border-soft)" : "1px solid var(--brand-amber-line)",
           }}
         >
           {isSoon ? "SOON" : "LIVE"}

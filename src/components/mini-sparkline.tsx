@@ -1,21 +1,21 @@
-'use client'
+"use client";
 
-import { Line, LineChart, ResponsiveContainer } from 'recharts'
+import { Line, LineChart, ResponsiveContainer } from "recharts";
 
 interface MiniSparklineProps {
-  data: number[]
-  color?: string
-  width?: number
-  height?: number
+  data: number[];
+  color?: string;
+  width?: number;
+  height?: number;
 }
 
-export function MiniSparkline({ 
-  data, 
-  color = '#C17D0E', 
-  width = 40, 
-  height = 20 
+export function MiniSparkline({
+  data,
+  color = "#C17D0E",
+  width = 40,
+  height = 20,
 }: MiniSparklineProps) {
-  const chartData = data.map((value, index) => ({ value, index }))
+  const chartData = data.map((value, index) => ({ value, index }));
 
   return (
     <div style={{ width, height }} className="flex items-center">
@@ -32,5 +32,5 @@ export function MiniSparkline({
         </LineChart>
       </ResponsiveContainer>
     </div>
-  )
+  );
 }

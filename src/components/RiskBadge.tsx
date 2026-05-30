@@ -3,10 +3,7 @@ interface Props {
   size?: "sm" | "md" | "lg";
 }
 
-const COLORS: Record<
-  string,
-  { bg: string; border: string; fg: string; label: string }
-> = {
+const COLORS: Record<string, { bg: string; border: string; fg: string; label: string }> = {
   CRITICAL: {
     bg: "rgba(255,68,68,0.12)",
     border: "var(--status-critical)",

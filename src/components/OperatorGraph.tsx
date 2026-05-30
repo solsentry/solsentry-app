@@ -57,12 +57,12 @@ const CARD_H = 60;
 
 // v4 canonical palette
 const COLOR = {
-  center: "#C17D0E",   // brand-amber (operator)
+  center: "#C17D0E", // brand-amber (operator)
   critical: "#DC2626", // status-critical
-  high: "#D9962E",     // amber-light
-  cex: "#A988D9",      // brand-purple
+  high: "#D9962E", // amber-light
+  cex: "#A988D9", // brand-purple
   mixer: "#A988D9",
-  legit: "#2A7A7A",    // brand-teal
+  legit: "#2A7A7A", // brand-teal
   other: "rgba(242,237,228,0.45)",
 };
 
@@ -110,9 +110,13 @@ interface OperatorNodeData {
 const OperatorNode = memo(function OperatorNode({ data }: NodeProps) {
   const d = data as OperatorNodeData;
   const tierClass =
-    d.tier === 0 ? "op-card-center" :
-    d.tier === 1 ? "op-card-tier1" :
-    d.tier === 2 ? "op-card-tier2" : "op-card-tier3";
+    d.tier === 0
+      ? "op-card-center"
+      : d.tier === 1
+        ? "op-card-tier1"
+        : d.tier === 2
+          ? "op-card-tier2"
+          : "op-card-tier3";
 
   // Border style matches Haradrim TraceNode: 2px on seed, 1px others, uniform.
   const borderW = d.tier === 0 ? 2 : 1;
@@ -330,7 +334,9 @@ export function OperatorGraph({ center, nodes, edges, height = 600 }: Props) {
     const tier2 = nodes.filter((n) => tiers[n.address] === 2);
     const tier3 = nodes.filter((n) => tiers[n.address] === 3);
     // Wider rings for 200px cards (vs original 140px)
-    const R1 = 380, R2 = 680, R3 = 960;
+    const R1 = 380,
+      R2 = 680,
+      R3 = 960;
     tier1.forEach((n, i) => {
       const t = (i / Math.max(tier1.length, 1)) * Math.PI * 2;
       out[n.address] = { x: Math.cos(t) * R1, y: Math.sin(t) * R1 };
@@ -349,10 +355,9 @@ export function OperatorGraph({ center, nodes, edges, height = 600 }: Props) {
   // Force layout via worker — bigger collide radius for rectangular cards
   useEffect(() => {
     setBusy(true);
-    const worker = new Worker(
-      new URL("../workers/force-layout.worker.ts", import.meta.url),
-      { type: "module" },
-    );
+    const worker = new Worker(new URL("../workers/force-layout.worker.ts", import.meta.url), {
+      type: "module",
+    });
     workerRef.current = worker;
 
     const inputNodes = nodes.map((n) => ({
@@ -365,15 +370,11 @@ export function OperatorGraph({ center, nodes, edges, height = 600 }: Props) {
     }));
     const inputLinks = edges
       .filter(
-        (e) =>
-          inputNodes.some((n) => n.id === e.from) &&
-          inputNodes.some((n) => n.id === e.to),
+        (e) => inputNodes.some((n) => n.id === e.from) && inputNodes.some((n) => n.id === e.to),
       )
       .map((e) => ({ source: e.from, target: e.to }));
 
-    worker.onmessage = (
-      ev: MessageEvent<{ type: "done"; nodes: OutputNode[] }>,
-    ) => {
+    worker.onmessage = (ev: MessageEvent<{ type: "done"; nodes: OutputNode[] }>) => {
       if (ev.data.type !== "done") return;
       const map: Record<string, { x: number; y: number }> = {};
       for (const n of ev.data.nodes) map[n.id] = { x: n.x, y: n.y };
@@ -405,11 +406,12 @@ export function OperatorGraph({ center, nodes, edges, height = 600 }: Props) {
       const b = parseInt(hex.slice(4, 6), 16);
       const glowRgb = `rgba(${r}, ${g}, ${b}, 0.5)`;
 
-      const metric = deg > 0
-        ? `${deg} connection${deg !== 1 ? "s" : ""}`
-        : isCenter
-          ? "center node"
-          : "no edges";
+      const metric =
+        deg > 0
+          ? `${deg} connection${deg !== 1 ? "s" : ""}`
+          : isCenter
+            ? "center node"
+            : "no edges";
 
       const data: OperatorNodeData = {
         address: n.address,

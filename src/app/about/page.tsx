@@ -20,8 +20,7 @@ export const metadata = {
     "Solo-built, free, open-core operator-graph threat intelligence for Solana. Live mainnet since April 2026.",
   openGraph: {
     title: "About SolSentry",
-    description:
-      "Solo-built, free, open-core operator-graph threat intelligence for Solana.",
+    description: "Solo-built, free, open-core operator-graph threat intelligence for Solana.",
     images: ["/og/og-default.png"],
   },
 };
@@ -59,9 +58,8 @@ export default async function AboutPage() {
               for <em>Solana</em>.
             </h1>
             <p className="hero-sub">
-              Solo-built. Free. Open-core. Live mainnet since April 2026 —
-              tracking the wallets behind serial rug deployments before they
-              catch the next buyer.
+              Solo-built. Free. Open-core. Live mainnet since April 2026 — tracking the wallets
+              behind serial rug deployments before they catch the next buyer.
             </p>
 
             <div className="about-stat-grid">
@@ -105,29 +103,25 @@ export default async function AboutPage() {
           <h2 className="section-title">Why SolSentry exists</h2>
           <div className="about-prose">
             <p>
-              One operator can deploy 3,000+ rug tokens from distinct wallets.
-              Retail traders see 3,000 unrelated tokens. Existing tools score
-              each token in isolation — by the time they flag a pattern, the
-              operator has already rotated to a fresh wallet.
+              One operator can deploy 3,000+ rug tokens from distinct wallets. Retail traders see
+              3,000 unrelated tokens. Existing tools score each token in isolation — by the time
+              they flag a pattern, the operator has already rotated to a fresh wallet.
             </p>
             <p>
-              <strong>The unit of analysis is wrong.</strong> The token is
-              disposable. The operator is the persistent identity. SolSentry is
-              the operator graph that didn&apos;t exist — a cross-token, cross-wallet
-              database of who deploys what on Solana, computed live from the
-              chain, free for retail.
+              <strong>The unit of analysis is wrong.</strong> The token is disposable. The operator
+              is the persistent identity. SolSentry is the operator graph that didn&apos;t exist — a
+              cross-token, cross-wallet database of who deploys what on Solana, computed live from
+              the chain, free for retail.
             </p>
             <p>
-              Started January 2025. First mainnet write April 8, 2026. Same
-              operator wallet (
+              Started January 2025. First mainnet write April 8, 2026. Same operator wallet (
               <Link
                 href="/operator/4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1"
                 className="inline-link"
               >
                 4kxscute…
               </Link>
-              ) is still deploying today — 14 new tokens per day on average,
-              roughly 90% rug rate.
+              ) is still deploying today — 14 new tokens per day on average, roughly 90% rug rate.
             </p>
           </div>
         </section>
@@ -174,23 +168,20 @@ export default async function AboutPage() {
           <h2 className="section-title">How the brain works</h2>
           <div className="about-prose">
             <p>
-              Three-stage progressive scan (account info → DAS metadata + holder
-              concentration → bundle forensics + Token-2022 extension scoring)
-              drives a multi-signal resolver with three parallel windows: 6h
-              fast-track, 2-day primary, 14-day safe-recheck.
+              Three-stage progressive scan (account info → DAS metadata + holder concentration →
+              bundle forensics + Token-2022 extension scoring) drives a multi-signal resolver with
+              three parallel windows: 6h fast-track, 2-day primary, 14-day safe-recheck.
             </p>
             <p>
-              An autonomous brain layer — <code>investigator</code>,{" "}
-              <code>retract_engine</code>, <code>anomaly_seeker</code>, plus
-              stablecoin-flow and CEX-deposit tracers — runs investigation
-              pipelines at roughly zero LLM tokens per call, replacing manual
+              An autonomous brain layer — <code>investigator</code>, <code>retract_engine</code>,{" "}
+              <code>anomaly_seeker</code>, plus stablecoin-flow and CEX-deposit tracers — runs
+              investigation pipelines at roughly zero LLM tokens per call, replacing manual
               analysis.
             </p>
             <p>
-              A self-tuning <code>MetaLearning</code> system snapshots scanner
-              DNA at every prediction, waits for outcome, and feeds accuracy
-              back via <code>auto_adjust()</code> every 20 ticks. The system
-              tunes itself.
+              A self-tuning <code>MetaLearning</code> system snapshots scanner DNA at every
+              prediction, waits for outcome, and feeds accuracy back via <code>auto_adjust()</code>{" "}
+              every 20 ticks. The system tunes itself.
             </p>
           </div>
 
@@ -229,28 +220,27 @@ export default async function AboutPage() {
                 className="inline-link"
               >
                 <code>api.solsentry.app/v1/stats</code>
-              </a>
-              {" "}every 60 seconds. Per-tier precision:
+              </a>{" "}
+              every 60 seconds. Per-tier precision:
             </p>
             <ul style={{ lineHeight: 1.8, color: "var(--fg-2)" }}>
               <li>
-                <strong>96.6% CRITICAL precision</strong> · 607 FP events over
-                231 unique mints classified
+                <strong>96.6% CRITICAL precision</strong> · 607 FP events over 231 unique mints
+                classified
               </li>
               <li>
-                <strong>98.9% HIGH precision</strong> — auditable per-mint via
-                the public <code>outcome_predictions.json</code> snapshot
+                <strong>98.9% HIGH precision</strong> — auditable per-mint via the public{" "}
+                <code>outcome_predictions.json</code> snapshot
               </li>
               <li>
-                <strong>Aggregate accuracy {fmtPct(stats?.accuracy_pct)}</strong>{" "}
-                across {fmtInt(stats?.total_predictions)} resolved predictions
+                <strong>Aggregate accuracy {fmtPct(stats?.accuracy_pct)}</strong> across{" "}
+                {fmtInt(stats?.total_predictions)} resolved predictions
               </li>
             </ul>
             <p>
-              FP composition at CRITICAL: 228 threshold edge cases (tokens
-              surviving 1–14 days post-flag), 3 unclassified long survivors, 2
-              persistent high-frequency rescan mints (tech debt scheduled
-              v2.4). Every error is a threshold edge case — not a false-alarm
+              FP composition at CRITICAL: 228 threshold edge cases (tokens surviving 1–14 days
+              post-flag), 3 unclassified long survivors, 2 persistent high-frequency rescan mints
+              (tech debt scheduled v2.4). Every error is a threshold edge case — not a false-alarm
               pattern.
             </p>
           </div>
@@ -298,23 +288,21 @@ export default async function AboutPage() {
           <h2 className="section-title">Team</h2>
           <div className="about-prose">
             <p>
-              <strong>Crash Diniz</strong> — founder, sole developer. Self-taught
-              since the early 2000s: Slackware, Unix, Oracle networking. No
-              university, no bootcamp. Started learning Python in January 2025.
-              Currently: {fmtInt(stats?.total_predictions)}+ mainnet predictions,
-              ~1,612 passing tests, full async architecture, 96.6% CRITICAL
+              <strong>Crash Diniz</strong> — founder, sole developer. Self-taught since the early
+              2000s: Slackware, Unix, Oracle networking. No university, no bootcamp. Started
+              learning Python in January 2025. Currently: {fmtInt(stats?.total_predictions)}+
+              mainnet predictions, ~1,612 passing tests, full async architecture, 96.6% CRITICAL
               precision — solo, in Brazil.
             </p>
             <p>
-              <strong>Sena</strong> — the AI persona. Surfaces operator threat
-              context in human language, in PT-BR or EN. Powered by Anthropic.
-              Tone: senior security analyst, evidence-first, no sensationalism.
+              <strong>Sena</strong> — the AI persona. Surfaces operator threat context in human
+              language, in PT-BR or EN. Powered by Anthropic. Tone: senior security analyst,
+              evidence-first, no sensationalism.
             </p>
             <p style={{ fontSize: 13, color: "var(--fg-3)" }}>
-              Acknowledgments: Mert Mumtaz (Helius CEO) for the open-source
-              Haradrim patterns we credit in our graph viz. Pedro Marafiotti
-              (Superteam BR · The Garage). Every contributor to the public MCP
-              + docs repos.
+              Acknowledgments: Mert Mumtaz (Helius CEO) for the open-source Haradrim patterns we
+              credit in our graph viz. Pedro Marafiotti (Superteam BR · The Garage). Every
+              contributor to the public MCP + docs repos.
             </p>
           </div>
         </section>
@@ -441,15 +429,7 @@ const sectionStyle: React.CSSProperties = {
   paddingBottom: 20,
 };
 
-function AboutStat({
-  label,
-  value,
-  href,
-}: {
-  label: string;
-  value: string;
-  href?: string;
-}) {
+function AboutStat({ label, value, href }: { label: string; value: string; href?: string }) {
   const inner = (
     <>
       <div
@@ -495,15 +475,7 @@ function AboutStat({
   );
 }
 
-function ComparisonCard({
-  dim,
-  others,
-  us,
-}: {
-  dim: string;
-  others: string;
-  us: string;
-}) {
+function ComparisonCard({ dim, others, us }: { dim: string; others: string; us: string }) {
   return (
     <div
       style={{
@@ -607,22 +579,12 @@ function LayerCard({
       >
         {title}
       </div>
-      <div style={{ fontSize: 12, color: "var(--fg-2)", lineHeight: 1.5 }}>
-        {text}
-      </div>
+      <div style={{ fontSize: 12, color: "var(--fg-2)", lineHeight: 1.5 }}>{text}</div>
     </div>
   );
 }
 
-function TrustItem({
-  label,
-  detail,
-  href,
-}: {
-  label: string;
-  detail: string;
-  href: string;
-}) {
+function TrustItem({ label, detail, href }: { label: string; detail: string; href: string }) {
   return (
     <a
       href={href}
@@ -647,9 +609,7 @@ function TrustItem({
       >
         {label} ↗
       </div>
-      <div style={{ fontSize: 12, color: "var(--fg-2)", lineHeight: 1.5 }}>
-        {detail}
-      </div>
+      <div style={{ fontSize: 12, color: "var(--fg-2)", lineHeight: 1.5 }}>{detail}</div>
     </a>
   );
 }
@@ -716,9 +676,7 @@ function GetInvolvedCard({
       >
         {cta} →
       </div>
-      <div style={{ fontSize: 12, color: "var(--fg-2)", lineHeight: 1.5 }}>
-        {text}
-      </div>
+      <div style={{ fontSize: 12, color: "var(--fg-2)", lineHeight: 1.5 }}>{text}</div>
     </Link>
   );
 }

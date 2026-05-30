@@ -51,8 +51,8 @@ export function PillarGrid() {
             not token-by-token detection.
           </h2>
           <p className="section-sub">
-            Every major surface of SolSentry leans on this color-coded mental
-            model. Pick a pillar to see how it shows up in the product.
+            Every major surface of SolSentry leans on this color-coded mental model. Pick a pillar
+            to see how it shows up in the product.
           </p>
         </div>
         <div className="grid-2">

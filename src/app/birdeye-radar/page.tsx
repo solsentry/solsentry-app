@@ -179,8 +179,8 @@ export default async function BirdeyeRadarPage() {
                 </p>
               )}
               <p style={{ color: "var(--fg-2)", marginTop: 12 }}>
-                Refresh in a few seconds. If the issue persists, the BIRDEYE_API_KEY
-                env var may need configuration on the deployment.
+                Refresh in a few seconds. If the issue persists, the BIRDEYE_API_KEY env var may
+                need configuration on the deployment.
               </p>
             </div>
           </Section>
@@ -234,9 +234,7 @@ export default async function BirdeyeRadarPage() {
                       >
                         <Td>{row.birdeye.rank}</Td>
                         <Td>
-                          <div
-                            style={{ display: "flex", alignItems: "center", gap: 8 }}
-                          >
+                          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                             {row.birdeye.logoURI && (
                               // eslint-disable-next-line @next/next/no-img-element
                               <img
@@ -251,9 +249,7 @@ export default async function BirdeyeRadarPage() {
                               />
                             )}
                             <div>
-                              <div
-                                style={{ fontWeight: 600, color: "var(--fg-1)" }}
-                              >
+                              <div style={{ fontWeight: 600, color: "var(--fg-1)" }}>
                                 {row.birdeye.symbol}
                               </div>
                               <div
@@ -318,21 +314,20 @@ export default async function BirdeyeRadarPage() {
           <div className="panel" style={{ padding: 24, lineHeight: 1.6 }}>
             <p style={{ color: "var(--fg-2)" }}>
               <strong>Birdeye Data</strong> provides the trending list (
-              <code>/defi/token_trending</code>) — ranked by momentum across
-              liquidity and 24-hour volume.
+              <code>/defi/token_trending</code>) — ranked by momentum across liquidity and 24-hour
+              volume.
             </p>
             <p style={{ color: "var(--fg-2)", marginTop: 12 }}>
-              <strong>SolSentry</strong> cross-references each token mint against
-              its operator-graph database (<code>/v1/token/{"{mint}"}</code> →{" "}
-              <code>/v1/operator/{"{deployer}"}</code>). If the deployer wallet has
-              prior confirmed rugs, the token inherits a CRITICAL or HIGH verdict.
+              <strong>SolSentry</strong> cross-references each token mint against its operator-graph
+              database (<code>/v1/token/{"{mint}"}</code> → <code>/v1/operator/{"{deployer}"}</code>
+              ). If the deployer wallet has prior confirmed rugs, the token inherits a CRITICAL or
+              HIGH verdict.
             </p>
             <p style={{ color: "var(--fg-2)", marginTop: 12 }}>
-              <strong>Why this matters:</strong> a token that just hit Birdeye's
-              trending list and was deployed by a wallet with 500+ prior rugs
-              is statistically a setup for the next coordinated exit. The combined
-              signal is the difference between &quot;new pump&quot; and
-              &quot;new pump from a known rug operator.&quot;
+              <strong>Why this matters:</strong> a token that just hit Birdeye's trending list and
+              was deployed by a wallet with 500+ prior rugs is statistically a setup for the next
+              coordinated exit. The combined signal is the difference between &quot;new pump&quot;
+              and &quot;new pump from a known rug operator.&quot;
             </p>
             <p style={{ color: "var(--fg-3)", fontSize: 12, marginTop: 16 }}>
               Open source: this page&apos;s code lives at{" "}
@@ -354,13 +349,7 @@ export default async function BirdeyeRadarPage() {
   );
 }
 
-function Th({
-  children,
-  align,
-}: {
-  children: React.ReactNode;
-  align?: "left" | "right";
-}) {
+function Th({ children, align }: { children: React.ReactNode; align?: "left" | "right" }) {
   return (
     <th
       style={{
@@ -378,13 +367,7 @@ function Th({
   );
 }
 
-function Td({
-  children,
-  align,
-}: {
-  children: React.ReactNode;
-  align?: "left" | "right";
-}) {
+function Td({ children, align }: { children: React.ReactNode; align?: "left" | "right" }) {
   return (
     <td
       style={{

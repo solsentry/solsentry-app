@@ -300,35 +300,19 @@ export function HeroScan() {
                 }}
               >
                 <MetricCell
-                  icon={
-                    <Skull
-                      size={14}
-                      style={{ color: "var(--status-critical)" }}
-                    />
-                  }
+                  icon={<Skull size={14} style={{ color: "var(--status-critical)" }} />}
                   label="Confirmed rugs"
                   value={data.confirmed_rugs ?? 0}
                 />
                 <MetricCell
-                  icon={
-                    <Coins size={14} style={{ color: "var(--brand-amber)" }} />
-                  }
+                  icon={<Coins size={14} style={{ color: "var(--brand-amber)" }} />}
                   label="Total tokens"
                   value={data.total_tokens ?? 0}
                 />
                 <MetricCell
-                  icon={
-                    <TrendingUp
-                      size={14}
-                      style={{ color: "var(--status-warning)" }}
-                    />
-                  }
+                  icon={<TrendingUp size={14} style={{ color: "var(--status-warning)" }} />}
                   label="Rug rate"
-                  value={
-                    data.rug_rate_pct != null
-                      ? `${data.rug_rate_pct.toFixed(1)}%`
-                      : "—"
-                  }
+                  value={data.rug_rate_pct != null ? `${data.rug_rate_pct.toFixed(1)}%` : "—"}
                 />
               </div>
             ) : (
@@ -340,9 +324,8 @@ export function HeroScan() {
                   lineHeight: 1.6,
                 }}
               >
-                Not in the operator database. Either this wallet has not
-                deployed a token during the monitored window, or it is a safe
-                protocol address.
+                Not in the operator database. Either this wallet has not deployed a token during the
+                monitored window, or it is a safe protocol address.
               </div>
             )}
 
@@ -361,10 +344,7 @@ export function HeroScan() {
               >
                 <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
                   {data.risk_label && (
-                    <span
-                      className="hover-chip"
-                      style={{ fontSize: 10, padding: "3px 10px" }}
-                    >
+                    <span className="hover-chip" style={{ fontSize: 10, padding: "3px 10px" }}>
                       {data.risk_label}
                     </span>
                   )}
