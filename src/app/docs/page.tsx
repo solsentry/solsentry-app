@@ -13,15 +13,12 @@ export default function DocsPage() {
         <section className="hero" style={{ padding: "80px 0 48px" }}>
           <div className="container">
             <span className="hero-eyebrow">Install · API · SDK</span>
-            <h1
-              className="hero-title"
-              style={{ fontSize: "clamp(32px, 5vw, 64px)" }}
-            >
+            <h1 className="hero-title" style={{ fontSize: "clamp(32px, 5vw, 64px)" }}>
               Three ways to plug in.
             </h1>
             <p className="hero-sub">
-              MCP server for AI agents. TypeScript SDK for backends. Plain REST
-              for everything else. Same data. Same API. No login.
+              MCP server for AI agents. TypeScript SDK for backends. Plain REST for everything else.
+              Same data. Same API. No login.
             </p>
           </div>
         </section>
@@ -31,11 +28,9 @@ export default function DocsPage() {
             <h2 className="section-title" id="mcp">
               1. MCP server
             </h2>
-            <p
-              style={{ color: "var(--fg-2)", marginBottom: 24, maxWidth: 720 }}
-            >
-              For Claude Desktop, Cursor, Claude Code, or any client that speaks
-              the Model Context Protocol. One line install.
+            <p style={{ color: "var(--fg-2)", marginBottom: 24, maxWidth: 720 }}>
+              For Claude Desktop, Cursor, Claude Code, or any client that speaks the Model Context
+              Protocol. One line install.
             </p>
 
             <h3 className="docs-h3">Claude Desktop</h3>
@@ -98,19 +93,14 @@ export default function DocsPage() {
           </div>
         </section>
 
-        <section
-          className="docs-section"
-          style={{ borderTop: "1px solid var(--border-soft)" }}
-        >
+        <section className="docs-section" style={{ borderTop: "1px solid var(--border-soft)" }}>
           <div className="container">
             <h2 className="section-title" id="sdk">
               2. TypeScript SDK
             </h2>
-            <p
-              style={{ color: "var(--fg-2)", marginBottom: 24, maxWidth: 720 }}
-            >
-              For trading bots, wallet warnings, dApp pre-sign checks, and any
-              TS backend that needs threat intel without the MCP transport.
+            <p style={{ color: "var(--fg-2)", marginBottom: 24, maxWidth: 720 }}>
+              For trading bots, wallet warnings, dApp pre-sign checks, and any TS backend that needs
+              threat intel without the MCP transport.
             </p>
 
             <pre className="docs-code">{`npm install @solsentry/mcp`}</pre>
@@ -133,22 +123,14 @@ if (op.risk_level === "CRITICAL") {
           </div>
         </section>
 
-        <section
-          className="docs-section"
-          style={{ borderTop: "1px solid var(--border-soft)" }}
-        >
+        <section className="docs-section" style={{ borderTop: "1px solid var(--border-soft)" }}>
           <div className="container">
             <h2 className="section-title" id="api">
               3. Public REST API
             </h2>
-            <p
-              style={{ color: "var(--fg-2)", marginBottom: 24, maxWidth: 720 }}
-            >
+            <p style={{ color: "var(--fg-2)", marginBottom: 24, maxWidth: 720 }}>
               No install. Free for read-only endpoints. Live at{" "}
-              <code style={{ color: "var(--brand-amber)" }}>
-                api.solsentry.app
-              </code>
-              .
+              <code style={{ color: "var(--brand-amber)" }}>api.solsentry.app</code>.
             </p>
 
             <h3 className="docs-h3">Examples</h3>
@@ -223,10 +205,7 @@ curl https://api.solsentry.app/v1/drain-trace/<wallet>`}</pre>
           </div>
         </section>
 
-        <section
-          className="docs-section"
-          style={{ borderTop: "1px solid var(--border-soft)" }}
-        >
+        <section className="docs-section" style={{ borderTop: "1px solid var(--border-soft)" }}>
           <div className="container">
             <h2 className="section-title">Pricing</h2>
             <div className="pricing-grid">

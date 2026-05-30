@@ -36,10 +36,7 @@ function FlowNode({ title, desc, accent, children }: NodeProps) {
         padding: 20,
       }}
     >
-      <div
-        className="label-tag"
-        style={{ color, marginBottom: 8, fontSize: 10 }}
-      >
+      <div className="label-tag" style={{ color, marginBottom: 8, fontSize: 10 }}>
         {title}
       </div>
       <p
@@ -82,8 +79,7 @@ export default function ArchitecturePage() {
           eyebrow="System architecture · v2.3.21"
           title={
             <>
-              From{" "}
-              <span style={{ color: "var(--brand-amber)" }}>new token</span> to{" "}
+              From <span style={{ color: "var(--brand-amber)" }}>new token</span> to{" "}
               <span style={{ color: "var(--brand-teal)" }}>operator graph</span>
             </>
           }
@@ -159,8 +155,8 @@ export default function ArchitecturePage() {
                 Telegram bot
               </div>
               <p style={{ color: "var(--fg-2)", fontSize: 13, lineHeight: 1.6 }}>
-                32 commands. /scan, /drain, /follow, /hunters. Real-time alert
-                stream for any wallet on your watchlist.
+                32 commands. /scan, /drain, /follow, /hunters. Real-time alert stream for any wallet
+                on your watchlist.
               </p>
             </div>
             <div className="panel panel-hover">
@@ -168,8 +164,8 @@ export default function ArchitecturePage() {
                 MCP server
               </div>
               <p style={{ color: "var(--fg-2)", fontSize: 13, lineHeight: 1.6 }}>
-                7 tools exposed via Model Context Protocol. Drop into Claude
-                Code, Cursor, Windsurf. Operator lookups directly in your editor.
+                7 tools exposed via Model Context Protocol. Drop into Claude Code, Cursor, Windsurf.
+                Operator lookups directly in your editor.
               </p>
             </div>
             <div className="panel panel-hover">
@@ -177,18 +173,20 @@ export default function ArchitecturePage() {
                 REST API
               </div>
               <p style={{ color: "var(--fg-2)", fontSize: 13, lineHeight: 1.6 }}>
-                11 endpoints, no auth required. /v1/operator, /v1/token,
-                /v1/drain-trace, /v1/clusters. Cached at 30-300s.
+                11 endpoints, no auth required. /v1/operator, /v1/token, /v1/drain-trace,
+                /v1/clusters. Cached at 30-300s.
               </p>
             </div>
             <div className="panel panel-hover">
-              <div className="label-tag" style={{ color: "var(--status-warning)", marginBottom: 8 }}>
+              <div
+                className="label-tag"
+                style={{ color: "var(--status-warning)", marginBottom: 8 }}
+              >
                 x402 paid
               </div>
               <p style={{ color: "var(--fg-2)", fontSize: 13, lineHeight: 1.6 }}>
-                Heavy operations behind x402 micropayments. Drain trace, full
-                operator network, dossier export. First threat-intel API on the
-                x402 leaderboard.
+                Heavy operations behind x402 micropayments. Drain trace, full operator network,
+                dossier export. First threat-intel API on the x402 leaderboard.
               </p>
             </div>
           </div>
@@ -197,7 +195,10 @@ export default function ArchitecturePage() {
         <Section eyebrow="Stack" title="What it runs on">
           <div className="docs-table" style={{ maxWidth: 720 }}>
             <Row k="Runtime" v="Python 3 · single VPS · Hetzner Falkenstein" />
-            <Row k="RPC pool" v="23 endpoints · Helius×9 · Alchemy×8 · QuickNode×4 · Chainstack×2" />
+            <Row
+              k="RPC pool"
+              v="23 endpoints · Helius×9 · Alchemy×8 · QuickNode×4 · Chainstack×2"
+            />
             <Row k="Storage" v="JSON / JSONL atomic writes · in-memory frozenset indices" />
             <Row k="Live channel" v="WebSocket (Helius enhanced)" />
             <Row k="Tests" v="844 passing · pytest · in-process" />

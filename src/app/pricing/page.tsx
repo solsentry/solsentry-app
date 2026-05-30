@@ -15,8 +15,7 @@ export const metadata = {
     "Pricing simples, transparente, sem token. Free tier, Pro $39.99/mês, B2B contact. Pay-as-you-go credit packs via USDC (x402).",
   openGraph: {
     title: "SolSentry Pricing",
-    description:
-      "Free · Pro $39.99/mo · B2B contact. Pay-as-you-go credit packs via USDC.",
+    description: "Free · Pro $39.99/mo · B2B contact. Pay-as-you-go credit packs via USDC.",
     images: ["/og/og-default.png"],
   },
 };
@@ -136,8 +135,8 @@ export default function PricingPage() {
                 lineHeight: 1.5,
               }}
             >
-              Free para builders. Pro para power users. B2B para protocolos e
-              wallets. Pague em USDC — sem cartão, sem token, sem surpresa.
+              Free para builders. Pro para power users. B2B para protocolos e wallets. Pague em USDC
+              — sem cartão, sem token, sem surpresa.
             </p>
           </div>
         </section>
@@ -188,10 +187,7 @@ export default function PricingPage() {
 
         {/* ───────────── CREDIT PACKS ───────────── */}
         <section style={{ padding: "40px 0", borderTop: "1px solid var(--border-soft)" }}>
-          <div
-            className="container"
-            style={{ maxWidth: 1080, margin: "0 auto" }}
-          >
+          <div className="container" style={{ maxWidth: 1080, margin: "0 auto" }}>
             <div style={{ textAlign: "center", marginBottom: 32 }}>
               <h2
                 style={{
@@ -210,8 +206,7 @@ export default function PricingPage() {
                   color: "var(--fg-2)",
                 }}
               >
-                Pague USDC via x402, credits liquidados on-chain em segundos.
-                Não expiram.
+                Pague USDC via x402, credits liquidados on-chain em segundos. Não expiram.
               </p>
             </div>
             <div
@@ -232,10 +227,7 @@ export default function PricingPage() {
 
         {/* ───────────── FAQ ───────────── */}
         <section style={{ padding: "60px 0", borderTop: "1px solid var(--border-soft)" }}>
-          <div
-            className="container"
-            style={{ maxWidth: 760, margin: "0 auto" }}
-          >
+          <div className="container" style={{ maxWidth: 760, margin: "0 auto" }}>
             <h2
               style={{
                 fontSize: 28,

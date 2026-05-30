@@ -12,8 +12,7 @@ import { useWallet } from "@solana/wallet-adapter-react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import bs58 from "bs58";
 
-const API_BASE =
-  process.env.NEXT_PUBLIC_API_BASE || "https://api.solsentry.app";
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "https://api.solsentry.app";
 
 function encodeSig(sig: Uint8Array): string {
   // Base58 — matches what wallets typically emit and what the backend's
@@ -91,12 +90,7 @@ export function ConnectWalletButton() {
     <div className="siws-button">
       <WalletMultiButton />
       {connected && (
-        <button
-          type="button"
-          onClick={signIn}
-          disabled={busy}
-          className="siws-primary"
-        >
+        <button type="button" onClick={signIn} disabled={busy} className="siws-primary">
           {busy ? "Signing in…" : "Sign in with this wallet"}
         </button>
       )}

@@ -15,8 +15,7 @@ import { fetchTopOperators, type TopOperator } from "@/lib/api";
 
 function mapOperator(o: TopOperator, i: number): Operator {
   const rugRate = o.rug_rate_pct ?? 0;
-  const riskLevel: RiskLevel =
-    rugRate >= 90 ? "CRITICAL" : rugRate >= 70 ? "HIGH" : "MEDIUM";
+  const riskLevel: RiskLevel = rugRate >= 90 ? "CRITICAL" : rugRate >= 70 ? "HIGH" : "MEDIUM";
   return {
     rank: o.rank ?? i + 1,
     wallet: o.wallet,
@@ -43,7 +42,9 @@ export default async function DashboardV3Page() {
           <h1 className="h2">Top Operators</h1>
           <p className="p-small">
             Live from <code>/v1/top-operators</code>
-            {operators.length === 0 ? " — no data (API unreachable at render)" : ` — ${operators.length} operators`}
+            {operators.length === 0
+              ? " — no data (API unreachable at render)"
+              : ` — ${operators.length} operators`}
           </p>
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-6 items-start">

@@ -67,8 +67,8 @@ export function ScreenLoop() {
         ]);
         if (cancelled) return;
         setStats(s);
-        setAlerts(Array.isArray(a) ? a : a.alerts ?? []);
-        setOps(Array.isArray(o) ? o : o.operators ?? []);
+        setAlerts(Array.isArray(a) ? a : (a.alerts ?? []));
+        setOps(Array.isArray(o) ? o : (o.operators ?? []));
       } catch {
         /* ignore */
       }
@@ -151,13 +151,7 @@ export function ScreenLoop() {
         }}
       >
         <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-          <img
-            src="/logo-3d.webp"
-            alt=""
-            width={36}
-            height={36}
-            style={{ borderRadius: 6 }}
-          />
+          <img src="/logo-3d.webp" alt="" width={36} height={36} style={{ borderRadius: 6 }} />
           <div>
             <div
               style={{
@@ -189,8 +183,7 @@ export function ScreenLoop() {
               color: "var(--brand-teal)",
             }}
           >
-            ●{" "}
-            <span style={{ animation: "blink 2s infinite" }}>monitoring</span>
+            ● <span style={{ animation: "blink 2s infinite" }}>monitoring</span>
           </span>
           <span
             style={{
@@ -243,8 +236,7 @@ export function ScreenLoop() {
               width: 8,
               height: 8,
               borderRadius: 999,
-              background:
-                p === panel ? "var(--brand-amber)" : "var(--border-strong)",
+              background: p === panel ? "var(--brand-amber)" : "var(--border-strong)",
               transition: "background 200ms",
             }}
           />
@@ -313,8 +305,7 @@ function BigNumberPanel({ stats }: { stats: Stats | null }) {
 }
 
 function FourkxPanel({ ops }: { ops: Operator[] }) {
-  const fourkx =
-    ops.find((o) => o.wallet?.startsWith("4kxscute")) ?? ops[0];
+  const fourkx = ops.find((o) => o.wallet?.startsWith("4kxscute")) ?? ops[0];
   if (!fourkx) return <div style={{ color: "var(--fg-3)" }}>loading…</div>;
   return (
     <div className="panel-fade" style={{ textAlign: "center", maxWidth: "100%" }}>
@@ -498,9 +489,7 @@ function LeaderboardPanel({ ops }: { ops: Operator[] }) {
       >
         The Solana rug hall of fame
       </div>
-      <div
-        style={{ display: "flex", flexDirection: "column", gap: 8 }}
-      >
+      <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
         {ops.slice(0, 8).map((o, i) => (
           <div
             key={o.wallet + i}
@@ -510,11 +499,7 @@ function LeaderboardPanel({ ops }: { ops: Operator[] }) {
               gap: 16,
               padding: "14px 24px",
               background:
-                i === 0
-                  ? "rgba(255,68,68,0.06)"
-                  : i < 3
-                    ? "var(--surface)"
-                    : "transparent",
+                i === 0 ? "rgba(255,68,68,0.06)" : i < 3 ? "var(--surface)" : "transparent",
               border: `1px solid ${i === 0 ? "var(--status-critical)" : "var(--border)"}`,
               borderRadius: 10,
               alignItems: "center",
@@ -527,11 +512,7 @@ function LeaderboardPanel({ ops }: { ops: Operator[] }) {
                 fontWeight: 700,
                 fontSize: 28,
                 color:
-                  i === 0
-                    ? "var(--status-critical)"
-                    : i < 3
-                      ? "var(--brand-amber)"
-                      : "var(--fg-3)",
+                  i === 0 ? "var(--status-critical)" : i < 3 ? "var(--brand-amber)" : "var(--fg-3)",
                 letterSpacing: "-0.02em",
               }}
             >

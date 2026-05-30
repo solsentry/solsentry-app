@@ -89,8 +89,8 @@ export function FeatureSurface() {
             >
               api.solsentry.app
             </code>
-            . The bot, the MCP server, and this site are all thin wrappers on
-            the same intelligence layer.
+            . The bot, the MCP server, and this site are all thin wrappers on the same intelligence
+            layer.
           </p>
         </div>
         <div className="grid-auto">
@@ -170,12 +170,7 @@ export function FeatureSurface() {
                 {inner}
               </a>
             ) : (
-              <Link
-                key={f.href}
-                href={f.href}
-                className={className}
-                style={style}
-              >
+              <Link key={f.href} href={f.href} className={className} style={style}>
                 {inner}
               </Link>
             );

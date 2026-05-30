@@ -123,10 +123,8 @@ export const COPY: Record<Lang, LandingCopy> = {
     heroScanCta: "Scan",
     heroTrySample: "Try",
 
-    tagline:
-      "RugCheck tells you a fire is burning. SolSentry tells you who lit it.",
-    taglineSub:
-      "And where they're going next. Operator-centric, not token-centric.",
+    tagline: "RugCheck tells you a fire is burning. SolSentry tells you who lit it.",
+    taglineSub: "And where they're going next. Operator-centric, not token-centric.",
 
     statsLabelScans: "Scans · live mainnet",
     statsLabelAccuracy: "Accuracy · resolved",
@@ -188,14 +186,12 @@ export const COPY: Record<Lang, LandingCopy> = {
     senaSample:
       "“This operator has 2,898 confirmed rugs across 3,110 tokens. Tags: rebrand_artist, fast_deployer. Want me to show the last five deployments?”",
     senaCta: "Open Sena on a live operator →",
-    senaHint:
-      "Free preview — three messages per session before sign-in is required.",
+    senaHint: "Free preview — three messages per session before sign-in is required.",
 
     buildEyebrow: "For builders",
     buildTitle: "Three free entry points",
     buildTgTitle: "Telegram bot",
-    buildTgBody:
-      "Drop a wallet or mint in chat. Get a verdict back in seconds. Free.",
+    buildTgBody: "Drop a wallet or mint in chat. Get a verdict back in seconds. Free.",
     buildMcpTitle: "MCP server",
     buildMcpBody:
       "Zero-install plug-in for AI agents. npx @solsentry/mcp — your agent now checks operators before x402 payouts.",
@@ -206,10 +202,8 @@ export const COPY: Record<Lang, LandingCopy> = {
 
     trustTitle: "Trust by design",
     trustOss: "Open-source MCP, docs and Birdeye Radar integration",
-    trustAudit:
-      "96.6% CRITICAL precision · 98.9% HIGH precision — auditable per mint",
-    trustAuditNote:
-      "Verify any prediction at /v1/predictions/{mint}. No metric is hand-tuned.",
+    trustAudit: "96.6% CRITICAL precision · 98.9% HIGH precision — auditable per mint",
+    trustAuditNote: "Verify any prediction at /v1/predictions/{mint}. No metric is hand-tuned.",
     trustAbout: "Read the full About →",
 
     toggleLang: "Language",
@@ -232,10 +226,8 @@ export const COPY: Record<Lang, LandingCopy> = {
     heroScanCta: "Escanear",
     heroTrySample: "Tente",
 
-    tagline:
-      "O RugCheck te avisa que tem um incêndio. O SolSentry te diz quem ateou fogo.",
-    taglineSub:
-      "E pra onde ele tá indo agora. Foco no operador, não no token.",
+    tagline: "O RugCheck te avisa que tem um incêndio. O SolSentry te diz quem ateou fogo.",
+    taglineSub: "E pra onde ele tá indo agora. Foco no operador, não no token.",
 
     statsLabelScans: "Scans · mainnet live",
     statsLabelAccuracy: "Acurácia · resolvido",
@@ -297,14 +289,12 @@ export const COPY: Record<Lang, LandingCopy> = {
     senaSample:
       "“Esse operador tem 2.898 rugs confirmados em 3.110 tokens. Tags: rebrand_artist, fast_deployer. Quer que eu mostre os últimos cinco deploys?”",
     senaCta: "Abrir Sena num operador ao vivo →",
-    senaHint:
-      "Preview gratuito — três mensagens por sessão antes do login.",
+    senaHint: "Preview gratuito — três mensagens por sessão antes do login.",
 
     buildEyebrow: "Para builders",
     buildTitle: "Três pontos de entrada gratuitos",
     buildTgTitle: "Bot do Telegram",
-    buildTgBody:
-      "Cole uma wallet ou mint no chat. Veredito em segundos. De graça.",
+    buildTgBody: "Cole uma wallet ou mint no chat. Veredito em segundos. De graça.",
     buildMcpTitle: "Servidor MCP",
     buildMcpBody:
       "Plug-in zero-install pra agentes de IA. npx @solsentry/mcp — seu agente passa a checar operador antes de pagar via x402.",
@@ -314,10 +304,8 @@ export const COPY: Record<Lang, LandingCopy> = {
     buildCta: "Abrir",
 
     trustTitle: "Confiança por design",
-    trustOss:
-      "MCP, docs e integração Birdeye Radar — tudo open-source",
-    trustAudit:
-      "96,6% de precisão em CRITICAL · 98,9% em HIGH — auditável por mint",
+    trustOss: "MCP, docs e integração Birdeye Radar — tudo open-source",
+    trustAudit: "96,6% de precisão em CRITICAL · 98,9% em HIGH — auditável por mint",
     trustAuditNote:
       "Verifique qualquer predição em /v1/predictions/{mint}. Nenhuma métrica é ajustada manualmente.",
     trustAbout: "Ler o Sobre completo →",

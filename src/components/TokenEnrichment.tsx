@@ -60,9 +60,7 @@ export function TokenEnrichment({ mint }: { mint: string }) {
     let cancelled = false;
     async function fetchPair() {
       try {
-        const res = await fetch(
-          `https://api.dexscreener.com/latest/dex/tokens/${mint}`,
-        );
+        const res = await fetch(`https://api.dexscreener.com/latest/dex/tokens/${mint}`);
         if (!res.ok) throw new Error(`DexScreener ${res.status}`);
         const data = (await res.json()) as DexScreenerResp;
         if (cancelled) return;
@@ -71,8 +69,7 @@ export function TokenEnrichment({ mint }: { mint: string }) {
         );
         setPair(sorted[0] ?? null);
       } catch (e) {
-        if (!cancelled)
-          setErr(e instanceof Error ? e.message : "fetch failed");
+        if (!cancelled) setErr(e instanceof Error ? e.message : "fetch failed");
       } finally {
         if (!cancelled) setLoading(false);
       }
@@ -85,10 +82,7 @@ export function TokenEnrichment({ mint }: { mint: string }) {
 
   if (loading) {
     return (
-      <div
-        className="panel"
-        style={{ padding: 20, color: "var(--fg-3)", fontSize: 13 }}
-      >
+      <div className="panel" style={{ padding: 20, color: "var(--fg-3)", fontSize: 13 }}>
         Loading market data from DexScreener…
       </div>
     );
@@ -116,10 +110,7 @@ export function TokenEnrichment({ mint }: { mint: string }) {
   const change24 = pair.priceChange?.h24;
   const buys24 = pair.txns?.h24?.buys ?? 0;
   const sells24 = pair.txns?.h24?.sells ?? 0;
-  const buyRatio =
-    buys24 + sells24 > 0
-      ? (buys24 / (buys24 + sells24)) * 100
-      : undefined;
+  const buyRatio = buys24 + sells24 > 0 ? (buys24 / (buys24 + sells24)) * 100 : undefined;
 
   return (
     <div
@@ -225,10 +216,7 @@ export function TokenEnrichment({ mint }: { mint: string }) {
                 fontFamily: "var(--font-mono)",
                 fontSize: 12,
                 fontWeight: 600,
-                color:
-                  change24 >= 0
-                    ? "var(--brand-teal)"
-                    : "var(--status-critical)",
+                color: change24 >= 0 ? "var(--brand-teal)" : "var(--status-critical)",
               }}
             >
               {fmtPct(change24)} 24h
@@ -257,15 +245,11 @@ export function TokenEnrichment({ mint }: { mint: string }) {
             key={s.label}
             style={{
               padding: "16px 20px",
-              borderRight:
-                (i + 1) % 6 === 0 ? "none" : "1px solid var(--border)",
+              borderRight: (i + 1) % 6 === 0 ? "none" : "1px solid var(--border)",
               borderBottom: "1px solid var(--border)",
             }}
           >
-            <div
-              className="label-tag"
-              style={{ marginBottom: 6, fontSize: 9 }}
-            >
+            <div className="label-tag" style={{ marginBottom: 6, fontSize: 9 }}>
               {s.label}
             </div>
             <div
@@ -302,9 +286,7 @@ export function TokenEnrichment({ mint }: { mint: string }) {
               textTransform: "uppercase",
             }}
           >
-            <span style={{ color: "var(--brand-teal)" }}>
-              Buys {buyRatio.toFixed(0)}%
-            </span>
+            <span style={{ color: "var(--brand-teal)" }}>Buys {buyRatio.toFixed(0)}%</span>
             <span style={{ color: "var(--status-critical)" }}>
               Sells {(100 - buyRatio).toFixed(0)}%
             </span>
@@ -362,12 +344,7 @@ export function TokenEnrichment({ mint }: { mint: string }) {
               textTransform: "capitalize",
             }}
           >
-            {s.type === "twitter"
-              ? "𝕏"
-              : s.type === "telegram"
-                ? "✈"
-                : "🔗"}{" "}
-            {s.type}
+            {s.type === "twitter" ? "𝕏" : s.type === "telegram" ? "✈" : "🔗"} {s.type}
           </a>
         ))}
         <a

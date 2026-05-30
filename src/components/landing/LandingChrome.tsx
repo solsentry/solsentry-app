@@ -19,7 +19,7 @@ export function LandingChrome({ copy, lang, theme, onLang, onTheme }: Props) {
   return (
     <header className="landing-chrome" role="banner">
       <div className="container">
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
           <Link href="/" className="landing-chrome__brand" aria-label="SolSentry home">
             <img
               src="/logo-3d.webp"
@@ -48,14 +48,14 @@ export function LandingChrome({ copy, lang, theme, onLang, onTheme }: Props) {
                 className="mode-tab locked"
                 title="Pro: unlimited scans, watchlists, alerts, full history. Login required."
               >
-                Pro <span style={{ fontSize: '10px', opacity: 0.8 }}>🔒</span>
+                Pro <span style={{ fontSize: "10px", opacity: 0.8 }}>🔒</span>
               </Link>
               <Link
                 href="/api"
                 className="mode-tab locked"
                 title="Dev: API, MCP server, raw endpoints. Login + credits."
               >
-                Dev <span style={{ fontSize: '10px', opacity: 0.8 }}>🔒</span>
+                Dev <span style={{ fontSize: "10px", opacity: 0.8 }}>🔒</span>
               </Link>
             </div>
 
@@ -64,11 +64,7 @@ export function LandingChrome({ copy, lang, theme, onLang, onTheme }: Props) {
               About
             </Link>
 
-            <div
-              role="group"
-              aria-label={copy.toggleLang}
-              className="landing-toggle"
-            >
+            <div role="group" aria-label={copy.toggleLang} className="landing-toggle">
               <button
                 type="button"
                 aria-pressed={lang === "en"}

@@ -52,15 +52,7 @@ export async function generateMetadata({ params }: PageProps) {
 // Local atoms — single-use, kept inline to preserve dense layout intent
 // without proliferating one-off components.
 
-function KPI({
-  label,
-  value,
-  hint,
-}: {
-  label: string;
-  value: React.ReactNode;
-  hint?: string;
-}) {
+function KPI({ label, value, hint }: { label: string; value: React.ReactNode; hint?: string }) {
   return (
     <div
       style={{
@@ -93,11 +85,7 @@ function KPI({
       >
         {value}
       </div>
-      {hint && (
-        <div style={{ fontSize: 11, color: "var(--fg-3)", marginTop: 2 }}>
-          {hint}
-        </div>
-      )}
+      {hint && <div style={{ fontSize: 11, color: "var(--fg-3)", marginTop: 2 }}>{hint}</div>}
     </div>
   );
 }
@@ -129,22 +117,9 @@ function Pill({
   );
 }
 
-function SignalRow({
-  ok,
-  label,
-  detail,
-}: {
-  ok: boolean | null;
-  label: string;
-  detail?: string;
-}) {
+function SignalRow({ ok, label, detail }: { ok: boolean | null; label: string; detail?: string }) {
   const mark = ok === null ? "—" : ok ? "✓" : "✗";
-  const color =
-    ok === null
-      ? "var(--fg-3)"
-      : ok
-        ? "var(--brand-teal)"
-        : "var(--status-critical)";
+  const color = ok === null ? "var(--fg-3)" : ok ? "var(--brand-teal)" : "var(--status-critical)";
   return (
     <div
       style={{
@@ -248,10 +223,7 @@ export default async function TokenPage({ params }: PageProps) {
         {tok && (
           <>
             {/* ─── 1. TOP STRIP ─────────────────────────────────────────── */}
-            <section
-              className="wrap"
-              style={{ padding: "0 24px", marginBottom: 16 }}
-            >
+            <section className="wrap" style={{ padding: "0 24px", marginBottom: 16 }}>
               <div
                 className="panel"
                 style={{
@@ -294,8 +266,7 @@ export default async function TokenPage({ params }: PageProps) {
                           color: "var(--fg-1)",
                         }}
                       >
-                        {tok.symbol ||
-                          (tok.known ? "Unnamed token" : "Unknown mint")}
+                        {tok.symbol || (tok.known ? "Unnamed token" : "Unknown mint")}
                       </span>
                       <span
                         style={{
@@ -337,14 +308,8 @@ export default async function TokenPage({ params }: PageProps) {
                         : "—"
                     }
                   />
-                  <KPI
-                    label="Outcome"
-                    value={tok.final_outcome || "pending"}
-                  />
-                  <KPI
-                    label="Flags"
-                    value={(tok.flags?.length ?? 0).toString()}
-                  />
+                  <KPI label="Outcome" value={tok.final_outcome || "pending"} />
+                  <KPI label="Flags" value={(tok.flags?.length ?? 0).toString()} />
                   <KPI
                     label="Age"
                     value={ageString(tok.predicted_at)}
@@ -364,17 +329,12 @@ export default async function TokenPage({ params }: PageProps) {
                 }}
               >
                 <span>{lastUpdatedString(tok.predicted_at)}</span>
-                <span>
-                  {tok.known ? "Indexed by SolSentry" : "Not yet scanned"}
-                </span>
+                <span>{tok.known ? "Indexed by SolSentry" : "Not yet scanned"}</span>
               </div>
             </section>
 
             {/* ─── 2. DEPLOYER CARD ─────────────────────────────────────── */}
-            <section
-              className="wrap"
-              style={{ padding: "0 24px", marginBottom: 16 }}
-            >
+            <section className="wrap" style={{ padding: "0 24px", marginBottom: 16 }}>
               <div className="panel" style={{ padding: "14px 18px" }}>
                 <div
                   style={{
@@ -425,8 +385,7 @@ export default async function TokenPage({ params }: PageProps) {
 
                 {!deployer && (
                   <div style={{ color: "var(--fg-3)", fontSize: 13 }}>
-                    Deployer wallet not yet resolved. Stage-2 enrichment may
-                    still be running.
+                    Deployer wallet not yet resolved. Stage-2 enrichment may still be running.
                   </div>
                 )}
 
@@ -443,15 +402,9 @@ export default async function TokenPage({ params }: PageProps) {
                     >
                       <AddrLink addr={deployer} head={12} tail={8} />
                       <CopyText value={deployer} label="Copy" />
-                      {operator?.risk_level && (
-                        <RiskBadge level={operator.risk_level} size="sm" />
-                      )}
+                      {operator?.risk_level && <RiskBadge level={operator.risk_level} size="sm" />}
                       {(operator?.tags ?? []).map((t) => (
-                        <Pill
-                          key={t}
-                          color="var(--brand-amber)"
-                          border="var(--brand-amber-line)"
-                        >
+                        <Pill key={t} color="var(--brand-amber)" border="var(--brand-amber-line)">
                           {t}
                         </Pill>
                       ))}
@@ -466,9 +419,7 @@ export default async function TokenPage({ params }: PageProps) {
                     >
                       <KPI
                         label="Tokens deployed"
-                        value={
-                          operator?.total_tokens?.toLocaleString() ?? "—"
-                        }
+                        value={operator?.total_tokens?.toLocaleString() ?? "—"}
                       />
                       <KPI
                         label="Rug rate"
@@ -480,19 +431,13 @@ export default async function TokenPage({ params }: PageProps) {
                       />
                       <KPI
                         label="Confirmed rugs"
-                        value={
-                          operator?.confirmed_rugs?.toLocaleString() ?? "—"
-                        }
+                        value={operator?.confirmed_rugs?.toLocaleString() ?? "—"}
                       />
                       <KPI
                         label="First seen"
                         value={
                           timeline?.first_seen
-                            ? new Date(
-                                timeline.first_seen * 1000,
-                              )
-                                .toISOString()
-                                .slice(0, 10)
+                            ? new Date(timeline.first_seen * 1000).toISOString().slice(0, 10)
                             : "—"
                         }
                       />
@@ -503,10 +448,7 @@ export default async function TokenPage({ params }: PageProps) {
             </section>
 
             {/* ─── 3. RISK BREAKDOWN ────────────────────────────────────── */}
-            <section
-              className="wrap"
-              style={{ padding: "0 24px", marginBottom: 16 }}
-            >
+            <section className="wrap" style={{ padding: "0 24px", marginBottom: 16 }}>
               <div
                 style={{
                   display: "grid",
@@ -556,13 +498,7 @@ export default async function TokenPage({ params }: PageProps) {
                         {known.map((k) => (
                           <SignalRow
                             key={k.key}
-                            ok={
-                              !anyKnown
-                                ? null
-                                : flagSet.has(k.key)
-                                  ? false
-                                  : true
-                            }
+                            ok={!anyKnown ? null : flagSet.has(k.key) ? false : true}
                             label={k.label}
                           />
                         ))}
@@ -611,9 +547,7 @@ export default async function TokenPage({ params }: PageProps) {
                     }}
                   >
                     Risk score{" "}
-                    <strong style={{ color: "var(--fg-1)" }}>
-                      {tok.risk_score ?? "—"}/100
-                    </strong>{" "}
+                    <strong style={{ color: "var(--fg-1)" }}>{tok.risk_score ?? "—"}/100</strong>{" "}
                     derives from {tok.flags?.length ?? 0} signal
                     {tok.flags?.length === 1 ? "" : "s"} plus deployer history
                     {operator?.confirmed_rugs
@@ -636,10 +570,7 @@ export default async function TokenPage({ params }: PageProps) {
             </section>
 
             {/* ─── 4. HOLDER PROFILE (stub) ─────────────────────────────── */}
-            <section
-              className="wrap"
-              style={{ padding: "0 24px", marginBottom: 16 }}
-            >
+            <section className="wrap" style={{ padding: "0 24px", marginBottom: 16 }}>
               <div className="panel" style={{ padding: 0, overflow: "hidden" }}>
                 <div
                   style={{
@@ -727,10 +658,7 @@ export default async function TokenPage({ params }: PageProps) {
 
             {/* ─── 5. ACTIVITY HEATMAP ──────────────────────────────────── */}
             {deployer && (
-              <section
-                className="wrap"
-                style={{ padding: "0 24px", marginBottom: 16 }}
-              >
+              <section className="wrap" style={{ padding: "0 24px", marginBottom: 16 }}>
                 <div className="panel" style={{ padding: "14px 18px" }}>
                   <div
                     style={{
@@ -774,10 +702,7 @@ export default async function TokenPage({ params }: PageProps) {
             )}
 
             {/* ─── 6. RELATED LINKS STRIP ───────────────────────────────── */}
-            <section
-              className="wrap"
-              style={{ padding: "0 24px", marginBottom: 16 }}
-            >
+            <section className="wrap" style={{ padding: "0 24px", marginBottom: 16 }}>
               <div
                 className="panel"
                 style={{

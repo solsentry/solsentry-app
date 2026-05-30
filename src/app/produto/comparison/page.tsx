@@ -90,23 +90,22 @@ export default function ComparisonPage() {
             </h2>
             <div style={{ color: "var(--fg-2)", fontSize: 14, lineHeight: 1.6, maxWidth: 820 }}>
               <p style={{ margin: "0 0 12px" }}>
-                Cells are based on each product&apos;s public surface as of {updated}: documentation,
-                pricing pages, GitHub repos, and public API endpoints. Each verdict links to the
-                source consulted. Hover for context.
+                Cells are based on each product&apos;s public surface as of {updated}:
+                documentation, pricing pages, GitHub repos, and public API endpoints. Each verdict
+                links to the source consulted. Hover for context.
               </p>
               <p style={{ margin: "0 0 12px" }}>
                 <strong style={{ color: "var(--fg-1)" }}>Verdict scale.</strong>{" "}
                 <span style={{ color: "var(--brand-amber)" }}>✓</span> = full support and a core
-                product feature.{" "}
-                <span style={{ color: "var(--fg-2)" }}>◐</span> = partial — limited scope,
-                early-stage, or feature exists but is not primary.{" "}
+                product feature. <span style={{ color: "var(--fg-2)" }}>◐</span> = partial — limited
+                scope, early-stage, or feature exists but is not primary.{" "}
                 <span style={{ color: "var(--fg-4)" }}>✗</span> = not supported / explicitly out of
                 scope.
               </p>
               <p style={{ margin: "0 0 12px" }}>
-                <strong style={{ color: "var(--fg-1)" }}>Honesty disclosure.</strong> SolSentry
-                does <em>not</em> ship cross-chain, compliance/AML, audit services, or self-hostable
-                — all marked <span style={{ color: "var(--fg-4)" }}>✗</span> on our row. Cross-chain
+                <strong style={{ color: "var(--fg-1)" }}>Honesty disclosure.</strong> SolSentry does{" "}
+                <em>not</em> ship cross-chain, compliance/AML, audit services, or self-hostable —
+                all marked <span style={{ color: "var(--fg-4)" }}>✗</span> on our row. Cross-chain
                 is Q3 roadmap. Compliance is explicitly out of scope.
               </p>
               <p style={{ margin: 0 }}>

@@ -10,8 +10,7 @@ import {
 } from "@/components/casos/ForensicReport";
 
 export const metadata = {
-  title:
-    "Caso 4kxscute — 3.212 tokens, 2.953 rugs, 1 wallet | SolSentry",
+  title: "Caso 4kxscute — 3.212 tokens, 2.953 rugs, 1 wallet | SolSentry",
   description:
     "40 dias de cobertura live na mainnet Solana. Um único operador, ~80 deploys/dia, 96,7% de rug rate. Cada mint auditável via API pública.",
 };
@@ -65,8 +64,8 @@ function LiveOperatorCard({ data }: { data: OperatorPayload | null }) {
           color: "var(--fg-3)",
         }}
       >
-        Live data unavailable (snapshot only). Tente novamente em alguns minutos
-        ou consulte <Mono>{`GET ${API}/v1/operator/${WALLET}`}</Mono>.
+        Live data unavailable (snapshot only). Tente novamente em alguns minutos ou consulte{" "}
+        <Mono>{`GET ${API}/v1/operator/${WALLET}`}</Mono>.
       </div>
     );
   }
@@ -188,13 +187,7 @@ function LiveOperatorCard({ data }: { data: OperatorPayload | null }) {
   );
 }
 
-function Table({
-  headers,
-  rows,
-}: {
-  headers: string[];
-  rows: Array<string[]>;
-}) {
+function Table({ headers, rows }: { headers: string[]; rows: Array<string[]> }) {
   return (
     <div style={{ overflowX: "auto", margin: "20px 0" }}>
       <table
@@ -274,50 +267,45 @@ export default async function Case4kxscutePage() {
             marginBottom: 32,
           }}
         >
-          Um único wallet Solana, observado ao vivo na mainnet por 40 dias,
-          deployou mais de 3.200 tokens e ruggou aproximadamente 97% deles.
-          Este caso documenta como o SolSentry capturou cada mint em tempo
-          real, atribuiu ao mesmo <Mono>operator_id</Mono>, e tornou toda a
+          Um único wallet Solana, observado ao vivo na mainnet por 40 dias, deployou mais de 3.200
+          tokens e ruggou aproximadamente 97% deles. Este caso documenta como o SolSentry capturou
+          cada mint em tempo real, atribuiu ao mesmo <Mono>operator_id</Mono>, e tornou toda a
           trilha auditável via uma chamada de API pública.
         </p>
 
         <ReportSection number="1" title="Como descobrimos">
           <p>
-            O SolSentry mantém um extrator de <Mono>dev_wallet</Mono> que, a
-            cada novo scan, resolve a autoridade de deploy de um mint para uma
-            carteira de origem. Quando essa carteira já existe no grafo de
-            operadores (<Mono>intelligence.json</Mono>), o mint herda o{" "}
-            <Mono>operator_id</Mono> e todo o histórico — incluindo
-            confirmed_rugs anteriores.
+            O SolSentry mantém um extrator de <Mono>dev_wallet</Mono> que, a cada novo scan, resolve
+            a autoridade de deploy de um mint para uma carteira de origem. Quando essa carteira já
+            existe no grafo de operadores (<Mono>intelligence.json</Mono>), o mint herda o{" "}
+            <Mono>operator_id</Mono> e todo o histórico — incluindo confirmed_rugs anteriores.
           </p>
           <p>
-            Em <strong style={{ color: "var(--fg-1)" }}>8 de abril de 2026,
-            16:27 UTC</strong>, um scan rotineiro de um mint recém-deployado
-            resolveu pela primeira vez para o endereço <Mono>{WALLET}</Mono>.
-            A partir desse momento, cada novo deploy desse wallet foi
+            Em <strong style={{ color: "var(--fg-1)" }}>8 de abril de 2026, 16:27 UTC</strong>, um
+            scan rotineiro de um mint recém-deployado resolveu pela primeira vez para o endereço{" "}
+            <Mono>{WALLET}</Mono>. A partir desse momento, cada novo deploy desse wallet foi
             capturado em deploy-time — não reconstruído depois.
           </p>
         </ReportSection>
 
         <ReportSection number="2" title="A wallet">
           <p>
-            A carteira sob investigação é única e pública. Não é um cluster,
-            não é uma proxy detectada — é um único endereço com uma única
-            chave de assinatura que opera uma pipeline de deployment.
+            A carteira sob investigação é única e pública. Não é um cluster, não é uma proxy
+            detectada — é um único endereço com uma única chave de assinatura que opera uma pipeline
+            de deployment.
           </p>
           <LiveOperatorCard data={live} />
           <p style={{ fontSize: 13, color: "var(--fg-3)" }}>
-            Os números acima vêm direto do endpoint live em cache de 5 minutos.
-            Se divergirem do texto desta página, o endpoint é a fonte autoritativa.
+            Os números acima vêm direto do endpoint live em cache de 5 minutos. Se divergirem do
+            texto desta página, o endpoint é a fonte autoritativa.
           </p>
         </ReportSection>
 
         <ReportSection number="3" title="Os números — janela de 14 dias">
           <p>
-            Entre <strong style={{ color: "var(--fg-1)" }}>29 de abril e 13
-            de maio de 2026</strong>, snapshots canônicos da carteira foram
-            registrados no CODEX interno do SolSentry. A tabela abaixo mostra
-            a progressão verificável:
+            Entre <strong style={{ color: "var(--fg-1)" }}>29 de abril e 13 de maio de 2026</strong>
+            , snapshots canônicos da carteira foram registrados no CODEX interno do SolSentry. A
+            tabela abaixo mostra a progressão verificável:
           </p>
           <Table
             headers={["Data", "total_tokens", "confirmed_rugs"]}
@@ -329,78 +317,70 @@ export default async function Case4kxscutePage() {
           />
           <p>
             A média sustentada foi de aproximadamente{" "}
-            <strong style={{ color: "var(--fg-1)" }}>93 rugs por dia</strong>,
-            por 14 dias consecutivos, em um único wallet, ao vivo. Não é um
-            pico isolado — é cadência de pipeline.
+            <strong style={{ color: "var(--fg-1)" }}>93 rugs por dia</strong>, por 14 dias
+            consecutivos, em um único wallet, ao vivo. Não é um pico isolado — é cadência de
+            pipeline.
           </p>
         </ReportSection>
 
         <ReportSection number="4" title="O padrão: fast_deployer + rebrand_artist">
           <p>
-            O campo <Mono>tags</Mono> no <Mono>OperatorProfile</Mono> não é
-            cosmético. Cada tag é setada por uma regra determinística em{" "}
+            O campo <Mono>tags</Mono> no <Mono>OperatorProfile</Mono> não é cosmético. Cada tag é
+            setada por uma regra determinística em{" "}
             <Mono>core/social_graph/operator_profile.py</Mono>:
           </p>
           <ul style={{ paddingLeft: 20 }}>
             <li style={{ marginBottom: 12 }}>
-              <strong style={{ color: "var(--fg-1)" }}>fast_deployer</strong> —
-              o operador deploya ≥3 tokens em janelas rolantes de 24h, com
-              delta-mediano entre deploys abaixo de 6h. Não é uma launch — é
-              uma pipeline. Para este wallet, a cadência média é de
+              <strong style={{ color: "var(--fg-1)" }}>fast_deployer</strong> — o operador deploya
+              ≥3 tokens em janelas rolantes de 24h, com delta-mediano entre deploys abaixo de 6h.
+              Não é uma launch — é uma pipeline. Para este wallet, a cadência média é de
               aproximadamente 80 deploys/dia.
             </li>
             <li>
-              <strong style={{ color: "var(--fg-1)" }}>rebrand_artist</strong> —
-              o operador re-usa padrões de nome, ticker, ou links sociais
-              (handle no Twitter, link no Telegram, fingerprint de descrição)
-              entre mints. Cada novo token é um rebrand cosmético do anterior.
-              A tag dispara quando o similarity score de metadata DAS-fetched
-              ultrapassa o threshold configurado em ≥10 deployments.
+              <strong style={{ color: "var(--fg-1)" }}>rebrand_artist</strong> — o operador re-usa
+              padrões de nome, ticker, ou links sociais (handle no Twitter, link no Telegram,
+              fingerprint de descrição) entre mints. Cada novo token é um rebrand cosmético do
+              anterior. A tag dispara quando o similarity score de metadata DAS-fetched ultrapassa o
+              threshold configurado em ≥10 deployments.
             </li>
           </ul>
           <p>
-            Quando o SolSentry escaneia um <em>novo</em> mint e o{" "}
-            <Mono>dev_wallet</Mono> resolve para este operador, o pipeline de
-            risk aplica um <strong style={{ color: "var(--fg-1)" }}>boost
-            serial-deployer de +25</strong> (
+            Quando o SolSentry escaneia um <em>novo</em> mint e o <Mono>dev_wallet</Mono> resolve
+            para este operador, o pipeline de risk aplica um{" "}
+            <strong style={{ color: "var(--fg-1)" }}>boost serial-deployer de +25</strong> (
             <Mono>runtime/orchestrator/stage_callback.py</Mono>), empurrando o{" "}
-            <Mono>risk_score</Mono> para a banda CRITICAL e disparando o
-            alerta Telegram antes mesmo da adição de liquidez. A decisão é
-            operator-graph driven, não token-pattern driven.
+            <Mono>risk_score</Mono> para a banda CRITICAL e disparando o alerta Telegram antes mesmo
+            da adição de liquidez. A decisão é operator-graph driven, não token-pattern driven.
           </p>
         </ReportSection>
 
         <ReportSection number="5" title="Cobertura — onde mora a honestidade">
           <p>
             A extração de <Mono>dev_wallet</Mono> para este wallet começou em{" "}
-            <strong style={{ color: "var(--fg-1)" }}>8 de abril de 2026
-            16:27 UTC</strong>. Esse é o primeiro match verificável em
-            tempo real. Tudo antes desse timestamp é{" "}
-            <em>backfill</em> — reconstruído retroativamente via forensics
-            on-chain (Helius Enhanced TX walkback).
+            <strong style={{ color: "var(--fg-1)" }}>8 de abril de 2026 16:27 UTC</strong>. Esse é o
+            primeiro match verificável em tempo real. Tudo antes desse timestamp é <em>backfill</em>{" "}
+            — reconstruído retroativamente via forensics on-chain (Helius Enhanced TX walkback).
           </p>
           <ul style={{ paddingLeft: 20 }}>
             <li style={{ marginBottom: 8 }}>
-              <strong style={{ color: "var(--fg-1)" }}>Backfill
-              pré-cobertura:</strong> ~887 tokens atribuídos a esta carteira.
+              <strong style={{ color: "var(--fg-1)" }}>Backfill pré-cobertura:</strong> ~887 tokens
+              atribuídos a esta carteira.
             </li>
             <li style={{ marginBottom: 8 }}>
-              <strong style={{ color: "var(--fg-1)" }}>Confiabilidade:</strong>{" "}
-              alta para os ~250 tokens mais recentes antes de 8/abr; decai
-              progressivamente conforme o walkback recua (cache de RPC eviction,
-              fetches de metadata degradam, atribuição de liquidity-pool joins
-              fica mais difícil).
+              <strong style={{ color: "var(--fg-1)" }}>Confiabilidade:</strong> alta para os ~250
+              tokens mais recentes antes de 8/abr; decai progressivamente conforme o walkback recua
+              (cache de RPC eviction, fetches de metadata degradam, atribuição de liquidity-pool
+              joins fica mais difícil).
             </li>
             <li>
-              <strong style={{ color: "var(--fg-1)" }}>O que defendemos:</strong>{" "}
-              a janela live de 40 dias a partir de 8 de abril, onde cada
-              deployment foi capturado em deploy-time, não reconstruído.
+              <strong style={{ color: "var(--fg-1)" }}>O que defendemos:</strong> a janela live de
+              40 dias a partir de 8 de abril, onde cada deployment foi capturado em deploy-time, não
+              reconstruído.
             </li>
           </ul>
           <p>
-            Esta nota está aqui antes do due-diligence dos investidores
-            chegar nela. O caso se sustenta na cobertura live, não no prólogo
-            de backfill.
+            Esta nota está aqui antes do due-diligence dos investidores chegar nela. O caso se
+            sustenta na cobertura live, não no prólogo de backfill.
           </p>
         </ReportSection>
 
@@ -409,18 +389,15 @@ export default async function Case4kxscutePage() {
             <strong style={{ color: "var(--fg-1)", display: "block", marginBottom: 8 }}>
               Veredicto
             </strong>
-            Um wallet. Mais de 3.000 rugs confirmados. Indexados em tempo
-            real. Cada mint auditável via{" "}
-            <Mono>/v1/predictions/{`{mint}`}</Mono>. Cada novo deploy desse
-            wallet entra no risk pipeline como CRITICAL antes da adição de
-            liquidez, por herança via grafo de operadores — não por
-            re-análise de padrão de token.
+            Um wallet. Mais de 3.000 rugs confirmados. Indexados em tempo real. Cada mint auditável
+            via <Mono>/v1/predictions/{`{mint}`}</Mono>. Cada novo deploy desse wallet entra no risk
+            pipeline como CRITICAL antes da adição de liquidez, por herança via grafo de operadores
+            — não por re-análise de padrão de token.
             <br />
             <br />
             <span style={{ color: "var(--fg-2)" }}>
-              É a camada que Chainalysis não tem, que RugCheck não tem, que{" "}
-              integrity.molt não tem, e que Helius Orb não tem. É a camada
-              que o SolSentry foi construído para ser.
+              É a camada que Chainalysis não tem, que RugCheck não tem, que integrity.molt não tem,
+              e que Helius Orb não tem. É a camada que o SolSentry foi construído para ser.
             </span>
           </VerdictBox>
         </ReportSection>
@@ -473,10 +450,7 @@ operator_lookup wallet="${WALLET}"`}</CodeBlock>
               fontFamily: "var(--font-mono)",
             }}
           >
-            <Link
-              href="/casos"
-              style={{ color: "var(--fg-3)", textDecoration: "underline" }}
-            >
+            <Link href="/casos" style={{ color: "var(--fg-3)", textDecoration: "underline" }}>
               ← voltar para todos os casos
             </Link>
           </div>

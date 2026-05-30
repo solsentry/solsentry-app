@@ -28,8 +28,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "SolSentry — Operator intelligence for Solana",
-    description:
-      "RugCheck tells you a fire is burning. SolSentry tells you who lit it.",
+    description: "RugCheck tells you a fire is burning. SolSentry tells you who lit it.",
     images: ["/og/og-default.png"],
   },
   robots: { index: true, follow: true },
@@ -48,11 +47,7 @@ export const viewport = {
   themeColor: "#100E0A",
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <head>

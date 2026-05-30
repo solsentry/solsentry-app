@@ -76,7 +76,11 @@ export function ComparisonMatrix() {
   return (
     <div>
       <div style={filterRow}>
-        <FilterButton active={filter === "all"} onClick={() => setFilter("all")} count={features.length}>
+        <FilterButton
+          active={filter === "all"}
+          onClick={() => setFilter("all")}
+          count={features.length}
+        >
           All features
         </FilterButton>
         <FilterButton
@@ -115,7 +119,9 @@ export function ComparisonMatrix() {
                   }}
                 >
                   <div style={{ fontWeight: 600, fontSize: 12 }}>{c.name}</div>
-                  <div style={{ fontSize: 10, color: "var(--fg-3)", marginTop: 2 }}>{c.tagline}</div>
+                  <div style={{ fontSize: 10, color: "var(--fg-3)", marginTop: 2 }}>
+                    {c.tagline}
+                  </div>
                 </th>
               ))}
             </tr>

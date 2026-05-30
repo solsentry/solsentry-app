@@ -50,7 +50,8 @@ function getMock(addr: string): EasyResult {
         tags: ["serial", "fast_deploy", "rebrand", "cluster-9"],
         last_seen: Date.now() / 1000 - 120,
       },
-      narrative: "High-conviction CRITICAL serial operator. 3,200+ deployments with extreme consistency and rapid rebranding. Multiple confirmed ties to rug clusters. Avoid all new tokens from this wallet.",
+      narrative:
+        "High-conviction CRITICAL serial operator. 3,200+ deployments with extreme consistency and rapid rebranding. Multiple confirmed ties to rug clusters. Avoid all new tokens from this wallet.",
     };
   }
   if (a.includes("so1111")) {
@@ -67,7 +68,8 @@ function getMock(addr: string): EasyResult {
         dev_wallet: "11111111111111111111111111111111",
         operator: { confirmed_rugs: 0, total_tokens: 1, risk_level: "LOW" },
       },
-      narrative: "Native wrapped SOL. Core infrastructure token. No operator risk. Standard liquidity behavior.",
+      narrative:
+        "Native wrapped SOL. Core infrastructure token. No operator risk. Standard liquidity behavior.",
     };
   }
   // generic medium risk mock
@@ -86,7 +88,8 @@ function getMock(addr: string): EasyResult {
       tags: ["fast_deploy", "mixer_links"],
       last_seen: Date.now() / 1000 - 3600 * 9,
     },
-    narrative: "Active high-risk deployer. 47 confirmed rugs across 300+ tokens. Recent activity shows mixer hops and rapid token launches. Monitor closely.",
+    narrative:
+      "Active high-risk deployer. 47 confirmed rugs across 300+ tokens. Recent activity shows mixer hops and rapid token launches. Monitor closely.",
   };
 }
 
@@ -107,7 +110,7 @@ async function quickEasyLookup(raw: string): Promise<EasyResult | null> {
           addr: v,
           data: op,
           narrative: op.risk_label
-            ? `${op.risk_label} operator with ${(op.confirmed_rugs ?? 0)} confirmed rugs.`
+            ? `${op.risk_label} operator with ${op.confirmed_rugs ?? 0} confirmed rugs.`
             : undefined,
         };
       }
@@ -141,11 +144,13 @@ function EasyResultCard({ r, used }: { r: EasyResult; used: number }) {
   const rate = isOp ? (d.rug_rate_pct ?? 0) : 0;
   const tags: string[] = d.tags || d.flags || [];
 
-  const narrative = r.narrative || (level === "CRITICAL"
-    ? "High-conviction serial operator. Strong evidence of repeated rug behavior."
-    : level === "HIGH"
-    ? "Elevated risk. Multiple rugs and suspicious patterns detected."
-    : "Limited intel. No major red flags in current data.");
+  const narrative =
+    r.narrative ||
+    (level === "CRITICAL"
+      ? "High-conviction serial operator. Strong evidence of repeated rug behavior."
+      : level === "HIGH"
+        ? "Elevated risk. Multiple rugs and suspicious patterns detected."
+        : "Limited intel. No major red flags in current data.");
 
   return (
     <div
@@ -160,14 +165,36 @@ function EasyResultCard({ r, used }: { r: EasyResult; used: number }) {
       }}
     >
       {/* Header */}
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 12, marginBottom: 12 }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "flex-start",
+          gap: 12,
+          marginBottom: 12,
+        }}
+      >
         <div style={{ minWidth: 0 }}>
-          <div style={{ fontSize: 10, color: "var(--fg-3)", fontFamily: "var(--font-mono)", letterSpacing: "0.08em" }}>
+          <div
+            style={{
+              fontSize: 10,
+              color: "var(--fg-3)",
+              fontFamily: "var(--font-mono)",
+              letterSpacing: "0.08em",
+            }}
+          >
             {r.isMock ? "DEMO • CURATED" : "LIVE FROM API"} • {r.kind.toUpperCase()}
           </div>
           <div
             onClick={() => navigator.clipboard?.writeText(r.addr)}
-            style={{ fontFamily: "var(--font-mono)", fontSize: 15, fontWeight: 600, color: "var(--fg-1)", cursor: "pointer", wordBreak: "break-all" }}
+            style={{
+              fontFamily: "var(--font-mono)",
+              fontSize: 15,
+              fontWeight: 600,
+              color: "var(--fg-1)",
+              cursor: "pointer",
+              wordBreak: "break-all",
+            }}
             title="Click to copy full address"
           >
             {formatAddr(r.addr)}
@@ -178,26 +205,55 @@ function EasyResultCard({ r, used }: { r: EasyResult; used: number }) {
       </div>
 
       {/* Metrics */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(110px, 1fr))", gap: 8, marginBottom: 14 }}>
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(110px, 1fr))",
+          gap: 8,
+          marginBottom: 14,
+        }}
+      >
         {isOp && (
           <>
             <div style={{ background: "var(--surface-2)", borderRadius: 6, padding: "8px 10px" }}>
               <div style={{ fontSize: 11, color: "var(--fg-3)" }}>CONFIRMED RUGS</div>
-              <div style={{ fontSize: 22, fontWeight: 700, fontFamily: "var(--font-display)", color: level === "CRITICAL" ? "var(--status-critical)" : "var(--fg-1)" }}>{rugs}</div>
+              <div
+                style={{
+                  fontSize: 22,
+                  fontWeight: 700,
+                  fontFamily: "var(--font-display)",
+                  color: level === "CRITICAL" ? "var(--status-critical)" : "var(--fg-1)",
+                }}
+              >
+                {rugs}
+              </div>
             </div>
             <div style={{ background: "var(--surface-2)", borderRadius: 6, padding: "8px 10px" }}>
               <div style={{ fontSize: 11, color: "var(--fg-3)" }}>TOKENS</div>
-              <div style={{ fontSize: 22, fontWeight: 700, fontFamily: "var(--font-display)" }}>{tokens}</div>
+              <div style={{ fontSize: 22, fontWeight: 700, fontFamily: "var(--font-display)" }}>
+                {tokens}
+              </div>
             </div>
             <div style={{ background: "var(--surface-2)", borderRadius: 6, padding: "8px 10px" }}>
               <div style={{ fontSize: 11, color: "var(--fg-3)" }}>RUG RATE</div>
-              <div style={{ fontSize: 22, fontWeight: 700, fontFamily: "var(--font-display)" }}>{rate.toFixed(0)}%</div>
+              <div style={{ fontSize: 22, fontWeight: 700, fontFamily: "var(--font-display)" }}>
+                {rate.toFixed(0)}%
+              </div>
             </div>
           </>
         )}
         {!isOp && (
-          <div style={{ background: "var(--surface-2)", borderRadius: 6, padding: "8px 10px", gridColumn: "1 / -1" }}>
-            <div style={{ fontSize: 14, color: "var(--fg-2)" }}>Token scan • deployer and holder intel available in Pro</div>
+          <div
+            style={{
+              background: "var(--surface-2)",
+              borderRadius: 6,
+              padding: "8px 10px",
+              gridColumn: "1 / -1",
+            }}
+          >
+            <div style={{ fontSize: 14, color: "var(--fg-2)" }}>
+              Token scan • deployer and holder intel available in Pro
+            </div>
           </div>
         )}
       </div>
@@ -206,7 +262,17 @@ function EasyResultCard({ r, used }: { r: EasyResult; used: number }) {
       {tags.length > 0 && (
         <div style={{ display: "flex", flexWrap: "wrap", gap: 4, marginBottom: 12 }}>
           {tags.slice(0, 5).map((t: string, i: number) => (
-            <span key={i} style={{ fontSize: 11, padding: "2px 8px", borderRadius: 999, background: "var(--brand-amber-tint)", color: "var(--brand-amber)", border: "1px solid var(--brand-amber-line)" }}>
+            <span
+              key={i}
+              style={{
+                fontSize: 11,
+                padding: "2px 8px",
+                borderRadius: 999,
+                background: "var(--brand-amber-tint)",
+                color: "var(--brand-amber)",
+                border: "1px solid var(--brand-amber-line)",
+              }}
+            >
               {t}
             </span>
           ))}
@@ -214,29 +280,39 @@ function EasyResultCard({ r, used }: { r: EasyResult; used: number }) {
       )}
 
       {/* Sena narrative */}
-      <div style={{
-        background: "rgba(193,125,14,0.07)",
-        borderLeft: "3px solid var(--brand-amber)",
-        padding: "12px 14px",
-        fontSize: 15,
-        lineHeight: 1.5,
-        color: "var(--fg-2)",
-        marginBottom: 14,
-      }}>
+      <div
+        style={{
+          background: "rgba(193,125,14,0.07)",
+          borderLeft: "3px solid var(--brand-amber)",
+          padding: "12px 14px",
+          fontSize: 15,
+          lineHeight: 1.5,
+          color: "var(--fg-2)",
+          marginBottom: 14,
+        }}
+      >
         <span style={{ color: "var(--brand-amber)", fontWeight: 600 }}>Sena:</span> “{narrative}”
       </div>
 
       {/* Rate limit footer — "Full report" always routes through login first */}
-      <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: 8, fontSize: 12, color: "var(--fg-3)" }}>
-        <div>
-          {used}/5 scans used • rate limited
-        </div>
+      <div
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          alignItems: "center",
+          justifyContent: "space-between",
+          gap: 8,
+          fontSize: 12,
+          color: "var(--fg-3)",
+        }}
+      >
+        <div>{used}/5 scans used • rate limited</div>
         <div>
           <Link
             href={`/login?next=${encodeURIComponent(
-              isOp 
-                ? `/operator/${encodeURIComponent(r.addr)}` 
-                : `/scan/${encodeURIComponent(r.addr)}`
+              isOp
+                ? `/operator/${encodeURIComponent(r.addr)}`
+                : `/scan/${encodeURIComponent(r.addr)}`,
             )}`}
             style={{ color: "var(--brand-amber)", fontWeight: 600 }}
           >
@@ -306,10 +382,20 @@ export function LandingClient({ stats, hideChrome = false }: Props & { hideChrom
           )}
 
           <main className="landing-main" id="main" style={{ paddingTop: hideChrome ? 0 : 64 }}>
-            <div className="landing-container" style={{ maxWidth: 780, margin: "0 auto", padding: "80px 16px 80px" }}>
+            <div
+              className="landing-container"
+              style={{ maxWidth: 780, margin: "0 auto", padding: "80px 16px 80px" }}
+            >
               {/* Ultra-lean Easy hero */}
               <div style={{ textAlign: "center", marginBottom: 28 }}>
-                <div style={{ fontFamily: "var(--font-mono)", fontSize: 13, letterSpacing: "0.18em", color: "var(--brand-orange)" }}>
+                <div
+                  style={{
+                    fontFamily: "var(--font-mono)",
+                    fontSize: 13,
+                    letterSpacing: "0.18em",
+                    color: "var(--brand-orange)",
+                  }}
+                >
                   EASY • FREE • INSTANT
                 </div>
                 <h1
@@ -322,10 +408,19 @@ export function LandingClient({ stats, hideChrome = false }: Props & { hideChrom
                     color: "var(--fg-1)",
                   }}
                 >
-                  Paste wallet or mint.<br />
+                  Paste wallet or mint.
+                  <br />
                   See the <span style={{ color: "var(--brand-orange)" }}>risk</span>.
                 </h1>
-                <p style={{ color: "var(--fg-3)", fontSize: 19, maxWidth: 480, margin: "0 auto", lineHeight: 1.55 }}>
+                <p
+                  style={{
+                    color: "var(--fg-3)",
+                    fontSize: 19,
+                    maxWidth: 480,
+                    margin: "0 auto",
+                    lineHeight: 1.55,
+                  }}
+                >
                   No signup. No wallet connect.
                 </p>
               </div>
@@ -399,7 +494,14 @@ export function LandingClient({ stats, hideChrome = false }: Props & { hideChrom
                       {s.label}
                     </button>
                   ))}
-                  <span style={{ alignSelf: "center", fontSize: 10, color: "var(--fg-4)", marginLeft: 4 }}>
+                  <span
+                    style={{
+                      alignSelf: "center",
+                      fontSize: 10,
+                      color: "var(--fg-4)",
+                      marginLeft: 4,
+                    }}
+                  >
                     5 scans/hour • rate limited
                   </span>
                 </div>
@@ -409,20 +511,33 @@ export function LandingClient({ stats, hideChrome = false }: Props & { hideChrom
               {result && <EasyResultCard r={result} used={used} />}
 
               {!result && (
-                <div style={{ textAlign: "center", marginTop: 28, fontSize: 12, color: "var(--fg-3)" }}>
+                <div
+                  style={{ textAlign: "center", marginTop: 28, fontSize: 12, color: "var(--fg-3)" }}
+                >
                   Paste any address or click a sample above.
                 </div>
               )}
 
               {/* Minimal note — full tools live in Pro/Dev */}
-              <div style={{ textAlign: "center", marginTop: 42, fontSize: 11, color: "var(--fg-4)" }}>
+              <div
+                style={{ textAlign: "center", marginTop: 42, fontSize: 11, color: "var(--fg-4)" }}
+              >
                 Full history, graphs and alerts live in Pro / Dev.
               </div>
 
               {/* Tiny live signal (uses the server-fetched stats) */}
               {stats?.ok && (
-                <div style={{ marginTop: 28, textAlign: "center", fontSize: 10, color: "var(--fg-4)", fontFamily: "var(--font-mono)" }}>
-                  LIVE • {stats.operators?.toLocaleString?.() || "?"} operators tracked • {stats.accuracyPct ?? "?"}% accuracy
+                <div
+                  style={{
+                    marginTop: 28,
+                    textAlign: "center",
+                    fontSize: 10,
+                    color: "var(--fg-4)",
+                    fontFamily: "var(--font-mono)",
+                  }}
+                >
+                  LIVE • {stats.operators?.toLocaleString?.() || "?"} operators tracked •{" "}
+                  {stats.accuracyPct ?? "?"}% accuracy
                 </div>
               )}
             </div>

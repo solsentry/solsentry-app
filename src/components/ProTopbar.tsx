@@ -21,14 +21,17 @@ export function ProTopbar() {
 
   // Determine active mode - only highlight when truly on the representative page for that mode
   const getActiveMode = () => {
-    if (pathname === '/') return 'easy';   // only exact home for Easy
-    if (pathname?.startsWith('/pro') || pathname?.startsWith('/dashboard')) return 'pro';
-    if (pathname?.startsWith('/api') || 
-        pathname?.startsWith('/docs') || 
-        pathname?.startsWith('/architecture') || 
-        pathname?.startsWith('/skills') || 
-        pathname?.startsWith('/x402')) return 'dev';
-    return null;   // on internal pages (live, operators, clusters, alerts, etc.) → no tab selected
+    if (pathname === "/") return "easy"; // only exact home for Easy
+    if (pathname?.startsWith("/pro") || pathname?.startsWith("/dashboard")) return "pro";
+    if (
+      pathname?.startsWith("/api") ||
+      pathname?.startsWith("/docs") ||
+      pathname?.startsWith("/architecture") ||
+      pathname?.startsWith("/skills") ||
+      pathname?.startsWith("/x402")
+    )
+      return "dev";
+    return null; // on internal pages (live, operators, clusters, alerts, etc.) → no tab selected
   };
 
   const activeMode = getActiveMode();
@@ -121,8 +124,7 @@ export function ProTopbar() {
       // Heuristic for token vs wallet:
       // Pump.fun mints end in "pump", Bonk-style in "bonk", etc → /token
       // Otherwise default to /operator (most common Solana wallet)
-      const isToken =
-        /pump$/i.test(q) || /moon$/i.test(q) || /bonk$/i.test(q);
+      const isToken = /pump$/i.test(q) || /moon$/i.test(q) || /bonk$/i.test(q);
       router.push(isToken ? `/token/${q}` : `/operator/${q}`);
       return;
     }
@@ -196,7 +198,7 @@ export function ProTopbar() {
       }}
     >
       {/* Left group: Search + Bell (before the visual separator) */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8, flex: 1 }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 8, flex: 1 }}>
         <form
           onSubmit={handleSubmit}
           style={{ flex: 1, display: "flex", alignItems: "center", gap: 8 }}
@@ -355,7 +357,9 @@ export function ProTopbar() {
                 }}
               >
                 <span>♪ Sound alerts</span>
-                <span style={{ color: soundOn ? "var(--brand-amber)" : "var(--fg-3)", fontWeight: 600 }}>
+                <span
+                  style={{ color: soundOn ? "var(--brand-amber)" : "var(--fg-3)", fontWeight: 600 }}
+                >
                   {soundOn ? "ON" : "OFF"}
                 </span>
               </div>
@@ -373,7 +377,12 @@ export function ProTopbar() {
                 }}
               >
                 <span>⌖ Browser notify</span>
-                <span style={{ color: notifyOn ? "var(--brand-amber)" : "var(--fg-3)", fontWeight: 600 }}>
+                <span
+                  style={{
+                    color: notifyOn ? "var(--brand-amber)" : "var(--fg-3)",
+                    fontWeight: 600,
+                  }}
+                >
                   {notifyOn ? "ON" : "OFF"}
                 </span>
               </div>
@@ -403,10 +412,27 @@ export function ProTopbar() {
       </div>
 
       {/* Right cluster: EN/PT + Theme + Easy/Pro/Dev + Login/Profile */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginLeft: 12, paddingLeft: 12, borderLeft: '1px solid var(--border)' }}>
-
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: 8,
+          marginLeft: 12,
+          paddingLeft: 12,
+          borderLeft: "1px solid var(--border)",
+        }}
+      >
         {/* Language */}
-        <div style={{ display: 'inline-flex', border: '1px solid var(--border)', borderRadius: 6, overflow: 'hidden', fontSize: 11, fontFamily: 'var(--font-mono)' }}>
+        <div
+          style={{
+            display: "inline-flex",
+            border: "1px solid var(--border)",
+            borderRadius: 6,
+            overflow: "hidden",
+            fontSize: 11,
+            fontFamily: "var(--font-mono)",
+          }}
+        >
           <button
             onClick={() => {
               const newLang = "en";
@@ -414,11 +440,11 @@ export function ProTopbar() {
               localStorage.setItem("solsentry-lang", newLang);
             }}
             style={{
-              padding: '10px 14px',
+              padding: "10px 14px",
               background: lang === "en" ? "var(--brand-amber-tint)" : "transparent",
               color: lang === "en" ? "var(--brand-amber)" : "var(--fg-2)",
-              border: 'none',
-              cursor: 'pointer',
+              border: "none",
+              cursor: "pointer",
               minHeight: 38,
               transition: "background 110ms ease, color 110ms ease, opacity 110ms ease",
             }}
@@ -432,11 +458,11 @@ export function ProTopbar() {
               localStorage.setItem("solsentry-lang", newLang);
             }}
             style={{
-              padding: '10px 14px',
+              padding: "10px 14px",
               background: lang === "pt" ? "var(--brand-amber-tint)" : "transparent",
               color: lang === "pt" ? "var(--brand-amber)" : "var(--fg-2)",
-              border: 'none',
-              cursor: 'pointer',
+              border: "none",
+              cursor: "pointer",
               minHeight: 38,
               transition: "background 110ms ease, color 110ms ease, opacity 110ms ease",
             }}
@@ -448,18 +474,18 @@ export function ProTopbar() {
         {/* Theme */}
         <button
           onClick={toggleTheme}
-          style={{ 
-            minWidth: 38, 
-            height: 38, 
-            border: '1px solid var(--border)', 
-            borderRadius: 6, 
-            background: 'var(--surface)', 
-            color: 'var(--fg-2)', 
-            cursor: 'pointer', 
+          style={{
+            minWidth: 38,
+            height: 38,
+            border: "1px solid var(--border)",
+            borderRadius: 6,
+            background: "var(--surface)",
+            color: "var(--fg-2)",
+            cursor: "pointer",
             fontSize: 14,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
             transition: "background 110ms ease, color 110ms ease, opacity 110ms ease",
           }}
           title="Toggle theme"
@@ -468,28 +494,30 @@ export function ProTopbar() {
         </button>
 
         {/* Mode tabs */}
-        <div style={{ 
-          display: 'inline-flex', 
-          alignItems: 'center', 
-          border: '1px solid var(--border)', 
-          borderRadius: 6, 
-          padding: 2,
-          overflow: 'hidden',
-          fontFamily: 'var(--font-mono)',
-          fontSize: 11,
-        }}>
-          <a 
-            href="/" 
+        <div
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            border: "1px solid var(--border)",
+            borderRadius: 6,
+            padding: 2,
+            overflow: "hidden",
+            fontFamily: "var(--font-mono)",
+            fontSize: 11,
+          }}
+        >
+          <a
+            href="/"
             style={{
-              padding: '8px 12px',
+              padding: "8px 12px",
               borderRadius: 4,
-              color: activeMode === 'easy' ? 'var(--brand-amber)' : 'var(--fg-2)',
-              background: activeMode === 'easy' ? 'var(--brand-amber-tint)' : 'transparent',
-              textDecoration: 'none',
-              fontWeight: activeMode === 'easy' ? 600 : 400,
+              color: activeMode === "easy" ? "var(--brand-amber)" : "var(--fg-2)",
+              background: activeMode === "easy" ? "var(--brand-amber-tint)" : "transparent",
+              textDecoration: "none",
+              fontWeight: activeMode === "easy" ? 600 : 400,
               minHeight: 36,
-              display: 'flex',
-              alignItems: 'center',
+              display: "flex",
+              alignItems: "center",
               fontSize: 11,
               transition: "background 110ms ease, color 110ms ease, opacity 110ms ease",
             }}
@@ -497,30 +525,30 @@ export function ProTopbar() {
             Easy
           </a>
 
-          {activeMode !== 'easy' && activeMode !== 'pro' && (
-            <span 
-              style={{ 
-                width: 1, 
-                alignSelf: 'stretch', 
-                background: 'var(--border)', 
-                margin: '0 2px' 
-              }} 
+          {activeMode !== "easy" && activeMode !== "pro" && (
+            <span
+              style={{
+                width: 1,
+                alignSelf: "stretch",
+                background: "var(--border)",
+                margin: "0 2px",
+              }}
             />
           )}
 
-          <a 
-            href="/pro" 
+          <a
+            href="/pro"
             style={{
-              padding: '8px 12px',
+              padding: "8px 12px",
               borderRadius: 4,
-              color: activeMode === 'pro' ? 'var(--brand-amber)' : 'var(--fg-2)',
-              background: activeMode === 'pro' ? 'var(--brand-amber-tint)' : 'transparent',
-              textDecoration: 'none',
-              fontWeight: activeMode === 'pro' ? 600 : 400,
-              opacity: activeMode === 'pro' ? 1 : 0.85,
+              color: activeMode === "pro" ? "var(--brand-amber)" : "var(--fg-2)",
+              background: activeMode === "pro" ? "var(--brand-amber-tint)" : "transparent",
+              textDecoration: "none",
+              fontWeight: activeMode === "pro" ? 600 : 400,
+              opacity: activeMode === "pro" ? 1 : 0.85,
               minHeight: 36,
-              display: 'flex',
-              alignItems: 'center',
+              display: "flex",
+              alignItems: "center",
               fontSize: 11,
               transition: "background 110ms ease, color 110ms ease, opacity 110ms ease",
             }}
@@ -528,29 +556,29 @@ export function ProTopbar() {
             Pro
           </a>
 
-          {activeMode !== 'pro' && activeMode !== 'dev' && (
-            <span 
-              style={{ 
-                width: 1, 
-                alignSelf: 'stretch', 
-                background: 'var(--border)', 
-                margin: '0 2px' 
-              }} 
+          {activeMode !== "pro" && activeMode !== "dev" && (
+            <span
+              style={{
+                width: 1,
+                alignSelf: "stretch",
+                background: "var(--border)",
+                margin: "0 2px",
+              }}
             />
           )}
 
-          <a 
-            href="/api" 
+          <a
+            href="/api"
             style={{
-              padding: '8px 12px',
+              padding: "8px 12px",
               borderRadius: 4,
-              color: activeMode === 'dev' ? 'var(--brand-amber)' : 'var(--fg-2)',
-              background: activeMode === 'dev' ? 'var(--brand-amber-tint)' : 'transparent',
-              textDecoration: 'none',
-              fontWeight: activeMode === 'dev' ? 600 : 400,
+              color: activeMode === "dev" ? "var(--brand-amber)" : "var(--fg-2)",
+              background: activeMode === "dev" ? "var(--brand-amber-tint)" : "transparent",
+              textDecoration: "none",
+              fontWeight: activeMode === "dev" ? 600 : 400,
               minHeight: 36,
-              display: 'flex',
-              alignItems: 'center',
+              display: "flex",
+              alignItems: "center",
               fontSize: 11,
               transition: "background 110ms ease, color 110ms ease, opacity 110ms ease",
             }}
@@ -561,36 +589,36 @@ export function ProTopbar() {
 
         {/* Auth */}
         {isLoggedIn ? (
-          <a 
-            href="/pro" 
-            style={{ 
-              fontSize: 12, 
-              padding: '10px 14px', 
+          <a
+            href="/pro"
+            style={{
+              fontSize: 12,
+              padding: "10px 14px",
               minHeight: 38,
-              display: 'flex',
-              alignItems: 'center',
-              background: 'var(--border)', 
-              color: 'var(--brand-amber)', 
-              borderRadius: 6, 
-              textDecoration: 'none',
+              display: "flex",
+              alignItems: "center",
+              background: "var(--border)",
+              color: "var(--brand-amber)",
+              borderRadius: 6,
+              textDecoration: "none",
               transition: "background 110ms ease, color 110ms ease, opacity 110ms ease",
             }}
           >
             Profile
           </a>
         ) : (
-          <a 
-            href="/login" 
-            style={{ 
-              fontSize: 12, 
-              padding: '10px 14px', 
+          <a
+            href="/login"
+            style={{
+              fontSize: 12,
+              padding: "10px 14px",
               minHeight: 38,
-              display: 'flex',
-              alignItems: 'center',
-              background: 'var(--border)', 
-              color: 'var(--brand-amber)', 
-              borderRadius: 6, 
-              textDecoration: 'none',
+              display: "flex",
+              alignItems: "center",
+              background: "var(--border)",
+              color: "var(--brand-amber)",
+              borderRadius: 6,
+              textDecoration: "none",
               transition: "background 110ms ease, color 110ms ease, opacity 110ms ease",
             }}
           >

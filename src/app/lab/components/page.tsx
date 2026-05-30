@@ -20,13 +20,29 @@ export default function ComponentsLabPage() {
     <div className="min-h-screen bg-background text-foreground">
       <div className="max-w-6xl mx-auto px-6 py-10 space-y-10">
         <h1 className="h2">v0 components — on-brand integration lab</h1>
-        <Lab title="04 · TopOperatorsTable"><OperatorsTable /></Lab>
-        <Lab title="02 · LiveFeed"><LiveFeed /></Lab>
-        <Lab title="03 · AIDailySummary"><DailyIntelCardDemo /></Lab>
-        <Lab title="05 · ClusterSunburst"><BotClusterSunburst /></Lab>
-        <Lab title="06 · FeaturedDrain"><DrainOfTheDay /></Lab>
-        <Lab title="08 · KOLPanel / SmartMoney"><SmartMoneyPanel /></Lab>
-        <Lab title="09 · WatchlistPanel"><div className="max-w-sm"><WatchlistPanel /></div></Lab>
+        <Lab title="04 · TopOperatorsTable">
+          <OperatorsTable />
+        </Lab>
+        <Lab title="02 · LiveFeed">
+          <LiveFeed />
+        </Lab>
+        <Lab title="03 · AIDailySummary">
+          <DailyIntelCardDemo />
+        </Lab>
+        <Lab title="05 · ClusterSunburst">
+          <BotClusterSunburst />
+        </Lab>
+        <Lab title="06 · FeaturedDrain">
+          <DrainOfTheDay />
+        </Lab>
+        <Lab title="08 · KOLPanel / SmartMoney">
+          <SmartMoneyPanel />
+        </Lab>
+        <Lab title="09 · WatchlistPanel">
+          <div className="max-w-sm">
+            <WatchlistPanel />
+          </div>
+        </Lab>
       </div>
     </div>
   );

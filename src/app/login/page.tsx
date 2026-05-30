@@ -12,8 +12,7 @@ import { Suspense, useState } from "react";
 import { SolSentryWalletProvider } from "@/lib/wallet/SolSentryWalletProvider";
 import { ConnectWalletButton } from "@/components/auth/ConnectWalletButton";
 
-const API_BASE =
-  process.env.NEXT_PUBLIC_API_BASE || "https://api.solsentry.app";
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "https://api.solsentry.app";
 
 function EmailForm() {
   const [email, setEmail] = useState("");
@@ -120,8 +119,8 @@ function LoginInner() {
         <div className="login-card">
           <h1>Sign in to SolSentry</h1>
           <p className="subtitle">
-            Operator intelligence for Solana. Connect a wallet to authenticate
-            with a single signed message — no password, no email required.
+            Operator intelligence for Solana. Connect a wallet to authenticate with a single signed
+            message — no password, no email required.
           </p>
 
           <section className="primary-block">
@@ -137,9 +136,8 @@ function LoginInner() {
           </section>
 
           <footer className="legal">
-            By signing in you agree to our terms of service. Your wallet
-            signature is used only to prove ownership of the public key — no
-            transaction is broadcast.
+            By signing in you agree to our terms of service. Your wallet signature is used only to
+            prove ownership of the public key — no transaction is broadcast.
           </footer>
         </div>
 

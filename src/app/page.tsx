@@ -21,8 +21,7 @@ export const metadata = {
     "Paste a Solana wallet or token mint. Instant Easy mode (free) or full Pro/Dev investigation. Same intel layer, three experiences.",
   openGraph: {
     title: "SolSentry — operator threat intelligence for Solana",
-    description:
-      "RugCheck tells you a fire is burning. SolSentry tells you who lit it.",
+    description: "RugCheck tells you a fire is burning. SolSentry tells you who lit it.",
     images: ["/og/og-default.png"],
   },
 };
@@ -44,7 +43,9 @@ export default async function HomePage() {
   return (
     <>
       <SiteTopbar />
-      <div style={{ paddingTop: '72px' }}> {/* compensa a altura da topbar fixa */}
+      <div style={{ paddingTop: "72px" }}>
+        {" "}
+        {/* compensa a altura da topbar fixa */}
         <LandingClient stats={statsPayload} hideChrome />
       </div>
       <Footer />

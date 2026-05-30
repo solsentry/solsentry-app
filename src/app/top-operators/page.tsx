@@ -54,29 +54,17 @@ export default async function TopOperatorsPage() {
                 <span>Tags</span>
               </div>
               {ops.map((op) => (
-                <Link
-                  key={op.wallet}
-                  href={`/operator/${op.wallet}`}
-                  className="lb-row"
-                >
-                  <span className="lb-rank">
-                    {String(op.rank).padStart(2, "0")}
-                  </span>
+                <Link key={op.wallet} href={`/operator/${op.wallet}`} className="lb-row">
+                  <span className="lb-rank">{String(op.rank).padStart(2, "0")}</span>
                   <span className="lb-wallet">
                     <span style={{ fontFamily: "var(--font-mono)" }}>
                       {truncate(op.wallet, 8, 5)}
                     </span>
-                    {op.risk_label && (
-                      <RiskBadge level={op.risk_label} size="sm" />
-                    )}
+                    {op.risk_label && <RiskBadge level={op.risk_label} size="sm" />}
                   </span>
-                  <span className="lb-num lb-rugs">
-                    {fmtInt(op.confirmed_rugs)}
-                  </span>
+                  <span className="lb-num lb-rugs">{fmtInt(op.confirmed_rugs)}</span>
                   <span className="lb-num">{fmtInt(op.total_tokens)}</span>
-                  <span className="lb-num lb-rate">
-                    {fmtPct(op.rug_rate_pct, 1)}
-                  </span>
+                  <span className="lb-num lb-rate">{fmtPct(op.rug_rate_pct, 1)}</span>
                   <span className="lb-tags">
                     {(op.tags || []).slice(0, 2).map((t) => (
                       <span key={t} className="lb-tag">
@@ -103,10 +91,9 @@ export default async function TopOperatorsPage() {
                 What counts as a rug
               </h3>
               <p style={{ color: "var(--fg-2)", fontSize: 14, lineHeight: 1.6 }}>
-                A token is marked <code>RUG</code> when liquidity is pulled,
-                holders are dumped on, or trading halts before genuine
-                distribution. The resolver waits up to 14 days for safe tokens
-                and uses fast-track windows for HIGH/CRITICAL initial signals.
+                A token is marked <code>RUG</code> when liquidity is pulled, holders are dumped on,
+                or trading halts before genuine distribution. The resolver waits up to 14 days for
+                safe tokens and uses fast-track windows for HIGH/CRITICAL initial signals.
               </p>
             </div>
             <div className="panel">
@@ -120,9 +107,8 @@ export default async function TopOperatorsPage() {
                 Why operator-centric
               </h3>
               <p style={{ color: "var(--fg-2)", fontSize: 14, lineHeight: 1.6 }}>
-                Token-level scanners can be evaded by deploying again. Operator
-                tracking persists across deployments. A wallet with 1,059 rugs
-                is unambiguous.
+                Token-level scanners can be evaded by deploying again. Operator tracking persists
+                across deployments. A wallet with 1,059 rugs is unambiguous.
               </p>
             </div>
           </div>

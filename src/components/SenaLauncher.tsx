@@ -39,8 +39,7 @@ export function SenaLauncher({
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          boxShadow:
-            "0 4px 20px rgba(193, 125, 14, 0.45), 0 0 0 0 var(--brand-amber-tint)",
+          boxShadow: "0 4px 20px rgba(193, 125, 14, 0.45), 0 0 0 0 var(--brand-amber-tint)",
           zIndex: 55,
           fontFamily: "var(--font-display)",
           fontWeight: 700,

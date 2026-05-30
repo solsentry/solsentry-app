@@ -317,30 +317,21 @@ export default function TelegramPage() {
             <>
               Paste a wallet.
               <br />
-              <span style={{ color: "var(--brand-amber)" }}>
-                Get the intel back.
-              </span>
+              <span style={{ color: "var(--brand-amber)" }}>Get the intel back.</span>
             </>
           }
           sub={
             <>
-              SolSentry runs in Telegram first. Every command works on Solana
-              mainnet today — 240h+ uptime, 24,000+ scans resolved. The bot is
-              the fastest way to use the system. Open{" "}
-              <a
-                href="https://t.me/solsentryai"
-                target="_blank"
-                rel="noreferrer"
-              >
+              SolSentry runs in Telegram first. Every command works on Solana mainnet today — 240h+
+              uptime, 24,000+ scans resolved. The bot is the fastest way to use the system. Open{" "}
+              <a href="https://t.me/solsentryai" target="_blank" rel="noreferrer">
                 @solsentryai
               </a>{" "}
               or tap a command below to jump straight to it.
             </>
           }
         >
-          <div
-            style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 8 }}
-          >
+          <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 8 }}>
             <a
               href="https://t.me/solsentryai"
               target="_blank"
@@ -380,28 +371,27 @@ export default function TelegramPage() {
               <ol className="step-list" style={{ marginTop: 0 }}>
                 <li>
                   <strong>Stage 1 — Fast scan</strong>
-                  ~2s. RPC fetches mint authority, holder distribution,
-                  metadata. Known token mints are short-circuited.
+                  ~2s. RPC fetches mint authority, holder distribution, metadata. Known token mints
+                  are short-circuited.
                 </li>
                 <li>
                   <strong>Stage 2 — Deep signals</strong>
-                  Holder engine (Helius DAS), DexScreener, InsightX, optional
-                  Nansen. Background, non-blocking.
+                  Holder engine (Helius DAS), DexScreener, InsightX, optional Nansen. Background,
+                  non-blocking.
                 </li>
                 <li>
                   <strong>Stage 3 — Bundle forensics</strong>
-                  Helius Enhanced TX. Finds coordinated bot clusters mining the
-                  same launch.
+                  Helius Enhanced TX. Finds coordinated bot clusters mining the same launch.
                 </li>
                 <li>
                   <strong>Operator enrichment</strong>
-                  Dev wallet matched against <code>operator_profiles.json</code>
-                  . Serial deployers add +15 to +25 points.
+                  Dev wallet matched against <code>operator_profiles.json</code>. Serial deployers
+                  add +15 to +25 points.
                 </li>
                 <li>
                   <strong>AI explainer</strong>
-                  PT-BR and EN. Only fires on risk ≥ 50 (manual) or ≥ 80 (auto).
-                  Rate-limited to 10 calls/hr.
+                  PT-BR and EN. Only fires on risk ≥ 50 (manual) or ≥ 80 (auto). Rate-limited to 10
+                  calls/hr.
                 </li>
               </ol>
             </div>
@@ -434,12 +424,8 @@ export default function TelegramPage() {
                       {c.cmd}
                       {c.args ? " " + c.args : ""}
                     </code>
-                    {c.tier === "admin" && (
-                      <span className="cmd-meta admin">admin</span>
-                    )}
-                    {c.tier === "new" && (
-                      <span className="cmd-meta new">new</span>
-                    )}
+                    {c.tier === "admin" && <span className="cmd-meta admin">admin</span>}
+                    {c.tier === "new" && <span className="cmd-meta new">new</span>}
                   </div>
                   <div className="desc">
                     {c.desc}
@@ -471,10 +457,7 @@ export default function TelegramPage() {
             {[
               ["🚨 alerts", "HIGH + CRITICAL risk events. Noise-free."],
               ["🧬 hunters", "Agent births, mutations, deaths, reassignments."],
-              [
-                "✅ resolutions",
-                "Outcomes — was_correct, final classification.",
-              ],
+              ["✅ resolutions", "Outcomes — was_correct, final classification."],
               ["🛠️ commands", "Everything else. Your interactive workspace."],
             ].map(([title, desc]) => (
               <div key={title} className="panel panel-hover">

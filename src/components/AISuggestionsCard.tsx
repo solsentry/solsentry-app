@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState } from 'react';
-import { Sparkles, ArrowRight, RefreshCw } from 'lucide-react';
+import React, { useState } from "react";
+import { Sparkles, ArrowRight, RefreshCw } from "lucide-react";
 
 interface Suggestion {
   id: number;
@@ -16,17 +16,17 @@ interface AISuggestionsCardProps {
 }
 
 const DESIGN = {
-  bg: '#0a0a0a',
-  surface: '#1a1a1a',
-  border: '#262626',
-  amber: '#f59e0b',
-  text: '#fafafa',
-  muted: '#a3a3a3',
+  bg: "#0a0a0a",
+  surface: "#1a1a1a",
+  border: "#262626",
+  amber: "#f59e0b",
+  text: "#fafafa",
+  muted: "#a3a3a3",
 };
 
 export function AISuggestionsCard({ loggedIn = false }: AISuggestionsCardProps) {
   const [refreshing, setRefreshing] = useState(false);
-  const [lastUpdated, setLastUpdated] = useState('just now');
+  const [lastUpdated, setLastUpdated] = useState("just now");
 
   // High-quality mocks following the exact spec
   const suggestions: Suggestion[] = loggedIn
@@ -73,7 +73,7 @@ export function AISuggestionsCard({ loggedIn = false }: AISuggestionsCardProps) 
   const handleRefresh = () => {
     setRefreshing(true);
     setTimeout(() => {
-      setLastUpdated('just now');
+      setLastUpdated("just now");
       setRefreshing(false);
     }, 800);
   };
@@ -85,18 +85,18 @@ export function AISuggestionsCard({ loggedIn = false }: AISuggestionsCardProps) 
         border: `1px solid ${DESIGN.border}`,
         borderRadius: 12,
         padding: 16,
-        width: '100%',
+        width: "100%",
       }}
     >
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12 }}>
         <Sparkles size={16} color={DESIGN.amber} />
         <span style={{ fontWeight: 600, fontSize: 14 }}>AI Suggestions</span>
         <span
           style={{
             fontSize: 10,
-            background: 'rgba(245,158,11,0.1)',
+            background: "rgba(245,158,11,0.1)",
             color: DESIGN.amber,
-            padding: '1px 6px',
+            padding: "1px 6px",
             borderRadius: 999,
             marginLeft: 4,
           }}
@@ -105,29 +105,29 @@ export function AISuggestionsCard({ loggedIn = false }: AISuggestionsCardProps) 
         </span>
       </div>
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
         {suggestions.map((s, index) => (
           <a
             key={s.id}
             href={s.href}
             style={{
-              display: 'block',
-              padding: '10px 4px',
+              display: "block",
+              padding: "10px 4px",
               borderRadius: 8,
-              textDecoration: 'none',
-              color: 'inherit',
-              borderTop: index > 0 ? `1px solid ${DESIGN.border}` : 'none',
+              textDecoration: "none",
+              color: "inherit",
+              borderTop: index > 0 ? `1px solid ${DESIGN.border}` : "none",
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.background = 'rgba(255,255,255,0.03)';
+              e.currentTarget.style.background = "rgba(255,255,255,0.03)";
               e.currentTarget.style.borderLeft = `2px solid ${DESIGN.amber}`;
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.background = 'transparent';
-              e.currentTarget.style.borderLeft = '2px solid transparent';
+              e.currentTarget.style.background = "transparent";
+              e.currentTarget.style.borderLeft = "2px solid transparent";
             }}
           >
-            <div style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}>
+            <div style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
               <div style={{ marginTop: 2, fontSize: 14 }}>{s.icon}</div>
               <div style={{ flex: 1 }}>
                 <div style={{ fontSize: 13, fontWeight: 600, lineHeight: 1.3 }}>{s.title}</div>
@@ -146,9 +146,9 @@ export function AISuggestionsCard({ loggedIn = false }: AISuggestionsCardProps) 
           marginTop: 14,
           paddingTop: 10,
           borderTop: `1px solid ${DESIGN.border}`,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
           fontSize: 11,
         }}
       >
@@ -156,18 +156,18 @@ export function AISuggestionsCard({ loggedIn = false }: AISuggestionsCardProps) 
           onClick={handleRefresh}
           disabled={refreshing}
           style={{
-            background: 'transparent',
-            border: 'none',
+            background: "transparent",
+            border: "none",
             color: DESIGN.amber,
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
             gap: 4,
             fontSize: 11,
             padding: 0,
           }}
         >
-          <RefreshCw size={12} className={refreshing ? 'animate-spin' : ''} />
+          <RefreshCw size={12} className={refreshing ? "animate-spin" : ""} />
           Refresh suggestions
         </button>
 

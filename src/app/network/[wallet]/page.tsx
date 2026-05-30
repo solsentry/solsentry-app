@@ -4,7 +4,11 @@ import { PageHeader } from "@/components/PageHeader";
 import { Section } from "@/components/Section";
 import { AddrLink } from "@/components/AddrLink";
 import { ApiError } from "@/components/ApiError";
-import { TraceNetworkGraph, type TraceWalletNode, type TraceFlowEdge } from "@/components/TraceNetworkGraph";
+import {
+  TraceNetworkGraph,
+  type TraceWalletNode,
+  type TraceFlowEdge,
+} from "@/components/TraceNetworkGraph";
 import { fetchOperatorNetwork, truncate } from "@/lib/api";
 import Link from "next/link";
 
@@ -85,8 +89,9 @@ export default async function NetworkPage({ params }: PageProps) {
                 title="Network Trace"
                 sub="Organograma estruturado com nós ricos (fluxo de dinheiro + relacionamentos). Clique nos nós para ver detalhes completos."
               >
-                <div style={{ marginBottom: 8, fontSize: 12, color: 'var(--fg-3)' }}>
-                  {net.nodes.length} nós · {(net.edges || []).length} conexões — Alta densidade de informação, experiência premium
+                <div style={{ marginBottom: 8, fontSize: 12, color: "var(--fg-3)" }}>
+                  {net.nodes.length} nós · {(net.edges || []).length} conexões — Alta densidade de
+                  informação, experiência premium
                 </div>
 
                 <TraceNetworkGraph
@@ -95,7 +100,7 @@ export default async function NetworkPage({ params }: PageProps) {
                     id: n.address,
                     address: n.address,
                     label: truncate(n.address, 4, 4),
-                    type: n.address === wallet ? "operator" : (n.type || "wallet"),
+                    type: n.address === wallet ? "operator" : n.type || "wallet",
                     risk: n.risk,
                     column: n.address === wallet ? 0 : (i % 5) - 2,
                     tag: n.type,
@@ -120,8 +125,7 @@ export default async function NetworkPage({ params }: PageProps) {
                 <div
                   style={{
                     display: "grid",
-                    gridTemplateColumns:
-                      "repeat(auto-fill, minmax(280px, 1fr))",
+                    gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
                     gap: 12,
                   }}
                 >
@@ -174,10 +178,7 @@ export default async function NetworkPage({ params }: PageProps) {
             )}
 
             {net.edges && net.edges.length > 0 && (
-              <Section
-                eyebrow={`${net.edges.length} edges`}
-                title="Connections"
-              >
+              <Section eyebrow={`${net.edges.length} edges`} title="Connections">
                 <div className="panel" style={{ padding: 0 }}>
                   {net.edges.slice(0, 100).map((e, i) => (
                     <div
@@ -205,9 +206,7 @@ export default async function NetworkPage({ params }: PageProps) {
                       >
                         {e.kind || "→"}
                         {e.weight != null && (
-                          <span style={{ color: "var(--fg-3)", marginLeft: 6 }}>
-                            ({e.weight})
-                          </span>
+                          <span style={{ color: "var(--fg-3)", marginLeft: 6 }}>({e.weight})</span>
                         )}
                       </span>
                       <AddrLink addr={e.to} head={6} tail={4} />

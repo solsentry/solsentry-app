@@ -92,9 +92,7 @@ export function SenaDrawer({
 
   // Seed initial greeting once per entity
   useEffect(() => {
-    setMessages([
-      { role: "sena", text: initialGreeting(entity), ts: Date.now() },
-    ]);
+    setMessages([{ role: "sena", text: initialGreeting(entity), ts: Date.now() }]);
   }, [entity.type, entity.id]);
 
   // ESC + focus trap + return focus
@@ -161,10 +159,7 @@ export function SenaDrawer({
         const data = (await res.json()) as { reply: string };
         // Simulated typing delay handled server-side; small UI delay too
         await new Promise((r) => setTimeout(r, 200));
-        setMessages((m) => [
-          ...m,
-          { role: "sena", text: data.reply, ts: Date.now() },
-        ]);
+        setMessages((m) => [...m, { role: "sena", text: data.reply, ts: Date.now() }]);
       } catch {
         setMessages((m) => [
           ...m,
@@ -319,10 +314,7 @@ export function SenaDrawer({
                   maxWidth: "85%",
                   padding: "10px 14px",
                   borderRadius: 10,
-                  background:
-                    m.role === "user"
-                      ? "var(--brand-amber-tint)"
-                      : "var(--bg)",
+                  background: m.role === "user" ? "var(--brand-amber-tint)" : "var(--bg)",
                   border:
                     m.role === "user"
                       ? "1px solid var(--brand-amber-line)"

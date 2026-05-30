@@ -96,10 +96,7 @@ export function AISearchBar({
   // Placeholder cycle every 3s, paused while typing.
   useEffect(() => {
     if (value.length > 0) return;
-    const t = setInterval(
-      () => setPlaceholderIdx((i) => (i + 1) % placeholders.length),
-      3000,
-    );
+    const t = setInterval(() => setPlaceholderIdx((i) => (i + 1) % placeholders.length), 3000);
     return () => clearInterval(t);
   }, [value, placeholders.length]);
 
@@ -167,24 +164,14 @@ export function AISearchBar({
         />
 
         {kind === "address" && (
-          <span
-            className="ai-search__chip ai-search__chip--addr"
-            aria-live="polite"
-          >
+          <span className="ai-search__chip ai-search__chip--addr" aria-live="polite">
             address
           </span>
         )}
-        {kind === "symbol" && (
-          <span className="ai-search__chip ai-search__chip--addr">symbol</span>
-        )}
-        {kind === "sns" && (
-          <span className="ai-search__chip ai-search__chip--addr">.sol</span>
-        )}
+        {kind === "symbol" && <span className="ai-search__chip ai-search__chip--addr">symbol</span>}
+        {kind === "sns" && <span className="ai-search__chip ai-search__chip--addr">.sol</span>}
         {kind === "nl" && (
-          <span
-            className="ai-search__chip ai-search__chip--ai"
-            title="AI search coming soon"
-          >
+          <span className="ai-search__chip ai-search__chip--ai" title="AI search coming soon">
             <Sparkles size={11} aria-hidden /> AI · soon
           </span>
         )}
@@ -233,11 +220,7 @@ export function AISearchBar({
           align-items: center;
           gap: 8px;
           padding: 0 12px;
-          height: ${variant === "hero"
-            ? "56px"
-            : variant === "nav"
-              ? "36px"
-              : "44px"};
+          height: ${variant === "hero" ? "56px" : variant === "nav" ? "36px" : "44px"};
           background: rgba(20, 20, 24, 0.6);
           border: 1px solid rgba(255, 255, 255, 0.08);
           border-radius: 10px;
@@ -262,13 +245,11 @@ export function AISearchBar({
           outline: 0;
           color: #fafafa;
           font-size: ${variant === "hero" ? "16px" : "14px"};
-          font-family:
-            "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+          font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
         }
         .ai-search__field input::placeholder {
           color: rgba(255, 255, 255, 0.32);
-          font-family:
-            "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+          font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
         }
         .ai-search__chip {
           flex: 0 0 auto;

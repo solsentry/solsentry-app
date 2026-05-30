@@ -39,10 +39,7 @@ export function OperatorOfDay({ copy, data }: Props) {
   }
 
   return (
-    <section
-      className="landing-section landing-op"
-      aria-labelledby="op-title"
-    >
+    <section className="landing-section landing-op" aria-labelledby="op-title">
       <header className="landing-section__head">
         <span className="landing-eyebrow">{copy.opEyebrow}</span>
         <h2 id="op-title" className="landing-section__title">
@@ -78,9 +75,7 @@ export function OperatorOfDay({ copy, data }: Props) {
           </div>
           <div>
             <dt>{copy.opRate}</dt>
-            <dd>
-              {data.rugRatePct != null ? `${data.rugRatePct.toFixed(1)}%` : "—"}
-            </dd>
+            <dd>{data.rugRatePct != null ? `${data.rugRatePct.toFixed(1)}%` : "—"}</dd>
           </div>
         </dl>
 
