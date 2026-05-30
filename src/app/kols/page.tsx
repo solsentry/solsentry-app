@@ -42,8 +42,8 @@ export default async function KolsPage() {
             Track who's deploying
           </h1>
           <p style={{ color: "var(--fg-2)", fontSize: 14, marginTop: 6, lineHeight: 1.6 }}>
-            Top 50 operators by confirmed rugs. Click any wallet to open their
-            full timeline, or hit "Track" to add to your local watchlist.
+            Top 50 operators by confirmed rugs. Click any wallet to open their full timeline, or hit
+            "Track" to add to your local watchlist.
           </p>
         </header>
 
@@ -145,15 +145,10 @@ export default async function KolsPage() {
                   </span>
                   <span>
                     Tokens{" "}
-                    <strong style={{ color: "var(--fg-1)" }}>
-                      {fmtInt(op.total_tokens)}
-                    </strong>
+                    <strong style={{ color: "var(--fg-1)" }}>{fmtInt(op.total_tokens)}</strong>
                   </span>
                   <span>
-                    Pending{" "}
-                    <strong style={{ color: "var(--fg-2)" }}>
-                      {fmtInt(op.pending)}
-                    </strong>
+                    Pending <strong style={{ color: "var(--fg-2)" }}>{fmtInt(op.pending)}</strong>
                   </span>
                 </div>
                 {op.tags && op.tags.length > 0 && (

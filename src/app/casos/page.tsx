@@ -68,23 +68,13 @@ function Thumbnail({ accent, status }: { accent: string; status: "live" | "soon"
         overflow: "hidden",
       }}
     >
-      <svg
-        viewBox="0 0 320 160"
-        preserveAspectRatio="none"
-        width="100%"
-        height="100%"
-      >
+      <svg viewBox="0 0 320 160" preserveAspectRatio="none" width="100%" height="100%">
         <defs>
           <linearGradient id={`grad-${safeId}`} x1="0" y1="0" x2="1" y2="1">
             <stop offset="0%" stopColor={accent} stopOpacity={status === "live" ? 0.22 : 0.08} />
             <stop offset="100%" stopColor={accent} stopOpacity="0" />
           </linearGradient>
-          <pattern
-            id={`grid-${safeId}`}
-            width="16"
-            height="16"
-            patternUnits="userSpaceOnUse"
-          >
+          <pattern id={`grid-${safeId}`} width="16" height="16" patternUnits="userSpaceOnUse">
             <path
               d="M 16 0 L 0 0 0 16"
               fill="none"
@@ -244,8 +234,8 @@ export default function CasosIndex() {
               margin: 0,
             }}
           >
-            Investigações forenses on-chain. Cada caso é reproduzível via API pública —
-            dados live, trilha de auditoria, sem caixa-preta.
+            Investigações forenses on-chain. Cada caso é reproduzível via API pública — dados live,
+            trilha de auditoria, sem caixa-preta.
           </p>
         </header>
 

@@ -33,8 +33,7 @@ function normalize(raw: Record<string, unknown>): SkillRow {
   const fp = Number.isFinite(fpCandidate) ? Number(fpCandidate) : 0;
   const total = tp + fp;
   const precisionRaw =
-    (raw.precision as number | undefined) ??
-    (raw.precision_pct as number | undefined);
+    (raw.precision as number | undefined) ?? (raw.precision_pct as number | undefined);
   let precision = total > 0 ? tp / total : 0;
   if (precisionRaw !== undefined && Number.isFinite(precisionRaw)) {
     precision = precisionRaw > 1 ? precisionRaw / 100 : precisionRaw;
@@ -45,10 +44,7 @@ function normalize(raw: Record<string, unknown>): SkillRow {
     tp,
     fp,
     precision,
-    fired:
-      (raw.fired as number | undefined) ??
-      (raw.firings as number | undefined) ??
-      total,
+    fired: (raw.fired as number | undefined) ?? (raw.firings as number | undefined) ?? total,
   };
 }
 
@@ -89,10 +85,10 @@ export default async function SkillsPage() {
             Detection skill audit
           </h1>
           <p style={{ color: "var(--fg-2)", fontSize: 14, marginTop: 6 }}>
-            Each skill is one detection signal the brain can fire. Ground-truth
-            comes from token outcome resolutions — we count true positives
-            against false positives per skill in production. Green = trustworthy
-            (&gt;75%). Amber = monitored (40–75%). Red = under review (&lt;40%).
+            Each skill is one detection signal the brain can fire. Ground-truth comes from token
+            outcome resolutions — we count true positives against false positives per skill in
+            production. Green = trustworthy (&gt;75%). Amber = monitored (40–75%). Red = under
+            review (&lt;40%).
           </p>
         </header>
 
@@ -225,9 +221,7 @@ export default async function SkillsPage() {
                     </span>
                     <span>
                       Fired{" "}
-                      <strong style={{ color: "var(--fg-1)" }}>
-                        {s.fired.toLocaleString()}
-                      </strong>
+                      <strong style={{ color: "var(--fg-1)" }}>{s.fired.toLocaleString()}</strong>
                     </span>
                   </div>
                 </li>

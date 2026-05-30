@@ -1,16 +1,11 @@
-'use client'
+"use client";
 
-import { useState, useCallback } from 'react'
-import { Sparkles, Copy, Check, Mail, ArrowRight, AlertCircle } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
-import { Skeleton } from '@/components/ui/skeleton'
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip'
+import { useState, useCallback } from "react";
+import { Sparkles, Copy, Check, Mail, ArrowRight, AlertCircle } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import {
   Dialog,
   DialogContent,
@@ -18,9 +13,9 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog'
-import { Input } from '@/components/ui/input'
-import { cn } from '@/lib/utils'
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { cn } from "@/lib/utils";
 import {
   AreaChart,
   Area,
@@ -28,70 +23,70 @@ import {
   YAxis,
   Tooltip as RechartsTooltip,
   ResponsiveContainer,
-} from 'recharts'
+} from "recharts";
 
 // Types
 interface SparklineDataPoint {
-  hour: string
-  rugs: number
+  hour: string;
+  rugs: number;
 }
 
 interface IntelData {
-  date: string
-  headline: string
-  highlights: string[]
-  sparklineData: SparklineDataPoint[]
+  date: string;
+  headline: string;
+  highlights: string[];
+  sparklineData: SparklineDataPoint[];
   sources: {
-    scans: number
-    resolutions: number
-    operatorUpdates: number
-    clusterEvents: number
-  }
+    scans: number;
+    resolutions: number;
+    operatorUpdates: number;
+    clusterEvents: number;
+  };
 }
 
-type CardState = 'loaded' | 'loading' | 'error'
+type CardState = "loaded" | "loading" | "error";
 
 interface DailyIntelCardProps {
-  data?: IntelData
-  state?: CardState
-  onReadMore?: () => void
-  className?: string
+  data?: IntelData;
+  state?: CardState;
+  onReadMore?: () => void;
+  className?: string;
 }
 
 // Mock data
 const MOCK_DATA: IntelData = {
-  date: 'May 19',
-  headline: '1.247 novos tokens · 89 rugs detectados · 4kxscute liderou com 47 deploys',
+  date: "May 19",
+  headline: "1.247 novos tokens · 89 rugs detectados · 4kxscute liderou com 47 deploys",
   highlights: [
-    'Bot cluster #847 expanded to 12 wallets — now largest active cluster',
-    'Drain alert: 8.2K SOL routed via Cloak mixer in 3 txns',
-    'New CRITICAL operator: GhostA…9xY3 flagged after 12 rugs in 6h',
+    "Bot cluster #847 expanded to 12 wallets — now largest active cluster",
+    "Drain alert: 8.2K SOL routed via Cloak mixer in 3 txns",
+    "New CRITICAL operator: GhostA…9xY3 flagged after 12 rugs in 6h",
   ],
   sparklineData: [
-    { hour: '00:00', rugs: 2 },
-    { hour: '01:00', rugs: 1 },
-    { hour: '02:00', rugs: 3 },
-    { hour: '03:00', rugs: 1 },
-    { hour: '04:00', rugs: 0 },
-    { hour: '05:00', rugs: 2 },
-    { hour: '06:00', rugs: 4 },
-    { hour: '07:00', rugs: 3 },
-    { hour: '08:00', rugs: 5 },
-    { hour: '09:00', rugs: 8 },
-    { hour: '10:00', rugs: 6 },
-    { hour: '11:00', rugs: 7 },
-    { hour: '12:00', rugs: 9 },
-    { hour: '13:00', rugs: 12 },
-    { hour: '14:00', rugs: 8 },
-    { hour: '15:00', rugs: 6 },
-    { hour: '16:00', rugs: 4 },
-    { hour: '17:00', rugs: 5 },
-    { hour: '18:00', rugs: 3 },
-    { hour: '19:00', rugs: 2 },
-    { hour: '20:00', rugs: 4 },
-    { hour: '21:00', rugs: 3 },
-    { hour: '22:00', rugs: 2 },
-    { hour: '23:00', rugs: 1 },
+    { hour: "00:00", rugs: 2 },
+    { hour: "01:00", rugs: 1 },
+    { hour: "02:00", rugs: 3 },
+    { hour: "03:00", rugs: 1 },
+    { hour: "04:00", rugs: 0 },
+    { hour: "05:00", rugs: 2 },
+    { hour: "06:00", rugs: 4 },
+    { hour: "07:00", rugs: 3 },
+    { hour: "08:00", rugs: 5 },
+    { hour: "09:00", rugs: 8 },
+    { hour: "10:00", rugs: 6 },
+    { hour: "11:00", rugs: 7 },
+    { hour: "12:00", rugs: 9 },
+    { hour: "13:00", rugs: 12 },
+    { hour: "14:00", rugs: 8 },
+    { hour: "15:00", rugs: 6 },
+    { hour: "16:00", rugs: 4 },
+    { hour: "17:00", rugs: 5 },
+    { hour: "18:00", rugs: 3 },
+    { hour: "19:00", rugs: 2 },
+    { hour: "20:00", rugs: 4 },
+    { hour: "21:00", rugs: 3 },
+    { hour: "22:00", rugs: 2 },
+    { hour: "23:00", rugs: 1 },
   ],
   sources: {
     scans: 2400,
@@ -99,21 +94,27 @@ const MOCK_DATA: IntelData = {
     operatorUpdates: 1247,
     clusterEvents: 12,
   },
-}
+};
 
 // Custom sparkline tooltip
-function CustomTooltip({ active, payload }: { active?: boolean; payload?: Array<{ payload: SparklineDataPoint }> }) {
+function CustomTooltip({
+  active,
+  payload,
+}: {
+  active?: boolean;
+  payload?: Array<{ payload: SparklineDataPoint }>;
+}) {
   if (active && payload && payload.length) {
-    const data = payload[0].payload
+    const data = payload[0].payload;
     return (
       <div className="rounded-md border border-border bg-card px-2 py-1 text-xs shadow-lg">
         <span className="font-mono text-muted-foreground">{data.hour}</span>
         <span className="mx-1 text-muted-foreground/60">—</span>
         <span className="font-mono text-primary">{data.rugs} rugs</span>
       </div>
-    )
+    );
   }
-  return null
+  return null;
 }
 
 // Sparkline component
@@ -129,10 +130,10 @@ function Sparkline({ data }: { data: SparklineDataPoint[] }) {
             </linearGradient>
           </defs>
           <XAxis dataKey="hour" hide />
-          <YAxis hide domain={[0, 'dataMax + 2']} />
+          <YAxis hide domain={[0, "dataMax + 2"]} />
           <RechartsTooltip
             content={<CustomTooltip />}
-            cursor={{ stroke: '#C17D0E', strokeWidth: 1, strokeDasharray: '3 3' }}
+            cursor={{ stroke: "#C17D0E", strokeWidth: 1, strokeDasharray: "3 3" }}
           />
           <Area
             type="monotone"
@@ -141,12 +142,12 @@ function Sparkline({ data }: { data: SparklineDataPoint[] }) {
             strokeWidth={1.5}
             fill="url(#rugGradient)"
             dot={false}
-            activeDot={{ r: 3, fill: '#C17D0E', stroke: '#100E0A', strokeWidth: 2 }}
+            activeDot={{ r: 3, fill: "#C17D0E", stroke: "#100E0A", strokeWidth: 2 }}
           />
         </AreaChart>
       </ResponsiveContainer>
     </div>
-  )
+  );
 }
 
 // Loading skeleton
@@ -195,13 +196,18 @@ function LoadingSkeleton() {
         <Skeleton className="size-8 bg-secondary" />
       </div>
     </div>
-  )
+  );
 }
 
 // Error state
-function ErrorState({ sources }: { sources?: IntelData['sources'] }) {
-  const fallbackSources = sources || { scans: 0, resolutions: 0, operatorUpdates: 0, clusterEvents: 0 }
-  
+function ErrorState({ sources }: { sources?: IntelData["sources"] }) {
+  const fallbackSources = sources || {
+    scans: 0,
+    resolutions: 0,
+    operatorUpdates: 0,
+    clusterEvents: 0,
+  };
+
   return (
     <div className="space-y-4">
       {/* Error banner */}
@@ -213,7 +219,9 @@ function ErrorState({ sources }: { sources?: IntelData['sources'] }) {
       {/* Fallback stats */}
       <div className="grid grid-cols-2 gap-3">
         <div className="rounded-md border border-border bg-popover p-3">
-          <div className="font-mono text-lg text-foreground">{fallbackSources.scans.toLocaleString()}</div>
+          <div className="font-mono text-lg text-foreground">
+            {fallbackSources.scans.toLocaleString()}
+          </div>
           <div className="text-xs text-muted-foreground/60">scans today</div>
         </div>
         <div className="rounded-md border border-border bg-popover p-3">
@@ -221,7 +229,9 @@ function ErrorState({ sources }: { sources?: IntelData['sources'] }) {
           <div className="text-xs text-muted-foreground/60">resolutions</div>
         </div>
         <div className="rounded-md border border-border bg-popover p-3">
-          <div className="font-mono text-lg text-foreground">{fallbackSources.operatorUpdates.toLocaleString()}</div>
+          <div className="font-mono text-lg text-foreground">
+            {fallbackSources.operatorUpdates.toLocaleString()}
+          </div>
           <div className="text-xs text-muted-foreground/60">operator updates</div>
         </div>
         <div className="rounded-md border border-border bg-popover p-3">
@@ -234,19 +244,19 @@ function ErrorState({ sources }: { sources?: IntelData['sources'] }) {
         Full AI analysis will be available shortly.
       </p>
     </div>
-  )
+  );
 }
 
 // Email subscribe modal
 function SubscribeModal({ children }: { children: React.ReactNode }) {
-  const [email, setEmail] = useState('')
-  const [submitted, setSubmitted] = useState(false)
+  const [email, setEmail] = useState("");
+  const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    console.log('[v0] Subscribe email:', email)
-    setSubmitted(true)
-  }
+    e.preventDefault();
+    console.log("[v0] Subscribe email:", email);
+    setSubmitted(true);
+  };
 
   return (
     <Dialog>
@@ -289,57 +299,52 @@ function SubscribeModal({ children }: { children: React.ReactNode }) {
         )}
       </DialogContent>
     </Dialog>
-  )
+  );
 }
 
 // Main component
 export function DailyIntelCard({
   data = MOCK_DATA,
-  state = 'loaded',
+  state = "loaded",
   onReadMore,
   className,
 }: DailyIntelCardProps) {
-  const [copied, setCopied] = useState(false)
+  const [copied, setCopied] = useState(false);
 
   const generateMarkdown = useCallback(() => {
-    if (!data) return ''
+    if (!data) return "";
     return `# Sena AI Daily Intel — ${data.date}
 
 ${data.headline}
 
-${data.highlights.map((h) => `• ${h}`).join('\n')}
+${data.highlights.map((h) => `• ${h}`).join("\n")}
 
 ---
 Sources: ${data.sources.scans.toLocaleString()} scans · ${data.sources.resolutions} resolutions · ${data.sources.operatorUpdates.toLocaleString()} operator updates · ${data.sources.clusterEvents} cluster events
-`
-  }, [data])
+`;
+  }, [data]);
 
   const handleCopy = useCallback(async () => {
-    const markdown = generateMarkdown()
-    await navigator.clipboard.writeText(markdown)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
-  }, [generateMarkdown])
+    const markdown = generateMarkdown();
+    await navigator.clipboard.writeText(markdown);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  }, [generateMarkdown]);
 
   const handleReadMore = useCallback(() => {
     if (onReadMore) {
-      onReadMore()
+      onReadMore();
     } else {
-      console.log('[v0] Read full report clicked')
+      console.log("[v0] Read full report clicked");
     }
-  }, [onReadMore])
+  }, [onReadMore]);
 
   return (
-    <Card
-      className={cn(
-        'w-full max-w-[420px] border-border bg-card',
-        className
-      )}
-    >
+    <Card className={cn("w-full max-w-[420px] border-border bg-card", className)}>
       <CardContent className="p-4 sm:p-5">
-        {state === 'loading' ? (
+        {state === "loading" ? (
           <LoadingSkeleton />
-        ) : state === 'error' ? (
+        ) : state === "error" ? (
           <>
             {/* Header even in error state */}
             <div className="mb-4 flex items-center gap-2">
@@ -403,9 +408,8 @@ Sources: ${data.sources.scans.toLocaleString()} scans · ${data.sources.resoluti
             {/* Source citations */}
             <div className="h-px bg-secondary" />
             <p className="text-xs italic text-muted-foreground/60">
-              Based on: {data.sources.scans.toLocaleString()} scans ·{' '}
-              {data.sources.resolutions} resolutions ·{' '}
-              {data.sources.operatorUpdates.toLocaleString()} operator updates ·{' '}
+              Based on: {data.sources.scans.toLocaleString()} scans · {data.sources.resolutions}{" "}
+              resolutions · {data.sources.operatorUpdates.toLocaleString()} operator updates ·{" "}
               {data.sources.clusterEvents} cluster events
             </p>
 
@@ -451,7 +455,7 @@ Sources: ${data.sources.scans.toLocaleString()} scans · ${data.sources.resoluti
                   side="top"
                   className="border-border bg-card text-xs text-foreground"
                 >
-                  {copied ? 'Copied!' : 'Copy as Markdown'}
+                  {copied ? "Copied!" : "Copy as Markdown"}
                 </TooltipContent>
               </Tooltip>
             </div>
@@ -459,7 +463,7 @@ Sources: ${data.sources.scans.toLocaleString()} scans · ${data.sources.resoluti
         )}
       </CardContent>
     </Card>
-  )
+  );
 }
 
 // Demo wrapper to show all states
@@ -484,5 +488,5 @@ export function DailyIntelCardDemo() {
         <DailyIntelCard state="error" />
       </div>
     </div>
-  )
+  );
 }

@@ -148,10 +148,8 @@ export default function NotificationsPage() {
                   onClick={() => changeThreshold(t)}
                   style={{
                     padding: "6px 12px",
-                    background:
-                      threshold === t ? "var(--brand-amber)" : "transparent",
-                    color:
-                      threshold === t ? "var(--fg-on-brand)" : "var(--fg-3)",
+                    background: threshold === t ? "var(--brand-amber)" : "transparent",
+                    color: threshold === t ? "var(--fg-on-brand)" : "var(--fg-3)",
                     border: 0,
                     borderRadius: 4,
                     fontFamily: "var(--font-mono)",
@@ -169,8 +167,8 @@ export default function NotificationsPage() {
 
         <Section title="Telegram bot">
           <p style={{ color: "var(--fg-2)", fontSize: 13, lineHeight: 1.6 }}>
-            Get the same alerts via Telegram with full operator profiles, drain
-            traces, and hunter assignments. Open{" "}
+            Get the same alerts via Telegram with full operator profiles, drain traces, and hunter
+            assignments. Open{" "}
             <a
               href="https://t.me/solsentryai"
               target="_blank"
@@ -204,8 +202,8 @@ export default function NotificationsPage() {
 
         <Section title="Discord webhook">
           <p style={{ color: "var(--fg-2)", fontSize: 13, lineHeight: 1.6, marginBottom: 8 }}>
-            Paste a Discord webhook URL to forward CRITICAL alerts (UI placeholder
-            — backend integration ships post-Demo Day).
+            Paste a Discord webhook URL to forward CRITICAL alerts (UI placeholder — backend
+            integration ships post-Demo Day).
           </p>
           <div style={{ display: "flex", gap: 8 }}>
             <input
@@ -245,8 +243,7 @@ export default function NotificationsPage() {
 
         <Section title="Email digest">
           <p style={{ color: "var(--fg-2)", fontSize: 13, lineHeight: 1.6, marginBottom: 8 }}>
-            Daily CRITICAL alert digest. Saved locally for now — opt-in flow ships
-            post-Demo Day.
+            Daily CRITICAL alert digest. Saved locally for now — opt-in flow ships post-Demo Day.
           </p>
           <div style={{ display: "flex", gap: 8 }}>
             <input
@@ -289,13 +286,7 @@ export default function NotificationsPage() {
   );
 }
 
-function Section({
-  title,
-  children,
-}: {
-  title: string;
-  children: React.ReactNode;
-}) {
+function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div
       style={{

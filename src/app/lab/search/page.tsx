@@ -22,9 +22,8 @@ export default function SearchLabPage() {
           }}
         />
         <p className="p-small">
-          Visual = v0 redesign. Routing = canonical detectKind/routeFor from the
-          live AISearchBar. Live landing not modified — swap is a deliberate
-          follow-up.
+          Visual = v0 redesign. Routing = canonical detectKind/routeFor from the live AISearchBar.
+          Live landing not modified — swap is a deliberate follow-up.
         </p>
       </div>
     </div>

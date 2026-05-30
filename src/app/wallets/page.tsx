@@ -22,8 +22,7 @@ export default async function WalletsPage() {
           eyebrow="Wallet profiles"
           title={
             <>
-              Search any{" "}
-              <span style={{ color: "var(--brand-amber)" }}>Solana wallet</span>
+              Search any <span style={{ color: "var(--brand-amber)" }}>Solana wallet</span>
             </>
           }
           sub={
@@ -43,10 +42,9 @@ export default async function WalletsPage() {
               maxWidth: 720,
             }}
           >
-            Wallet profiles live at <code>/operator/[wallet]</code>. Paste any
-            Solana address into the URL to fetch its operator profile, deploy
-            timeline, and connected wallets. Or use the live scan on the
-            homepage.
+            Wallet profiles live at <code>/operator/[wallet]</code>. Paste any Solana address into
+            the URL to fetch its operator profile, deploy timeline, and connected wallets. Or use
+            the live scan on the homepage.
           </p>
 
           <div className="grid-2">
@@ -73,8 +71,8 @@ export default async function WalletsPage() {
                 4kxscute…5pH1
               </div>
               <p style={{ color: "var(--fg-2)", fontSize: 13, lineHeight: 1.6 }}>
-                The infamous serial deployer. 1,059 confirmed rugs across 1,060
-                tokens. 99.9% rug rate. Live since March 2026.
+                The infamous serial deployer. 1,059 confirmed rugs across 1,060 tokens. 99.9% rug
+                rate. Live since March 2026.
               </p>
             </Link>
 
@@ -83,10 +81,7 @@ export default async function WalletsPage() {
               className="panel panel-hover"
               style={{ textDecoration: "none", color: "inherit", display: "block" }}
             >
-              <div
-                className="label-tag"
-                style={{ color: "var(--brand-amber)", marginBottom: 8 }}
-              >
+              <div className="label-tag" style={{ color: "var(--brand-amber)", marginBottom: 8 }}>
                 Browse leaderboard
               </div>
               <div
@@ -101,8 +96,8 @@ export default async function WalletsPage() {
                 Top operators →
               </div>
               <p style={{ color: "var(--fg-2)", fontSize: 13, lineHeight: 1.6 }}>
-                The 50 highest-risk operators by confirmed rug count. Each row
-                links to the full operator profile.
+                The 50 highest-risk operators by confirmed rug count. Each row links to the full
+                operator profile.
               </p>
             </Link>
           </div>
@@ -112,24 +107,11 @@ export default async function WalletsPage() {
           <Section eyebrow="Network counters" title="Wallet stats">
             <div className="stats-grid">
               <Card label="Wallets profiled" value={fmtInt(stats.wallet_profiles_tracked)} />
-              <Card
-                label="Operators tracked"
-                value={fmtInt(stats.total_operators)}
-              />
-              <Card
-                label="Serial ruggers"
-                value={fmtInt(stats.serial_ruggers)}
-                accent="critical"
-              />
-              <Card
-                label="Wallets with rugs"
-                value={fmtInt(stats.wallets_with_confirmed_rugs)}
-              />
+              <Card label="Operators tracked" value={fmtInt(stats.total_operators)} />
+              <Card label="Serial ruggers" value={fmtInt(stats.serial_ruggers)} accent="critical" />
+              <Card label="Wallets with rugs" value={fmtInt(stats.wallets_with_confirmed_rugs)} />
               <Card label="Bot clusters" value={fmtInt(stats.bot_clusters)} />
-              <Card
-                label="Resolve rate"
-                value={fmtPct(stats.resolve_rate_pct, 1)}
-              />
+              <Card label="Resolve rate" value={fmtPct(stats.resolve_rate_pct, 1)} />
             </div>
           </Section>
         )}
@@ -145,8 +127,7 @@ export default async function WalletsPage() {
                 Bot clusters
               </div>
               <p style={{ color: "var(--fg-2)", fontSize: 13, lineHeight: 1.6 }}>
-                Coordinated wallet groups identified by funding source and
-                deployment fingerprint.
+                Coordinated wallet groups identified by funding source and deployment fingerprint.
               </p>
             </Link>
             <Link
@@ -154,12 +135,14 @@ export default async function WalletsPage() {
               className="panel panel-hover"
               style={{ textDecoration: "none", color: "inherit", display: "block" }}
             >
-              <div className="label-tag" style={{ color: "var(--status-warning)", marginBottom: 8 }}>
+              <div
+                className="label-tag"
+                style={{ color: "var(--status-warning)", marginBottom: 8 }}
+              >
                 Live alerts
               </div>
               <p style={{ color: "var(--fg-2)", fontSize: 13, lineHeight: 1.6 }}>
-                Stream of HIGH and CRITICAL events as the scanner emits them.
-                Refreshed every 30s.
+                Stream of HIGH and CRITICAL events as the scanner emits them. Refreshed every 30s.
               </p>
             </Link>
             <Link
@@ -171,8 +154,7 @@ export default async function WalletsPage() {
                 Dashboard
               </div>
               <p style={{ color: "var(--fg-2)", fontSize: 13, lineHeight: 1.6 }}>
-                System health, runtime, accuracy, invariants. The control room
-                view.
+                System health, runtime, accuracy, invariants. The control room view.
               </p>
             </Link>
           </div>
@@ -182,15 +164,7 @@ export default async function WalletsPage() {
   );
 }
 
-function Card({
-  label,
-  value,
-  accent,
-}: {
-  label: string;
-  value: string;
-  accent?: "critical";
-}) {
+function Card({ label, value, accent }: { label: string; value: string; accent?: "critical" }) {
   return (
     <div className="stat-card">
       <div className="stat-label">{label}</div>

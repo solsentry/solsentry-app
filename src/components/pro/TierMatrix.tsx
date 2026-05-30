@@ -1,12 +1,22 @@
 const ROWS: { feature: string; free: string; pro: string; sentinel: string }[] = [
-  { feature: "Public scans · verdicts", free: "Unlimited", pro: "Unlimited", sentinel: "Unlimited" },
+  {
+    feature: "Public scans · verdicts",
+    free: "Unlimited",
+    pro: "Unlimited",
+    sentinel: "Unlimited",
+  },
   { feature: "Share URLs · public pages", free: "Yes", pro: "Yes", sentinel: "Yes" },
   { feature: "Telegram bot · MCP server", free: "Yes", pro: "Yes", sentinel: "Yes" },
   { feature: "AI playground (Sena)", free: "—", pro: "Yes", sentinel: "Yes" },
   { feature: "Saved investigation studies", free: "—", pro: "Unlimited", sentinel: "Unlimited" },
   { feature: "Watchlist + push alerts", free: "—", pro: "Yes", sentinel: "Yes" },
   { feature: "CSV / JSON exports", free: "—", pro: "Yes", sentinel: "Yes" },
-  { feature: "x402 metered credits", free: "Pay-per-call", pro: "Bundled monthly", sentinel: "Volume rate" },
+  {
+    feature: "x402 metered credits",
+    free: "Pay-per-call",
+    pro: "Bundled monthly",
+    sentinel: "Volume rate",
+  },
   { feature: "Real-time webhook feed", free: "—", pro: "—", sentinel: "Yes" },
   { feature: "Priority support · SLA", free: "—", pro: "Email", sentinel: "Dedicated" },
 ];
@@ -46,7 +56,9 @@ export function TierMatrix() {
                 borderTop: "1px solid var(--border-soft)",
               }}
             >
-              <Td align="left" strong>{r.feature}</Td>
+              <Td align="left" strong>
+                {r.feature}
+              </Td>
               <Td>{r.free}</Td>
               <Td highlight>{r.pro}</Td>
               <Td>{r.sentinel}</Td>

@@ -252,10 +252,7 @@ export default function CasenPage() {
     <ProShell>
       <div style={{ maxWidth: 1280, margin: "0 auto" }}>
         <header style={{ marginBottom: 24 }}>
-          <span
-            className="eyebrow"
-            style={{ color: "var(--brand-amber)" }}
-          >
+          <span className="eyebrow" style={{ color: "var(--brand-amber)" }}>
             Investigation case study · all identifiers anonymized
           </span>
           <h1
@@ -278,11 +275,11 @@ export default function CasenPage() {
               maxWidth: 760,
             }}
           >
-            One payer wallet. <strong style={{ color: "var(--fg-1)" }}>96 grant recipients</strong> in
-            the same dollar-amount band routing into{" "}
-            <strong style={{ color: "var(--fg-1)" }}>4 laundering hubs</strong>. Convergence at 2 exit
-            wallets. SolSentry's autonomous brain detected and traced the entire flow without manual
-            intervention.
+            One payer wallet. <strong style={{ color: "var(--fg-1)" }}>96 grant recipients</strong>{" "}
+            in the same dollar-amount band routing into{" "}
+            <strong style={{ color: "var(--fg-1)" }}>4 laundering hubs</strong>. Convergence at 2
+            exit wallets. SolSentry's autonomous brain detected and traced the entire flow without
+            manual intervention.
           </p>
           <div style={{ display: "flex", gap: 12, marginTop: 16, flexWrap: "wrap" }}>
             <span
@@ -361,10 +358,7 @@ export default function CasenPage() {
             { color: "#a988d9", label: "EXIT" },
             { color: "#ff5e3a", label: "CONTROLLING ID" },
           ].map((l) => (
-            <span
-              key={l.label}
-              style={{ display: "inline-flex", alignItems: "center", gap: 6 }}
-            >
+            <span key={l.label} style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
               <span
                 style={{
                   width: 9,
@@ -456,16 +450,9 @@ export default function CasenPage() {
               const s = nodeStyleFor(node.type, node.highlight);
               const x = xMap[node.id];
               const y = TIER_Y[node.type];
-              const isAccent =
-                node.highlight || node.type === "root" || node.type === "actor";
+              const isAccent = node.highlight || node.type === "root" || node.type === "actor";
               return (
-                <foreignObject
-                  key={node.id}
-                  x={x}
-                  y={y}
-                  width={NODE_W}
-                  height={NODE_H}
-                >
+                <foreignObject key={node.id} x={x} y={y} width={NODE_W} height={NODE_H}>
                   <div
                     style={{
                       width: NODE_W,
@@ -534,14 +521,8 @@ export default function CasenPage() {
             marginBottom: 24,
           }}
         >
-          <div
-            className="panel"
-            style={{ borderColor: "var(--brand-amber)" }}
-          >
-            <div
-              className="label-tag"
-              style={{ marginBottom: 8, color: "var(--brand-amber)" }}
-            >
+          <div className="panel" style={{ borderColor: "var(--brand-amber)" }}>
+            <div className="label-tag" style={{ marginBottom: 8, color: "var(--brand-amber)" }}>
               Pattern detected
             </div>
             <h3
@@ -556,9 +537,9 @@ export default function CasenPage() {
               Same-band cohort
             </h3>
             <p style={{ color: "var(--fg-2)", fontSize: 13, lineHeight: 1.6 }}>
-              96 of 118 recipients fall into a tight $245-$255 USD band. Statistically
-              implausible without coordination. The brain's <code style={{ color: "var(--brand-amber)" }}>ring_detector</code>{" "}
-              flagged it.
+              96 of 118 recipients fall into a tight $245-$255 USD band. Statistically implausible
+              without coordination. The brain's{" "}
+              <code style={{ color: "var(--brand-amber)" }}>ring_detector</code> flagged it.
             </p>
           </div>
 
@@ -578,16 +559,13 @@ export default function CasenPage() {
               4 hubs, auto-laundered
             </h3>
             <p style={{ color: "var(--fg-2)", fontSize: 13, lineHeight: 1.6 }}>
-              Recipients sent funds within minutes to one of 4 hubs (α/β/γ/δ).
-              Hubs auto-swapped USDG → USDC via Jupiter. Sub-second hops.
+              Recipients sent funds within minutes to one of 4 hubs (α/β/γ/δ). Hubs auto-swapped
+              USDG → USDC via Jupiter. Sub-second hops.
             </p>
           </div>
 
           <div className="panel">
-            <div
-              className="label-tag"
-              style={{ marginBottom: 8, color: "var(--brand-purple)" }}
-            >
+            <div className="label-tag" style={{ marginBottom: 8, color: "var(--brand-purple)" }}>
               Convergence
             </div>
             <h3
@@ -602,19 +580,13 @@ export default function CasenPage() {
               2 exits · same identity
             </h3>
             <p style={{ color: "var(--fg-2)", fontSize: 13, lineHeight: 1.6 }}>
-              Funds converged on a single CEX deposit address (KYC'd) and one DEX
-              aggregator bot. Both exits link to the same 2.3-year-old wallet.
+              Funds converged on a single CEX deposit address (KYC'd) and one DEX aggregator bot.
+              Both exits link to the same 2.3-year-old wallet.
             </p>
           </div>
 
-          <div
-            className="panel"
-            style={{ borderColor: "var(--status-critical)" }}
-          >
-            <div
-              className="label-tag"
-              style={{ marginBottom: 8, color: "var(--status-critical)" }}
-            >
+          <div className="panel" style={{ borderColor: "var(--status-critical)" }}>
+            <div className="label-tag" style={{ marginBottom: 8, color: "var(--status-critical)" }}>
               Lead
             </div>
             <h3
@@ -629,17 +601,14 @@ export default function CasenPage() {
               Controlling identity
             </h3>
             <p style={{ color: "var(--fg-2)", fontSize: 13, lineHeight: 1.6 }}>
-              2.3-year-old wallet, 1.5 signatures/day baseline, suddenly active on
-              cash-out timing. High-confidence controlling-identity lead.
+              2.3-year-old wallet, 1.5 signatures/day baseline, suddenly active on cash-out timing.
+              High-confidence controlling-identity lead.
             </p>
           </div>
         </div>
 
         {/* Methodology */}
-        <div
-          className="panel"
-          style={{ marginBottom: 24 }}
-        >
+        <div className="panel" style={{ marginBottom: 24 }}>
           <div className="label-tag" style={{ marginBottom: 12 }}>
             How SolSentry detected this
           </div>
@@ -658,8 +627,8 @@ export default function CasenPage() {
               the payer wallet as the seed.
             </li>
             <li>
-              <strong style={{ color: "var(--fg-1)" }}>Cohort discovery.</strong>{" "}
-              Pulled all USDG/USDC outflows in the analysis window. Bucketed recipients by amount.
+              <strong style={{ color: "var(--fg-1)" }}>Cohort discovery.</strong> Pulled all
+              USDG/USDC outflows in the analysis window. Bucketed recipients by amount.
             </li>
             <li>
               <strong style={{ color: "var(--fg-1)" }}>Same-band ring detection.</strong>{" "}
@@ -667,19 +636,21 @@ export default function CasenPage() {
               recipients in the $245-$255 band — far above the statistical noise floor.
             </li>
             <li>
-              <strong style={{ color: "var(--fg-1)" }}>Hop-2 trace.</strong>{" "}
-              For each cohort wallet, traced the next-hop transfer. 96/96 routed through 4 hub
-              wallets within minutes of receipt.
+              <strong style={{ color: "var(--fg-1)" }}>Hop-2 trace.</strong> For each cohort wallet,
+              traced the next-hop transfer. 96/96 routed through 4 hub wallets within minutes of
+              receipt.
             </li>
             <li>
               <strong style={{ color: "var(--fg-1)" }}>CEX deposit convergence.</strong>{" "}
-              <code style={{ color: "var(--brand-amber)" }}>intelligence/cex_deposit_tracer.py</code>{" "}
+              <code style={{ color: "var(--brand-amber)" }}>
+                intelligence/cex_deposit_tracer.py
+              </code>{" "}
               found all 4 hubs converging on the same KYC'd CEX deposit address.
             </li>
             <li>
-              <strong style={{ color: "var(--fg-1)" }}>Controlling-identity inference.</strong>{" "}
-              The 2.3-year-old wallet sitting upstream of the CEX exit had a 1.5 sigs/day baseline
-              that broke during the cash-out window — high-confidence operator lead.
+              <strong style={{ color: "var(--fg-1)" }}>Controlling-identity inference.</strong> The
+              2.3-year-old wallet sitting upstream of the CEX exit had a 1.5 sigs/day baseline that
+              broke during the cash-out window — high-confidence operator lead.
             </li>
           </ol>
           <p

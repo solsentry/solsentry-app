@@ -55,11 +55,7 @@ export default async function AlertsPage() {
           ) : (
             <div className="alerts-list">
               {alerts.map((a, i) => (
-                <Link
-                  key={`${a.mint}-${i}`}
-                  href={`/token/${a.mint}`}
-                  className="alert-item"
-                >
+                <Link key={`${a.mint}-${i}`} href={`/token/${a.mint}`} className="alert-item">
                   <div className="alert-head">
                     <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
                       <RiskBadge level={a.risk_level} size="sm" />
@@ -100,16 +96,12 @@ export default async function AlertsPage() {
                       style={{
                         fontFamily: "var(--font-mono)",
                         fontSize: 11,
-                        color: a.dev_known
-                          ? "var(--status-critical)"
-                          : "var(--fg-3)",
+                        color: a.dev_known ? "var(--status-critical)" : "var(--fg-3)",
                       }}
                     >
                       dev {a.dev_wallet.slice(0, 8)}…{a.dev_wallet.slice(-6)}
                       {a.dev_known && a.dev_confirmed_rugs != null && (
-                        <span style={{ marginLeft: 8 }}>
-                          · {a.dev_confirmed_rugs} prior rugs
-                        </span>
+                        <span style={{ marginLeft: 8 }}>· {a.dev_confirmed_rugs} prior rugs</span>
                       )}
                     </div>
                   )}
@@ -122,9 +114,7 @@ export default async function AlertsPage() {
                         </span>
                       ))}
                       {a.flags.length > 5 && (
-                        <span className="alert-flag-more">
-                          +{a.flags.length - 5}
-                        </span>
+                        <span className="alert-flag-more">+{a.flags.length - 5}</span>
                       )}
                     </div>
                   )}

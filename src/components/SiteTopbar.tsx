@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 
 /**
  * SiteTopbar — the single source of truth for the top navigation.
- * 
+ *
  * This component aims to be used everywhere so the experience is identical:
  * - Easy / Pro / Dev mode selector
  * - EN / PT language toggle
@@ -25,13 +25,20 @@ export function SiteTopbar() {
 
   // Determine active mode based on current route
   const getActiveMode = () => {
-    if (!pathname) return 'easy';
+    if (!pathname) return "easy";
 
-    if (pathname.startsWith('/pro') || pathname.startsWith('/dashboard')) return 'pro';
-    if (pathname.startsWith('/api') || pathname.startsWith('/docs') || pathname.startsWith('/architecture') || pathname.startsWith('/skills') || pathname.startsWith('/x402')) return 'dev';
+    if (pathname.startsWith("/pro") || pathname.startsWith("/dashboard")) return "pro";
+    if (
+      pathname.startsWith("/api") ||
+      pathname.startsWith("/docs") ||
+      pathname.startsWith("/architecture") ||
+      pathname.startsWith("/skills") ||
+      pathname.startsWith("/x402")
+    )
+      return "dev";
 
     // Only mark Easy as active on the homepage itself
-    if (pathname === '/') return 'easy';
+    if (pathname === "/") return "easy";
 
     return null; // no mode active (e.g. on /about, /pricing, etc.)
   };
@@ -76,49 +83,50 @@ export function SiteTopbar() {
   };
 
   return (
-    <header 
-      className="landing-chrome" 
+    <header
+      className="landing-chrome"
       role="banner"
       style={{
-        left: '50%',
-        right: 'auto',
-        transform: 'translateX(-50%)',
-        maxWidth: '1280px',   // ou o mesmo valor do seu container
-        width: '100%',
+        left: "50%",
+        right: "auto",
+        transform: "translateX(-50%)",
+        maxWidth: "1280px", // ou o mesmo valor do seu container
+        width: "100%",
       }}
     >
       <div className="container">
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
           <Link href="/" className="landing-chrome__brand">
             <img src="/logo-3d.webp" alt="" width={28} height={28} />
             <span>SolSentry</span>
           </Link>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-
+          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
             {/* Mode tabs - new padrão (mesmo do ProShell) */}
-            <div style={{ 
-              display: 'inline-flex', 
-              alignItems: 'center', 
-              border: '1px solid var(--border)', 
-              borderRadius: 6, 
-              padding: 2,
-              overflow: 'hidden',
-              fontFamily: 'var(--font-mono)',
-              fontSize: 11,
-            }}>
-              <Link 
-                href="/" 
+            <div
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                border: "1px solid var(--border)",
+                borderRadius: 6,
+                padding: 2,
+                overflow: "hidden",
+                fontFamily: "var(--font-mono)",
+                fontSize: 11,
+              }}
+            >
+              <Link
+                href="/"
                 style={{
-                  padding: '8px 12px',
+                  padding: "8px 12px",
                   borderRadius: 4,
-                  color: activeMode === 'easy' ? 'var(--brand-amber)' : 'var(--fg-2)',
-                  background: activeMode === 'easy' ? 'var(--brand-amber-tint)' : 'transparent',
-                  textDecoration: 'none',
-                  fontWeight: activeMode === 'easy' ? 600 : 400,
+                  color: activeMode === "easy" ? "var(--brand-amber)" : "var(--fg-2)",
+                  background: activeMode === "easy" ? "var(--brand-amber-tint)" : "transparent",
+                  textDecoration: "none",
+                  fontWeight: activeMode === "easy" ? 600 : 400,
                   minHeight: 36,
-                  display: 'flex',
-                  alignItems: 'center',
+                  display: "flex",
+                  alignItems: "center",
                   fontSize: 11,
                   transition: "background 110ms ease, color 110ms ease, opacity 110ms ease",
                 }}
@@ -126,30 +134,30 @@ export function SiteTopbar() {
                 Easy
               </Link>
 
-              {activeMode !== 'easy' && activeMode !== 'pro' && (
-                <span 
-                  style={{ 
-                    width: 1, 
-                    alignSelf: 'stretch', 
-                    background: 'var(--border)', 
-                    margin: '0 2px' 
-                  }} 
+              {activeMode !== "easy" && activeMode !== "pro" && (
+                <span
+                  style={{
+                    width: 1,
+                    alignSelf: "stretch",
+                    background: "var(--border)",
+                    margin: "0 2px",
+                  }}
                 />
               )}
 
-              <Link 
-                href="/pro" 
+              <Link
+                href="/pro"
                 style={{
-                  padding: '8px 12px',
+                  padding: "8px 12px",
                   borderRadius: 4,
-                  color: activeMode === 'pro' ? 'var(--brand-amber)' : 'var(--fg-2)',
-                  background: activeMode === 'pro' ? 'var(--brand-amber-tint)' : 'transparent',
-                  textDecoration: 'none',
-                  fontWeight: activeMode === 'pro' ? 600 : 400,
-                  opacity: activeMode === 'pro' ? 1 : 0.75,
+                  color: activeMode === "pro" ? "var(--brand-amber)" : "var(--fg-2)",
+                  background: activeMode === "pro" ? "var(--brand-amber-tint)" : "transparent",
+                  textDecoration: "none",
+                  fontWeight: activeMode === "pro" ? 600 : 400,
+                  opacity: activeMode === "pro" ? 1 : 0.75,
                   minHeight: 36,
-                  display: 'flex',
-                  alignItems: 'center',
+                  display: "flex",
+                  alignItems: "center",
                   fontSize: 11,
                   transition: "background 110ms ease, color 110ms ease, opacity 110ms ease",
                 }}
@@ -157,29 +165,29 @@ export function SiteTopbar() {
                 Pro <span style={{ fontSize: 9, opacity: 0.6, marginLeft: 2 }}>🔒</span>
               </Link>
 
-              {activeMode !== 'pro' && activeMode !== 'dev' && (
-                <span 
-                  style={{ 
-                    width: 1, 
-                    alignSelf: 'stretch', 
-                    background: 'var(--border)', 
-                    margin: '0 2px' 
-                  }} 
+              {activeMode !== "pro" && activeMode !== "dev" && (
+                <span
+                  style={{
+                    width: 1,
+                    alignSelf: "stretch",
+                    background: "var(--border)",
+                    margin: "0 2px",
+                  }}
                 />
               )}
 
-              <Link 
-                href="/api" 
+              <Link
+                href="/api"
                 style={{
-                  padding: '8px 12px',
+                  padding: "8px 12px",
                   borderRadius: 4,
-                  color: activeMode === 'dev' ? 'var(--brand-amber)' : 'var(--fg-2)',
-                  background: activeMode === 'dev' ? 'var(--brand-amber-tint)' : 'transparent',
-                  textDecoration: 'none',
-                  fontWeight: activeMode === 'dev' ? 600 : 400,
+                  color: activeMode === "dev" ? "var(--brand-amber)" : "var(--fg-2)",
+                  background: activeMode === "dev" ? "var(--brand-amber-tint)" : "transparent",
+                  textDecoration: "none",
+                  fontWeight: activeMode === "dev" ? 600 : 400,
                   minHeight: 36,
-                  display: 'flex',
-                  alignItems: 'center',
+                  display: "flex",
+                  alignItems: "center",
                   fontSize: 11,
                   transition: "background 110ms ease, color 110ms ease, opacity 110ms ease",
                 }}
@@ -189,19 +197,19 @@ export function SiteTopbar() {
             </div>
 
             {/* About - boxed to match the control aesthetic */}
-            <Link 
-              href="/about" 
-              style={{ 
-                fontSize: 12, 
-                padding: '10px 14px', 
+            <Link
+              href="/about"
+              style={{
+                fontSize: 12,
+                padding: "10px 14px",
                 minHeight: 38,
-                display: 'flex',
-                alignItems: 'center',
-                background: 'var(--surface)', 
-                color: 'var(--fg-2)', 
-                border: '1px solid var(--border)',
-                borderRadius: 6, 
-                textDecoration: 'none',
+                display: "flex",
+                alignItems: "center",
+                background: "var(--surface)",
+                color: "var(--fg-2)",
+                border: "1px solid var(--border)",
+                borderRadius: 6,
+                textDecoration: "none",
                 transition: "background 110ms ease, color 110ms ease, opacity 110ms ease",
               }}
             >
@@ -209,15 +217,24 @@ export function SiteTopbar() {
             </Link>
 
             {/* Language - exact same as ProShell */}
-            <div style={{ display: 'inline-flex', border: '1px solid var(--border)', borderRadius: 6, overflow: 'hidden', fontSize: 11, fontFamily: 'var(--font-mono)' }}>
+            <div
+              style={{
+                display: "inline-flex",
+                border: "1px solid var(--border)",
+                borderRadius: 6,
+                overflow: "hidden",
+                fontSize: 11,
+                fontFamily: "var(--font-mono)",
+              }}
+            >
               <button
                 onClick={() => toggleLang("en")}
                 style={{
-                  padding: '10px 14px',
+                  padding: "10px 14px",
                   background: lang === "en" ? "var(--brand-amber-tint)" : "transparent",
                   color: lang === "en" ? "var(--brand-amber)" : "var(--fg-2)",
-                  border: 'none',
-                  cursor: 'pointer',
+                  border: "none",
+                  cursor: "pointer",
                   minHeight: 38,
                   transition: "background 110ms ease, color 110ms ease, opacity 110ms ease",
                 }}
@@ -227,11 +244,11 @@ export function SiteTopbar() {
               <button
                 onClick={() => toggleLang("pt")}
                 style={{
-                  padding: '10px 14px',
+                  padding: "10px 14px",
                   background: lang === "pt" ? "var(--brand-amber-tint)" : "transparent",
                   color: lang === "pt" ? "var(--brand-amber)" : "var(--fg-2)",
-                  border: 'none',
-                  cursor: 'pointer',
+                  border: "none",
+                  cursor: "pointer",
                   minHeight: 38,
                   transition: "background 110ms ease, color 110ms ease, opacity 110ms ease",
                 }}
@@ -243,18 +260,18 @@ export function SiteTopbar() {
             {/* Theme - exact same as ProShell */}
             <button
               onClick={toggleTheme}
-              style={{ 
-                minWidth: 38, 
-                height: 38, 
-                border: '1px solid var(--border)', 
-                borderRadius: 6, 
-                background: 'var(--surface)', 
-                color: 'var(--fg-2)', 
-                cursor: 'pointer', 
+              style={{
+                minWidth: 38,
+                height: 38,
+                border: "1px solid var(--border)",
+                borderRadius: 6,
+                background: "var(--surface)",
+                color: "var(--fg-2)",
+                cursor: "pointer",
                 fontSize: 14,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
                 transition: "background 110ms ease, color 110ms ease, opacity 110ms ease",
               }}
               title="Toggle theme"
@@ -264,37 +281,37 @@ export function SiteTopbar() {
 
             {/* Auth - exact same pill style as ProShell */}
             {isLoggedIn ? (
-              <Link 
-                href="/pro" 
-                style={{ 
-                  fontSize: 12, 
-                  padding: '10px 14px', 
+              <Link
+                href="/pro"
+                style={{
+                  fontSize: 12,
+                  padding: "10px 14px",
                   minHeight: 38,
-                  display: 'flex',
-                  alignItems: 'center',
-                  background: 'var(--brand-amber-tint)', 
-                  color: 'var(--brand-amber)', 
-                  borderRadius: 6, 
-                  textDecoration: 'none',
-                  transition: "background 110ms ease, color 110ms ease, opacity 110ms ease", 
+                  display: "flex",
+                  alignItems: "center",
+                  background: "var(--brand-amber-tint)",
+                  color: "var(--brand-amber)",
+                  borderRadius: 6,
+                  textDecoration: "none",
+                  transition: "background 110ms ease, color 110ms ease, opacity 110ms ease",
                 }}
               >
                 Profile
               </Link>
             ) : (
-              <Link 
-                href="/login" 
-                style={{ 
-                  fontSize: 12, 
-                  padding: '10px 14px', 
+              <Link
+                href="/login"
+                style={{
+                  fontSize: 12,
+                  padding: "10px 14px",
                   minHeight: 38,
-                  display: 'flex',
-                  alignItems: 'center',
-                  background: 'var(--brand-amber-tint)', 
-                  color: 'var(--brand-amber)', 
-                  borderRadius: 6, 
-                  textDecoration: 'none',
-                  transition: "background 110ms ease, color 110ms ease, opacity 110ms ease", 
+                  display: "flex",
+                  alignItems: "center",
+                  background: "var(--brand-amber-tint)",
+                  color: "var(--brand-amber)",
+                  borderRadius: 6,
+                  textDecoration: "none",
+                  transition: "background 110ms ease, color 110ms ease, opacity 110ms ease",
                 }}
               >
                 Login

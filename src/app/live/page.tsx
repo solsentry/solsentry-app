@@ -24,7 +24,10 @@ const THRESHOLD_KEY = "solsentry:threshold";
 function playBeep() {
   if (typeof window === "undefined") return;
   try {
-    const ctx = new (window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext)();
+    const ctx = new (
+      window.AudioContext ||
+      (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext
+    )();
     const beep = (when: number, freq: number) => {
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
@@ -198,8 +201,8 @@ export default function LivePage() {
             Real-time alert stream
           </h1>
           <p style={{ color: "var(--fg-2)", fontSize: 14, marginTop: 6 }}>
-            Newest mainnet detections appear at the top. Sound + browser notifications
-            optional. Click any mint to open the token card.
+            Newest mainnet detections appear at the top. Sound + browser notifications optional.
+            Click any mint to open the token card.
           </p>
         </header>
 
@@ -285,10 +288,8 @@ export default function LivePage() {
                 onClick={() => changeThreshold(t)}
                 style={{
                   padding: "6px 10px",
-                  background:
-                    threshold === t ? "var(--brand-amber)" : "transparent",
-                  color:
-                    threshold === t ? "var(--fg-on-brand)" : "var(--fg-3)",
+                  background: threshold === t ? "var(--brand-amber)" : "transparent",
+                  color: threshold === t ? "var(--fg-on-brand)" : "var(--fg-3)",
                   border: 0,
                   borderRadius: 4,
                   fontFamily: "var(--font-mono)",
@@ -378,9 +379,7 @@ export default function LivePage() {
                   borderRadius: 3,
                   textAlign: "center",
                   color:
-                    a.risk_level === "CRITICAL"
-                      ? "var(--status-critical)"
-                      : "var(--brand-amber)",
+                    a.risk_level === "CRITICAL" ? "var(--status-critical)" : "var(--brand-amber)",
                   background:
                     a.risk_level === "CRITICAL"
                       ? "var(--status-critical-tint)"

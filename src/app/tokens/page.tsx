@@ -2,12 +2,7 @@ import { PageHeader } from "@/components/PageHeader";
 import { Section } from "@/components/Section";
 import { RiskBadge } from "@/components/RiskBadge";
 import { ApiError } from "@/components/ApiError";
-import {
-  fetchAlertsRecent,
-  fetchResolutionsRecent,
-  fmtUnixAge,
-  truncate,
-} from "@/lib/api";
+import { fetchAlertsRecent, fetchResolutionsRecent, fmtUnixAge, truncate } from "@/lib/api";
 import Link from "next/link";
 import { ProShell } from "@/components/ProShell";
 
@@ -44,27 +39,16 @@ export default async function TokensPage() {
                 Latest HIGH+ alerts
               </div>
               {alerts.length === 0 ? (
-                <ApiError
-                  endpoint="/v1/alerts/recent?limit=30"
-                  message="No alerts returned."
-                />
+                <ApiError endpoint="/v1/alerts/recent?limit=30" message="No alerts returned." />
               ) : (
                 <div className="alerts-list">
                   {alerts.map((a, i) => (
-                    <Link
-                      key={`${a.mint}-${i}`}
-                      href={`/token/${a.mint}`}
-                      className="alert-item"
-                    >
+                    <Link key={`${a.mint}-${i}`} href={`/token/${a.mint}`} className="alert-item">
                       <div className="alert-head">
                         <RiskBadge level={a.risk_level} size="sm" />
-                        <span className="alert-age">
-                          {fmtUnixAge(a.predicted_at)}
-                        </span>
+                        <span className="alert-age">{fmtUnixAge(a.predicted_at)}</span>
                       </div>
-                      <div className="alert-mint">
-                        {truncate(a.mint, 10, 6)}
-                      </div>
+                      <div className="alert-mint">{truncate(a.mint, 10, 6)}</div>
                       {a.symbol && (
                         <div
                           style={{
@@ -84,10 +68,7 @@ export default async function TokensPage() {
             </div>
 
             <div className="alerts-col">
-              <div
-                className="label-tag"
-                style={{ marginBottom: 12, color: "var(--brand-teal)" }}
-              >
+              <div className="label-tag" style={{ marginBottom: 12, color: "var(--brand-teal)" }}>
                 Latest resolutions
               </div>
               {resolutions.length === 0 ? (
@@ -98,20 +79,14 @@ export default async function TokensPage() {
               ) : (
                 <div className="alerts-list">
                   {resolutions.map((r, i) => (
-                    <Link
-                      key={`${r.mint}-${i}`}
-                      href={`/token/${r.mint}`}
-                      className="alert-item"
-                    >
+                    <Link key={`${r.mint}-${i}`} href={`/token/${r.mint}`} className="alert-item">
                       <div className="alert-head">
                         <RiskBadge level={r.predicted_level} size="sm" />
                         <span
                           style={{
                             fontFamily: "var(--font-mono)",
                             fontSize: 11,
-                            color: r.was_correct
-                              ? "var(--brand-teal)"
-                              : "var(--status-warning)",
+                            color: r.was_correct ? "var(--brand-teal)" : "var(--status-warning)",
                             textTransform: "uppercase",
                             letterSpacing: "0.06em",
                           }}
@@ -121,9 +96,7 @@ export default async function TokensPage() {
                           {r.final_outcome}
                         </span>
                       </div>
-                      <div className="alert-mint">
-                        {truncate(r.mint, 10, 6)}
-                      </div>
+                      <div className="alert-mint">{truncate(r.mint, 10, 6)}</div>
                       <div
                         style={{
                           fontFamily: "var(--font-mono)",

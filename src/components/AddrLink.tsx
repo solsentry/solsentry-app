@@ -9,13 +9,7 @@ interface Props {
   tail?: number;
 }
 
-export function AddrLink({
-  addr,
-  href,
-  external = false,
-  head = 6,
-  tail = 4,
-}: Props) {
+export function AddrLink({ addr, href, external = false, head = 6, tail = 4 }: Props) {
   const target = href ?? `/operator/${addr}`;
   const text = truncate(addr, head, tail);
 

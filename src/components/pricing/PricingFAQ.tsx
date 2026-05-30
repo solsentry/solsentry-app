@@ -37,10 +37,7 @@ export function PricingFAQ({ items }: PricingFAQProps) {
             }}
           >
             <span>{item.q}</span>
-            <span
-              aria-hidden
-              style={{ color: "var(--fg-3)", fontSize: 18, lineHeight: 1 }}
-            >
+            <span aria-hidden style={{ color: "var(--fg-3)", fontSize: 18, lineHeight: 1 }}>
               +
             </span>
           </summary>

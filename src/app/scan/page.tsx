@@ -81,9 +81,7 @@ export default async function ScanPage({ searchParams }: PageProps) {
         >
           {isUnknown ? (
             <>
-              <h2 style={{ fontSize: 18, margin: "0 0 8px" }}>
-                Not in our index yet
-              </h2>
+              <h2 style={{ fontSize: 18, margin: "0 0 8px" }}>Not in our index yet</h2>
               <p
                 style={{
                   fontSize: 14,
@@ -91,10 +89,9 @@ export default async function ScanPage({ searchParams }: PageProps) {
                   margin: "0 0 16px",
                 }}
               >
-                We don&apos;t have on-chain history for this{" "}
-                {addr ? "address" : "symbol"} yet. If a wallet recently
-                launched a token, it shows up within a few minutes. Check
-                live activity, or try again shortly.
+                We don&apos;t have on-chain history for this {addr ? "address" : "symbol"} yet. If a
+                wallet recently launched a token, it shows up within a few minutes. Check live
+                activity, or try again shortly.
               </p>
               <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
                 <Link

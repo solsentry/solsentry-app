@@ -18,22 +18,18 @@ export default function FunPage() {
           eyebrow="Fun mode · consumer-facing"
           title={
             <>
-              Is this wallet{" "}
-              <span style={{ color: "var(--brand-amber)" }}>safe</span>?
+              Is this wallet <span style={{ color: "var(--brand-amber)" }}>safe</span>?
             </>
           }
           sub={
             <>
-              Easy mode: paste an address, see emoji + plain-English verdict.
-              Three modes — Easy, Pro (dashboard), Dev (endpoints + code) —
-              switcher in the bottom-left of the app. Same intelligence layer as
-              the Telegram bot and REST API, different persona.
+              Easy mode: paste an address, see emoji + plain-English verdict. Three modes — Easy,
+              Pro (dashboard), Dev (endpoints + code) — switcher in the bottom-left of the app. Same
+              intelligence layer as the Telegram bot and REST API, different persona.
             </>
           }
         >
-          <div
-            style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 8 }}
-          >
+          <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 8 }}>
             <a
               href="/references/solsentry-fun.html"
               target="_blank"
@@ -114,11 +110,7 @@ export default function FunPage() {
                 color: "var(--brand-purple)",
               },
             ].map((m) => (
-              <div
-                key={m.t}
-                className="panel"
-                style={{ borderTop: `2px solid ${m.color}` }}
-              >
+              <div key={m.t} className="panel" style={{ borderTop: `2px solid ${m.color}` }}>
                 <div
                   style={{
                     color: m.color,
@@ -172,13 +164,10 @@ export default function FunPage() {
               >
                 For integrators
               </h3>
-              <p
-                style={{ color: "var(--fg-2)", fontSize: 14, lineHeight: 1.6 }}
-              >
-                This HTML is embeddable. Drop it in an iframe, set the API base,
-                and you have a consumer-grade risk check in any language. Wallet
-                apps, trading frontends, and CEX listings can offer it as a
-                read-only check.
+              <p style={{ color: "var(--fg-2)", fontSize: 14, lineHeight: 1.6 }}>
+                This HTML is embeddable. Drop it in an iframe, set the API base, and you have a
+                consumer-grade risk check in any language. Wallet apps, trading frontends, and CEX
+                listings can offer it as a read-only check.
               </p>
             </div>
             <div className="panel">
@@ -191,12 +180,10 @@ export default function FunPage() {
               >
                 For judges + investors
               </h3>
-              <p
-                style={{ color: "var(--fg-2)", fontSize: 14, lineHeight: 1.6 }}
-              >
-                Same data, three personas — technical, prosumer, consumer. The
-                TAM for operator risk intelligence is not just devs. It&rsquo;s
-                every wallet user who has been rugged or knows someone who has.
+              <p style={{ color: "var(--fg-2)", fontSize: 14, lineHeight: 1.6 }}>
+                Same data, three personas — technical, prosumer, consumer. The TAM for operator risk
+                intelligence is not just devs. It&rsquo;s every wallet user who has been rugged or
+                knows someone who has.
               </p>
             </div>
           </div>

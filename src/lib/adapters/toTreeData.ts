@@ -4,14 +4,7 @@
 
 import type { OperatorNetwork, OperatorNetworkNode } from "@/lib/api";
 
-export type TreeNodeType =
-  | "root"
-  | "operator"
-  | "wallet"
-  | "alert"
-  | "warning"
-  | "legit"
-  | "hub";
+export type TreeNodeType = "root" | "operator" | "wallet" | "alert" | "warning" | "legit" | "hub";
 
 export interface TreeNode {
   id: string;

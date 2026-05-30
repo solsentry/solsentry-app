@@ -6,8 +6,7 @@ import { LiveFeed, type FeedEvent } from "@/components/live-feed";
 /* Client poller for LiveFeed. Hits /v1/alerts/recent every 10s (endpoint TTL
  * is also 10s) and maps Alert → FeedEvent. Decision: polling, not socket. */
 
-const API_URL =
-  process.env.NEXT_PUBLIC_API_URL || "https://api.solsentry.app";
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://api.solsentry.app";
 
 type RiskLevel = "CRITICAL" | "HIGH" | "MEDIUM" | "LOW";
 

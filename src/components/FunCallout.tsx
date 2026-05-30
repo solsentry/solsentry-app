@@ -32,8 +32,7 @@ export function FunCallout() {
               marginBottom: 18,
             }}
           >
-            Is this wallet{" "}
-            <span style={{ color: "var(--brand-amber)" }}>safe?</span>
+            Is this wallet <span style={{ color: "var(--brand-amber)" }}>safe?</span>
           </h2>
           <p
             style={{
@@ -44,9 +43,8 @@ export function FunCallout() {
               margin: "0 auto 32px",
             }}
           >
-            Easy mode: paste any Solana wallet, get an emoji + plain-English
-            verdict. No login. No jargon. Three personas — Easy, Pro, Dev — same
-            intelligence layer.
+            Easy mode: paste any Solana wallet, get an emoji + plain-English verdict. No login. No
+            jargon. Three personas — Easy, Pro, Dev — same intelligence layer.
           </p>
           <div
             style={{

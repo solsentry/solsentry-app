@@ -6,13 +6,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { ActivityHeatmap } from "@/components/ActivityHeatmap";
 import { RiskBadge } from "@/components/RiskBadge";
-import {
-  fetchOperator,
-  fetchOperatorTimeline,
-  fmtInt,
-  fmtPct,
-  truncate,
-} from "@/lib/api";
+import { fetchOperator, fetchOperatorTimeline, fmtInt, fmtPct, truncate } from "@/lib/api";
 
 export const revalidate = 300;
 
@@ -56,10 +50,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 export default async function ShareOperatorPage({ params }: PageProps) {
   const { wallet } = await params;
 
-  const [op, timeline] = await Promise.all([
-    fetchOperator(wallet),
-    fetchOperatorTimeline(wallet),
-  ]);
+  const [op, timeline] = await Promise.all([fetchOperator(wallet), fetchOperatorTimeline(wallet)]);
 
   const short = truncate(wallet, 6, 4);
   const borderColor = op?.known
@@ -95,10 +86,7 @@ export default async function ShareOperatorPage({ params }: PageProps) {
           >
             SolSentry
           </Link>
-          <span
-            className="label-tag"
-            style={{ fontSize: 11, color: "var(--fg-3)" }}
-          >
+          <span className="label-tag" style={{ fontSize: 11, color: "var(--fg-3)" }}>
             Public operator profile · read-only
           </span>
         </div>
@@ -148,10 +136,7 @@ export default async function ShareOperatorPage({ params }: PageProps) {
                     }}
                   >
                     {op.risk_score ?? "—"}
-                    <span style={{ color: "var(--fg-3)", fontSize: 16 }}>
-                      {" "}
-                      / 100
-                    </span>
+                    <span style={{ color: "var(--fg-3)", fontSize: 16 }}> / 100</span>
                   </div>
                 </div>
                 <div
@@ -212,32 +197,20 @@ export default async function ShareOperatorPage({ params }: PageProps) {
               marginBottom: 24,
             }}
           >
-            <KpiCard
-              label="Confirmed rugs"
-              value={fmtInt(op.confirmed_rugs)}
-              accent="critical"
-            />
+            <KpiCard label="Confirmed rugs" value={fmtInt(op.confirmed_rugs)} accent="critical" />
             <KpiCard label="Total tokens" value={fmtInt(op.total_tokens)} />
             <KpiCard
               label="Rug rate"
               value={fmtPct(op.rug_rate_pct, 1)}
-              accent={
-                op.rug_rate_pct && op.rug_rate_pct > 80 ? "critical" : undefined
-              }
+              accent={op.rug_rate_pct && op.rug_rate_pct > 80 ? "critical" : undefined}
             />
           </div>
         )}
 
         {/* Heatmap */}
         {timeline?.tokens && timeline.tokens.length > 0 && (
-          <div
-            className="panel"
-            style={{ padding: "24px 28px", marginBottom: 24 }}
-          >
-            <div
-              className="label-tag"
-              style={{ marginBottom: 16, color: "var(--fg-3)" }}
-            >
+          <div className="panel" style={{ padding: "24px 28px", marginBottom: 24 }}>
+            <div className="label-tag" style={{ marginBottom: 16, color: "var(--fg-3)" }}>
               Deployment heatmap · last 365 days
             </div>
             <ActivityHeatmap tokens={timeline.tokens} />
@@ -261,11 +234,7 @@ export default async function ShareOperatorPage({ params }: PageProps) {
           >
             Powered by SolSentry · operator threat intelligence for Solana.
           </div>
-          <Link
-            href={`/operator/${wallet}`}
-            className="btn-ghost"
-            style={{ marginRight: 8 }}
-          >
+          <Link href={`/operator/${wallet}`} className="btn-ghost" style={{ marginRight: 8 }}>
             Open full investigation →
           </Link>
           <Link href="/" className="btn-ghost">

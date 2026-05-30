@@ -53,9 +53,7 @@ function buildExplanation(s: SenaSubject): string[] {
           `**Quase tudo que ele lança é golpe.** Cada token novo é uma armadilha esperando comprador.`,
         );
       } else if (rate > 50) {
-        lines.push(
-          `Mais da metade dos lançamentos viram rug. Histórico sólido de fraude.`,
-        );
+        lines.push(`Mais da metade dos lançamentos viram rug. Histórico sólido de fraude.`);
       } else if (rate > 20) {
         lines.push(`Padrão misto — alguns projetos limpos, mas histórico tem múltiplos rugs.`);
       }
@@ -153,8 +151,7 @@ export function SenaModal({ subject }: { subject: SenaSubject }) {
         onClick={() => setOpen(true)}
         style={{
           padding: "10px 16px",
-          background:
-            "linear-gradient(135deg, var(--brand-amber) 0%, var(--brand-amber-400) 100%)",
+          background: "linear-gradient(135deg, var(--brand-amber) 0%, var(--brand-amber-400) 100%)",
           color: "var(--fg-on-brand)",
           border: 0,
           borderRadius: 6,
@@ -283,7 +280,11 @@ export function SenaModal({ subject }: { subject: SenaSubject }) {
                   Não tem dado suficiente pra fazer uma análise útil agora.
                 </p>
               ) : (
-                lines.map((l, i) => <p key={i} style={{ margin: 0 }}>{renderInline(l)}</p>)
+                lines.map((l, i) => (
+                  <p key={i} style={{ margin: 0 }}>
+                    {renderInline(l)}
+                  </p>
+                ))
               )}
             </div>
 
@@ -330,8 +331,8 @@ export function SenaModal({ subject }: { subject: SenaSubject }) {
                 lineHeight: 1.6,
               }}
             >
-              Sena é a explicação humanizada gerada com base nos dados que a SolSentry
-              já coletou. Sem chamada de LLM, sem latência. Pressione Esc pra fechar.
+              Sena é a explicação humanizada gerada com base nos dados que a SolSentry já coletou.
+              Sem chamada de LLM, sem latência. Pressione Esc pra fechar.
             </div>
           </aside>
           <style>{`

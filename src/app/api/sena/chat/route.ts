@@ -40,7 +40,7 @@ function pickReply(body: ChatBody): string {
 
   // Drain / trace
   if (/(drain|trace|cash[- ]?out|cex|exit)/.test(msg)) {
-    const target = isOperator ? id : deployer ?? id;
+    const target = isOperator ? id : (deployer ?? id);
     return `Here's the drain pattern for ${shortId(target)}. Open /drain/${target} for the full hop trace — we follow SOL outflow until it hits a known CEX or mixer.`;
   }
 
@@ -54,7 +54,7 @@ function pickReply(body: ChatBody): string {
 
   // Network / clusters
   if (/(cluster|network|connected|related|graph|tree)/.test(msg)) {
-    const target = isOperator ? id : deployer ?? id;
+    const target = isOperator ? id : (deployer ?? id);
     return `Open /network/${target} to see the operator graph — wallets that funded this address, co-deployed tokens, and shared bot infrastructure.`;
   }
 
@@ -66,9 +66,7 @@ function pickReply(body: ChatBody): string {
         reasons.push(`${rugRatePct.toFixed(1)}% rug rate across deployments`);
       if (tags.length) reasons.push(`tags: ${tags.slice(0, 3).join(", ")}`);
       if (flags.length) reasons.push(`flags: ${flags.slice(0, 3).join(", ")}`);
-      const tail = reasons.length
-        ? ` Signals: ${reasons.join(" · ")}.`
-        : "";
+      const tail = reasons.length ? ` Signals: ${reasons.join(" · ")}.` : "";
       return `CRITICAL means the operator graph has high-confidence evidence of repeated rug patterns.${tail} 96.6% CRITICAL precision in aggregate.`;
     }
     if (riskLevel === "HIGH") {
@@ -102,9 +100,8 @@ function pickReply(body: ChatBody): string {
   }
 
   // Default
-  const label =
-    riskLevel && riskLevel !== "UNKNOWN" ? riskLevel : "not yet classified";
-  return `I see ${shortId(id)} is ${label}. To dive deeper, try /network/${isOperator ? id : deployer ?? id}, or ask me about its drain trace, history, or why it's flagged.`;
+  const label = riskLevel && riskLevel !== "UNKNOWN" ? riskLevel : "not yet classified";
+  return `I see ${shortId(id)} is ${label}. To dive deeper, try /network/${isOperator ? id : (deployer ?? id)}, or ask me about its drain trace, history, or why it's flagged.`;
 }
 
 export async function POST(req: Request) {

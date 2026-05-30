@@ -141,10 +141,7 @@ export default async function DrainPage({ params }: PageProps) {
                   accent={trace.reached_mixer ? "critical" : undefined}
                 />
                 {trace.trace_time_ms != null && (
-                  <Metric
-                    label="Trace time"
-                    value={`${trace.trace_time_ms}ms`}
-                  />
+                  <Metric label="Trace time" value={`${trace.trace_time_ms}ms`} />
                 )}
               </div>
             </Section>
@@ -162,9 +159,7 @@ export default async function DrainPage({ params }: PageProps) {
                       style={{
                         padding: "16px 24px",
                         borderBottom:
-                          i < trace.hops.length - 1
-                            ? "1px solid var(--border-soft)"
-                            : "none",
+                          i < trace.hops.length - 1 ? "1px solid var(--border-soft)" : "none",
                         display: "grid",
                         gridTemplateColumns: "60px 1fr 1fr 120px",
                         gap: 16,
@@ -182,10 +177,7 @@ export default async function DrainPage({ params }: PageProps) {
                         HOP {String(i + 1).padStart(2, "0")}
                       </div>
                       <div>
-                        <div
-                          className="label-tag"
-                          style={{ marginBottom: 4, fontSize: 9 }}
-                        >
+                        <div className="label-tag" style={{ marginBottom: 4, fontSize: 9 }}>
                           From
                         </div>
                         {h.from ? (
@@ -195,10 +187,7 @@ export default async function DrainPage({ params }: PageProps) {
                         )}
                       </div>
                       <div>
-                        <div
-                          className="label-tag"
-                          style={{ marginBottom: 4, fontSize: 9 }}
-                        >
+                        <div className="label-tag" style={{ marginBottom: 4, fontSize: 9 }}>
                           To
                           {h.classification && (
                             <span
@@ -226,9 +215,7 @@ export default async function DrainPage({ params }: PageProps) {
                           color: "var(--fg-1)",
                         }}
                       >
-                        {h.amount_sol != null
-                          ? `${h.amount_sol.toFixed(3)} SOL`
-                          : "—"}
+                        {h.amount_sol != null ? `${h.amount_sol.toFixed(3)} SOL` : "—"}
                         {h.timestamp && (
                           <div
                             style={{
@@ -252,17 +239,12 @@ export default async function DrainPage({ params }: PageProps) {
                 <div
                   style={{
                     display: "grid",
-                    gridTemplateColumns:
-                      "repeat(auto-fit, minmax(280px, 1fr))",
+                    gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
                     gap: 12,
                   }}
                 >
                   {trace.endpoints.map((e, i) => (
-                    <div
-                      key={`${e.address}-${i}`}
-                      className="panel"
-                      style={{ padding: 16 }}
-                    >
+                    <div key={`${e.address}-${i}`} className="panel" style={{ padding: 16 }}>
                       <div style={{ marginBottom: 8 }}>
                         {e.classification && (
                           <span

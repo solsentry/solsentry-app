@@ -17,10 +17,7 @@ interface Props {
 
 export function TrustStrip({ copy }: Props) {
   return (
-    <section
-      className="landing-section landing-trust"
-      aria-labelledby="trust-title"
-    >
+    <section className="landing-section landing-trust" aria-labelledby="trust-title">
       <header className="landing-section__head">
         <h2 id="trust-title" className="landing-section__title">
           {copy.trustTitle}
@@ -31,11 +28,7 @@ export function TrustStrip({ copy }: Props) {
         <li>
           <GitBranch size={18} aria-hidden />
           <p>{copy.trustOss}</p>
-          <a
-            href="https://github.com/solsentry"
-            target="_blank"
-            rel="noreferrer"
-          >
+          <a href="https://github.com/solsentry" target="_blank" rel="noreferrer">
             github.com/solsentry ↗
           </a>
         </li>
