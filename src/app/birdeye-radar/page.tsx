@@ -11,7 +11,7 @@
 // tells you WHICH of those are coming from a known rug operator. The
 // combination is a "trending feed with safety scoring" no one else ships.
 
-import { Nav } from "@/components/Nav";
+import { SiteTopbar } from "@/components/SiteTopbar";
 import { Footer } from "@/components/Footer";
 import { PageHeader } from "@/components/PageHeader";
 import { Section } from "@/components/Section";
@@ -125,7 +125,7 @@ export default async function BirdeyeRadarPage() {
 
   return (
     <>
-      <Nav />
+      <SiteTopbar />
       <main>
         <PageHeader
           eyebrow="Built for Birdeye Data BIP Sprint 4 · open source MIT"

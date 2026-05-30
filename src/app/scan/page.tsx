@@ -7,7 +7,7 @@
 // Spec: internal/marketing/strategy/WIREFRAME_v5.md §A "/scan/[token]"
 
 import Link from "next/link";
-import { Nav } from "@/components/Nav";
+import { SiteTopbar } from "@/components/SiteTopbar";
 import { Footer } from "@/components/Footer";
 import { RiskBadge } from "@/components/RiskBadge";
 import { AddrLink } from "@/components/AddrLink";
@@ -41,7 +41,7 @@ export default async function ScanPage({ searchParams }: PageProps) {
 
   return (
     <>
-      <Nav />
+      <SiteTopbar />
       <main
         style={{
           maxWidth: 720,

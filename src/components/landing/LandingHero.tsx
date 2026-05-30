@@ -9,7 +9,8 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import type { LandingCopy } from "@/lib/i18n-landing";
-import { AISearchBar } from "@/components/AISearchBar";
+import { SolSentrySearch } from "@/components/SolSentrySearch";
+import { detectKind, routeFor } from "@/components/AISearchBar";
 
 const SAMPLES = [
   {
@@ -58,7 +59,13 @@ export function LandingHero({ copy, lang }: Props) {
       </h1>
       <p className="landing-hero__sub">{copy.heroSub}</p>
 
-      <AISearchBar variant="hero" />
+      <SolSentrySearch
+        variant="hero"
+        onSearch={(value) => {
+          const target = routeFor(detectKind(value), value);
+          if (target) router.push(target);
+        }}
+      />
 
       {err && (
         <p role="alert" className="landing-scan__err">

@@ -1,51 +1,18 @@
+"use client";
+
 import Link from "next/link";
 
-const COLS = [
-  {
-    title: "Product",
-    links: [
-      { label: "Fun mode", href: "/fun" },
-      { label: "MCP server", href: "/mcp" },
-      { label: "Telegram bot", href: "/telegram" },
-      { label: "Docs", href: "/docs" },
-    ],
-  },
-  {
-    title: "API",
-    links: [
-      { label: "Live stats", href: "https://api.solsentry.app/v1/stats" },
-      {
-        label: "Operator lookup",
-        href: "https://api.solsentry.app/v1/operator/4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1",
-      },
-      { label: "Health", href: "https://api.solsentry.app/health" },
-    ],
-  },
-  {
-    title: "Code",
-    links: [
-      { label: "GitHub · solsentry-app", href: "https://github.com/solsentry/solsentry-app" },
-      { label: "GitHub · solsentry-mcp", href: "https://github.com/solsentry/solsentry-mcp" },
-      { label: "NPM · @solsentry/mcp", href: "https://www.npmjs.com/package/@solsentry/mcp" },
-    ],
-  },
-  {
-    title: "Talk",
-    links: [
-      { label: "X · @solsentryai", href: "https://x.com/solsentryai" },
-      { label: "Telegram · @solsentryai", href: "https://t.me/solsentryai" },
-      { label: "Crash · @crashdiniz", href: "https://x.com/crashdiniz" },
-    ],
-  },
-];
-
+/**
+ * Lean footer used across the entire site (was previously only on homepage).
+ * Kept minimal on purpose — heavy upsell and marketing live in the top bar.
+ */
 export function Footer() {
   return (
     <footer
       style={{
         borderTop: "1px solid var(--border)",
         marginTop: 80,
-        padding: "56px 0 32px",
+        padding: "40px 0 32px",
         background: "var(--bg-elev-1)",
       }}
     >
@@ -53,116 +20,169 @@ export function Footer() {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "1.3fr repeat(4, 1fr)",
+            gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))",
             gap: 32,
-            marginBottom: 40,
+            marginBottom: 32,
           }}
         >
+          {/* API Transparency */}
           <div>
             <div
               style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 10,
-                marginBottom: 16,
+                fontSize: 11,
+                fontFamily: "var(--font-mono)",
+                color: "var(--brand-amber)",
+                letterSpacing: "0.08em",
+                marginBottom: 10,
               }}
             >
-              <span
-                style={{
-                  width: 10,
-                  height: 10,
-                  background: "var(--brand-amber)",
-                  borderRadius: 999,
-                  display: "inline-block",
-                }}
-                aria-hidden
-              />
-              <span
-                style={{
-                  fontFamily: "var(--font-display)",
-                  fontWeight: 700,
-                  fontSize: 18,
-                  color: "var(--fg-1)",
-                  letterSpacing: "-0.01em",
-                }}
-              >
-                SolSentry
-              </span>
+              API
             </div>
-            <p
-              style={{
-                color: "var(--fg-2)",
-                fontSize: 13,
-                lineHeight: 1.7,
-                maxWidth: 280,
-              }}
-            >
-              Autonomous threat intelligence for Solana. RugCheck tells you a
-              fire is burning. SolSentry tells you who lit it.
-            </p>
+            <div style={{ display: "flex", flexDirection: "column", gap: 6, fontSize: 13 }}>
+              <a
+                href="https://api.solsentry.app/v1/stats"
+                target="_blank"
+                rel="noreferrer"
+                style={{ color: "var(--fg-2)", textDecoration: "none" }}
+              >
+                Live stats
+              </a>
+              <a
+                href="https://api.solsentry.app/v1/operator/4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1"
+                target="_blank"
+                rel="noreferrer"
+                style={{ color: "var(--fg-2)", textDecoration: "none" }}
+              >
+                Operator example
+              </a>
+              <a
+                href="https://api.solsentry.app/health"
+                target="_blank"
+                rel="noreferrer"
+                style={{ color: "var(--fg-2)", textDecoration: "none" }}
+              >
+                Health
+              </a>
+            </div>
           </div>
 
-          {COLS.map((col) => (
-            <div key={col.title}>
-              <div
-                className="label-tag"
-                style={{ marginBottom: 14, color: "var(--brand-amber)" }}
-              >
-                {col.title}
-              </div>
-              <ul
-                style={{
-                  listStyle: "none",
-                  padding: 0,
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: 8,
-                }}
-              >
-                {col.links.map((l) => (
-                  <li key={l.label}>
-                    {l.href.startsWith("http") ? (
-                      <a
-                        href={l.href}
-                        target="_blank"
-                        rel="noreferrer"
-                        style={{
-                          color: "var(--fg-2)",
-                          fontSize: 13,
-                          textDecoration: "none",
-                        }}
-                      >
-                        {l.label}
-                      </a>
-                    ) : (
-                      <Link
-                        href={l.href}
-                        style={{
-                          color: "var(--fg-2)",
-                          fontSize: 13,
-                          textDecoration: "none",
-                        }}
-                      >
-                        {l.label}
-                      </Link>
-                    )}
-                  </li>
-                ))}
-              </ul>
+          {/* Code */}
+          <div>
+            <div
+              style={{
+                fontSize: 11,
+                fontFamily: "var(--font-mono)",
+                color: "var(--brand-amber)",
+                letterSpacing: "0.08em",
+                marginBottom: 10,
+              }}
+            >
+              CODE
             </div>
-          ))}
+            <div style={{ display: "flex", flexDirection: "column", gap: 6, fontSize: 13 }}>
+              <a
+                href="https://github.com/solsentry/solsentry-app"
+                target="_blank"
+                rel="noreferrer"
+                style={{ color: "var(--fg-2)", textDecoration: "none" }}
+              >
+                GitHub · solsentry-app
+              </a>
+              <a
+                href="https://github.com/solsentry/solsentry-mcp"
+                target="_blank"
+                rel="noreferrer"
+                style={{ color: "var(--fg-2)", textDecoration: "none" }}
+              >
+                GitHub · solsentry-mcp
+              </a>
+              <a
+                href="https://www.npmjs.com/package/@solsentry/mcp"
+                target="_blank"
+                rel="noreferrer"
+                style={{ color: "var(--fg-2)", textDecoration: "none" }}
+              >
+                NPM · @solsentry/mcp
+              </a>
+            </div>
+          </div>
+
+          {/* Talk */}
+          <div>
+            <div
+              style={{
+                fontSize: 11,
+                fontFamily: "var(--font-mono)",
+                color: "var(--brand-amber)",
+                letterSpacing: "0.08em",
+                marginBottom: 10,
+              }}
+            >
+              TALK
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 6, fontSize: 13 }}>
+              <a
+                href="https://x.com/solsentryai"
+                target="_blank"
+                rel="noreferrer"
+                style={{ color: "var(--fg-2)", textDecoration: "none" }}
+              >
+                X · @solsentryai
+              </a>
+              <a
+                href="https://t.me/solsentryai"
+                target="_blank"
+                rel="noreferrer"
+                style={{ color: "var(--fg-2)", textDecoration: "none" }}
+              >
+                Telegram · @solsentryai
+              </a>
+              <a
+                href="https://x.com/crashdiniz"
+                target="_blank"
+                rel="noreferrer"
+                style={{ color: "var(--fg-2)", textDecoration: "none" }}
+              >
+                Crash · @crashdiniz
+              </a>
+            </div>
+          </div>
+
+          {/* Tools */}
+          <div>
+            <div
+              style={{
+                fontSize: 11,
+                fontFamily: "var(--font-mono)",
+                color: "var(--brand-amber)",
+                letterSpacing: "0.08em",
+                marginBottom: 10,
+              }}
+            >
+              TOOLS
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 6, fontSize: 13 }}>
+              <Link href="/mcp" style={{ color: "var(--fg-2)", textDecoration: "none" }}>
+                MCP Server
+              </Link>
+              <Link href="/telegram" style={{ color: "var(--fg-2)", textDecoration: "none" }}>
+                Telegram Bot
+              </Link>
+            </div>
+          </div>
         </div>
 
+        {/* Bottom bar */}
         <div
           style={{
             borderTop: "1px solid var(--border)",
-            paddingTop: 24,
+            paddingTop: 20,
             display: "flex",
             justifyContent: "space-between",
             flexWrap: "wrap",
             gap: 12,
-            color: "var(--fg-3)",
             fontSize: 12,
+            color: "var(--fg-3)",
           }}
         >
           <div>
@@ -171,20 +191,14 @@ export function Footer() {
               href="https://x.com/crashdiniz"
               target="_blank"
               rel="noreferrer"
-              style={{
-                color: "inherit",
-                borderBottom: "1px solid var(--border)",
-              }}
+              style={{ color: "inherit", borderBottom: "1px solid var(--border)" }}
             >
               Crash Diniz
             </a>{" "}
-            · São Paulo · Colosseum Frontier 2026
+            · 2026
           </div>
-          <div style={{ display: "flex", gap: 16 }}>
-            <span style={{ fontFamily: "var(--font-mono)" }}>
-              api.solsentry.app{" "}
-              <span style={{ color: "var(--brand-teal)" }}>● live</span>
-            </span>
+          <div style={{ fontFamily: "var(--font-mono)", fontSize: 11 }}>
+            api.solsentry.app <span style={{ color: "var(--brand-teal)" }}>●</span>
           </div>
         </div>
       </div>

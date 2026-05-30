@@ -5,7 +5,7 @@
 // Honest matrix: includes features we lose at (cross-chain, compliance/AML,
 // self-hostable, audit services) and is explicit about partial vs full.
 
-import { Nav } from "@/components/Nav";
+import { SiteTopbar } from "@/components/SiteTopbar";
 import { Footer } from "@/components/Footer";
 import { ComparisonMatrix } from "@/components/produto/ComparisonMatrix";
 import matrix from "@/data/comparison-matrix.json";
@@ -29,7 +29,7 @@ export default function ComparisonPage() {
 
   return (
     <>
-      <Nav />
+      <SiteTopbar />
       <main style={{ minHeight: "100vh", background: "var(--bg)" }}>
         <div style={{ maxWidth: 1320, margin: "0 auto", padding: "48px 24px 80px" }}>
           <header style={{ marginBottom: 28 }}>
