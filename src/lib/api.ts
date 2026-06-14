@@ -13,6 +13,7 @@ const TTL = {
   x402: 300,
   hunters: 30,
   dossier: 300,
+  holders: 300,
 } as const;
 
 export interface AccuracyTrendPoint {
@@ -197,6 +198,24 @@ export interface DrainTrace {
   latency_ms?: number;
 }
 
+export interface HolderAccount {
+  wallet: string;
+  amount: number;
+  pct: number;
+}
+
+export interface Holders {
+  count: number;
+  confidence: number;
+  source?: string;
+  top1?: number;
+  top10?: number;
+  sampled?: number;
+  supply?: number;
+  largest?: HolderAccount[];
+  latency_ms?: number;
+}
+
 async function safeFetch<T>(path: string, revalidate: number): Promise<T | null> {
   try {
     const res = await fetch(`${API_URL}${path}`, { next: { revalidate } });
@@ -232,6 +251,10 @@ export async function fetchOperatorTimeline(wallet: string): Promise<OperatorTim
 
 export async function fetchToken(mint: string): Promise<Token | null> {
   return safeFetch<Token>(`/v1/token/${encodeURIComponent(mint)}`, TTL.token);
+}
+
+export async function fetchHolders(mint: string): Promise<Holders | null> {
+  return safeFetch<Holders>(`/v1/holders/${encodeURIComponent(mint)}`, TTL.holders);
 }
 
 export async function fetchAlertsRecent(limit = 20): Promise<Alert[]> {

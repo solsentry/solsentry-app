@@ -4,7 +4,7 @@
 //   1. Top strip: symbol/name/mint + copy + risk badge + 4 KPIs
 //   2. Deployer card: operator pubkey + mini-stats + tags
 //   3. Risk breakdown: signals firing (left) + Sena verdict (right)
-//   4. Holder profile: top-5 table (stub — TODO /v1/holders/{mint})
+//   4. Holder profile: top-5 table (wired to /v1/holders/{mint})
 //   5. Activity heatmap: <ActivityHeatmap tokens={timeline.tokens}/>
 //   6. Related links strip: Birdeye, DexScreener, Solscan, RugCheck, Phantom
 //
@@ -29,6 +29,7 @@ import {
   fetchToken,
   fetchOperator,
   fetchOperatorTimeline,
+  fetchHolders,
   truncate,
   type TokenOperatorRef,
 } from "@/lib/api";
@@ -196,11 +197,18 @@ export default async function TokenPage({ params }: PageProps) {
 
   const deployer = tok?.dev_wallet || opAddr(tok?.operator) || null;
 
-  // Parallel fan-out — server-side, cached via fetchOperator/Timeline TTLs.
-  const [operator, timeline] = await Promise.all([
+  // Parallel fan-out — server-side, cached via fetchOperator/Timeline/Holders TTLs.
+  const [operator, timeline, holders] = await Promise.all([
     deployer ? fetchOperator(deployer) : Promise.resolve(null),
     deployer ? fetchOperatorTimeline(deployer) : Promise.resolve(null),
+    fetchHolders(mint),
   ]);
+
+  // Top-5 holders, sorted by share desc (defensive — API usually pre-sorts).
+  const topHolders = (holders?.largest ?? [])
+    .slice()
+    .sort((a, b) => (b.pct ?? 0) - (a.pct ?? 0))
+    .slice(0, 5);
 
   const riskLevel = tok?.risk_level ?? "UNKNOWN";
   const riskBorder =
@@ -598,7 +606,11 @@ export default async function TokenPage({ params }: PageProps) {
                       color: "var(--fg-3)",
                     }}
                   >
-                    TODO: wire /v1/holders/{"{"}mint{"}"}
+                    {holders
+                      ? `${holders.count.toLocaleString()} holders${
+                          holders.top1 ? ` · top1 ${holders.top1.toFixed(1)}%` : ""
+                        }`
+                      : "—"}
                   </div>
                 </div>
                 <table
@@ -626,31 +638,67 @@ export default async function TokenPage({ params }: PageProps) {
                     </tr>
                   </thead>
                   <tbody>
-                    {[1, 2, 3, 4, 5].map((i) => (
-                      <tr
-                        key={i}
-                        style={{
-                          background:
-                            i % 2 === 0
-                              ? "color-mix(in oklch, var(--fg-1) 4%, transparent)"
-                              : "transparent",
-                          color: "var(--fg-3)",
-                        }}
-                      >
-                        <td style={{ padding: "6px 18px" }}>{i}</td>
-                        <td style={{ padding: "6px 8px" }}>—</td>
-                        <td style={{ padding: "6px 8px" }}>Not available yet</td>
-                        <td
-                          style={{
-                            padding: "6px 18px",
-                            textAlign: "right",
-                            fontVariantNumeric: "tabular-nums",
-                          }}
-                        >
-                          —
-                        </td>
-                      </tr>
-                    ))}
+                    {topHolders.length > 0
+                      ? topHolders.map((h, idx) => (
+                          <tr
+                            key={h.wallet || idx}
+                            style={{
+                              background:
+                                idx % 2 === 1
+                                  ? "color-mix(in oklch, var(--fg-1) 4%, transparent)"
+                                  : "transparent",
+                            }}
+                          >
+                            <td style={{ padding: "6px 18px", color: "var(--fg-3)" }}>{idx + 1}</td>
+                            <td style={{ padding: "6px 8px" }}>
+                              {h.wallet ? (
+                                <Link
+                                  href={`/network/${h.wallet}`}
+                                  style={{ color: "var(--fg-1)", textDecoration: "none" }}
+                                >
+                                  {truncate(h.wallet)}
+                                </Link>
+                              ) : (
+                                "—"
+                              )}
+                            </td>
+                            <td style={{ padding: "6px 8px", color: "var(--fg-3)" }}>—</td>
+                            <td
+                              style={{
+                                padding: "6px 18px",
+                                textAlign: "right",
+                                fontVariantNumeric: "tabular-nums",
+                              }}
+                            >
+                              {typeof h.pct === "number" ? `${h.pct.toFixed(1)}%` : "—"}
+                            </td>
+                          </tr>
+                        ))
+                      : [1, 2, 3, 4, 5].map((i) => (
+                          <tr
+                            key={i}
+                            style={{
+                              background:
+                                i % 2 === 0
+                                  ? "color-mix(in oklch, var(--fg-1) 4%, transparent)"
+                                  : "transparent",
+                              color: "var(--fg-3)",
+                            }}
+                          >
+                            <td style={{ padding: "6px 18px" }}>{i}</td>
+                            <td style={{ padding: "6px 8px" }}>—</td>
+                            <td style={{ padding: "6px 8px" }}>Not available yet</td>
+                            <td
+                              style={{
+                                padding: "6px 18px",
+                                textAlign: "right",
+                                fontVariantNumeric: "tabular-nums",
+                              }}
+                            >
+                              —
+                            </td>
+                          </tr>
+                        ))}
                   </tbody>
                 </table>
               </div>
