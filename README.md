@@ -1,7 +1,8 @@
 # solsentry-app
 
 Public web app for [SolSentry](https://solsentry.app) — Solana threat
-intelligence. Landing, operator lookup, install/SDK/REST docs.
+intelligence. Landing, lookup, operator/token pages, live dashboards and
+integration docs.
 
 Deployed continuously to https://solsentry.app via Cloudflare Pages.
 
@@ -16,10 +17,20 @@ Deployed continuously to https://solsentry.app via Cloudflare Pages.
 
 | Route | Type | Purpose |
 |---|---|---|
-| `/` | Static | Landing — hero + live network stats + 4kxscute case study |
-| `/operator` | Static | Search form |
-| `/operator/[wallet]` | Dynamic (edge) | Live operator risk profile |
-| `/docs` | Static | Install MCP + SDK + REST docs |
+| `/` | Static/server | Landing with live stats-backed lookup entry |
+| `/lookup` | Server | Universal wallet/mint lookup redirect |
+| `/scan` | Server | Scan fallback for unknown wallet/mint inputs |
+| `/operator/[wallet]` | Dynamic | Live operator risk profile |
+| `/token/[mint]` | Dynamic | Live token risk profile and deployer context |
+| `/network/[wallet]` | Dynamic | Operator graph view |
+| `/drain/[wallet]` | Dynamic | Drain-trace view |
+| `/share/operator/[wallet]` | Dynamic | Public read-only operator share card |
+| `/dashboard`, `/live`, `/alerts` | Dynamic/client | Live network and alert surfaces |
+| `/clusters`, `/clusters/[id]` | Dynamic | Bot-cluster registry and detail pages |
+| `/top-operators`, `/operators`, `/tokens`, `/wallets` | Dynamic | Public directories |
+| `/api`, `/docs`, `/mcp`, `/telegram`, `/x402` | Static/server | Integration and developer pages |
+| `/pricing` | Static | Pricing shell; replace hardcoded values with live `/v1/pricing` when available |
+| `/lab/*`, `/screen`, `/dashboard/v3`, `/fun`, `/sidetrack` | Internal/noindex | Labs, presentation and experimental surfaces |
 
 ## Local development
 

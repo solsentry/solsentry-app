@@ -126,7 +126,7 @@ export default function ArchitecturePage() {
             <Arrow down />
             <FlowNode
               title="07 · Outcome resolver"
-              desc="H6 fast-track for HIGH+ initial signals. 2-day primary window. 14-day safe recheck. Volume-dead immediate. Updates was_correct."
+              desc="H6 fast-track for HIGH+ initial signals. Primary and long-tail resolution windows. Volume-dead immediate. Updates was_correct."
               accent="teal"
             />
             <Arrow down />
@@ -194,15 +194,12 @@ export default function ArchitecturePage() {
 
         <Section eyebrow="Stack" title="What it runs on">
           <div className="docs-table" style={{ maxWidth: 720 }}>
-            <Row k="Runtime" v="Python 3 · single VPS · Hetzner Falkenstein" />
-            <Row
-              k="RPC pool"
-              v="23 endpoints · Helius×9 · Alchemy×8 · QuickNode×4 · Chainstack×2"
-            />
+            <Row k="Runtime" v="Python 3 · production VPS" />
+            <Row k="RPC pool" v="{{TODO: live RPC pool}}" />
             <Row k="Storage" v="JSON / JSONL atomic writes · in-memory frozenset indices" />
             <Row k="Live channel" v="WebSocket (Helius enhanced)" />
-            <Row k="Tests" v="844 passing · pytest · in-process" />
-            <Row k="Deployments" v="261 commits · zero downtime restarts" />
+            <Row k="Tests" v="{{TODO: live test count}}" />
+            <Row k="Deployments" v="{{TODO: live deployment count}}" />
           </div>
         </Section>
       </main>

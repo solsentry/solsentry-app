@@ -67,13 +67,10 @@ function pickReply(body: ChatBody): string {
       if (tags.length) reasons.push(`tags: ${tags.slice(0, 3).join(", ")}`);
       if (flags.length) reasons.push(`flags: ${flags.slice(0, 3).join(", ")}`);
       const tail = reasons.length ? ` Signals: ${reasons.join(" · ")}.` : "";
-      return `CRITICAL means the operator graph has high-confidence evidence of repeated rug patterns.${tail} 96.6% CRITICAL precision in aggregate.`;
+      return `CRITICAL means the operator graph has high-confidence evidence of repeated rug patterns.${tail}`;
     }
     if (riskLevel === "HIGH") {
-      return `HIGH means multiple strong signals fired but the operator graph hasn't fully convicted. 98.9% HIGH precision in aggregate. ${flags.length ? `Flags: ${flags.slice(0, 4).join(", ")}.` : ""}`;
-    }
-    if (riskLevel === "SAFE") {
-      return `Marked SAFE — no strong rug signals detected${riskScore !== undefined ? ` (score ${riskScore}/100)` : ""}. That doesn't guarantee future behavior; keep an eye on liquidity events.`;
+      return `HIGH means multiple strong signals fired but the operator graph has not reached the CRITICAL band. ${flags.length ? `Flags: ${flags.slice(0, 4).join(", ")}.` : ""}`;
     }
     return `Risk level is ${riskLevel}${riskScore !== undefined ? ` (${riskScore}/100)` : ""}. Not enough signal yet to escalate.`;
   }

@@ -5,6 +5,7 @@ export const metadata = {
   title: "SolSentry · Frontier 2026 Side Track Integrations",
   description:
     "Live verification of SolSentry's side-track integrations submitted to Solana Frontier 2026. Proofs updated post-submit.",
+  robots: { index: false, follow: false },
 };
 
 type TrackStatus = "submitted" | "in_progress" | "deployed" | "verified";
