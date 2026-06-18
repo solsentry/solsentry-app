@@ -10,33 +10,33 @@ import { CreditPackCard } from "@/components/pricing/CreditPackCard";
 import { PricingFAQ } from "@/components/pricing/PricingFAQ";
 
 export const metadata = {
-  title: "Pricing — Free · Pro $39.99 · B2B",
+  title: "Pricing — SolSentry",
   description:
-    "Pricing simples, transparente, sem token. Free tier, Pro $39.99/mês, B2B contact. Pay-as-you-go credit packs via USDC (x402).",
+    "Pricing simples e transparente. Free tier, Pro e B2B. Pay-as-you-go credit packs via USDC (x402).",
   openGraph: {
     title: "SolSentry Pricing",
-    description: "Free · Pro $39.99/mo · B2B contact. Pay-as-you-go credit packs via USDC.",
+    description: "Free · Pro · B2B contact. Pay-as-you-go credit packs via USDC.",
     images: ["/og/og-default.png"],
   },
 };
 
 const FREE_FEATURES = [
-  { label: "50 credits / day", included: true },
+  { label: "{{TODO: number}} credits / day", included: true },
   { label: "All FREE-class endpoints", included: true },
   { label: "/v1/operator hop-1 preview", included: true },
-  { label: "Drain-trace: 1/day", included: true },
-  { label: "AI search: 1 query/day", included: true },
+  { label: "Drain-trace: {{TODO: number}}/day", included: true },
+  { label: "AI search: {{TODO: number}} query/day", included: true },
   { label: "Deep operator hop-N", included: false },
   { label: "Webhooks & SLA", included: false },
 ];
 
 const PRO_FEATURES = [
-  { label: "4,000 credits / month", included: true },
+  { label: "{{TODO: number}} credits / month", included: true },
   { label: "All FREE-class endpoints", included: true },
   { label: "Deep operator hop-N", included: true },
-  { label: "Drain-trace: 50/day", included: true },
-  { label: "AI search: 50/day", included: true },
-  { label: "Dossier export: 10/month", included: true },
+  { label: "Drain-trace: {{TODO: number}}/day", included: true },
+  { label: "AI search: {{TODO: number}}/day", included: true },
+  { label: "Dossier export: {{TODO: number}}/month", included: true },
   { label: "Email support", included: true },
 ];
 
@@ -53,7 +53,7 @@ const B2B_FEATURES = [
 const FAQ_ITEMS = [
   {
     q: "Como funcionam credits?",
-    a: "Cada endpoint consome um número fixo de credits. Endpoints FREE-class (stats, operator hop-1 preview) custam 1 credit. Endpoints pesados (drain-trace, AI search, external-history) custam mais. Free tier reseta 50 credits/dia. Pro inclui 4.000/mês. Top-ups são cumulativos e nunca expiram.",
+    a: "Cada endpoint consome um número fixo de credits. Endpoints FREE-class, endpoints pesados, resets e top-ups precisam ser puxados de /v1/pricing antes de publicação final. {{TODO: pricing}}",
   },
   {
     q: "Posso cancelar a qualquer momento?",
@@ -69,11 +69,11 @@ const FAQ_ITEMS = [
   },
   {
     q: "B2B mínimo?",
-    a: "Contact sales para discutir volume e use case. Pricing é função de QPS, endpoints habilitados (webhooks, external-history), SLA e suporte. Tipicamente $1K-10K/mês para protocolos e wallets.",
+    a: "Contact sales para discutir volume e use case. Pricing é função de QPS, endpoints habilitados, SLA e suporte. {{TODO: pricing}}",
   },
   {
     q: "Open-core, certo?",
-    a: "Sim. MCP client (@solsentry/mcp) é MIT open-source. Core data e AI features ficam atrás do paywall — o que paga o desenvolvimento solo e o RPC pool de 23 endpoints.",
+    a: "Sim. MCP client (@solsentry/mcp) é MIT open-source. Core data e AI features ficam atrás do paywall — o que paga o desenvolvimento solo e o RPC pool. {{TODO: number}}",
   },
 ];
 

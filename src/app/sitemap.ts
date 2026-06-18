@@ -4,66 +4,107 @@ const SITE = "https://solsentry.app";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
-  return [
+  const routes: Array<{
+    path: string;
+    changeFrequency: MetadataRoute.Sitemap[number]["changeFrequency"];
+    priority: number;
+  }> = [
     {
-      url: `${SITE}/`,
-      lastModified: now,
+      path: "/",
       changeFrequency: "daily",
       priority: 1.0,
     },
     {
-      url: `${SITE}/pricing`,
-      lastModified: now,
+      path: "/lookup",
+      changeFrequency: "daily",
+      priority: 0.9,
+    },
+    {
+      path: "/scan",
+      changeFrequency: "daily",
+      priority: 0.8,
+    },
+    {
+      path: "/pricing",
       changeFrequency: "monthly",
       priority: 0.9,
     },
     {
-      url: `${SITE}/top-operators`,
-      lastModified: now,
+      path: "/top-operators",
       changeFrequency: "hourly",
       priority: 0.7,
     },
     {
-      url: `${SITE}/dashboard`,
-      lastModified: now,
+      path: "/dashboard",
       changeFrequency: "hourly",
       priority: 0.7,
     },
     {
-      url: `${SITE}/alerts`,
-      lastModified: now,
+      path: "/alerts",
       changeFrequency: "hourly",
       priority: 0.7,
     },
     {
-      url: `${SITE}/clusters`,
-      lastModified: now,
+      path: "/clusters",
       changeFrequency: "daily",
       priority: 0.6,
     },
     {
-      url: `${SITE}/docs`,
-      lastModified: now,
+      path: "/operators",
+      changeFrequency: "hourly",
+      priority: 0.6,
+    },
+    {
+      path: "/tokens",
+      changeFrequency: "hourly",
+      priority: 0.6,
+    },
+    {
+      path: "/wallets",
+      changeFrequency: "daily",
+      priority: 0.6,
+    },
+    {
+      path: "/live",
+      changeFrequency: "hourly",
+      priority: 0.6,
+    },
+    {
+      path: "/api",
+      changeFrequency: "weekly",
+      priority: 0.7,
+    },
+    {
+      path: "/docs",
       changeFrequency: "weekly",
       priority: 0.6,
     },
     {
-      url: `${SITE}/mcp`,
-      lastModified: now,
+      path: "/mcp",
       changeFrequency: "weekly",
       priority: 0.6,
     },
     {
-      url: `${SITE}/about`,
-      lastModified: now,
+      path: "/telegram",
+      changeFrequency: "weekly",
+      priority: 0.5,
+    },
+    {
+      path: "/x402",
+      changeFrequency: "weekly",
+      priority: 0.5,
+    },
+    {
+      path: "/about",
       changeFrequency: "monthly",
       priority: 0.4,
     },
-    {
-      url: `${SITE}/access`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.7,
-    },
   ];
+
+  return routes.map((route) => ({
+    url: `${SITE}${route.path}`,
+    lastModified: now,
+    changeFrequency: route.changeFrequency,
+    priority: route.priority,
+  }));
 }

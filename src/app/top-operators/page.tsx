@@ -93,7 +93,7 @@ export default async function TopOperatorsPage() {
               <p style={{ color: "var(--fg-2)", fontSize: 14, lineHeight: 1.6 }}>
                 A token is marked <code>RUG</code> when liquidity is pulled, holders are dumped on,
                 or trading halts before genuine distribution. The resolver waits up to 14 days for
-                safe tokens and uses fast-track windows for HIGH/CRITICAL initial signals.
+                non-rug outcomes and uses fast-track windows for HIGH/CRITICAL initial signals.
               </p>
             </div>
             <div className="panel">

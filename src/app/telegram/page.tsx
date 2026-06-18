@@ -210,7 +210,7 @@ const COMMANDS: { group: string; items: Cmd[] }[] = [
       {
         cmd: "/skip",
         args: "<addr> <cat> <label>",
-        desc: "Add an address to known-entities (CEX, mixer, bridge, safe).",
+        desc: "Add an address to known-entities (CEX, mixer, bridge, verified).",
         pillar: "TRACK",
         tier: "admin",
       },
@@ -322,8 +322,8 @@ export default function TelegramPage() {
           }
           sub={
             <>
-              SolSentry runs in Telegram first. Every command works on Solana mainnet today — 240h+
-              uptime, 24,000+ scans resolved. The bot is the fastest way to use the system. Open{" "}
+              SolSentry runs in Telegram first. Every command works on Solana mainnet today. The bot
+              is the fastest way to use the system. Open{" "}
               <a href="https://t.me/solsentryai" target="_blank" rel="noreferrer">
                 @solsentryai
               </a>{" "}
