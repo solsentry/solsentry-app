@@ -1,5 +1,4 @@
 // Landing page — v4 native React/Next.js implementation.
-// Replaces the v3 iframe wrapper that pointed at /references/solsentry-fun.html.
 //
 // Server component. Fetches live stats + top operator from api.solsentry.app
 // with revalidate windows tuned to the upstream cache. Passes serialized

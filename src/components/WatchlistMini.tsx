@@ -239,7 +239,7 @@ export function WatchlistMini() {
 
       <div style={{ marginTop: 12, paddingTop: 10, borderTop: `1px solid ${DESIGN.border}` }}>
         <a
-          href="/pro/watchlist"
+          href="/alerts"
           style={{ fontSize: 12, color: DESIGN.amber, textDecoration: "none" }}
         >
           Manage watchlist →

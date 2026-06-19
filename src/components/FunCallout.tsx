@@ -61,15 +61,6 @@ export function FunCallout() {
             >
               Open Fun mode →
             </Link>
-            <a
-              href="/references/solsentry-fun.html"
-              target="_blank"
-              rel="noreferrer"
-              className="btn-ghost"
-              style={{ fontSize: 16, padding: "14px 28px" }}
-            >
-              Fullscreen ↗
-            </a>
           </div>
 
           <div
