@@ -1,13 +1,20 @@
 // /pricing — public pricing page.
-// 3 tiers (Free / Pro / B2B) + credit top-up packs + FAQ.
+// Live tiers and credit top-up packs from /v1/pricing.
 // Spec: internal/marketing/strategy/WIREFRAME_v5.md §2.9
-// TODO: switch hardcoded values to /v1/pricing endpoint when backend ships.
 
 import { SiteTopbar } from "@/components/SiteTopbar";
 import { Footer } from "@/components/Footer";
 import { PricingCard } from "@/components/pricing/PricingCard";
 import { CreditPackCard } from "@/components/pricing/CreditPackCard";
 import { PricingFAQ } from "@/components/pricing/PricingFAQ";
+import {
+  fetchPricing,
+  type PricingCreditPack,
+  type PricingPlan,
+  type PricingResponse,
+} from "@/lib/api";
+
+export const revalidate = 300;
 
 export const metadata = {
   title: "Pricing — SolSentry",
@@ -20,40 +27,10 @@ export const metadata = {
   },
 };
 
-const FREE_FEATURES = [
-  { label: "{{TODO: number}} credits / day", included: true },
-  { label: "All FREE-class endpoints", included: true },
-  { label: "/v1/operator hop-1 preview", included: true },
-  { label: "Drain-trace: {{TODO: number}}/day", included: true },
-  { label: "AI search: {{TODO: number}} query/day", included: true },
-  { label: "Deep operator hop-N", included: false },
-  { label: "Webhooks & SLA", included: false },
-];
-
-const PRO_FEATURES = [
-  { label: "{{TODO: number}} credits / month", included: true },
-  { label: "All FREE-class endpoints", included: true },
-  { label: "Deep operator hop-N", included: true },
-  { label: "Drain-trace: {{TODO: number}}/day", included: true },
-  { label: "AI search: {{TODO: number}}/day", included: true },
-  { label: "Dossier export: {{TODO: number}}/month", included: true },
-  { label: "Email support", included: true },
-];
-
-const B2B_FEATURES = [
-  { label: "Unlimited credits", included: true },
-  { label: "All Pro features", included: true },
-  { label: "External-history (Nansen)", included: true },
-  { label: "Webhooks (real-time alerts)", included: true },
-  { label: "Custom SLA", included: true },
-  { label: "Dedicated support channel", included: true },
-  { label: "Volume discounts", included: true },
-];
-
 const FAQ_ITEMS = [
   {
     q: "Como funcionam credits?",
-    a: "Cada endpoint consome um número fixo de credits. Endpoints FREE-class, endpoints pesados, resets e top-ups precisam ser puxados de /v1/pricing antes de publicação final. {{TODO: pricing}}",
+    a: "Cada endpoint pode consumir uma quantidade diferente de credits. Os limites e top-ups exibidos nesta página vêm do endpoint público /v1/pricing.",
   },
   {
     q: "Posso cancelar a qualquer momento?",
@@ -69,15 +46,151 @@ const FAQ_ITEMS = [
   },
   {
     q: "B2B mínimo?",
-    a: "Contact sales para discutir volume e use case. Pricing é função de QPS, endpoints habilitados, SLA e suporte. {{TODO: pricing}}",
+    a: "Contact sales para discutir volume, endpoints habilitados, SLA e suporte.",
   },
   {
     q: "Open-core, certo?",
-    a: "Sim. MCP client (@solsentry/mcp) é MIT open-source. Core data e AI features ficam atrás do paywall — o que paga o desenvolvimento solo e o RPC pool. {{TODO: number}}",
+    a: "Sim. MCP client (@solsentry/mcp) é MIT open-source. Core data e AI features ficam atrás do paywall, sustentando o desenvolvimento e a infraestrutura.",
   },
 ];
 
-export default function PricingPage() {
+function findPlan(
+  pricing: PricingResponse | null,
+  key: "free" | "pro" | "b2b",
+): PricingPlan | null {
+  // Live /v1/pricing serves `tiers` as an object keyed by free/pro/b2b.
+  const tiers = pricing?.tiers;
+  if (tiers && !Array.isArray(tiers)) {
+    const fromTiers = key === "b2b" ? (tiers.b2b ?? tiers.enterprise) : tiers[key];
+    if (fromTiers) return fromTiers;
+  }
+
+  // Defensive: tolerate top-level keys (alternate shape).
+  const direct =
+    key === "b2b" ? (pricing?.b2b ?? pricing?.enterprise) : (pricing?.[key] as PricingPlan | null);
+  if (direct) return direct;
+
+  // Defensive: tolerate an array of plans (alternate shape).
+  const plans = pricing?.plans ?? (Array.isArray(tiers) ? tiers : []);
+  return (
+    plans.find((plan) => {
+      const identifier = `${plan.id ?? ""} ${plan.slug ?? ""} ${plan.name ?? ""}`.toLowerCase();
+      return key === "b2b"
+        ? identifier.includes("b2b") || identifier.includes("enterprise")
+        : identifier.includes(key);
+    }) ?? null
+  );
+}
+
+function numericValue(value: unknown): number | null {
+  if (typeof value === "number" && Number.isFinite(value)) return value;
+  if (typeof value === "string" && value.trim() !== "") {
+    const parsed = Number(value);
+    return Number.isFinite(parsed) ? parsed : null;
+  }
+  return null;
+}
+
+function formatCount(value: unknown): string {
+  const number = numericValue(value);
+  return number === null ? "—" : number.toLocaleString("en-US");
+}
+
+function formatMoney(value: unknown, currency = "USD"): string {
+  const number = numericValue(value);
+  if (number === null) return "—";
+  try {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: currency.toUpperCase(),
+      minimumFractionDigits: number % 1 === 0 ? 0 : 2,
+      maximumFractionDigits: 2,
+    }).format(number);
+  } catch {
+    return `${number.toLocaleString("en-US")} ${currency.toUpperCase()}`;
+  }
+}
+
+function limit(plan: PricingPlan | null, key: string, direct: unknown): unknown {
+  return direct ?? plan?.limits?.[key];
+}
+
+function formatCountOrUnlimited(value: unknown): string {
+  const number = numericValue(value);
+  if (number === -1) return "Unlimited";
+  return formatCount(value);
+}
+
+function planFeatures(plan: PricingPlan | null, cadence: "day" | "month") {
+  const features: { label: string; included: boolean }[] = [];
+
+  // Live tiers carry credits_per_period + period; fall back to the
+  // per-day/per-month aliases only when the canonical field is absent.
+  const periodicCredits =
+    plan?.credits_per_period ?? (cadence === "day" ? plan?.credits_per_day : plan?.credits_per_month);
+  if (periodicCredits !== null && periodicCredits !== undefined) {
+    const creditCadence = plan?.period ?? cadence;
+    features.push({
+      label: `Credits / ${creditCadence}: ${formatCountOrUnlimited(periodicCredits)}`,
+      included: true,
+    });
+  }
+
+  // Structured per-limit rows — only render when the value is actually
+  // present in the payload (live tiers omit them; their `features` strings
+  // already carry the human-readable limits).
+  const structured: Array<[string, string, unknown]> = [
+    ["Drain-trace / day", "drain_trace_per_day", plan?.drain_trace_per_day],
+    ["AI search / day", "ai_search_per_day", plan?.ai_search_per_day],
+    ["Dossier exports / month", "dossier_exports_per_month", plan?.dossier_exports_per_month],
+  ];
+  for (const [label, key, direct] of structured) {
+    const value = limit(plan, key, direct);
+    if (value !== null && value !== undefined) {
+      features.push({ label: `${label}: ${formatCountOrUnlimited(value)}`, included: true });
+    }
+  }
+
+  for (const feature of plan?.features ?? []) {
+    if (feature.trim()) features.push({ label: feature, included: true });
+  }
+  return features;
+}
+
+function planPrice(plan: PricingPlan | null, fallback: "—" | "Contact" = "—"): string {
+  if (!plan) return fallback;
+  const value =
+    plan.price_usd_monthly ??
+    plan.monthly_price_usd ??
+    plan.monthly_price ??
+    plan.price_usd ??
+    plan.price;
+  return value === null || value === undefined
+    ? fallback
+    : formatMoney(value, plan.currency ?? "USD");
+}
+
+// Billing cadence for the price suffix. Live tiers bill monthly; `period`
+// on the tier describes credit refresh cadence, not billing, so we only
+// surface "/mo" when there is an actual positive monthly price.
+function priceSuffix(plan: PricingPlan | null): string | undefined {
+  if (!plan) return undefined;
+  if (plan.interval) return plan.interval;
+  const monthly = numericValue(plan.price_usd_monthly ?? plan.monthly_price_usd);
+  return monthly && monthly > 0 ? "/mo" : undefined;
+}
+
+function creditPacks(pricing: PricingResponse | null): PricingCreditPack[] {
+  return pricing?.credit_packs ?? pricing?.packs ?? pricing?.topups ?? [];
+}
+
+export default async function PricingPage() {
+  const pricing = await fetchPricing();
+  const free = findPlan(pricing, "free");
+  const pro = findPlan(pricing, "pro");
+  const b2b = findPlan(pricing, "b2b");
+  const packs = creditPacks(pricing);
+
   return (
     <>
       <SiteTopbar />
@@ -155,19 +268,19 @@ export default function PricingPage() {
           >
             <PricingCard
               tier="Free"
-              price="$0"
-              priceSuffix="/mês"
+              price={planPrice(free)}
+              priceSuffix={priceSuffix(free)}
               description="Para builders, devs e curious users testando o stack."
-              features={FREE_FEATURES}
+              features={planFeatures(free, "day")}
               ctaLabel="Get started"
               ctaHref="/signup"
             />
             <PricingCard
               tier="Pro"
-              price="$39.99"
-              priceSuffix="/mês"
+              price={planPrice(pro)}
+              priceSuffix={priceSuffix(pro)}
               description="Para power users, traders e analistas que precisam de profundidade."
-              features={PRO_FEATURES}
+              features={planFeatures(pro, "month")}
               ctaLabel="Upgrade"
               ctaHref="/signup?tier=pro"
               highlighted
@@ -175,10 +288,10 @@ export default function PricingPage() {
             />
             <PricingCard
               tier="B2B"
-              price="Contact"
-              priceSuffix="sales"
+              price={planPrice(b2b, "Contact")}
+              priceSuffix={priceSuffix(b2b)}
               description="Para protocolos, wallets, bots e exchanges. Volume + SLA + webhooks."
-              features={B2B_FEATURES}
+              features={planFeatures(b2b, "month")}
               ctaLabel="Contact sales"
               ctaHref="mailto:sales@solsentry.app"
             />
@@ -209,19 +322,33 @@ export default function PricingPage() {
                 Pague USDC via x402, credits liquidados on-chain em segundos. Não expiram.
               </p>
             </div>
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-                gap: 18,
-                maxWidth: 800,
-                margin: "0 auto",
-              }}
-            >
-              <CreditPackCard price="$5" credits="500" />
-              <CreditPackCard price="$20" credits="2,200" bonusPct={10} />
-              <CreditPackCard price="$100" credits="11,500" bonusPct={15} />
-            </div>
+            {packs.length > 0 ? (
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+                  gap: 18,
+                  maxWidth: 800,
+                  margin: "0 auto",
+                }}
+              >
+                {packs.map((pack, index) => (
+                  <CreditPackCard
+                    key={pack.id ?? pack.name ?? index}
+                    price={formatMoney(
+                      pack.price_usd ?? pack.amount_usd ?? pack.price,
+                      pack.currency ?? "USD",
+                    )}
+                    credits={formatCount(pack.credits)}
+                    bonusPct={numericValue(pack.bonus_pct) ?? undefined}
+                  />
+                ))}
+              </div>
+            ) : (
+              <p style={{ textAlign: "center", color: "var(--fg-3)", margin: 0 }}>
+                Credit pack pricing is currently unavailable.
+              </p>
+            )}
           </div>
         </section>
 
