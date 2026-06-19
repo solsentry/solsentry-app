@@ -44,6 +44,8 @@ const card: React.CSSProperties = {
   borderRadius: 10,
 };
 
+const UNKNOWN_OPERATOR_MESSAGE = "This wallet is not in the tracked database.";
+
 interface PageProps {
   params: Promise<{ wallet: string }>;
   searchParams?: Promise<Record<string, string | string[] | undefined>>;
@@ -69,6 +71,7 @@ export default async function OperatorPage({ params, searchParams }: PageProps) 
     fetchOperatorNetwork(wallet),
   ]);
 
+  const operator = op?.known ? op : null;
   const isCritical = op?.risk_level === "CRITICAL";
   const accent = isCritical ? T.critical : T.amber;
 
@@ -109,17 +112,19 @@ export default async function OperatorPage({ params, searchParams }: PageProps) 
               >
                 {wallet}
               </div>
-              {op && (
+              {operator ? (
                 <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
                   <div style={{ fontSize: 36, fontWeight: 800, color: accent, lineHeight: 1 }}>
-                    {op.risk_score ?? "—"}
+                    {operator.risk_score ?? "—"}
                   </div>
-                  {op.risk_level && <RiskBadge level={op.risk_level} />}
+                  {operator.risk_level && <RiskBadge level={operator.risk_level} />}
                 </div>
+              ) : (
+                <RiskBadge level="UNKNOWN" />
               )}
-              {op?.tags?.length || op?.patterns?.length ? (
+              {operator?.tags?.length || operator?.patterns?.length ? (
                 <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
-                  {(op?.tags || []).map((t) => (
+                  {(operator?.tags || []).map((t) => (
                     <span
                       key={t}
                       style={{
@@ -134,7 +139,7 @@ export default async function OperatorPage({ params, searchParams }: PageProps) 
                       {t}
                     </span>
                   ))}
-                  {(op?.patterns || []).map((p) => (
+                  {(operator?.patterns || []).map((p) => (
                     <span
                       key={p}
                       style={{
@@ -152,7 +157,7 @@ export default async function OperatorPage({ params, searchParams }: PageProps) 
                 </div>
               ) : null}
             </div>
-            {timeline && (
+            {operator && timeline && (
               <div style={{ marginTop: 8, color: T.muted, fontSize: 13 }}>
                 Tracked since {fmtUnixAge(timeline.first_seen)} · Last seen{" "}
                 {fmtUnixAge(timeline.last_seen)}
@@ -161,17 +166,17 @@ export default async function OperatorPage({ params, searchParams }: PageProps) 
 
             {/* action row — real tools, Grok button styling */}
             <div style={{ marginTop: 16, display: "flex", gap: 10, flexWrap: "wrap" }}>
-              {op && (
+              {operator && (
                 <SenaModal
                   subject={{
                     kind: "operator",
                     wallet,
-                    riskLevel: op.risk_level,
-                    riskScore: op.risk_score,
-                    confirmedRugs: op.confirmed_rugs,
-                    totalTokens: op.total_tokens,
-                    rugRatePct: op.rug_rate_pct,
-                    tags: op.tags,
+                    riskLevel: operator.risk_level,
+                    riskScore: operator.risk_score,
+                    confirmedRugs: operator.confirmed_rugs,
+                    totalTokens: operator.total_tokens,
+                    rugRatePct: operator.rug_rate_pct,
+                    tags: operator.tags,
                   }}
                 />
               )}
@@ -201,9 +206,39 @@ export default async function OperatorPage({ params, searchParams }: PageProps) 
             </div>
           </div>
 
-          {!op && <ApiError endpoint={`/v1/operator/${wallet}`} />}
+          {!operator && (
+            <div style={{ ...card, padding: 20, marginBottom: 28 }}>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 10,
+                  marginBottom: 12,
+                  flexWrap: "wrap",
+                }}
+              >
+                <RiskBadge level="UNKNOWN" />
+                <span style={{ color: T.muted, fontSize: 13 }}>Live API lookup complete</span>
+              </div>
+              <p style={{ color: T.text, lineHeight: 1.6, margin: 0 }}>
+                {UNKNOWN_OPERATOR_MESSAGE}
+              </p>
+              <p style={{ color: T.dim, fontSize: 12, lineHeight: 1.6, margin: "10px 0 0" }}>
+                Unknown means SolSentry does not currently have this wallet in the tracked operator
+                database. It is not a safety verdict.
+              </p>
+              {!op && (
+                <div style={{ marginTop: 16 }}>
+                  <ApiError
+                    endpoint={`/v1/operator/${wallet}`}
+                    message="The live operator endpoint did not return a tracked profile for this wallet."
+                  />
+                </div>
+              )}
+            </div>
+          )}
 
-          {op && (
+          {operator && (
             <>
               {/* ─── STATS BAR (Grok cards, real data only) ───────────── */}
               <div
@@ -214,16 +249,18 @@ export default async function OperatorPage({ params, searchParams }: PageProps) 
                   marginBottom: 28,
                 }}
               >
-                <StatCard label="Total tokens" value={fmtInt(op.total_tokens)} />
+                <StatCard label="Total tokens" value={fmtInt(operator.total_tokens)} />
                 <StatCard
                   label="Confirmed rugs"
-                  value={fmtInt(op.confirmed_rugs)}
+                  value={fmtInt(operator.confirmed_rugs)}
                   accent={T.critical}
                 />
                 <StatCard
                   label="Rug rate"
-                  value={fmtPct(op.rug_rate_pct, 1)}
-                  accent={op.rug_rate_pct && op.rug_rate_pct > 80 ? T.critical : undefined}
+                  value={fmtPct(operator.rug_rate_pct, 1)}
+                  accent={
+                    operator.rug_rate_pct && operator.rug_rate_pct > 80 ? T.critical : undefined
+                  }
                 />
                 {timeline && (
                   <StatCard
@@ -251,16 +288,16 @@ export default async function OperatorPage({ params, searchParams }: PageProps) 
                 <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
                   <span style={{ color: T.amber }}>✦</span>
                   <span style={{ fontWeight: 700 }}>Sentinel’s Assessment</span>
-                  {op.risk_label && (
+                  {operator.risk_label && (
                     <span style={{ marginLeft: "auto", fontSize: 12, color: T.dim }}>
-                      {op.risk_label}
+                      {operator.risk_label}
                     </span>
                   )}
                 </div>
                 <p style={{ lineHeight: 1.6, color: T.text, margin: 0 }}>
-                  {op.known
-                    ? `Tracked operator with ${fmtInt(op.confirmed_rugs)} confirmed rugs across ${fmtInt(op.total_tokens)} deployed tokens (${fmtPct(op.rug_rate_pct, 1)} rug rate). Risk level ${op.risk_level ?? "—"}, score ${op.risk_score ?? "—"}/100.${op.tags?.length ? ` Behavioral tags: ${op.tags.join(", ")}.` : ""}`
-                    : "This wallet is not in the operator database. It may be a safe protocol address, or has not deployed a token in the monitored window."}
+                  {operator.known
+                    ? `Tracked operator with ${fmtInt(operator.confirmed_rugs)} confirmed rugs across ${fmtInt(operator.total_tokens)} deployed tokens (${fmtPct(operator.rug_rate_pct, 1)} rug rate). Risk level ${operator.risk_level ?? "—"}, score ${operator.risk_score ?? "—"}/100.${operator.tags?.length ? ` Behavioral tags: ${operator.tags.join(", ")}.` : ""}`
+                    : UNKNOWN_OPERATOR_MESSAGE}
                 </p>
                 <p style={{ marginTop: 10, marginBottom: 0, fontSize: 12, color: T.dim }}>
                   Open <strong style={{ color: T.amber }}>Sena AI</strong> (above) for the full
@@ -399,19 +436,19 @@ export default async function OperatorPage({ params, searchParams }: PageProps) 
         </div>
       </main>
 
-      {op && (
+      {operator && (
         <SenaLauncher
           initialOpen={senaAutoOpen}
           entity={{
             type: "operator",
             id: wallet,
             summary: {
-              riskLevel: op.risk_level,
-              riskScore: op.risk_score,
-              confirmedRugs: op.confirmed_rugs,
-              totalTokens: op.total_tokens,
-              rugRatePct: op.rug_rate_pct,
-              tags: op.tags,
+              riskLevel: operator.risk_level,
+              riskScore: operator.risk_score,
+              confirmedRugs: operator.confirmed_rugs,
+              totalTokens: operator.total_tokens,
+              rugRatePct: operator.rug_rate_pct,
+              tags: operator.tags,
             },
           }}
         />

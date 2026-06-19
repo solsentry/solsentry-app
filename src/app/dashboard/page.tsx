@@ -32,7 +32,7 @@ export default async function DashboardPage() {
           }
           sub={
             stats
-              ? `${fmtInt(stats.runtime_hours)}h continuous on Hetzner. ${fmtInt(stats.total_predictions)} scans processed. ${fmtPct(stats.accuracy_pct, 1)} accuracy on ${fmtPct(stats.resolve_rate_pct, 1)} resolved.`
+              ? `${fmtInt(stats.runtime_hours)}h continuous runtime. ${fmtInt(stats.total_predictions)} scans processed. ${fmtPct(stats.accuracy_pct, 1)} accuracy on ${fmtPct(stats.resolve_rate_pct, 1)} resolved.`
               : "Resolving live metrics from the API."
           }
         >
@@ -75,7 +75,7 @@ export default async function DashboardPage() {
               <Card
                 label="Accuracy"
                 value={fmtPct(stats.accuracy_pct, 1)}
-                meta="96.6% CRITICAL precision · 98.9% HIGH"
+                meta="live aggregate from /v1/stats"
               />
               <Card
                 label="HIGH+ alerts"

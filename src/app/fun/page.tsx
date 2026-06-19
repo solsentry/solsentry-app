@@ -4,9 +4,10 @@ import { PageHeader } from "@/components/PageHeader";
 import { Section } from "@/components/Section";
 
 export const metadata = {
-  title: "Fun mode — is this wallet safe?",
+  title: "Fun mode — wallet lookup",
   description:
     "Paste a Solana wallet or token. Get an emoji + plain-English verdict in seconds. Three modes — Easy, Pro, Dev — share one API. Consumer-facing entry point.",
+  robots: { index: false, follow: false },
 };
 
 export default function FunPage() {
@@ -18,7 +19,7 @@ export default function FunPage() {
           eyebrow="Fun mode · consumer-facing"
           title={
             <>
-              Is this wallet <span style={{ color: "var(--brand-amber)" }}>safe</span>?
+              Is this wallet <span style={{ color: "var(--brand-amber)" }}>tracked</span>?
             </>
           }
           sub={

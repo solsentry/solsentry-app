@@ -2,7 +2,7 @@
 
 // LandingClient — ultra-lean Easy homepage (sol-incinerator style).
 // Easy / Pro / Dev tabs. Paste → instant rich card with risk + Sena.
-// Samples are instant. Paste uses live API with strong mock fallback.
+// Paste uses live API. Unknown addresses stay neutral; no public mock fallback.
 
 import { useState } from "react";
 import Link from "next/link";
@@ -22,74 +22,25 @@ interface EasyResult {
   kind: EasyResultKind;
   addr: string;
   data: any;
-  isMock?: boolean;
   narrative?: string;
 }
 
 const SAMPLES = [
-  { label: "Top operator (CRITICAL)", value: "4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1" },
+  { label: "Tracked operator", value: "4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1" },
   { label: "Wrapped SOL", value: "So11111111111111111111111111111111111111112" },
   { label: "Known dev wallet", value: "9xQeWvG816bUx9EPjHmaT23yvVM2ZWbrrpZb9PusV9yN" },
 ];
 
-function getMock(addr: string): EasyResult {
-  const a = addr.toLowerCase();
-  if (a.includes("4kxscute") || a.includes("5pH1")) {
-    return {
-      kind: "operator",
-      addr,
-      isMock: true,
-      data: {
-        wallet: addr,
-        known: true,
-        risk_level: "CRITICAL",
-        risk_label: "CRITICAL",
-        confirmed_rugs: 2953,
-        total_tokens: 3240,
-        rug_rate_pct: 91.9,
-        tags: ["serial", "fast_deploy", "rebrand", "cluster-9"],
-        last_seen: Date.now() / 1000 - 120,
-      },
-      narrative:
-        "High-conviction CRITICAL serial operator. 3,200+ deployments with extreme consistency and rapid rebranding. Multiple confirmed ties to rug clusters. Avoid all new tokens from this wallet.",
-    };
-  }
-  if (a.includes("so1111")) {
-    return {
-      kind: "token",
-      addr,
-      isMock: true,
-      data: {
-        mint: addr,
-        symbol: "WSOL",
-        risk_level: "LOW",
-        risk_label: "LOW",
-        flags: [],
-        dev_wallet: "11111111111111111111111111111111",
-        operator: { confirmed_rugs: 0, total_tokens: 1, risk_level: "LOW" },
-      },
-      narrative:
-        "Native wrapped SOL. Core infrastructure token. No operator risk. Standard liquidity behavior.",
-    };
-  }
-  // generic medium risk mock
+function getUnknown(addr: string): EasyResult {
   return {
-    kind: "operator",
+    kind: "unknown",
     addr,
-    isMock: true,
     data: {
-      wallet: addr,
-      known: true,
-      risk_level: "HIGH",
-      risk_label: "HIGH",
-      confirmed_rugs: 47,
-      total_tokens: 312,
-      rug_rate_pct: 15.1,
-      tags: ["fast_deploy", "mixer_links"],
-      last_seen: Date.now() / 1000 - 3600 * 9,
+      known: false,
+      risk_level: "UNKNOWN",
+      tags: [],
     },
-    narrative:
-      "Active high-risk deployer. 47 confirmed rugs across 300+ tokens. Recent activity shows mixer hops and rapid token launches. Monitor closely.",
+    narrative: "This address is not in the tracked database.",
   };
 }
 
@@ -119,16 +70,15 @@ async function quickEasyLookup(raw: string): Promise<EasyResult | null> {
     const tkR = await fetch(`${API}/v1/token/${encodeURIComponent(v)}`, { cache: "no-store" });
     if (tkR.ok) {
       const tk = await tkR.json();
-      if (tk) {
+      if (tk?.known !== false) {
         return { kind: "token", addr: v, data: tk };
       }
     }
   } catch {
-    // ignore — we fall through to mock below
+    return getUnknown(v);
   }
 
-  // Always return a good mock so the card appears
-  return getMock(v);
+  return getUnknown(v);
 }
 
 function formatAddr(a: string) {
@@ -137,11 +87,12 @@ function formatAddr(a: string) {
 
 function EasyResultCard({ r, used }: { r: EasyResult; used: number }) {
   const d = r.data || {};
-  const level = (d.risk_level || d.risk_label || "MEDIUM").toUpperCase();
+  const level = (d.risk_level || d.risk_label || "UNKNOWN").toUpperCase();
   const isOp = r.kind === "operator";
-  const rugs = isOp ? (d.confirmed_rugs ?? 0) : 0;
-  const tokens = isOp ? (d.total_tokens ?? 0) : (d.operator?.total_tokens ?? 1);
-  const rate = isOp ? (d.rug_rate_pct ?? 0) : 0;
+  const isUnknown = r.kind === "unknown";
+  const rugs = isOp ? (d.confirmed_rugs ?? "—") : "—";
+  const tokens = isOp ? (d.total_tokens ?? "—") : (d.operator?.total_tokens ?? "—");
+  const rate = isOp && typeof d.rug_rate_pct === "number" ? `${d.rug_rate_pct.toFixed(1)}%` : "—";
   const tags: string[] = d.tags || d.flags || [];
 
   const narrative =
@@ -150,7 +101,7 @@ function EasyResultCard({ r, used }: { r: EasyResult; used: number }) {
       ? "High-conviction serial operator. Strong evidence of repeated rug behavior."
       : level === "HIGH"
         ? "Elevated risk. Multiple rugs and suspicious patterns detected."
-        : "Limited intel. No major red flags in current data.");
+        : "This address is not in the tracked database.");
 
   return (
     <div
@@ -183,7 +134,7 @@ function EasyResultCard({ r, used }: { r: EasyResult; used: number }) {
               letterSpacing: "0.08em",
             }}
           >
-            {r.isMock ? "DEMO • CURATED" : "LIVE FROM API"} • {r.kind.toUpperCase()}
+            LIVE FROM API • {r.kind.toUpperCase()}
           </div>
           <div
             onClick={() => navigator.clipboard?.writeText(r.addr)}
@@ -237,7 +188,7 @@ function EasyResultCard({ r, used }: { r: EasyResult; used: number }) {
             <div style={{ background: "var(--surface-2)", borderRadius: 6, padding: "8px 10px" }}>
               <div style={{ fontSize: 11, color: "var(--fg-3)" }}>RUG RATE</div>
               <div style={{ fontSize: 22, fontWeight: 700, fontFamily: "var(--font-display)" }}>
-                {rate.toFixed(0)}%
+                {rate}
               </div>
             </div>
           </>
@@ -252,7 +203,9 @@ function EasyResultCard({ r, used }: { r: EasyResult; used: number }) {
             }}
           >
             <div style={{ fontSize: 14, color: "var(--fg-2)" }}>
-              Token scan • deployer and holder intel available in Pro
+              {isUnknown
+                ? "Not in tracked database."
+                : "Token scan result returned from the live API."}
             </div>
           </div>
         )}
@@ -328,7 +281,7 @@ export function LandingClient({ stats, hideChrome = false }: Props & { hideChrom
   const [query, setQuery] = useState("");
   const [result, setResult] = useState<EasyResult | null>(null);
   const [loading, setLoading] = useState(false);
-  const [used, setUsed] = useState(2); // visible rate limit demo
+  const [used, setUsed] = useState(0);
 
   async function doLookup(raw: string) {
     const v = raw.trim();
@@ -338,28 +291,13 @@ export function LandingClient({ stats, hideChrome = false }: Props & { hideChrom
 
     try {
       const res = await quickEasyLookup(v);
-      // Always ensure we have a result (quickEasyLookup already falls back internally)
-      if (res) {
-        setResult(res);
-      } else {
-        setResult(getMock(v));
-      }
+      setResult(res ?? getUnknown(v));
     } catch {
-      // Ultimate safety net — never leave the user without a card
-      setResult(getMock(v));
+      setResult(getUnknown(v));
     }
 
     setUsed((u) => Math.min(5, u + 1));
     setLoading(false);
-  }
-
-  // Samples always load instantly using curated mocks (no network).
-  // This guarantees the rich card always appears, even if API is slow or CORS blocks.
-  function loadSampleDirect(val: string) {
-    const mock = getMock(val);
-    setQuery(val);
-    setResult(mock);
-    setUsed((u) => Math.min(5, u + 1));
   }
 
   function loadSample(val: string) {
@@ -473,13 +411,13 @@ export function LandingClient({ stats, hideChrome = false }: Props & { hideChrom
                   </button>
                 </div>
 
-                {/* Samples — instant rich cards (guaranteed, no network) */}
+                {/* Samples use the same live lookup path as pasted addresses. */}
                 <div style={{ marginTop: 8, display: "flex", flexWrap: "wrap", gap: 6 }}>
                   {SAMPLES.map((s, idx) => (
                     <button
                       key={idx}
                       type="button"
-                      onClick={() => loadSampleDirect(s.value)}
+                      onClick={() => loadSample(s.value)}
                       style={{
                         fontFamily: "var(--font-mono)",
                         fontSize: 11,
@@ -494,16 +432,6 @@ export function LandingClient({ stats, hideChrome = false }: Props & { hideChrom
                       {s.label}
                     </button>
                   ))}
-                  <span
-                    style={{
-                      alignSelf: "center",
-                      fontSize: 10,
-                      color: "var(--fg-4)",
-                      marginLeft: 4,
-                    }}
-                  >
-                    5 scans/hour • rate limited
-                  </span>
                 </div>
               </div>
 

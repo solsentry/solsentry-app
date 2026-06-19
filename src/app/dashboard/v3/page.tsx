@@ -4,6 +4,11 @@ import { AISuggestionsCard } from "@/components/AISuggestionsCard";
 import type { Operator, RiskLevel } from "@/lib/mock-data";
 import { fetchTopOperators, type TopOperator } from "@/lib/api";
 
+export const metadata = {
+  title: "Dashboard v3 lab",
+  robots: { index: false, follow: false },
+};
+
 /* Dashboard v3 — first real-data mount of an integrated v0 component.
  * The existing /dashboard (v2) is untouched. TopOperatorsTable here is fed by
  * the live /v1/top-operators endpoint instead of mock-data.

@@ -324,8 +324,7 @@ export function HeroScan() {
                   lineHeight: 1.6,
                 }}
               >
-                Not in the operator database. Either this wallet has not deployed a token during the
-                monitored window, or it is a safe protocol address.
+                This wallet is not in the tracked database. This is not a safety verdict.
               </div>
             )}
 
