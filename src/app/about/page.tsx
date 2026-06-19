@@ -121,8 +121,7 @@ export default async function AboutPage() {
               >
                 4kxscute…
               </Link>
-              ) remains a live sample for public verification. Product-approved operator-level
-              numbers should be inserted here only after review. {"{{TODO: operator copy}}"}
+              ) remains a live sample for public verification.
             </p>
           </div>
         </section>
@@ -158,7 +157,7 @@ export default async function AboutPage() {
             />
             <ComparisonCard
               dim="Cost"
-              others="$30K+/year (Chainalysis lowest)"
+              others="Enterprise contracts"
               us="Free + per-call x402 (no subscription required)"
             />
           </div>
@@ -171,7 +170,7 @@ export default async function AboutPage() {
             <p>
               Three-stage progressive scan (account info → DAS metadata + holder concentration →
               bundle forensics + Token-2022 extension scoring) drives a multi-signal resolver with
-              parallel resolution windows. {"{{TODO: resolver windows}}"}
+              parallel resolution windows.
             </p>
             <p>
               An autonomous brain layer — <code>investigator</code>, <code>retract_engine</code>,{" "}
@@ -213,7 +212,7 @@ export default async function AboutPage() {
           <h2 className="section-title">The honest numbers</h2>
           <div className="about-prose">
             <p>
-              All metrics on this page refresh from{" "}
+              Aggregate metrics on this page refresh from{" "}
               <a
                 href="https://api.solsentry.app/v1/stats"
                 target="_blank"
@@ -222,26 +221,14 @@ export default async function AboutPage() {
               >
                 <code>api.solsentry.app/v1/stats</code>
               </a>{" "}
-              every 60 seconds. Per-tier precision:
+              every 60 seconds.
             </p>
             <ul style={{ lineHeight: 1.8, color: "var(--fg-2)" }}>
-              <li>
-                <strong>CRITICAL precision</strong> — verify live before publishing.{" "}
-                {"{{TODO: live critical precision}}"}
-              </li>
-              <li>
-                <strong>HIGH precision</strong> — verify live before publishing.{" "}
-                {"{{TODO: live high precision}}"}
-              </li>
               <li>
                 <strong>Aggregate accuracy {fmtPct(stats?.accuracy_pct)}</strong> across{" "}
                 {fmtInt(stats?.total_predictions)} resolved predictions
               </li>
             </ul>
-            <p>
-              Error composition and per-tier precision need a live source before this section is
-              used as external proof. {"{{TODO: error composition}}"}
-            </p>
           </div>
         </section>
 

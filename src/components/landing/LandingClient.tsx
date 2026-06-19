@@ -70,7 +70,7 @@ async function quickEasyLookup(raw: string): Promise<EasyResult | null> {
     const tkR = await fetch(`${API}/v1/token/${encodeURIComponent(v)}`, { cache: "no-store" });
     if (tkR.ok) {
       const tk = await tkR.json();
-      if (tk) {
+      if (tk?.known !== false) {
         return { kind: "token", addr: v, data: tk };
       }
     }
@@ -432,16 +432,6 @@ export function LandingClient({ stats, hideChrome = false }: Props & { hideChrom
                       {s.label}
                     </button>
                   ))}
-                  <span
-                    style={{
-                      alignSelf: "center",
-                      fontSize: 10,
-                      color: "var(--fg-4)",
-                      marginLeft: 4,
-                    }}
-                  >
-                    {"{{TODO: rate limit}}"} scans/hour
-                  </span>
                 </div>
               </div>
 

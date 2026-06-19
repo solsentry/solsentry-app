@@ -195,11 +195,8 @@ export default function ArchitecturePage() {
         <Section eyebrow="Stack" title="What it runs on">
           <div className="docs-table" style={{ maxWidth: 720 }}>
             <Row k="Runtime" v="Python 3 · production VPS" />
-            <Row k="RPC pool" v="{{TODO: live RPC pool}}" />
             <Row k="Storage" v="JSON / JSONL atomic writes · in-memory frozenset indices" />
             <Row k="Live channel" v="WebSocket (Helius enhanced)" />
-            <Row k="Tests" v="{{TODO: live test count}}" />
-            <Row k="Deployments" v="{{TODO: live deployment count}}" />
           </div>
         </Section>
       </main>
