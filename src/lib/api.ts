@@ -11,6 +11,7 @@ const TTL = {
   clusters: 120,
   cluster: 120,
   x402: 300,
+  pricing: 300,
   hunters: 30,
   dossier: 300,
   holders: 300,
@@ -171,6 +172,57 @@ export interface X402Stats {
   by_tool: Record<string, number>;
 }
 
+export interface PricingPlan {
+  id?: string;
+  slug?: string;
+  name?: string;
+  // Live /v1/pricing tier fields (canonical):
+  price_usd_monthly?: number | null;
+  credits_per_period?: number | null;
+  period?: string | null;
+  dossier_cap?: number | null;
+  external_history_allowed?: boolean | null;
+  // Defensive aliases (tolerate alternate shapes; never assumed present):
+  price?: number | string | null;
+  price_usd?: number | string | null;
+  monthly_price?: number | string | null;
+  monthly_price_usd?: number | string | null;
+  currency?: string | null;
+  interval?: string | null;
+  credits_per_day?: number | null;
+  credits_per_month?: number | null;
+  drain_trace_per_day?: number | null;
+  ai_search_per_day?: number | null;
+  dossier_exports_per_month?: number | null;
+  limits?: Record<string, number | string | null> | null;
+  features?: string[] | null;
+}
+
+export interface PricingCreditPack {
+  id?: string;
+  name?: string;
+  price?: number | string | null;
+  price_usd?: number | string | null;
+  amount_usd?: number | string | null;
+  currency?: string | null;
+  credits?: number | string | null;
+  bonus_pct?: number | null;
+}
+
+export interface PricingResponse {
+  free?: PricingPlan | null;
+  pro?: PricingPlan | null;
+  b2b?: PricingPlan | null;
+  enterprise?: PricingPlan | null;
+  plans?: PricingPlan[] | null;
+  // Live /v1/pricing serves `tiers` as an object keyed by free/pro/b2b.
+  // Array form kept for defensive tolerance of alternate shapes.
+  tiers?: Record<string, PricingPlan> | PricingPlan[] | null;
+  credit_packs?: PricingCreditPack[] | null;
+  packs?: PricingCreditPack[] | null;
+  topups?: PricingCreditPack[] | null;
+}
+
 export interface DrainHop {
   from?: string;
   to?: string;
@@ -286,6 +338,10 @@ export async function fetchCluster(clusterId: string): Promise<Cluster | null> {
 
 export async function fetchX402Stats(): Promise<X402Stats | null> {
   return safeFetch<X402Stats>("/v1/x402/stats", TTL.x402);
+}
+
+export async function fetchPricing(): Promise<PricingResponse | null> {
+  return safeFetch<PricingResponse>("/v1/pricing", TTL.pricing);
 }
 
 export async function fetchDrainTrace(wallet: string): Promise<DrainTrace | null> {

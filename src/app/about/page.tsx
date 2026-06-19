@@ -114,14 +114,14 @@ export default async function AboutPage() {
               the chain, free for retail.
             </p>
             <p>
-              Started January 2025. First mainnet write April 8, 2026. Same operator wallet (
+              Started January 2025. First mainnet write April 8, 2026. A tracked operator wallet (
               <Link
                 href="/operator/4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1"
                 className="inline-link"
               >
                 4kxscute…
               </Link>
-              ) is still deploying today — 14 new tokens per day on average, roughly 90% rug rate.
+              ) remains a live sample for public verification.
             </p>
           </div>
         </section>
@@ -157,7 +157,7 @@ export default async function AboutPage() {
             />
             <ComparisonCard
               dim="Cost"
-              others="$30K+/year (Chainalysis lowest)"
+              others="Enterprise contracts"
               us="Free + per-call x402 (no subscription required)"
             />
           </div>
@@ -170,7 +170,7 @@ export default async function AboutPage() {
             <p>
               Three-stage progressive scan (account info → DAS metadata + holder concentration →
               bundle forensics + Token-2022 extension scoring) drives a multi-signal resolver with
-              three parallel windows: 6h fast-track, 2-day primary, 14-day safe-recheck.
+              parallel resolution windows.
             </p>
             <p>
               An autonomous brain layer — <code>investigator</code>, <code>retract_engine</code>,{" "}
@@ -212,7 +212,7 @@ export default async function AboutPage() {
           <h2 className="section-title">The honest numbers</h2>
           <div className="about-prose">
             <p>
-              All metrics on this page refresh from{" "}
+              Aggregate metrics on this page refresh from{" "}
               <a
                 href="https://api.solsentry.app/v1/stats"
                 target="_blank"
@@ -221,28 +221,14 @@ export default async function AboutPage() {
               >
                 <code>api.solsentry.app/v1/stats</code>
               </a>{" "}
-              every 60 seconds. Per-tier precision:
+              every 60 seconds.
             </p>
             <ul style={{ lineHeight: 1.8, color: "var(--fg-2)" }}>
-              <li>
-                <strong>96.6% CRITICAL precision</strong> · 607 FP events over 231 unique mints
-                classified
-              </li>
-              <li>
-                <strong>98.9% HIGH precision</strong> — auditable per-mint via the public{" "}
-                <code>outcome_predictions.json</code> snapshot
-              </li>
               <li>
                 <strong>Aggregate accuracy {fmtPct(stats?.accuracy_pct)}</strong> across{" "}
                 {fmtInt(stats?.total_predictions)} resolved predictions
               </li>
             </ul>
-            <p>
-              FP composition at CRITICAL: 228 threshold edge cases (tokens surviving 1–14 days
-              post-flag), 3 unclassified long survivors, 2 persistent high-frequency rescan mints
-              (tech debt scheduled v2.4). Every error is a threshold edge case — not a false-alarm
-              pattern.
-            </p>
           </div>
         </section>
 
@@ -291,8 +277,8 @@ export default async function AboutPage() {
               <strong>Crash Diniz</strong> — founder, sole developer. Self-taught since the early
               2000s: Slackware, Unix, Oracle networking. No university, no bootcamp. Started
               learning Python in January 2025. Currently: {fmtInt(stats?.total_predictions)}+
-              mainnet predictions, ~1,612 passing tests, full async architecture, 96.6% CRITICAL
-              precision — solo, in Brazil.
+              mainnet predictions, full async architecture, and live precision metrics from the
+              public API — solo, in Brazil.
             </p>
             <p>
               <strong>Sena</strong> — the AI persona. Surfaces operator threat context in human

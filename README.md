@@ -2,8 +2,9 @@
 
 > RugCheck tells you a fire is burning. SolSentry tells you who lit it.
 
-Public web app for SolSentry. This repo serves the landing page, operator
-lookup, and public docs surface for the operator-risk intelligence layer.
+Public web app for [SolSentry](https://solsentry.app) — Solana threat
+intelligence. Landing, lookup, operator/token pages, live dashboards and
+integration docs for the operator-risk intelligence layer.
 
 Live product:
 
@@ -12,19 +13,6 @@ Live product:
 - Infra backing the API: `Contabo US-East (66.94.105.185)`, migrated from
   Hetzner on `2026-06-09`
 - Frontend hosting: `Cloudflare/Vercel` (not on the VPS)
-
-## Canonical live snapshot
-
-- `80,017` predictions tracked
-- `91.2%` aggregate accuracy
-- `97.9% CRITICAL precision - auditable per-mint`
-- `95.3% HIGH precision`
-- `94.4% MEDIUM precision`
-- `10,112` operators profiled
-- `7,004` serial ruggers identified
-- `78.0%` dev wallet coverage
-- `~1,367h` continuous runtime
-- `v2.3.21`
 
 ## What this app exposes
 
@@ -35,10 +23,30 @@ Live product:
 
 ## Stack
 
-- Next.js 15.1
-- React 19
-- TypeScript 5.7
+- Next.js 15.1 + React 19 + TypeScript 5.7
+- App Router
+- Static export where possible; SSR (edge runtime) for `/operator/[wallet]`
+- Consumes the public REST API at https://api.solsentry.app
 - Cloudflare Pages deployment
+
+## Routes
+
+| Route | Type | Purpose |
+|---|---|---|
+| `/` | Static/server | Landing with live stats-backed lookup entry |
+| `/lookup` | Server | Universal wallet/mint lookup redirect |
+| `/scan` | Server | Scan fallback for unknown wallet/mint inputs |
+| `/operator/[wallet]` | Dynamic | Live operator risk profile |
+| `/token/[mint]` | Dynamic | Live token risk profile and deployer context |
+| `/network/[wallet]` | Dynamic | Operator graph view |
+| `/drain/[wallet]` | Dynamic | Drain-trace view |
+| `/share/operator/[wallet]` | Dynamic | Public read-only operator share card |
+| `/dashboard`, `/live`, `/alerts` | Dynamic/client | Live network and alert surfaces |
+| `/clusters`, `/clusters/[id]` | Dynamic | Bot-cluster registry and detail pages |
+| `/top-operators`, `/operators`, `/tokens`, `/wallets` | Dynamic | Public directories |
+| `/api`, `/docs`, `/mcp`, `/telegram`, `/x402` | Static/server | Integration and developer pages |
+| `/pricing` | Static | Tiers and credit packs read live from `/v1/pricing` |
+| `/lab/*`, `/screen`, `/dashboard/v3`, `/fun`, `/sidetrack` | Internal/noindex | Labs, presentation and experimental surfaces |
 
 ## Local development
 
@@ -63,7 +71,9 @@ npm run pages:build
 ## Notes
 
 - Public claims should point back to `https://api.solsentry.app/v1/stats`.
-- Use `97.9% CRITICAL precision - auditable per-mint` as the primary quality claim.
+- Precision is auditable per-mint at `/v1/predictions/{mint}` (live) — never
+  publish a hardcoded accuracy/precision number or operator-level aggregate as
+  a standing fact; re-verify live on the day.
 
 ## License
 

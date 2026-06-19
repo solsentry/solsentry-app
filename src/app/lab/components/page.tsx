@@ -6,6 +6,11 @@ import { DrainOfTheDay } from "@/components/drain-of-the-day";
 import { SmartMoneyPanel } from "@/components/smart-money-panel";
 import WatchlistPanel from "@/components/WatchlistPanel";
 
+export const metadata = {
+  title: "Components lab",
+  robots: { index: false, follow: false },
+};
+
 function Lab({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section className="border-t border-border pt-6">

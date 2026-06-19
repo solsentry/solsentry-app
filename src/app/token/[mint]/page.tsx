@@ -194,8 +194,9 @@ function opAddr(op: TokenOperatorRef | string | null | undefined): string | null
 export default async function TokenPage({ params }: PageProps) {
   const { mint } = await params;
   const tok = await fetchToken(mint);
+  const isUntracked = tok?.known === false;
 
-  const deployer = tok?.dev_wallet || opAddr(tok?.operator) || null;
+  const deployer = isUntracked ? null : tok?.dev_wallet || opAddr(tok?.operator) || null;
 
   // Parallel fan-out — server-side, cached via fetchOperator/Timeline/Holders TTLs.
   const [operator, timeline, holders] = await Promise.all([
@@ -228,7 +229,21 @@ export default async function TokenPage({ params }: PageProps) {
           </section>
         )}
 
-        {tok && (
+        {isUntracked && (
+          <section className="wrap" style={{ padding: "32px 24px" }}>
+            <div className="panel" style={{ padding: 20 }}>
+              <RiskBadge level="UNKNOWN" />
+              <p style={{ color: "var(--fg-1)", margin: "12px 0 0" }}>
+                This token is not in the tracked database.
+              </p>
+              <p style={{ color: "var(--fg-3)", fontSize: 12, margin: "8px 0 0" }}>
+                This is not a safety verdict.
+              </p>
+            </div>
+          </section>
+        )}
+
+        {tok && !isUntracked && (
           <>
             {/* ─── 1. TOP STRIP ─────────────────────────────────────────── */}
             <section className="wrap" style={{ padding: "0 24px", marginBottom: 16 }}>
