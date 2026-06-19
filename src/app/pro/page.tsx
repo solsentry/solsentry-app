@@ -244,14 +244,14 @@ function TierPanels() {
       <ProTierCard
         icon="◈"
         title="Playground"
-        href="/pro/playground"
+        href="/pro"
         status="soon"
         blurb="Free-form prompt to Sena. Multi-wallet compare, drain-trace, dossier — chained tool calls with credit estimate before execute."
       />
       <ProTierCard
         icon="≡"
         title="Studies"
-        href="/pro/studies"
+        href="/pro"
         status="soon"
         blurb="Persistent saved investigations. Re-run on demand, attach notes, share with team."
       />
@@ -265,7 +265,7 @@ function TierPanels() {
       <ProTierCard
         icon="$"
         title="Credits"
-        href="/pro/credits"
+        href="/pro"
         status="live"
         blurb="x402 balance, per-endpoint history, monthly bundles. CSV export for accounting."
       />
