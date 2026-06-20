@@ -273,7 +273,7 @@ export default async function PricingPage() {
               description="Para builders, devs e curious users testando o stack."
               features={planFeatures(free, "day")}
               ctaLabel="Get started"
-              ctaHref="/signup"
+              ctaHref="/login"
             />
             <PricingCard
               tier="Pro"
@@ -282,7 +282,7 @@ export default async function PricingPage() {
               description="Para power users, traders e analistas que precisam de profundidade."
               features={planFeatures(pro, "month")}
               ctaLabel="Upgrade"
-              ctaHref="/signup?tier=pro"
+              ctaHref="/login"
               highlighted
               badge="Most popular"
             />

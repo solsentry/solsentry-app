@@ -71,8 +71,8 @@ export default async function WalletsPage() {
                 4kxscute…5pH1
               </div>
               <p style={{ color: "var(--fg-2)", fontSize: 13, lineHeight: 1.6 }}>
-                The infamous serial deployer. 1,059 confirmed rugs across 1,060 tokens. 99.9% rug
-                rate. Live since March 2026.
+                Illustrative operator entry. Open the profile for current API-backed risk and
+                activity data.
               </p>
             </Link>
 

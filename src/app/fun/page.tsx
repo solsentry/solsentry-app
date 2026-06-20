@@ -31,14 +31,6 @@ export default function FunPage() {
           }
         >
           <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 8 }}>
-            <a
-              href="/references/solsentry-fun.html"
-              target="_blank"
-              rel="noreferrer"
-              className="btn-primary"
-            >
-              Open fullscreen →
-            </a>
             <a href="/telegram" className="btn-ghost">
               Prefer Telegram? →
             </a>
@@ -54,18 +46,16 @@ export default function FunPage() {
               borderRadius: "var(--radius-sm)",
             }}
           >
-            <iframe
-              src="/references/solsentry-fun.html"
-              title="SolSentry — fun mode"
+            <div
               style={{
-                width: "100%",
-                height: "min(900px, 85vh)",
-                border: "none",
-                display: "block",
-                background: "var(--bg)",
+                padding: "48px 24px",
+                color: "var(--fg-2)",
+                textAlign: "center",
               }}
-              loading="lazy"
-            />
+            >
+              The standalone preview is currently unavailable. Use the public product surfaces
+              linked above.
+            </div>
           </div>
           <p
             style={{
