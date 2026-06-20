@@ -81,7 +81,7 @@ export default function MCPPage() {
       <SiteTopbar />
       <main>
         <PageHeader
-          eyebrow="MCP server · @solsentry/mcp v0.1.1"
+          eyebrow="MCP server · @solsentry/mcp v0.2.3"
           title={
             <>
               SolSentry in your <span style={{ color: "var(--brand-amber)" }}>AI agent</span>.

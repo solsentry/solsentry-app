@@ -28,7 +28,7 @@ function VerifyInner() {
       .then(async (r) => {
         if (r.ok) {
           setStatus("ok");
-          router.replace("/app");
+          router.replace("/dashboard");
         } else {
           setStatus("error");
           setMessage("Link expired or invalid.");

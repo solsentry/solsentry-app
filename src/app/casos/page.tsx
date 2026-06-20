@@ -31,17 +31,6 @@ const CASES: CaseCard[] = [
     accent: "#C17D0E",
   },
   {
-    slug: "casen-grants",
-    href: "/casos/casen-grants",
-    title: "Payer-anchored grant fraud trace",
-    kicker:
-      "Como SolSentry detectou um padrão de desvio coordenado de grants: payer → cohort → hubs → CEX exit.",
-    readingTime: "12 min de leitura",
-    date: "2026-04-22",
-    status: "live",
-    accent: "#A855F7",
-  },
-  {
     slug: "foundation-watch",
     href: "/casos",
     title: "Foundation watch",
