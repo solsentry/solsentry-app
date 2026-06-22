@@ -21,8 +21,6 @@ export function SiteTopbar() {
   const pathname = usePathname();
   const [lang, setLang] = useState<"en" | "pt">("en");
   const [theme, setTheme] = useState<"dark" | "light">("dark");
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
   // Determine active mode based on current route
   const getActiveMode = () => {
     if (!pathname) return "easy";
@@ -49,14 +47,12 @@ export function SiteTopbar() {
     try {
       const savedLang = localStorage.getItem("solsentry-lang") as "en" | "pt" | null;
       const savedTheme = localStorage.getItem("solsentry-theme") as "dark" | "light" | null;
-      const mockUser = localStorage.getItem("solsentry-mock-user");
 
       if (savedLang) setLang(savedLang);
       if (savedTheme) {
         setTheme(savedTheme);
         document.documentElement.setAttribute("data-theme", savedTheme);
       }
-      setIsLoggedIn(!!mockUser);
     } catch {}
   }, []);
 
@@ -70,16 +66,6 @@ export function SiteTopbar() {
     setTheme(newTheme);
     localStorage.setItem("solsentry-theme", newTheme);
     document.documentElement.setAttribute("data-theme", newTheme);
-  };
-
-  const toggleMockLogin = () => {
-    const newState = !isLoggedIn;
-    setIsLoggedIn(newState);
-    if (newState) {
-      localStorage.setItem("solsentry-mock-user", "demo");
-    } else {
-      localStorage.removeItem("solsentry-mock-user");
-    }
   };
 
   return (
@@ -134,47 +120,14 @@ export function SiteTopbar() {
                 Easy
               </Link>
 
-              {activeMode !== "easy" && activeMode !== "pro" && (
-                <span
-                  style={{
-                    width: 1,
-                    alignSelf: "stretch",
-                    background: "var(--border)",
-                    margin: "0 2px",
-                  }}
-                />
-              )}
-
-              <Link
-                href="/pro"
+              <span
                 style={{
-                  padding: "8px 12px",
-                  borderRadius: 4,
-                  color: activeMode === "pro" ? "var(--brand-amber)" : "var(--fg-2)",
-                  background: activeMode === "pro" ? "var(--brand-amber-tint)" : "transparent",
-                  textDecoration: "none",
-                  fontWeight: activeMode === "pro" ? 600 : 400,
-                  opacity: activeMode === "pro" ? 1 : 0.75,
-                  minHeight: 36,
-                  display: "flex",
-                  alignItems: "center",
-                  fontSize: 11,
-                  transition: "background 110ms ease, color 110ms ease, opacity 110ms ease",
+                  width: 1,
+                  alignSelf: "stretch",
+                  background: "var(--border)",
+                  margin: "0 2px",
                 }}
-              >
-                Pro <span style={{ fontSize: 9, opacity: 0.6, marginLeft: 2 }}>🔒</span>
-              </Link>
-
-              {activeMode !== "pro" && activeMode !== "dev" && (
-                <span
-                  style={{
-                    width: 1,
-                    alignSelf: "stretch",
-                    background: "var(--border)",
-                    margin: "0 2px",
-                  }}
-                />
-              )}
+              />
 
               <Link
                 href="/api"
@@ -196,7 +149,7 @@ export function SiteTopbar() {
               </Link>
             </div>
 
-            {/* About - boxed to match the control aesthetic */}
+            {/* About */}
             <Link
               href="/about"
               style={{
@@ -214,6 +167,26 @@ export function SiteTopbar() {
               }}
             >
               About
+            </Link>
+
+            {/* Changelog */}
+            <Link
+              href="/changelog"
+              style={{
+                fontSize: 12,
+                padding: "10px 14px",
+                minHeight: 38,
+                display: "flex",
+                alignItems: "center",
+                background: "var(--surface)",
+                color: "var(--fg-2)",
+                border: "1px solid var(--border)",
+                borderRadius: 6,
+                textDecoration: "none",
+                transition: "background 110ms ease, color 110ms ease, opacity 110ms ease",
+              }}
+            >
+              Changelog
             </Link>
 
             {/* Language - exact same as ProShell */}
@@ -280,43 +253,7 @@ export function SiteTopbar() {
             </button>
 
             {/* Auth - exact same pill style as ProShell */}
-            {isLoggedIn ? (
-              <Link
-                href="/pro"
-                style={{
-                  fontSize: 12,
-                  padding: "10px 14px",
-                  minHeight: 38,
-                  display: "flex",
-                  alignItems: "center",
-                  background: "var(--brand-amber-tint)",
-                  color: "var(--brand-amber)",
-                  borderRadius: 6,
-                  textDecoration: "none",
-                  transition: "background 110ms ease, color 110ms ease, opacity 110ms ease",
-                }}
-              >
-                Profile
-              </Link>
-            ) : (
-              <Link
-                href="/login"
-                style={{
-                  fontSize: 12,
-                  padding: "10px 14px",
-                  minHeight: 38,
-                  display: "flex",
-                  alignItems: "center",
-                  background: "var(--brand-amber-tint)",
-                  color: "var(--brand-amber)",
-                  borderRadius: 6,
-                  textDecoration: "none",
-                  transition: "background 110ms ease, color 110ms ease, opacity 110ms ease",
-                }}
-              >
-                Login
-              </Link>
-            )}
+            {/* Login/Pro removed — open beta launches July 2026 */}
           </div>
         </div>
       </div>
