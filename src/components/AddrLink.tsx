@@ -10,7 +10,7 @@ interface Props {
 }
 
 export function AddrLink({ addr, href, external = false, head = 6, tail = 4 }: Props) {
-  const target = href ?? `/operator/${addr}`;
+  const target = href ?? `/scan?addr=${addr}`;
   const text = truncate(addr, head, tail);
 
   if (external) {

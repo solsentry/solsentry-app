@@ -93,35 +93,6 @@ export default async function ScanPage({ searchParams }: PageProps) {
                 wallet recently launched a token, it shows up within a few minutes. Check live
                 activity, or try again shortly.
               </p>
-              <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-                <Link
-                  href="/live"
-                  style={{
-                    fontSize: 13,
-                    padding: "8px 14px",
-                    borderRadius: 8,
-                    background: "#f59e0b",
-                    color: "#0a0a0a",
-                    fontWeight: 600,
-                    textDecoration: "none",
-                  }}
-                >
-                  Live feed
-                </Link>
-                <Link
-                  href="/dashboard"
-                  style={{
-                    fontSize: 13,
-                    padding: "8px 14px",
-                    borderRadius: 8,
-                    border: "1px solid rgba(255,255,255,0.15)",
-                    color: "#fafafa",
-                    textDecoration: "none",
-                  }}
-                >
-                  Dashboard
-                </Link>
-              </div>
             </>
           ) : (
             <>
@@ -161,7 +132,7 @@ export default async function ScanPage({ searchParams }: PageProps) {
 
               {tok?.operator && devWallet && (
                 <Link
-                  href={`/operator/${devWallet}`}
+                  href={`/scan?addr=${devWallet}`}
                   style={{
                     display: "inline-block",
                     marginTop: 12,

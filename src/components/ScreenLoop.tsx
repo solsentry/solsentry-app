@@ -298,7 +298,7 @@ function BigNumberPanel({ stats }: { stats: Stats | null }) {
           marginTop: 12,
         }}
       >
-        96.6% CRITICAL precision · {fmtN(stats?.confirmed_rugs)} confirmed rugs
+        97.7% CRITICAL precision · {fmtN(stats?.confirmed_rugs)} confirmed rugs
       </div>
     </div>
   );
