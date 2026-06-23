@@ -202,7 +202,7 @@ export const COPY: Record<Lang, LandingCopy> = {
 
     trustTitle: "Trust by design",
     trustOss: "Open-source MCP, docs and Birdeye Radar integration",
-    trustAudit: "96.6% CRITICAL precision · 98.9% HIGH precision — auditable per mint",
+    trustAudit: "97.7% CRITICAL precision · 95.6% HIGH precision — auditable per mint",
     trustAuditNote: "Verify any prediction at /v1/predictions/{mint}. No metric is hand-tuned.",
     trustAbout: "Read the full About →",
 
@@ -305,7 +305,7 @@ export const COPY: Record<Lang, LandingCopy> = {
 
     trustTitle: "Confiança por design",
     trustOss: "MCP, docs e integração Birdeye Radar — tudo open-source",
-    trustAudit: "96,6% de precisão em CRITICAL · 98,9% em HIGH — auditável por mint",
+    trustAudit: "97,7% de precisão em CRITICAL · 95,6% em HIGH — auditável por mint",
     trustAuditNote:
       "Verifique qualquer predição em /v1/predictions/{mint}. Nenhuma métrica é ajustada manualmente.",
     trustAbout: "Ler o Sobre completo →",

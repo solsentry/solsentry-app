@@ -55,7 +55,7 @@ async function quickEasyLookup(raw: string): Promise<EasyResult | null> {
     const opR = await fetch(`${API}/v1/operator/${encodeURIComponent(v)}`, { cache: "no-store" });
     if (opR.ok) {
       const op = await opR.json();
-      if (op && (op.known || (op.confirmed_rugs ?? 0) > 0 || op.risk_level)) {
+      if (op && (op.known || (op.confirmed_rugs ?? 0) > 0)) {
         return {
           kind: "operator",
           addr: v,
@@ -247,7 +247,7 @@ function EasyResultCard({ r, used }: { r: EasyResult; used: number }) {
         <span style={{ color: "var(--brand-amber)", fontWeight: 600 }}>Sena:</span> “{narrative}”
       </div>
 
-      {/* Rate limit footer — "Full report" always routes through login first */}
+      {/* Rate limit footer */}
       <div
         style={{
           display: "flex",
@@ -262,11 +262,7 @@ function EasyResultCard({ r, used }: { r: EasyResult; used: number }) {
         <div>{used}/5 scans used • rate limited</div>
         <div>
           <Link
-            href={`/login?next=${encodeURIComponent(
-              isOp
-                ? `/operator/${encodeURIComponent(r.addr)}`
-                : `/scan/${encodeURIComponent(r.addr)}`,
-            )}`}
+            href={`/scan?addr=${encodeURIComponent(r.addr)}`}
             style={{ color: "var(--brand-amber)", fontWeight: 600 }}
           >
             Full report →
