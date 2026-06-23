@@ -115,12 +115,14 @@ export default async function AboutPage() {
             </p>
             <p>
               Started January 2025. First mainnet write April 8, 2026. A tracked operator wallet (
-              <Link
-                href="/operator/4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1"
+              <a
+                href="https://api.solsentry.app/v1/operator/4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-link"
               >
                 4kxscute…
-              </Link>
+              </a>
               ) remains a live sample for public verification.
             </p>
           </div>
@@ -255,11 +257,6 @@ export default async function AboutPage() {
               label="Open source frontend"
               detail="solsentry/solsentry-app · this site's code"
               href="https://github.com/solsentry/solsentry-app"
-            />
-            <TrustItem
-              label="Birdeye × SolSentry"
-              detail="Trending feed with safety scoring · MIT"
-              href="/birdeye-radar"
             />
             <TrustItem
               label="Live health"

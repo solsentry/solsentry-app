@@ -168,6 +168,32 @@ export function Footer() {
               <Link href="/telegram" style={{ color: "var(--fg-2)", textDecoration: "none" }}>
                 Telegram Bot
               </Link>
+              <Link href="/scan" style={{ color: "var(--fg-2)", textDecoration: "none" }}>
+                Scan
+              </Link>
+            </div>
+          </div>
+
+          {/* Site */}
+          <div>
+            <div
+              style={{
+                fontSize: 11,
+                fontFamily: "var(--font-mono)",
+                color: "var(--brand-amber)",
+                letterSpacing: "0.08em",
+                marginBottom: 10,
+              }}
+            >
+              SITE
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 6, fontSize: 13 }}>
+              <Link href="/about" style={{ color: "var(--fg-2)", textDecoration: "none" }}>
+                About
+              </Link>
+              <Link href="/changelog" style={{ color: "var(--fg-2)", textDecoration: "none" }}>
+                Changelog
+              </Link>
             </div>
           </div>
         </div>
