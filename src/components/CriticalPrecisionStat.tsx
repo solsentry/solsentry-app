@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-const FALLBACK = "96.6";
+const FALLBACK = "97.7";
 
 export function CriticalPrecisionStat() {
   const [value, setValue] = useState<string | null>(null);

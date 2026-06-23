@@ -303,8 +303,7 @@ Token-specific flags
   · COORD_BOT_CLUSTER (size 12)
 
 Recommendation
-  Avoid. Serial rug operator, active.
-  19-min average time-to-rug.`;
+  Avoid. Serial rug operator, active.`;
 
 export default function TelegramPage() {
   return (

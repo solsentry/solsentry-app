@@ -194,12 +194,6 @@ export function Footer() {
               <Link href="/changelog" style={{ color: "var(--fg-2)", textDecoration: "none" }}>
                 Changelog
               </Link>
-              <Link href="/docs" style={{ color: "var(--fg-2)", textDecoration: "none" }}>
-                Docs
-              </Link>
-              <Link href="/architecture" style={{ color: "var(--fg-2)", textDecoration: "none" }}>
-                Architecture
-              </Link>
             </div>
           </div>
         </div>
