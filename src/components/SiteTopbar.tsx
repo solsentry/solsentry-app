@@ -262,7 +262,7 @@ export function SiteTopbar() {
             </button>
 
             {/* Auth - exact same pill style as ProShell */}
-            {/* Login/Pro removed — open beta launches July 2026 */}
+            {/* Login/Pro removed — closed beta launches July 2026 */}
           </div>
         </div>
       </div>
