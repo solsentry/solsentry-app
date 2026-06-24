@@ -28,7 +28,7 @@ const ENDPOINTS: { group: string; items: Endpoint[] }[] = [
       {
         method: "GET",
         path: "/v1/stats",
-        desc: "Global network counters — scans, accuracy, resolve rate, runtime, alerts, operator count.",
+        desc: "Global network counters — scans, accuracy, resolve rate, runtime, alerts.",
         example: "curl https://api.solsentry.app/v1/stats",
       },
       {

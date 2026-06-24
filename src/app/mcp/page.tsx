@@ -43,7 +43,7 @@ const TOOLS = [
   {
     name: "network_stats",
     args: "—",
-    desc: "Global counters — total scans, accuracy, runtime, operators tracked, serial ruggers identified.",
+    desc: "Global counters — total scans, accuracy, runtime, confirmed rugs.",
   },
 ];
 

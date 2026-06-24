@@ -34,6 +34,7 @@ export interface NetworkStats {
   resolved: number;
   resolve_rate_pct: number;
   accuracy_pct: number;
+  critical_precision_pct?: number;
   high_risk_alerts: number;
   confirmed_rugs: number;
   confirmed_safe: number;
