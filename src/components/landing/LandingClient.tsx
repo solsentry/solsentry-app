@@ -5,7 +5,6 @@
 // Paste uses live API. Unknown addresses stay neutral; no public mock fallback.
 
 import { useState } from "react";
-import Link from "next/link";
 import { LandingShell } from "./LandingShell";
 import { LandingChrome } from "./LandingChrome";
 import { RiskBadge } from "@/components/RiskBadge";
@@ -260,14 +259,6 @@ function EasyResultCard({ r, used }: { r: EasyResult; used: number }) {
         }}
       >
         <div>{used}/5 scans used • rate limited</div>
-        <div>
-          <Link
-            href={`/scan?addr=${encodeURIComponent(r.addr)}`}
-            style={{ color: "var(--brand-amber)", fontWeight: 600 }}
-          >
-            Full report →
-          </Link>
-        </div>
       </div>
     </div>
   );
