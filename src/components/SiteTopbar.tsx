@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
+import { detectLang } from "@/lib/i18n-landing";
 
 /**
  * SiteTopbar — the single source of truth for the top navigation.
@@ -48,7 +49,8 @@ export function SiteTopbar() {
       const savedLang = localStorage.getItem("solsentry-lang") as "en" | "pt" | null;
       const savedTheme = localStorage.getItem("solsentry-theme") as "dark" | "light" | null;
 
-      if (savedLang) setLang(savedLang);
+      // Saved pref wins; otherwise reflect the browser language (pt-* → PT).
+      setLang(detectLang(savedLang));
       if (savedTheme) {
         setTheme(savedTheme);
         document.documentElement.setAttribute("data-theme", savedTheme);
@@ -57,8 +59,15 @@ export function SiteTopbar() {
   }, []);
 
   const toggleLang = (newLang: "en" | "pt") => {
+    if (newLang === lang) return;
     setLang(newLang);
-    localStorage.setItem("solsentry-lang", newLang);
+    try {
+      localStorage.setItem("solsentry-lang", newLang);
+    } catch {}
+    // Re-render with the new language (server pages + lang-aware bodies read
+    // the pref on load). A reload is the simplest reliable apply across the
+    // mixed server/client page tree.
+    window.location.reload();
   };
 
   const toggleTheme = () => {
