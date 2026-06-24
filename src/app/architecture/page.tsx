@@ -155,7 +155,7 @@ export default function ArchitecturePage() {
                 Telegram bot
               </div>
               <p style={{ color: "var(--fg-2)", fontSize: 13, lineHeight: 1.6 }}>
-                32 commands. /scan, /drain, /follow, /hunters. Real-time alert stream for any wallet
+                26 commands. /scan, /drain, /follow, /hunters. Low-latency alert stream for any wallet
                 on your watchlist.
               </p>
             </div>
@@ -173,7 +173,7 @@ export default function ArchitecturePage() {
                 REST API
               </div>
               <p style={{ color: "var(--fg-2)", fontSize: 13, lineHeight: 1.6 }}>
-                11 endpoints, no auth required. /v1/operator, /v1/token, /v1/drain-trace,
+                14 endpoints, no auth required. /v1/operator, /v1/token, /v1/drain-trace,
                 /v1/clusters. Cached at 30-300s.
               </p>
             </div>
