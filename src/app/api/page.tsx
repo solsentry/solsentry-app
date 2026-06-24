@@ -117,7 +117,7 @@ const ENDPOINTS: { group: string; items: Endpoint[] }[] = [
         method: "GET",
         path: "/v1/cluster/{cluster_id}",
         desc: "Cluster detail — sample wallets, linked operators, tags, risk score.",
-        example: "curl https://api.solsentry.app/v1/cluster/cluster_04812",
+        example: "curl https://api.solsentry.app/v1/cluster/{cluster_id}",
       },
       {
         method: "GET",
