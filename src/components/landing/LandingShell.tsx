@@ -41,7 +41,8 @@ export function LandingShell({ children }: { children: (props: RenderProps) => R
     try {
       const storedLang = localStorage.getItem(LANG_STORAGE_KEY);
       const storedTheme = localStorage.getItem(THEME_KEY);
-      if (storedLang) setLangState(detectLang(storedLang));
+      // Always resolve: stored pref wins, else detect from navigator.language.
+      setLangState(detectLang(storedLang));
       if (storedTheme === "light" || storedTheme === "dark") {
         setThemeState(storedTheme);
       }
