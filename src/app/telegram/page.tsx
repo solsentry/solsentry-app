@@ -4,7 +4,7 @@ import { PageHeader } from "@/components/PageHeader";
 import { Section } from "@/components/Section";
 
 export const metadata = {
-  title: "Telegram Bot — 32 commands, live",
+  title: "Telegram Bot — full command reference, live",
   description:
     "SolSentry Telegram bot — /scan, /drain, /follow, /hunters. Paste a Solana wallet or mint, get operator history, risk scoring, drain trace, and ALife hunter assignment back in seconds.",
 };
@@ -187,7 +187,7 @@ const COMMANDS: { group: string; items: Cmd[] }[] = [
     ],
   },
   {
-    group: "Bulk & admin",
+    group: "Bulk import",
     items: [
       {
         cmd: "/import",
@@ -285,6 +285,14 @@ const COMMANDS: { group: string; items: Cmd[] }[] = [
   },
 ];
 
+// Public command reference: admin/internal ops commands are not exposed.
+// This is a Server Component, so filtered-out entries never reach the client.
+const PUBLIC_COMMANDS = COMMANDS.map((g) => ({
+  ...g,
+  items: g.items.filter((c) => c.tier !== "admin"),
+})).filter((g) => g.items.length > 0);
+const PUBLIC_COUNT = PUBLIC_COMMANDS.reduce((n, g) => n + g.items.length, 0);
+
 // Illustrative scan output — placeholder addresses, not a live figure.
 const EXAMPLE_OUTPUT = `🚨 HIGH RISK — Serial operator detected
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -311,7 +319,7 @@ export default function TelegramPage() {
       <SiteTopbar />
       <main>
         <PageHeader
-          eyebrow="Telegram interface · 32 commands"
+          eyebrow={`Telegram interface · ${PUBLIC_COUNT} commands`}
           title={
             <>
               Paste a wallet.
@@ -399,10 +407,10 @@ export default function TelegramPage() {
 
         <Section
           eyebrow="Full command reference"
-          title="32 commands, grouped by pillar"
+          title={`${PUBLIC_COUNT} commands, grouped by pillar`}
           id="commands"
         >
-          {COMMANDS.map((group) => (
+          {PUBLIC_COMMANDS.map((group) => (
             <div key={group.group} style={{ marginBottom: 36 }}>
               <div
                 className="label-tag"
