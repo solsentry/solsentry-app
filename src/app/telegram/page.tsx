@@ -285,15 +285,15 @@ const COMMANDS: { group: string; items: Cmd[] }[] = [
   },
 ];
 
+// Illustrative scan output — placeholder addresses, not a live figure.
 const EXAMPLE_OUTPUT = `🚨 HIGH RISK — Serial operator detected
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Mint:  Bz4UpUmp...tRTwZv
-Dev:   4kxscute...L5pH1  (known)
-Risk:  100/100   CRITICAL
+Dev:   7xKpDemo...rug1  (known)
+Risk:  CRITICAL
 
-Operator history (live)
-  · 834 deployments tracked
-  · 766 confirmed rugs (91.8%)
+Operator history (illustrative — not a live figure)
+  · serial deployer — multiple confirmed rugs
   · Label: serial_rugger
 
 Token-specific flags
@@ -379,7 +379,7 @@ export default function TelegramPage() {
                   non-blocking.
                 </li>
                 <li>
-                  <strong>Stage 3 — Bundle forensics</strong>
+                  <strong>Stage 3 — Bot-cluster forensics</strong>
                   Helius Enhanced TX. Finds coordinated bot clusters mining the same launch.
                 </li>
                 <li>

@@ -33,8 +33,8 @@ export default async function HomePage() {
         ok: true,
         totalPredictions: stats.total_predictions,
         accuracyPct: stats.accuracy_pct,
+        criticalPrecisionPct: stats.critical_precision_pct,
         runtimeHours: stats.runtime_hours,
-        operators: stats.total_operators,
         rugs: stats.confirmed_rugs,
       }
     : { ok: false };
