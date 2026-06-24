@@ -1,11 +1,11 @@
 // /changelog — public build history, grouped by month, newest first.
 // Content source: internal/marketing/social/CHANGELOG_PUBLIC.md (curated, gate-checked).
 // Items marked (deploy-confirm) are OMITTED until Crash gives the go.
-// [verify live] stat = fetched client-side from /v1/stats via CriticalPrecisionStat.
+// [verify live] CRITICAL precision is server-fetched from /v1/stats (revalidate 60s).
 
 import { SiteTopbar } from "@/components/SiteTopbar";
 import { Footer } from "@/components/Footer";
-import { CriticalPrecisionStat } from "@/components/CriticalPrecisionStat";
+import { fetchStats } from "@/lib/api";
 
 export const metadata = {
   title: "SolSentry — Changelog",
@@ -21,7 +21,13 @@ export const metadata = {
 
 // NOTE: no noindex — this page is intentionally public and indexable.
 
-export default function ChangelogPage() {
+export const revalidate = 60;
+
+export default async function ChangelogPage() {
+  // Server-render the precision figure (no client "…%" flash on this CTA page).
+  const stats = await fetchStats();
+  const criticalPct =
+    stats?.critical_precision_pct != null ? `${stats.critical_precision_pct.toFixed(1)}%` : "—";
   return (
     <>
       <SiteTopbar />
@@ -83,7 +89,7 @@ export default function ChangelogPage() {
             {/* ── June 2026 ── */}
             <div className="changelog-month">
               <div className="changelog-month-label">June 2026</div>
-              <div className="changelog-month-title">Hardening, real-time layer &amp; launch prep</div>
+              <div className="changelog-month-title">Hardening, low-latency layer &amp; launch prep</div>
               <ul className="changelog-list">
                 <li>
                   <strong>Attribution audit complete.</strong> Full multi-source re-verification of
@@ -93,8 +99,7 @@ export default function ChangelogPage() {
                 <li>
                   <strong>Classifier self-correction.</strong> Found and fixed a false-positive class
                   (position-NFTs read as tokens); backfilled affected predictions. CRITICAL-tier
-                  precision now{" "}
-                  <CriticalPrecisionStat />, auditable per-mint at{" "}
+                  precision now {criticalPct}, auditable per-mint at{" "}
                   <code>/v1/predictions/&#123;mint&#125;</code>.
                 </li>
                 <li>

@@ -14,8 +14,8 @@ export interface LiveStatsPayload {
   ok: boolean;
   totalPredictions?: number;
   accuracyPct?: number;
+  criticalPrecisionPct?: number;
   runtimeHours?: number;
-  operators?: number;
   rugs?: number;
 }
 
@@ -75,9 +75,9 @@ export function LiveStatsBar({ copy, lang, stats }: Props) {
       href: "https://api.solsentry.app/health",
     },
     {
-      label: copy.statsLabelOperators,
-      value: fmtInt(stats.operators),
-      href: "https://api.solsentry.app/v1/top-operators",
+      label: "CRITICAL precision",
+      value: fmtPct(stats.criticalPrecisionPct),
+      href: "https://api.solsentry.app/v1/stats",
     },
     {
       label: copy.statsLabelRugs,

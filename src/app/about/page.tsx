@@ -74,9 +74,9 @@ export default async function AboutPage() {
                 href="https://api.solsentry.app/v1/stats"
               />
               <AboutStat
-                label="Operators tracked"
-                value={fmtInt(stats?.total_operators)}
-                href="https://api.solsentry.app/v1/top-operators"
+                label="CRITICAL precision"
+                value={fmtPct(stats?.critical_precision_pct)}
+                href="https://api.solsentry.app/v1/stats"
               />
               <AboutStat
                 label="Accuracy (resolved)"
@@ -103,8 +103,8 @@ export default async function AboutPage() {
           <h2 className="section-title">Why SolSentry exists</h2>
           <div className="about-prose">
             <p>
-              One operator can deploy 3,000+ rug tokens from distinct wallets. Retail traders see
-              3,000 unrelated tokens. Existing tools score each token in isolation — by the time
+              A single operator can rug, rename, and redeploy across many wallets and tokens. Retail
+              traders see unrelated tokens; existing tools score each one in isolation — by the time
               they flag a pattern, the operator has already rotated to a fresh wallet.
             </p>
             <p>
@@ -171,7 +171,7 @@ export default async function AboutPage() {
           <div className="about-prose">
             <p>
               Three-stage progressive scan (account info → DAS metadata + holder concentration →
-              bundle forensics + Token-2022 extension scoring) drives a multi-signal resolver with
+              bot-cluster forensics + Token-2022 extension scoring) drives a multi-signal resolver with
               parallel resolution windows.
             </p>
             <p>
