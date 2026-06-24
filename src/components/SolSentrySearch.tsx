@@ -43,47 +43,6 @@ const PLACEHOLDERS = [
   "que tokens este cluster lançou nas últimas 24h?",
 ];
 
-const MOCK_AUTOCOMPLETE: AutocompleteItem[] = [
-  {
-    id: "1",
-    type: "operator",
-    name: "RugFactory_Alpha",
-    address: "4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1",
-    risk: "CRITICAL",
-    tags: ["serial_deployer", "fast_deployer"],
-  },
-  {
-    id: "2",
-    type: "operator",
-    name: "ShadyDeployer_42",
-    address: "7ZqRsT8vNmK2pLwXqYtH9jD3sFgB6kCzA5mE1nR4wUiV",
-    risk: "HIGH",
-    tags: ["bundle_dumper"],
-  },
-  {
-    id: "3",
-    type: "operator",
-    name: "LegitBuilder.sol",
-    address: "9FwPqR3mXnK7bL2sYtH8jD4sFgB5kCzA6mE2nR3wUiP",
-    risk: "SAFE",
-    tags: ["verified"],
-  },
-  {
-    id: "4",
-    type: "token",
-    name: "SCAM_TOKEN",
-    address: "ScAmT0k3nXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXx",
-    risk: "CRITICAL",
-  },
-  {
-    id: "5",
-    type: "token",
-    name: "SAFE_COIN",
-    address: "SaFeCo1nYyYyYyYyYyYyYyYyYyYyYyYyYyYyYyYyYy",
-    risk: "SAFE",
-  },
-];
-
 const RISK_COLORS: Record<RiskLevel, string> = {
   CRITICAL: "bg-[#ef4444]/20 text-[#ef4444] border-[#ef4444]/30",
   HIGH: "bg-primary/20 text-primary border-primary/30",
@@ -348,14 +307,9 @@ export function SolSentrySearch({
     !hasError &&
     (detectionType === "address" || detectionType === "symbol" || detectionType === "sns");
 
-  const filteredItems = React.useMemo(() => {
-    if (!showAutocomplete) return [];
-    const query = value.toLowerCase();
-    return MOCK_AUTOCOMPLETE.filter(
-      (item) =>
-        item.name.toLowerCase().includes(query) || item.address.toLowerCase().includes(query),
-    );
-  }, [showAutocomplete, value]);
+  // Live autocomplete suggestions are disabled until a real search endpoint
+  // exists. No mock data — the dropdown stays empty and submit routes via onSearch.
+  const filteredItems = React.useMemo<AutocompleteItem[]>(() => [], []);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Escape") {
