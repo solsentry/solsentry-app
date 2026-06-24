@@ -460,8 +460,9 @@ export function LandingClient({ stats, hideChrome = false }: Props & { hideChrom
                     fontFamily: "var(--font-mono)",
                   }}
                 >
-                  LIVE • {stats.operators?.toLocaleString?.() || "?"} operators tracked •{" "}
-                  {stats.accuracyPct ?? "?"}% accuracy
+                  LIVE • {stats.totalPredictions?.toLocaleString?.() || "?"} predictions •{" "}
+                  {stats.accuracyPct ?? "?"}% accuracy • {stats.criticalPrecisionPct ?? "?"}% CRITICAL
+                  precision — auditable per-mint
                 </div>
               )}
             </div>

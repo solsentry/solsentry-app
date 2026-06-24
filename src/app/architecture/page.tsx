@@ -108,7 +108,7 @@ export default function ArchitecturePage() {
             <Arrow down />
             <FlowNode
               title="04 · Stage 3 — Forensics"
-              desc="Bundle forensics via Helius Enhanced Tx. First-funder index. CEX-deposit tracer. Privacy-protocol detection."
+              desc="Bot-cluster forensics via Helius Enhanced Tx. First-funder index. CEX-deposit tracer. Privacy-protocol detection."
               accent="amber"
             />
             <Arrow down />
