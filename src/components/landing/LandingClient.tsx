@@ -8,7 +8,6 @@ import { useState } from "react";
 import Link from "next/link";
 import { LandingShell } from "./LandingShell";
 import { LandingChrome } from "./LandingChrome";
-import { RiskBadge } from "@/components/RiskBadge";
 import type { LiveStatsPayload } from "./LiveStatsBar";
 
 interface Props {
@@ -16,7 +15,7 @@ interface Props {
   topOperator?: any;
 }
 
-type EasyResultKind = "operator" | "token" | "unknown";
+type EasyResultKind = "operator" | "token" | "contract" | "unknown";
 
 interface EasyResult {
   kind: EasyResultKind;
@@ -49,30 +48,32 @@ async function quickEasyLookup(raw: string): Promise<EasyResult | null> {
   if (v.length < 32) return null;
 
   const API = process.env.NEXT_PUBLIC_API_URL || "https://api.solsentry.app";
+  const get = async (path: string) => {
+    const r = await fetch(`${API}${path}`, { cache: "no-store" });
+    return r.ok ? r.json() : null;
+  };
 
+  // Mirrors the Telegram /scan routing: an address is base58 32-44 chars and
+  // could be a wallet OR a mint, so we probe in order and keep the first hit.
   try {
-    // Try operator first
-    const opR = await fetch(`${API}/v1/operator/${encodeURIComponent(v)}`, { cache: "no-store" });
-    if (opR.ok) {
-      const op = await opR.json();
-      if (op && (op.known || (op.confirmed_rugs ?? 0) > 0)) {
-        return {
-          kind: "operator",
-          addr: v,
-          data: op,
-          narrative: op.risk_label
-            ? `${op.risk_label} operator with ${op.confirmed_rugs ?? 0} confirmed rugs.`
-            : undefined,
-        };
-      }
+    // 1. Operator (wallet). Tie-break toward operator when it has confirmed rugs.
+    const op = await get(`/v1/operator/${encodeURIComponent(v)}`);
+    if (op && (op.known || (op.confirmed_rugs ?? 0) > 0)) {
+      return { kind: "operator", addr: v, data: op };
     }
-    // Try token
-    const tkR = await fetch(`${API}/v1/token/${encodeURIComponent(v)}`, { cache: "no-store" });
-    if (tkR.ok) {
-      const tk = await tkR.json();
-      if (tk?.known !== false) {
-        return { kind: "token", addr: v, data: tk };
-      }
+
+    // 2. Token (tracked mint) — only when actually known to us.
+    const tk = await get(`/v1/token/${encodeURIComponent(v)}`);
+    if (tk && tk.known === true) {
+      return { kind: "token", addr: v, data: tk };
+    }
+
+    // 3. Contract analysis — live RPC verdict (catalog + known-entity +
+    //    Token-2022 scan) for ANY address. This is what turns an untracked
+    //    mint/wallet from "unknown" into a real, auditable result.
+    const ca = await get(`/v1/contract-analysis/${encodeURIComponent(v)}`);
+    if (ca && !ca.error) {
+      return { kind: "contract", addr: v, data: ca };
     }
   } catch {
     return getUnknown(v);
@@ -85,23 +86,92 @@ function formatAddr(a: string) {
   return a.length > 16 ? `${a.slice(0, 8)}…${a.slice(-6)}` : a;
 }
 
+// Map a backend risk level / contract verdict to a display badge. Never
+// surfaces the banned "LOW"/"SAFE" tier words as a headline (19_ANTI §2 /
+// reaudit #7) — low-risk results render as a neutral "no flags" verdict.
+function displayVerdict(kind: EasyResultKind, d: any): { label: string; color: string } {
+  const C = {
+    danger: "var(--status-critical)",
+    warn: "var(--status-warning)",
+    amber: "var(--brand-amber)",
+    ok: "var(--brand-teal)",
+    neutral: "var(--fg-3)",
+  };
+  if (kind === "contract") {
+    switch (String(d.verdict || "unknown").toLowerCase()) {
+      case "dangerous":
+        return { label: "DANGEROUS", color: C.danger };
+      case "caution":
+        return { label: "CAUTION", color: C.amber };
+      case "safe":
+        return { label: "NO RISK FLAGS", color: C.ok };
+      default:
+        return { label: "INCONCLUSIVE", color: C.neutral };
+    }
+  }
+  if (kind === "unknown") return { label: "NOT IN INDEX", color: C.neutral };
+  switch (String(d.risk_level || "UNKNOWN").toUpperCase()) {
+    case "CRITICAL":
+      return { label: "CRITICAL", color: C.danger };
+    case "HIGH":
+      return { label: "HIGH", color: C.warn };
+    case "MEDIUM":
+      return { label: "MEDIUM", color: C.amber };
+    case "LOW":
+    case "SAFE":
+    case "CLEAN":
+      return { label: "NO MAJOR FLAGS", color: C.ok };
+    default:
+      return { label: "NOT FLAGGED", color: C.neutral };
+  }
+}
+
+function buildNarrative(kind: EasyResultKind, d: any): string {
+  if (kind === "operator") {
+    const lbl = d.risk_label && d.risk_label !== "unknown" ? `${d.risk_label} ` : "";
+    const rugs = d.confirmed_rugs ?? 0;
+    const toks = d.total_tokens ?? "?";
+    const rate = typeof d.rug_rate_pct === "number" ? ` — ${d.rug_rate_pct.toFixed(1)}% rug rate` : "";
+    return `Tracked ${lbl}operator: ${rugs} confirmed rugs across ${toks} tokens${rate}.`;
+  }
+  if (kind === "token") {
+    const lvl = String(d.risk_level || "").toUpperCase();
+    if (lvl === "CRITICAL" || lvl === "HIGH")
+      return "Tracked token flagged with elevated risk — auditable per-mint at /v1/predictions.";
+    if (d.final_outcome === "confirmed_safe")
+      return "Tracked token, resolved with no rug outcome on record. Not a safety guarantee.";
+    return "Tracked token — live verdict from the prediction store, auditable per-mint.";
+  }
+  if (kind === "contract") {
+    const what = d.kind === "wallet" ? "wallet" : d.kind === "program" ? "program" : "mint";
+    const named = d.known_label ? ` Recognized as ${d.known_label}.` : "";
+    switch (String(d.verdict || "unknown").toLowerCase()) {
+      case "dangerous":
+        return `Live ${what} analysis: dangerous to interact with.${named}`;
+      case "caution":
+        return `Live ${what} analysis: proceed with caution.${named}`;
+      case "safe":
+        return `Live ${what} analysis: no risk flags found.${named} Not a safety guarantee — verify liquidity and holders.`;
+      default:
+        return `Live ${what} analysis returned no clear signal yet.${named}`;
+    }
+  }
+  return "This address is not in the tracked database. This is not a safety verdict.";
+}
+
 function EasyResultCard({ r, used }: { r: EasyResult; used: number }) {
   const d = r.data || {};
-  const level = (d.risk_level || d.risk_label || "UNKNOWN").toUpperCase();
   const isOp = r.kind === "operator";
-  const isUnknown = r.kind === "unknown";
+  const isContract = r.kind === "contract";
+  const verdict = displayVerdict(r.kind, d);
   const rugs = isOp ? (d.confirmed_rugs ?? "—") : "—";
-  const tokens = isOp ? (d.total_tokens ?? "—") : (d.operator?.total_tokens ?? "—");
+  const tokens = isOp ? (d.total_tokens ?? "—") : "—";
   const rate = isOp && typeof d.rug_rate_pct === "number" ? `${d.rug_rate_pct.toFixed(1)}%` : "—";
-  const tags: string[] = d.tags || d.flags || [];
+  // Surface only descriptive tags/flags; drop "bundle" wording (→ bot-cluster).
+  const rawTags: string[] = isOp ? d.tags || [] : d.flags || [];
+  const tags = rawTags.filter((t) => !/bundle/i.test(String(t)));
 
-  const narrative =
-    r.narrative ||
-    (level === "CRITICAL"
-      ? "High-conviction serial operator. Strong evidence of repeated rug behavior."
-      : level === "HIGH"
-        ? "Elevated risk. Multiple rugs and suspicious patterns detected."
-        : "This address is not in the tracked database.");
+  const narrative = r.narrative || buildNarrative(r.kind, d);
 
   return (
     <div
@@ -152,7 +222,24 @@ function EasyResultCard({ r, used }: { r: EasyResult; used: number }) {
             <span style={{ marginLeft: 6, fontSize: 10, color: "var(--brand-amber)" }}>⎘</span>
           </div>
         </div>
-        <RiskBadge level={level} size="lg" />
+        <span
+          style={{
+            display: "inline-block",
+            padding: "8px 18px",
+            background: "var(--surface-2)",
+            border: `1px solid ${verdict.color}`,
+            borderRadius: 4,
+            color: verdict.color,
+            fontFamily: "var(--font-mono)",
+            fontSize: 14,
+            fontWeight: 600,
+            letterSpacing: "0.08em",
+            textTransform: "uppercase",
+            whiteSpace: "nowrap",
+          }}
+        >
+          {verdict.label}
+        </span>
       </div>
 
       {/* Metrics */}
@@ -173,7 +260,10 @@ function EasyResultCard({ r, used }: { r: EasyResult; used: number }) {
                   fontSize: 22,
                   fontWeight: 700,
                   fontFamily: "var(--font-display)",
-                  color: level === "CRITICAL" ? "var(--status-critical)" : "var(--fg-1)",
+                  color:
+                    verdict.color === "var(--status-critical)"
+                      ? "var(--status-critical)"
+                      : "var(--fg-1)",
                 }}
               >
                 {rugs}
@@ -193,7 +283,51 @@ function EasyResultCard({ r, used }: { r: EasyResult; used: number }) {
             </div>
           </>
         )}
-        {!isOp && (
+        {r.kind === "token" && (
+          <>
+            <div style={{ background: "var(--surface-2)", borderRadius: 6, padding: "8px 10px" }}>
+              <div style={{ fontSize: 11, color: "var(--fg-3)" }}>RISK SCORE</div>
+              <div style={{ fontSize: 22, fontWeight: 700, fontFamily: "var(--font-display)" }}>
+                {typeof d.risk_score === "number" ? `${d.risk_score}/100` : "—"}
+              </div>
+            </div>
+            <div style={{ background: "var(--surface-2)", borderRadius: 6, padding: "8px 10px" }}>
+              <div style={{ fontSize: 11, color: "var(--fg-3)" }}>OUTCOME</div>
+              <div style={{ fontSize: 15, fontWeight: 700, fontFamily: "var(--font-display)" }}>
+                {d.final_outcome === "confirmed_scam"
+                  ? "rug confirmed"
+                  : d.final_outcome === "confirmed_safe"
+                    ? "no rug on record"
+                    : "pending"}
+              </div>
+            </div>
+          </>
+        )}
+        {isContract && (
+          <>
+            <div style={{ background: "var(--surface-2)", borderRadius: 6, padding: "8px 10px" }}>
+              <div style={{ fontSize: 11, color: "var(--fg-3)" }}>TYPE</div>
+              <div style={{ fontSize: 15, fontWeight: 700, fontFamily: "var(--font-display)" }}>
+                {String(d.kind || "unknown").toUpperCase()}
+              </div>
+            </div>
+            <div style={{ background: "var(--surface-2)", borderRadius: 6, padding: "8px 10px" }}>
+              <div style={{ fontSize: 11, color: "var(--fg-3)" }}>RISK SCORE</div>
+              <div style={{ fontSize: 22, fontWeight: 700, fontFamily: "var(--font-display)" }}>
+                {typeof d.risk_score === "number" ? `${d.risk_score}/100` : "—"}
+              </div>
+            </div>
+            {d.known_label && (
+              <div style={{ background: "var(--surface-2)", borderRadius: 6, padding: "8px 10px" }}>
+                <div style={{ fontSize: 11, color: "var(--fg-3)" }}>KNOWN AS</div>
+                <div style={{ fontSize: 15, fontWeight: 700, fontFamily: "var(--font-display)" }}>
+                  {d.known_label}
+                </div>
+              </div>
+            )}
+          </>
+        )}
+        {r.kind === "unknown" && (
           <div
             style={{
               background: "var(--surface-2)",
@@ -203,9 +337,8 @@ function EasyResultCard({ r, used }: { r: EasyResult; used: number }) {
             }}
           >
             <div style={{ fontSize: 14, color: "var(--fg-2)" }}>
-              {isUnknown
-                ? "Not in tracked database."
-                : "Token scan result returned from the live API."}
+              Not in the tracked database, and live analysis returned no signal. This is not a
+              safety verdict.
             </div>
           </div>
         )}
