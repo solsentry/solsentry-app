@@ -33,8 +33,11 @@ export default async function ChangelogPage() {
       <SiteTopbar />
       <main>
         {/* ───────────── BANNER ───────────── */}
+        {/* marginTop clears the fixed .landing-chrome topbar (~62px); other
+            pages rely on .hero's 120px top padding, but this banner precedes it. */}
         <div
           style={{
+            marginTop: 62,
             background: "var(--brand-amber-tint)",
             borderBottom: "1px solid var(--brand-amber-line)",
             padding: "10px 0",
@@ -49,7 +52,7 @@ export default async function ChangelogPage() {
               letterSpacing: 0.3,
             }}
           >
-            Open beta opens July 2026.
+            Closed beta opens July 2026.
           </span>
         </div>
 
@@ -91,6 +94,11 @@ export default async function ChangelogPage() {
               <div className="changelog-month-label">June 2026</div>
               <div className="changelog-month-title">Hardening, low-latency layer &amp; launch prep</div>
               <ul className="changelog-list">
+                <li>
+                  <strong>Public site live.</strong> The SolSentry site went officially online —
+                  about, changelog, public API reference, and a live operator lookup, with every
+                  accuracy claim linking straight to <code>/v1/stats</code>.
+                </li>
                 <li>
                   <strong>Attribution audit complete.</strong> Full multi-source re-verification of
                   historical dev-wallet attributions, cross-checked across independent on-chain
@@ -369,7 +377,7 @@ export default async function ChangelogPage() {
               letterSpacing: 0.3,
             }}
           >
-            Open beta opens July 2026.
+            Closed beta opens July 2026.
           </p>
         </section>
       </main>
