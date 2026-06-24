@@ -5,6 +5,10 @@ export const metadata = {
   title: "Casos — Investigações forenses on-chain | SolSentry",
   description:
     "Investigações forenses publicadas pela SolSentry. Cada caso é reproduzível via API pública, com dados live e trilha de auditoria.",
+  // Holding noindex pending Crash "go" on 4kxscute-as-public-hero (product
+  // gate) + live re-check of the operator-level numbers in the case copy
+  // (LOCK-01; current numbers are stale per CLAUDE.local.md). Reversible.
+  robots: { index: false, follow: false },
 };
 
 interface CaseCard {

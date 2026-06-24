@@ -10,9 +10,13 @@ import {
 } from "@/components/casos/ForensicReport";
 
 export const metadata = {
-  title: "Caso 4kxscute — 3.212 tokens, 2.953 rugs, 1 wallet | SolSentry",
+  title: "Caso 4kxscute — operador serial | SolSentry",
   description:
-    "40 dias de cobertura live na mainnet Solana. Um único operador, ~80 deploys/dia, 96,7% de rug rate. Cada mint auditável via API pública.",
+    "Investigação forense de um operador serial observado live na mainnet Solana. Cada mint auditável via API pública.",
+  // Holding noindex pending Crash "go" on 4kxscute-as-public-hero (product
+  // gate, MASTER §4) + live re-check of operator-level numbers (LOCK-01;
+  // hardcoded 3.212/2.953/96,7% are stale per CLAUDE.local.md). Reversible.
+  robots: { index: false, follow: false },
 };
 
 const WALLET = "4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1";

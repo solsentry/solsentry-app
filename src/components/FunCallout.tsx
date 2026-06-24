@@ -32,7 +32,7 @@ export function FunCallout() {
               marginBottom: 18,
             }}
           >
-            Is this wallet <span style={{ color: "var(--brand-amber)" }}>safe?</span>
+            Who&apos;s behind <span style={{ color: "var(--brand-amber)" }}>this wallet?</span>
           </h2>
           <p
             style={{

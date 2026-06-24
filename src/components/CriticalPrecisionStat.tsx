@@ -14,11 +14,12 @@ export function CriticalPrecisionStat() {
       .then((r) => r.json())
       .then((data) => {
         if (cancelled) return;
-        // Field may be critical_precision_pct or nested under accuracy_by_tier
+        // Canonical: top-level critical_precision_pct. Fallback to the
+        // per-tier schema (precision_by_tier.CRITICAL.precision_pct); the
+        // deprecated top-level high/medium fields are null now (C1, 24/06).
         const pct =
           data?.critical_precision_pct ??
-          data?.accuracy_by_tier?.CRITICAL ??
-          data?.accuracy_by_tier?.critical;
+          data?.precision_by_tier?.CRITICAL?.precision_pct;
         if (typeof pct === "number") {
           setValue(pct.toFixed(1));
         } else {
