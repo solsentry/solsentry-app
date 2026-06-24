@@ -1,7 +1,7 @@
 // /changelog — public build history, grouped by month, newest first.
 // Content source: internal/marketing/social/CHANGELOG_PUBLIC.md (curated, gate-checked).
 // Items marked (deploy-confirm) are OMITTED until Crash gives the go.
-// [verify live] stat = fetched client-side from /v1/stats via CriticalPrecisionStat.
+// [verify live] CRITICAL precision is server-fetched from /v1/stats (revalidate 60s).
 
 import { SiteTopbar } from "@/components/SiteTopbar";
 import { Footer } from "@/components/Footer";
