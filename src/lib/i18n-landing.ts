@@ -318,6 +318,11 @@ export const COPY: Record<Lang, LandingCopy> = {
 };
 
 export function detectLang(stored: string | null): Lang {
+  // A saved preference always wins.
   if (stored === "pt" || stored === "en") return stored;
+  // No preference yet — fall back to the browser's language (pt-* → PT).
+  if (typeof navigator !== "undefined" && typeof navigator.language === "string") {
+    if (navigator.language.toLowerCase().startsWith("pt")) return "pt";
+  }
   return DEFAULT_LANG;
 }
