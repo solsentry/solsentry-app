@@ -22,7 +22,7 @@ const PILLARS = [
   {
     label: "EXPLAIN",
     color: "var(--brand-cream)",
-    title: "AI-powered explainer",
+    title: "Plain-language explainer",
     desc: "Alerts written in plain language — PT-BR or EN. Why the score, which flags fired, what the operator did last time. Provider-agnostic.",
     link: "/telegram",
     linkLabel: "Try on Telegram",
