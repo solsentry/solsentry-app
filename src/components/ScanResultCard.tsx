@@ -1,6 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import { useState, useEffect } from "react";
+import { DeepScanView } from "./DeepScanView";
 import type { Lang, LandingCopy } from "@/lib/i18n-landing";
 import type { ScanResult, ScanKind } from "@/lib/scan-resolver";
 
@@ -130,12 +132,22 @@ export function ScanResultCard({
   lang: Lang;
 }) {
   const d = r.data || {};
+  const [showDeepScan, setShowDeepScan] = useState(false);
   const isOp = r.kind === "operator";
   const isContract = r.kind === "contract";
   const verdict = displayVerdict(r.kind, d, copy);
+  const pt = lang === "pt";
   const rugs = isOp ? (d.confirmed_rugs ?? "—") : "—";
   const tokens = isOp ? (d.total_tokens ?? "—") : "—";
   const rate = isOp && typeof d.rug_rate_pct === "number" ? `${d.rug_rate_pct.toFixed(1)}%` : "—";
+  
+  // Extract symbol for raw contract analysis (if present in extensions)
+  let contractSymbol = null;
+  if (isContract && d.kind === "mint") {
+    const tm = d.extensions?.extensions?.find((e: any) => e.extension_name === 'tokenMetadata');
+    if (tm?.detail?.symbol) contractSymbol = tm.detail.symbol;
+    else if (d.known_label) contractSymbol = d.known_label;
+  }
   
   const rawTags: string[] = isOp ? [...(d.tags || []), ...(d.patterns || [])] : d.flags || [];
   const tags = Array.from(new Set(rawTags.map(String))).filter((t) => !/bundle/i.test(t));
@@ -290,36 +302,58 @@ export function ScanResultCard({
                     : copy.outcomePending}
               </div>
             </div>
-            {d.operator && (
+            {d.launch_platform && (
               <div style={{ background: "var(--surface-2)", borderRadius: 6, padding: "8px 10px" }}>
-                <div style={{ fontSize: 11, color: "var(--fg-3)" }}>{copy.cardOperator}</div>
-                <div
-                  style={{
-                    fontSize: 13,
-                    fontWeight: 600,
-                    fontFamily: "var(--font-mono)",
-                    wordBreak: "break-all",
-                  }}
-                >
-                  {formatAddr(String(d.operator))}
+                <div style={{ fontSize: 11, color: "var(--fg-3)" }}>{pt ? "PLATAFORMA" : "PLATFORM"}</div>
+                <div style={{ fontSize: 15, fontWeight: 700, fontFamily: "var(--font-display)", textTransform: "uppercase" }}>
+                  {d.launch_platform.replace("_", ".")}
                 </div>
               </div>
             )}
-            {d.dev_wallet && (
+            {typeof d.has_mint_authority === "boolean" && (
               <div style={{ background: "var(--surface-2)", borderRadius: 6, padding: "8px 10px" }}>
-                <div style={{ fontSize: 11, color: "var(--fg-3)" }}>{copy.cardDevWallet}</div>
-                <div
-                  style={{
-                    fontSize: 13,
-                    fontWeight: 600,
-                    fontFamily: "var(--font-mono)",
-                    wordBreak: "break-all",
-                  }}
-                >
-                  {formatAddr(String(d.dev_wallet))}
+                <div style={{ fontSize: 11, color: "var(--fg-3)" }}>{pt ? "MINT AUTH" : "MINT AUTH"}</div>
+                <div style={{ fontSize: 15, fontWeight: 700, fontFamily: "var(--font-display)", color: d.has_mint_authority ? "var(--status-warning)" : "var(--brand-teal)" }}>
+                  {d.has_mint_authority ? (pt ? "SIM" : "YES") : (pt ? "NÃO" : "NO")}
                 </div>
               </div>
             )}
+            {typeof d.is_bundle === "boolean" && d.is_bundle && (
+              <div style={{ background: "var(--surface-2)", borderRadius: 6, padding: "8px 10px" }}>
+                <div style={{ fontSize: 11, color: "var(--fg-3)" }}>{pt ? "LANÇAMENTO" : "LAUNCH"}</div>
+                <div style={{ fontSize: 15, fontWeight: 700, fontFamily: "var(--font-display)", color: "var(--status-warning)" }}>
+                  BUNDLE
+                </div>
+              </div>
+            )}
+            <div style={{ background: "var(--surface-2)", borderRadius: 6, padding: "8px 10px" }}>
+              <div style={{ fontSize: 11, color: "var(--fg-3)" }}>{copy.cardOperator}</div>
+              <div
+                style={{
+                  fontSize: 13,
+                  fontWeight: 600,
+                  fontFamily: "var(--font-mono)",
+                  wordBreak: "break-all",
+                  color: d.operator ? "inherit" : "var(--fg-3)"
+                }}
+              >
+                {d.operator ? formatAddr(String(d.operator)) : (pt ? "NÃO RASTREADO" : "UNTRACKED")}
+              </div>
+            </div>
+            <div style={{ background: "var(--surface-2)", borderRadius: 6, padding: "8px 10px" }}>
+              <div style={{ fontSize: 11, color: "var(--fg-3)" }}>{copy.cardDevWallet}</div>
+              <div
+                style={{
+                  fontSize: 13,
+                  fontWeight: 600,
+                  fontFamily: "var(--font-mono)",
+                  wordBreak: "break-all",
+                  color: d.dev_wallet ? "inherit" : "var(--fg-3)"
+                }}
+              >
+                {d.dev_wallet ? formatAddr(String(d.dev_wallet)) : (pt ? "NÃO RASTREADO" : "UNTRACKED")}
+              </div>
+            </div>
           </>
         )}
         {isContract && (
@@ -330,12 +364,28 @@ export function ScanResultCard({
                 {String(d.kind || "unknown").toUpperCase()}
               </div>
             </div>
+            {contractSymbol && (
+              <div style={{ background: "var(--surface-2)", borderRadius: 6, padding: "8px 10px" }}>
+                <div style={{ fontSize: 11, color: "var(--fg-3)" }}>{copy.cardSymbol}</div>
+                <div style={{ fontSize: 15, fontWeight: 700, fontFamily: "var(--font-display)" }}>
+                  {contractSymbol}
+                </div>
+              </div>
+            )}
             <div style={{ background: "var(--surface-2)", borderRadius: 6, padding: "8px 10px" }}>
               <div style={{ fontSize: 11, color: "var(--fg-3)" }}>{copy.cardRiskScore}</div>
               <div style={{ fontSize: 22, fontWeight: 700, fontFamily: "var(--font-display)" }}>
                 {typeof d.risk_score === "number" ? `${d.risk_score}/100` : "—"}
               </div>
             </div>
+            {d.kind === "mint" && d.authorities && typeof d.authorities.mint_authority !== "undefined" && (
+              <div style={{ background: "var(--surface-2)", borderRadius: 6, padding: "8px 10px" }}>
+                <div style={{ fontSize: 11, color: "var(--fg-3)" }}>{pt ? "MINT AUTH" : "MINT AUTH"}</div>
+                <div style={{ fontSize: 15, fontWeight: 700, fontFamily: "var(--font-display)", color: d.authorities.mint_authority !== null ? "var(--status-warning)" : "var(--brand-teal)" }}>
+                  {d.authorities.mint_authority !== null ? (pt ? "SIM" : "YES") : (pt ? "NÃO" : "NO")}
+                </div>
+              </div>
+            )}
             {d.known_label && (
               <div style={{ background: "var(--surface-2)", borderRadius: 6, padding: "8px 10px" }}>
                 <div style={{ fontSize: 11, color: "var(--fg-3)" }}>{copy.cardKnownAs}</div>
@@ -343,6 +393,22 @@ export function ScanResultCard({
                   {d.known_label}
                 </div>
               </div>
+            )}
+            {d.kind === "mint" && (
+              <>
+                <div style={{ background: "var(--surface-2)", borderRadius: 6, padding: "8px 10px" }}>
+                  <div style={{ fontSize: 11, color: "var(--fg-3)" }}>{copy.cardOperator}</div>
+                  <div style={{ fontSize: 13, fontWeight: 600, fontFamily: "var(--font-mono)", wordBreak: "break-all", color: "var(--fg-3)" }}>
+                    {pt ? "NÃO RASTREADO" : "UNTRACKED"}
+                  </div>
+                </div>
+                <div style={{ background: "var(--surface-2)", borderRadius: 6, padding: "8px 10px" }}>
+                  <div style={{ fontSize: 11, color: "var(--fg-3)" }}>{copy.cardDevWallet}</div>
+                  <div style={{ fontSize: 13, fontWeight: 600, fontFamily: "var(--font-mono)", wordBreak: "break-all", color: "var(--fg-3)" }}>
+                    {pt ? "NÃO RASTREADO" : "UNTRACKED"}
+                  </div>
+                </div>
+              </>
             )}
           </>
         )}
@@ -359,6 +425,35 @@ export function ScanResultCard({
           </div>
         )}
       </div>
+      
+      {/* DEEP SCAN BUTTON & VIEW */}
+      {(r.kind === "token" || (isContract && d.kind === "mint")) && (
+        <div style={{ marginBottom: 16 }}>
+          {!showDeepScan ? (
+            <button
+              onClick={() => setShowDeepScan(true)}
+              style={{
+                width: "100%",
+                padding: "10px",
+                background: "var(--surface-3)",
+                color: "var(--fg-1)",
+                border: "1px solid var(--border)",
+                borderRadius: 6,
+                cursor: "pointer",
+                fontSize: 13,
+                fontWeight: 600,
+                transition: "all 0.15s ease",
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.background = "var(--surface-4)")}
+              onMouseLeave={(e) => (e.currentTarget.style.background = "var(--surface-3)")}
+            >
+              {pt ? "🔍 Analisar Dados de Mercado e Holders (Deep Scan)" : "🔍 Analyze Market & Holders (Deep Scan)"}
+            </button>
+          ) : (
+            <DeepScanView mint={r.addr} pt={pt} />
+          )}
+        </div>
+      )}
 
       {tags.length > 0 && (
         <div style={{ display: "flex", flexWrap: "wrap", gap: 4, marginBottom: 12 }}>
@@ -377,6 +472,18 @@ export function ScanResultCard({
               {t}
             </span>
           ))}
+          
+          {/* SECURITY PILLS (MA / FA) */}
+          {r.kind === "token" && d.has_mint_authority === true && (
+            <span style={{ fontSize: 11, padding: "2px 8px", borderRadius: 999, background: "rgba(239, 68, 68, 0.1)", color: "#ef4444", border: "1px solid rgba(239, 68, 68, 0.2)", display: "flex", alignItems: "center", gap: 4 }}>
+              MA
+            </span>
+          )}
+          {r.kind === "token" && d.has_freeze_authority === true && (
+            <span style={{ fontSize: 11, padding: "2px 8px", borderRadius: 999, background: "rgba(239, 68, 68, 0.1)", color: "#ef4444", border: "1px solid rgba(239, 68, 68, 0.2)", display: "flex", alignItems: "center", gap: 4 }}>
+              FA
+            </span>
+          )}
         </div>
       )}
 
@@ -407,14 +514,6 @@ export function ScanResultCard({
       >
         <div>
           {used}/5 {copy.cardScansUsed} • {copy.cardRateLimited}
-        </div>
-        <div>
-          <Link
-            href={`/scan?addr=${encodeURIComponent(r.addr)}`}
-            style={{ color: "var(--brand-amber)", fontWeight: 600 }}
-          >
-            {copy.cardFullReport}
-          </Link>
         </div>
       </div>
     </div>
