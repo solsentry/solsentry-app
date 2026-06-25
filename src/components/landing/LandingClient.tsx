@@ -19,14 +19,6 @@ interface Props {
   topOperator?: any;
 }
 
-// Sample chips. Labels resolve from the i18n dict (labelKey) so the homepage
-// is fully bilingual; values stay verbatim.
-const SAMPLES: { labelKey: keyof LandingCopy; value: string }[] = [
-  { labelKey: "sampleOperator", value: "4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1" },
-  { labelKey: "sampleToken", value: "So11111111111111111111111111111111111111112" },
-  { labelKey: "sampleDevWallet", value: "9xQeWvG816bUx9EPjHmaT23yvVM2ZWbrrpZb9PusV9yN" },
-];
-
 export function LandingClient({ stats, hideChrome = false }: Props & { hideChrome?: boolean }) {
   const [query, setQuery] = useState("");
   const [result, setResult] = useState<ScanResult | null>(null);
@@ -160,29 +152,6 @@ export function LandingClient({ stats, hideChrome = false }: Props & { hideChrom
                   >
                     {loading ? "..." : copy.easyScanCta}
                   </button>
-                </div>
-
-                {/* Samples use the same live lookup path as pasted addresses. */}
-                <div style={{ marginTop: 8, display: "flex", flexWrap: "wrap", gap: 6 }}>
-                  {SAMPLES.map((s, idx) => (
-                    <button
-                      key={idx}
-                      type="button"
-                      onClick={() => loadSample(s.value)}
-                      style={{
-                        fontFamily: "var(--font-mono)",
-                        fontSize: 11,
-                        padding: "4px 9px",
-                        borderRadius: 999,
-                        border: "1px solid var(--border)",
-                        background: "var(--surface-2)",
-                        color: "var(--fg-2)",
-                        cursor: "pointer",
-                      }}
-                    >
-                      {copy[s.labelKey]}
-                    </button>
-                  ))}
                 </div>
               </div>
 
