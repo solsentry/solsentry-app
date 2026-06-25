@@ -9,6 +9,7 @@ import Link from "next/link";
 import { LandingShell } from "./LandingShell";
 import { LandingChrome } from "./LandingChrome";
 import type { LiveStatsPayload } from "./LiveStatsBar";
+import type { Lang, LandingCopy } from "@/lib/i18n-landing";
 
 interface Props {
   stats: LiveStatsPayload;
@@ -24,13 +25,16 @@ interface EasyResult {
   narrative?: string;
 }
 
-const SAMPLES = [
-  { label: "Tracked operator", value: "4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1" },
-  { label: "Wrapped SOL", value: "So11111111111111111111111111111111111111112" },
-  { label: "Known dev wallet", value: "9xQeWvG816bUx9EPjHmaT23yvVM2ZWbrrpZb9PusV9yN" },
+// Sample chips. Labels resolve from the i18n dict (labelKey) so the homepage
+// is fully bilingual; values stay verbatim.
+const SAMPLES: { labelKey: keyof LandingCopy; value: string }[] = [
+  { labelKey: "sampleOperator", value: "4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1" },
+  { labelKey: "sampleToken", value: "So11111111111111111111111111111111111111112" },
+  { labelKey: "sampleDevWallet", value: "9xQeWvG816bUx9EPjHmaT23yvVM2ZWbrrpZb9PusV9yN" },
 ];
 
 function getUnknown(addr: string): EasyResult {
+  // Narrative is built localized in the card (buildNarrative) — leave unset.
   return {
     kind: "unknown",
     addr,
@@ -39,7 +43,6 @@ function getUnknown(addr: string): EasyResult {
       risk_level: "UNKNOWN",
       tags: [],
     },
-    narrative: "This address is not in the tracked database.",
   };
 }
 
@@ -89,7 +92,14 @@ function formatAddr(a: string) {
 // Map a backend risk level / contract verdict to a display badge. Never
 // surfaces the banned "LOW"/"SAFE" tier words as a headline (19_ANTI §2 /
 // reaudit #7) — low-risk results render as a neutral "no flags" verdict.
-function displayVerdict(kind: EasyResultKind, d: any): { label: string; color: string } {
+// Tier words (CRITICAL/HIGH/MEDIUM/DANGEROUS/CAUTION) stay verbatim in both
+// languages — they are canonical risk labels. Only the neutral "no flags"
+// states localize through `copy`.
+function displayVerdict(
+  kind: EasyResultKind,
+  d: any,
+  copy: LandingCopy,
+): { label: string; color: string } {
   const C = {
     danger: "var(--status-critical)",
     warn: "var(--status-warning)",
@@ -104,12 +114,12 @@ function displayVerdict(kind: EasyResultKind, d: any): { label: string; color: s
       case "caution":
         return { label: "CAUTION", color: C.amber };
       case "safe":
-        return { label: "NO RISK FLAGS", color: C.ok };
+        return { label: copy.verdictNoRiskFlags, color: C.ok };
       default:
-        return { label: "INCONCLUSIVE", color: C.neutral };
+        return { label: copy.verdictInconclusive, color: C.neutral };
     }
   }
-  if (kind === "unknown") return { label: "NOT IN INDEX", color: C.neutral };
+  if (kind === "unknown") return { label: copy.verdictNotIndex, color: C.neutral };
   switch (String(d.risk_level || "UNKNOWN").toUpperCase()) {
     case "CRITICAL":
       return { label: "CRITICAL", color: C.danger };
@@ -120,58 +130,105 @@ function displayVerdict(kind: EasyResultKind, d: any): { label: string; color: s
     case "LOW":
     case "SAFE":
     case "CLEAN":
-      return { label: "NO MAJOR FLAGS", color: C.ok };
+      return { label: copy.verdictNoMajorFlags, color: C.ok };
     default:
-      return { label: "NOT FLAGGED", color: C.neutral };
+      return { label: copy.verdictNotFlagged, color: C.neutral };
   }
 }
 
-function buildNarrative(kind: EasyResultKind, d: any): string {
+function buildNarrative(kind: EasyResultKind, d: any, lang: Lang): string {
+  const pt = lang === "pt";
   if (kind === "operator") {
     const lbl = d.risk_label && d.risk_label !== "unknown" ? `${d.risk_label} ` : "";
     const rugs = d.confirmed_rugs ?? 0;
     const toks = d.total_tokens ?? "?";
-    const rate = typeof d.rug_rate_pct === "number" ? ` — ${d.rug_rate_pct.toFixed(1)}% rug rate` : "";
+    if (pt) {
+      const rate =
+        typeof d.rug_rate_pct === "number" ? ` — taxa de rug de ${d.rug_rate_pct.toFixed(1)}%` : "";
+      return `Operador ${lbl}rastreado: ${rugs} rugs confirmados em ${toks} tokens${rate}.`;
+    }
+    const rate =
+      typeof d.rug_rate_pct === "number" ? ` — ${d.rug_rate_pct.toFixed(1)}% rug rate` : "";
     return `Tracked ${lbl}operator: ${rugs} confirmed rugs across ${toks} tokens${rate}.`;
   }
   if (kind === "token") {
     const lvl = String(d.risk_level || "").toUpperCase();
     if (lvl === "CRITICAL" || lvl === "HIGH")
-      return "Tracked token flagged with elevated risk — auditable per-mint at /v1/predictions.";
+      return pt
+        ? "Token rastreado sinalizado com risco elevado — auditável por mint em /v1/predictions."
+        : "Tracked token flagged with elevated risk — auditable per-mint at /v1/predictions.";
     if (d.final_outcome === "confirmed_safe")
-      return "Tracked token, resolved with no rug outcome on record. Not a safety guarantee.";
-    return "Tracked token — live verdict from the prediction store, auditable per-mint.";
+      return pt
+        ? "Token rastreado, resolvido sem rug no registro. Não é garantia de segurança."
+        : "Tracked token, resolved with no rug outcome on record. Not a safety guarantee.";
+    return pt
+      ? "Token rastreado — veredito ao vivo do store de predições, auditável por mint."
+      : "Tracked token — live verdict from the prediction store, auditable per-mint.";
   }
   if (kind === "contract") {
-    const what = d.kind === "wallet" ? "wallet" : d.kind === "program" ? "program" : "mint";
-    const named = d.known_label ? ` Recognized as ${d.known_label}.` : "";
+    const what =
+      d.kind === "wallet"
+        ? pt
+          ? "wallet"
+          : "wallet"
+        : d.kind === "program"
+          ? pt
+            ? "programa"
+            : "program"
+          : "mint";
+    const named = d.known_label
+      ? pt
+        ? ` Reconhecido como ${d.known_label}.`
+        : ` Recognized as ${d.known_label}.`
+      : "";
     switch (String(d.verdict || "unknown").toLowerCase()) {
       case "dangerous":
-        return `Live ${what} analysis: dangerous to interact with.${named}`;
+        return pt
+          ? `Análise ao vivo do ${what}: perigoso interagir.${named}`
+          : `Live ${what} analysis: dangerous to interact with.${named}`;
       case "caution":
-        return `Live ${what} analysis: proceed with caution.${named}`;
+        return pt
+          ? `Análise ao vivo do ${what}: prossiga com cautela.${named}`
+          : `Live ${what} analysis: proceed with caution.${named}`;
       case "safe":
-        return `Live ${what} analysis: no risk flags found.${named} Not a safety guarantee — verify liquidity and holders.`;
+        return pt
+          ? `Análise ao vivo do ${what}: nenhuma flag de risco encontrada.${named} Não é garantia de segurança — verifique liquidez e holders.`
+          : `Live ${what} analysis: no risk flags found.${named} Not a safety guarantee — verify liquidity and holders.`;
       default:
-        return `Live ${what} analysis returned no clear signal yet.${named}`;
+        return pt
+          ? `Análise ao vivo do ${what} ainda não retornou sinal claro.${named}`
+          : `Live ${what} analysis returned no clear signal yet.${named}`;
     }
   }
-  return "This address is not in the tracked database. This is not a safety verdict.";
+  return pt
+    ? "Este endereço não está na base rastreada. Isto não é um veredito de segurança."
+    : "This address is not in the tracked database. This is not a safety verdict.";
 }
 
-function EasyResultCard({ r, used }: { r: EasyResult; used: number }) {
+function EasyResultCard({
+  r,
+  used,
+  copy,
+  lang,
+}: {
+  r: EasyResult;
+  used: number;
+  copy: LandingCopy;
+  lang: Lang;
+}) {
   const d = r.data || {};
   const isOp = r.kind === "operator";
   const isContract = r.kind === "contract";
-  const verdict = displayVerdict(r.kind, d);
+  const verdict = displayVerdict(r.kind, d, copy);
   const rugs = isOp ? (d.confirmed_rugs ?? "—") : "—";
   const tokens = isOp ? (d.total_tokens ?? "—") : "—";
   const rate = isOp && typeof d.rug_rate_pct === "number" ? `${d.rug_rate_pct.toFixed(1)}%` : "—";
-  // Surface only descriptive tags/flags; drop "bundle" wording (→ bot-cluster).
-  const rawTags: string[] = isOp ? d.tags || [] : d.flags || [];
-  const tags = rawTags.filter((t) => !/bundle/i.test(String(t)));
+  // Surface only descriptive tags/flags; merge operator behavioural patterns;
+  // drop "bundle" wording (→ bot-cluster).
+  const rawTags: string[] = isOp ? [...(d.tags || []), ...(d.patterns || [])] : d.flags || [];
+  const tags = Array.from(new Set(rawTags.map(String))).filter((t) => !/bundle/i.test(t));
 
-  const narrative = r.narrative || buildNarrative(r.kind, d);
+  const narrative = r.narrative || buildNarrative(r.kind, d, lang);
 
   return (
     <div
@@ -204,7 +261,7 @@ function EasyResultCard({ r, used }: { r: EasyResult; used: number }) {
               letterSpacing: "0.08em",
             }}
           >
-            LIVE FROM API • {r.kind.toUpperCase()}
+            {copy.cardLiveFrom} • {r.kind.toUpperCase()}
           </div>
           <div
             onClick={() => navigator.clipboard?.writeText(r.addr)}
@@ -254,7 +311,7 @@ function EasyResultCard({ r, used }: { r: EasyResult; used: number }) {
         {isOp && (
           <>
             <div style={{ background: "var(--surface-2)", borderRadius: 6, padding: "8px 10px" }}>
-              <div style={{ fontSize: 11, color: "var(--fg-3)" }}>CONFIRMED RUGS</div>
+              <div style={{ fontSize: 11, color: "var(--fg-3)" }}>{copy.cardConfirmedRugs}</div>
               <div
                 style={{
                   fontSize: 22,
@@ -270,56 +327,108 @@ function EasyResultCard({ r, used }: { r: EasyResult; used: number }) {
               </div>
             </div>
             <div style={{ background: "var(--surface-2)", borderRadius: 6, padding: "8px 10px" }}>
-              <div style={{ fontSize: 11, color: "var(--fg-3)" }}>TOKENS</div>
+              <div style={{ fontSize: 11, color: "var(--fg-3)" }}>{copy.cardTokens}</div>
               <div style={{ fontSize: 22, fontWeight: 700, fontFamily: "var(--font-display)" }}>
                 {tokens}
               </div>
             </div>
             <div style={{ background: "var(--surface-2)", borderRadius: 6, padding: "8px 10px" }}>
-              <div style={{ fontSize: 11, color: "var(--fg-3)" }}>RUG RATE</div>
+              <div style={{ fontSize: 11, color: "var(--fg-3)" }}>{copy.cardRugRate}</div>
               <div style={{ fontSize: 22, fontWeight: 700, fontFamily: "var(--font-display)" }}>
                 {rate}
               </div>
             </div>
+            <div style={{ background: "var(--surface-2)", borderRadius: 6, padding: "8px 10px" }}>
+              <div style={{ fontSize: 11, color: "var(--fg-3)" }}>{copy.cardRiskScore}</div>
+              <div style={{ fontSize: 22, fontWeight: 700, fontFamily: "var(--font-display)" }}>
+                {typeof d.risk_score === "number" ? `${d.risk_score}/100` : "—"}
+              </div>
+            </div>
+            {typeof d.pending === "number" && d.pending > 0 && (
+              <div style={{ background: "var(--surface-2)", borderRadius: 6, padding: "8px 10px" }}>
+                <div style={{ fontSize: 11, color: "var(--fg-3)" }}>{copy.cardPending}</div>
+                <div style={{ fontSize: 22, fontWeight: 700, fontFamily: "var(--font-display)" }}>
+                  {d.pending}
+                </div>
+              </div>
+            )}
           </>
         )}
         {r.kind === "token" && (
           <>
+            {d.symbol && (
+              <div style={{ background: "var(--surface-2)", borderRadius: 6, padding: "8px 10px" }}>
+                <div style={{ fontSize: 11, color: "var(--fg-3)" }}>{copy.cardSymbol}</div>
+                <div style={{ fontSize: 15, fontWeight: 700, fontFamily: "var(--font-display)" }}>
+                  {d.symbol}
+                </div>
+              </div>
+            )}
             <div style={{ background: "var(--surface-2)", borderRadius: 6, padding: "8px 10px" }}>
-              <div style={{ fontSize: 11, color: "var(--fg-3)" }}>RISK SCORE</div>
+              <div style={{ fontSize: 11, color: "var(--fg-3)" }}>{copy.cardRiskScore}</div>
               <div style={{ fontSize: 22, fontWeight: 700, fontFamily: "var(--font-display)" }}>
                 {typeof d.risk_score === "number" ? `${d.risk_score}/100` : "—"}
               </div>
             </div>
             <div style={{ background: "var(--surface-2)", borderRadius: 6, padding: "8px 10px" }}>
-              <div style={{ fontSize: 11, color: "var(--fg-3)" }}>OUTCOME</div>
+              <div style={{ fontSize: 11, color: "var(--fg-3)" }}>{copy.cardOutcome}</div>
               <div style={{ fontSize: 15, fontWeight: 700, fontFamily: "var(--font-display)" }}>
                 {d.final_outcome === "confirmed_scam"
-                  ? "rug confirmed"
+                  ? copy.outcomeRug
                   : d.final_outcome === "confirmed_safe"
-                    ? "no rug on record"
-                    : "pending"}
+                    ? copy.outcomeNoRug
+                    : copy.outcomePending}
               </div>
             </div>
+            {d.operator && (
+              <div style={{ background: "var(--surface-2)", borderRadius: 6, padding: "8px 10px" }}>
+                <div style={{ fontSize: 11, color: "var(--fg-3)" }}>{copy.cardOperator}</div>
+                <div
+                  style={{
+                    fontSize: 13,
+                    fontWeight: 600,
+                    fontFamily: "var(--font-mono)",
+                    wordBreak: "break-all",
+                  }}
+                >
+                  {formatAddr(String(d.operator))}
+                </div>
+              </div>
+            )}
+            {d.dev_wallet && (
+              <div style={{ background: "var(--surface-2)", borderRadius: 6, padding: "8px 10px" }}>
+                <div style={{ fontSize: 11, color: "var(--fg-3)" }}>{copy.cardDevWallet}</div>
+                <div
+                  style={{
+                    fontSize: 13,
+                    fontWeight: 600,
+                    fontFamily: "var(--font-mono)",
+                    wordBreak: "break-all",
+                  }}
+                >
+                  {formatAddr(String(d.dev_wallet))}
+                </div>
+              </div>
+            )}
           </>
         )}
         {isContract && (
           <>
             <div style={{ background: "var(--surface-2)", borderRadius: 6, padding: "8px 10px" }}>
-              <div style={{ fontSize: 11, color: "var(--fg-3)" }}>TYPE</div>
+              <div style={{ fontSize: 11, color: "var(--fg-3)" }}>{copy.cardType}</div>
               <div style={{ fontSize: 15, fontWeight: 700, fontFamily: "var(--font-display)" }}>
                 {String(d.kind || "unknown").toUpperCase()}
               </div>
             </div>
             <div style={{ background: "var(--surface-2)", borderRadius: 6, padding: "8px 10px" }}>
-              <div style={{ fontSize: 11, color: "var(--fg-3)" }}>RISK SCORE</div>
+              <div style={{ fontSize: 11, color: "var(--fg-3)" }}>{copy.cardRiskScore}</div>
               <div style={{ fontSize: 22, fontWeight: 700, fontFamily: "var(--font-display)" }}>
                 {typeof d.risk_score === "number" ? `${d.risk_score}/100` : "—"}
               </div>
             </div>
             {d.known_label && (
               <div style={{ background: "var(--surface-2)", borderRadius: 6, padding: "8px 10px" }}>
-                <div style={{ fontSize: 11, color: "var(--fg-3)" }}>KNOWN AS</div>
+                <div style={{ fontSize: 11, color: "var(--fg-3)" }}>{copy.cardKnownAs}</div>
                 <div style={{ fontSize: 15, fontWeight: 700, fontFamily: "var(--font-display)" }}>
                   {d.known_label}
                 </div>
@@ -336,10 +445,7 @@ function EasyResultCard({ r, used }: { r: EasyResult; used: number }) {
               gridColumn: "1 / -1",
             }}
           >
-            <div style={{ fontSize: 14, color: "var(--fg-2)" }}>
-              Not in the tracked database, and live analysis returned no signal. This is not a
-              safety verdict.
-            </div>
+            <div style={{ fontSize: 14, color: "var(--fg-2)" }}>{copy.cardUnknownBody}</div>
           </div>
         )}
       </div>
@@ -392,13 +498,15 @@ function EasyResultCard({ r, used }: { r: EasyResult; used: number }) {
           color: "var(--fg-3)",
         }}
       >
-        <div>{used}/5 scans used • rate limited</div>
+        <div>
+          {used}/5 {copy.cardScansUsed} • {copy.cardRateLimited}
+        </div>
         <div>
           <Link
             href={`/scan?addr=${encodeURIComponent(r.addr)}`}
             style={{ color: "var(--brand-amber)", fontWeight: 600 }}
           >
-            Full report →
+            {copy.cardFullReport}
           </Link>
         </div>
       </div>
@@ -463,7 +571,7 @@ export function LandingClient({ stats, hideChrome = false }: Props & { hideChrom
                     color: "var(--brand-orange)",
                   }}
                 >
-                  EASY • FREE • INSTANT
+                  {copy.easyEyebrow}
                 </div>
                 <h1
                   style={{
@@ -475,9 +583,10 @@ export function LandingClient({ stats, hideChrome = false }: Props & { hideChrom
                     color: "var(--fg-1)",
                   }}
                 >
-                  Paste wallet or mint.
+                  {copy.easyTitleA}
                   <br />
-                  See the <span style={{ color: "var(--brand-orange)" }}>risk</span>.
+                  {copy.easyTitleB}
+                  <span style={{ color: "var(--brand-orange)" }}>{copy.easyTitleEm}</span>.
                 </h1>
                 <p
                   style={{
@@ -488,7 +597,7 @@ export function LandingClient({ stats, hideChrome = false }: Props & { hideChrom
                     lineHeight: 1.55,
                   }}
                 >
-                  No signup. No wallet connect.
+                  {copy.easySub}
                 </p>
               </div>
 
@@ -508,7 +617,7 @@ export function LandingClient({ stats, hideChrome = false }: Props & { hideChrom
                         if (val.length > 32) doLookup(val);
                       }, 80);
                     }}
-                    placeholder="Paste wallet or mint (e.g. 4kxscute... or So1111...)"
+                    placeholder={copy.easyPlaceholder}
                     style={{
                       flex: 1,
                       fontFamily: "var(--font-mono)",
@@ -536,7 +645,7 @@ export function LandingClient({ stats, hideChrome = false }: Props & { hideChrom
                       opacity: loading || !query.trim() ? 0.6 : 1,
                     }}
                   >
-                    {loading ? "..." : "Scan"}
+                    {loading ? "..." : copy.easyScanCta}
                   </button>
                 </div>
 
@@ -558,20 +667,57 @@ export function LandingClient({ stats, hideChrome = false }: Props & { hideChrom
                         cursor: "pointer",
                       }}
                     >
-                      {s.label}
+                      {copy[s.labelKey]}
                     </button>
                   ))}
                 </div>
               </div>
 
+              {/* Closed-beta note + follow links — centered, directly below the
+                  scanner bar (relocated here from the old /changelog banner). */}
+              <div
+                style={{
+                  display: "flex",
+                  flexWrap: "wrap",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: 10,
+                  marginBottom: 24,
+                  fontSize: 12,
+                  color: "var(--fg-3)",
+                }}
+              >
+                <span style={{ color: "var(--brand-amber)", fontWeight: 600 }}>
+                  {copy.betaNote}
+                </span>
+                <span style={{ color: "var(--fg-4)" }}>·</span>
+                <span>{copy.betaFollow}:</span>
+                <a
+                  href="https://x.com/solsentryai"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: "var(--brand-amber)", fontWeight: 600, textDecoration: "none" }}
+                >
+                  @solsentryai
+                </a>
+                <a
+                  href="https://x.com/crashdiniz"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: "var(--brand-amber)", fontWeight: 600, textDecoration: "none" }}
+                >
+                  @crashdiniz
+                </a>
+              </div>
+
               {/* The rich result card (appears after action) */}
-              {result && <EasyResultCard r={result} used={used} />}
+              {result && <EasyResultCard r={result} used={used} copy={copy} lang={lang} />}
 
               {!result && (
                 <div
                   style={{ textAlign: "center", marginTop: 28, fontSize: 12, color: "var(--fg-3)" }}
                 >
-                  Paste any address or click a sample above.
+                  {copy.easyEmptyHint}
                 </div>
               )}
 
@@ -579,7 +725,7 @@ export function LandingClient({ stats, hideChrome = false }: Props & { hideChrom
               <div
                 style={{ textAlign: "center", marginTop: 42, fontSize: 11, color: "var(--fg-4)" }}
               >
-                Full history, graphs and alerts live in Pro / Dev.
+                {copy.easyProDev}
               </div>
 
               {/* Tiny live signal (uses the server-fetched stats) */}
@@ -593,9 +739,10 @@ export function LandingClient({ stats, hideChrome = false }: Props & { hideChrom
                     fontFamily: "var(--font-mono)",
                   }}
                 >
-                  LIVE • {stats.totalPredictions?.toLocaleString?.() || "?"} predictions •{" "}
-                  {stats.accuracyPct ?? "?"}% accuracy • {stats.criticalPrecisionPct ?? "?"}% CRITICAL
-                  precision — auditable per-mint
+                  LIVE • {stats.totalPredictions?.toLocaleString?.() || "?"}{" "}
+                  {lang === "pt" ? "predições" : "predictions"} • {stats.accuracyPct ?? "?"}%{" "}
+                  {lang === "pt" ? "acurácia" : "accuracy"} • {stats.criticalPrecisionPct ?? "?"}%
+                  CRITICAL precision — auditable per-mint
                 </div>
               )}
             </div>

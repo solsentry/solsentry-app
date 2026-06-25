@@ -120,7 +120,7 @@ export default function ArchitecturePage() {
             <Arrow down />
             <FlowNode
               title="06 · Hunter spawn (risk ≥ 95)"
-              desc="ALife agent assigned to track the operator wallet. Monitors deploys, drains, and bot cluster formation in real time."
+              desc="ALife agent assigned to track the operator wallet. Monitors deploys, drains, and bot cluster formation with low latency."
               accent="purple"
             />
             <Arrow down />
