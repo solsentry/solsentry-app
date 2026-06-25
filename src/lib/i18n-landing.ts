@@ -106,6 +106,50 @@ export interface LandingCopy {
   toggleTheme: string;
   themeDark: string;
   themeLight: string;
+
+  // easy homepage (ultra-lean paste-to-scan hero — LandingClient)
+  easyEyebrow: string;
+  easyTitleA: string;
+  easyTitleB: string;
+  easyTitleEm: string;
+  easySub: string;
+  easyPlaceholder: string;
+  easyScanCta: string;
+  easyEmptyHint: string;
+  easyProDev: string;
+  sampleOperator: string;
+  sampleToken: string;
+  sampleDevWallet: string;
+
+  // easy result card
+  cardLiveFrom: string;
+  cardConfirmedRugs: string;
+  cardTokens: string;
+  cardRugRate: string;
+  cardRiskScore: string;
+  cardPending: string;
+  cardOutcome: string;
+  cardType: string;
+  cardKnownAs: string;
+  cardSymbol: string;
+  cardOperator: string;
+  cardDevWallet: string;
+  cardScansUsed: string;
+  cardRateLimited: string;
+  cardFullReport: string;
+  cardUnknownBody: string;
+  outcomeRug: string;
+  outcomeNoRug: string;
+  outcomePending: string;
+  verdictNotIndex: string;
+  verdictInconclusive: string;
+  verdictNoRiskFlags: string;
+  verdictNoMajorFlags: string;
+  verdictNotFlagged: string;
+
+  // closed-beta note (homepage, below the scanner)
+  betaNote: string;
+  betaFollow: string;
 }
 
 export const COPY: Record<Lang, LandingCopy> = {
@@ -210,6 +254,48 @@ export const COPY: Record<Lang, LandingCopy> = {
     toggleTheme: "Theme",
     themeDark: "Dark",
     themeLight: "Light",
+
+    easyEyebrow: "EASY • FREE • INSTANT",
+    easyTitleA: "Paste wallet or mint.",
+    easyTitleB: "See the ",
+    easyTitleEm: "risk",
+    easySub: "No signup. No wallet connect.",
+    easyPlaceholder: "Paste wallet or mint (e.g. 4kxscute… or So1111…)",
+    easyScanCta: "Scan",
+    easyEmptyHint: "Paste any address or click a sample above.",
+    easyProDev: "Full history, graphs and alerts live in Pro / Dev.",
+    sampleOperator: "Tracked operator",
+    sampleToken: "Wrapped SOL",
+    sampleDevWallet: "Known dev wallet",
+
+    cardLiveFrom: "LIVE FROM API",
+    cardConfirmedRugs: "CONFIRMED RUGS",
+    cardTokens: "TOKENS",
+    cardRugRate: "RUG RATE",
+    cardRiskScore: "RISK SCORE",
+    cardPending: "PENDING",
+    cardOutcome: "OUTCOME",
+    cardType: "TYPE",
+    cardKnownAs: "KNOWN AS",
+    cardSymbol: "SYMBOL",
+    cardOperator: "OPERATOR",
+    cardDevWallet: "DEV WALLET",
+    cardScansUsed: "scans used",
+    cardRateLimited: "rate limited",
+    cardFullReport: "Full report →",
+    cardUnknownBody:
+      "Not in the tracked database, and live analysis returned no signal. This is not a safety verdict.",
+    outcomeRug: "rug confirmed",
+    outcomeNoRug: "no rug on record",
+    outcomePending: "pending",
+    verdictNotIndex: "NOT IN INDEX",
+    verdictInconclusive: "INCONCLUSIVE",
+    verdictNoRiskFlags: "NO RISK FLAGS",
+    verdictNoMajorFlags: "NO MAJOR FLAGS",
+    verdictNotFlagged: "NOT FLAGGED",
+
+    betaNote: "Closed beta in July. Stay tuned.",
+    betaFollow: "Follow",
   },
 
   pt: {
@@ -314,6 +400,48 @@ export const COPY: Record<Lang, LandingCopy> = {
     toggleTheme: "Tema",
     themeDark: "Escuro",
     themeLight: "Claro",
+
+    easyEyebrow: "FÁCIL • GRÁTIS • NA HORA",
+    easyTitleA: "Cole a wallet ou o mint.",
+    easyTitleB: "Veja o ",
+    easyTitleEm: "risco",
+    easySub: "Sem cadastro. Sem conectar wallet.",
+    easyPlaceholder: "Cole wallet ou mint (ex.: 4kxscute… ou So1111…)",
+    easyScanCta: "Escanear",
+    easyEmptyHint: "Cole qualquer endereço ou clique num exemplo acima.",
+    easyProDev: "Histórico completo, gráficos e alertas no Pro / Dev.",
+    sampleOperator: "Operador rastreado",
+    sampleToken: "Wrapped SOL",
+    sampleDevWallet: "Dev wallet conhecida",
+
+    cardLiveFrom: "AO VIVO DA API",
+    cardConfirmedRugs: "RUGS CONFIRMADOS",
+    cardTokens: "TOKENS",
+    cardRugRate: "TAXA DE RUG",
+    cardRiskScore: "ÍNDICE DE RISCO",
+    cardPending: "PENDENTES",
+    cardOutcome: "DESFECHO",
+    cardType: "TIPO",
+    cardKnownAs: "CONHECIDO COMO",
+    cardSymbol: "SÍMBOLO",
+    cardOperator: "OPERADOR",
+    cardDevWallet: "DEV WALLET",
+    cardScansUsed: "scans usados",
+    cardRateLimited: "limitado",
+    cardFullReport: "Relatório completo →",
+    cardUnknownBody:
+      "Fora da base rastreada, e a análise ao vivo não retornou sinal. Isto não é um veredito de segurança.",
+    outcomeRug: "rug confirmado",
+    outcomeNoRug: "sem rug no registro",
+    outcomePending: "pendente",
+    verdictNotIndex: "FORA DO ÍNDICE",
+    verdictInconclusive: "INCONCLUSIVO",
+    verdictNoRiskFlags: "SEM FLAGS DE RISCO",
+    verdictNoMajorFlags: "SEM FLAGS RELEVANTES",
+    verdictNotFlagged: "NÃO SINALIZADO",
+
+    betaNote: "Closed beta em julho. Fica ligado.",
+    betaFollow: "Acompanhe",
   },
 };
 
