@@ -37,6 +37,23 @@ export async function quickEasyLookup(raw: string): Promise<ScanResult | null> {
 
     const tk = await get(`/v1/token/${encodeURIComponent(v)}`);
     if (tk && tk.known === true) {
+      // Tokens may be sparse in the /token response (e.g. missing symbol, operator)
+      // We can enrich it via a background contract-analysis query
+      try {
+        const ca = await get(`/v1/contract-analysis/${encodeURIComponent(v)}`);
+        if (ca && !ca.error) {
+          if (!tk.symbol) {
+            const tm = ca.extensions?.extensions?.find((e: any) => e.extension_name === 'tokenMetadata');
+            if (tm?.detail?.symbol) {
+              tk.symbol = tm.detail.symbol;
+            } else if (ca.known_label) {
+              tk.symbol = ca.known_label;
+            }
+          }
+        }
+      } catch (e) {
+        // Ignore CA fetch errors for enrichment
+      }
       return { kind: "token", addr: v, data: tk };
     }
 
