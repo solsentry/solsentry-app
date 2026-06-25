@@ -97,7 +97,10 @@ const MONTHS: Month[] = [
         },
       },
       {
-        lead: { en: "Bidirectional tracer + SNS deep-trace.", pt: "Rastreador bidirecional + deep-trace SNS." },
+        lead: {
+          en: "Bidirectional tracer + SNS deep-trace.",
+          pt: "Rastreador bidirecional + deep-trace SNS.",
+        },
         body: {
           en: "Full Solana Name Service ownership graph; multi-hop fund-flow investigator following outflow to its terminus.",
           pt: "Grafo completo de ownership do Solana Name Service; investigador de fluxo de fundos multi-hop seguindo o outflow até o destino final.",
@@ -111,7 +114,10 @@ const MONTHS: Month[] = [
         },
       },
       {
-        lead: { en: "Adversarial monitor + narrative generator.", pt: "Monitor adversarial + gerador de narrativa." },
+        lead: {
+          en: "Adversarial monitor + narrative generator.",
+          pt: "Monitor adversarial + gerador de narrativa.",
+        },
         body: {
           en: 'Autonomous prose from investigation data; 7 alert types; structured-deposit ("smurfing") cluster detection.',
           pt: 'Prosa autônoma a partir de dados de investigação; 7 tipos de alerta; detecção de clusters de depósitos estruturados ("smurfing").',
@@ -159,14 +165,20 @@ const MONTHS: Month[] = [
         },
       },
       {
-        lead: { en: "Operator graph + investigation graph.", pt: "Grafo de operadores + grafo de investigação." },
+        lead: {
+          en: "Operator graph + investigation graph.",
+          pt: "Grafo de operadores + grafo de investigação.",
+        },
         body: {
           en: "Operator → token → wallet relationships connected; `/v1/graph` (named nodes, roles), `/v1/drain-trace/{wallet}` fund-flow tracing, ring detector.",
           pt: "Relações operador → token → wallet conectadas; `/v1/graph` (nós nomeados, papéis), `/v1/drain-trace/{wallet}` rastreamento de fluxo de fundos, detector de anéis.",
         },
       },
       {
-        lead: { en: "Token-2022 support + launchpad detection.", pt: "Suporte a Token-2022 + detecção de launchpad." },
+        lead: {
+          en: "Token-2022 support + launchpad detection.",
+          pt: "Suporte a Token-2022 + detecção de launchpad.",
+        },
         body: {
           en: "Native Token-2022 handling; 12 launch platforms recognized; King-of-the-Hill pattern detection.",
           pt: "Suporte nativo a Token-2022; 12 plataformas de lançamento reconhecidas; detecção de padrão King-of-the-Hill.",
@@ -206,7 +218,10 @@ const MONTHS: Month[] = [
         },
       },
       {
-        lead: { en: "Operator profiling + KOL cross-reference.", pt: "Perfilamento de operadores + referência cruzada de KOLs." },
+        lead: {
+          en: "Operator profiling + KOL cross-reference.",
+          pt: "Perfilamento de operadores + referência cruzada de KOLs.",
+        },
         body: {
           en: "Per-wallet context and holder-confidence tiers in scan output; evolutionary feedback persists across restarts.",
           pt: "Contexto por wallet e tiers de confiança de holders no output do scan; feedback evolutivo persiste entre restarts.",
@@ -229,7 +244,10 @@ const MONTHS: Month[] = [
         },
       },
       {
-        lead: { en: "Autonomous Hunter & Sentinel agents.", pt: "Agentes autônomos Hunter e Sentinel." },
+        lead: {
+          en: "Autonomous Hunter & Sentinel agents.",
+          pt: "Agentes autônomos Hunter e Sentinel.",
+        },
         body: {
           en: "Watch for new deploys, large transfers, and liquidity removals; first evolutionary genome module.",
           pt: "Vigiam novos deploys, transferências grandes e remoções de liquidez; primeiro módulo de genoma evolutivo.",
@@ -237,10 +255,16 @@ const MONTHS: Month[] = [
       },
       {
         lead: { en: "RPC pool with failover", pt: "Pool RPC com failover" },
-        body: { en: "+ holder-distribution analysis.", pt: "+ análise de distribuição de holders." },
+        body: {
+          en: "+ holder-distribution analysis.",
+          pt: "+ análise de distribuição de holders.",
+        },
       },
       {
-        lead: { en: "Known-entities + wallet-alias registry.", pt: "Entidades conhecidas + registro de alias de wallets." },
+        lead: {
+          en: "Known-entities + wallet-alias registry.",
+          pt: "Entidades conhecidas + registro de alias de wallets.",
+        },
         body: {
           en: "Seeded registry of known programs/protocols to suppress false positives and add context; operator-to-alias mapping.",
           pt: "Registro pré-populado de programas/protocolos conhecidos para suprimir falsos positivos e adicionar contexto; mapeamento operador-alias.",
@@ -292,7 +316,6 @@ const ANCHORS: Anchor[] = [
 ];
 
 interface CLCopy {
-  banner: string;
   heroEyebrow: string;
   heroTitleA: string;
   heroSince: string;
@@ -304,7 +327,6 @@ interface CLCopy {
 
 const COPY: Record<Lang, CLCopy> = {
   en: {
-    banner: "Closed beta opens July 2026.",
     heroEyebrow: "Changelog",
     heroTitleA: "What shipped —",
     heroSince: "since ",
@@ -315,7 +337,6 @@ const COPY: Record<Lang, CLCopy> = {
     anchorsTitle: "Capability anchors",
   },
   pt: {
-    banner: "Closed beta em julho de 2026.",
     heroEyebrow: "Changelog",
     heroTitleA: "O que foi entregue —",
     heroSince: "desde o ",
@@ -350,24 +371,9 @@ export function ChangelogClient({ criticalPct }: { criticalPct: string }) {
     <>
       <SiteTopbar />
       <main>
-        {/* ───────────── BANNER ───────────── */}
-        {/* marginTop clears the fixed .landing-chrome topbar (~62px); other
-            pages rely on .hero's 120px top padding, but this banner precedes it. */}
-        <div
-          style={{
-            marginTop: 62,
-            background: "var(--brand-amber-tint)",
-            borderBottom: "1px solid var(--brand-amber-line)",
-            padding: "10px 0",
-            textAlign: "center",
-          }}
-        >
-          <span style={{ fontSize: 13, fontWeight: 600, color: "var(--brand-amber-400)", letterSpacing: 0.3 }}>
-            {t.banner}
-          </span>
-        </div>
-
         {/* ───────────── HERO ───────────── */}
+        {/* No beta banner here — the closed-beta CTA now lives centered on the
+            homepage, below the scanner. This page mirrors /about exactly. */}
         <section className="hero">
           <div className="container">
             <span className="hero-eyebrow">{t.heroEyebrow}</span>
@@ -406,7 +412,8 @@ export function ChangelogClient({ criticalPct }: { criticalPct: string }) {
                 <ul className="changelog-list">
                   {m.entries.map((e) => (
                     <li key={e.lead.en}>
-                      <strong>{renderRich(e.lead[lang], criticalPct)}</strong> {renderRich(e.body[lang], criticalPct)}
+                      <strong>{renderRich(e.lead[lang], criticalPct)}</strong>{" "}
+                      {renderRich(e.body[lang], criticalPct)}
                     </li>
                   ))}
                 </ul>
@@ -434,21 +441,14 @@ export function ChangelogClient({ criticalPct }: { criticalPct: string }) {
           </h2>
           <div className="anchors-grid">
             {ANCHORS.map((a) => (
-              <AnchorCard key={a.label.en} label={a.label[lang]} detail={renderRich(a.detail[lang], criticalPct, "anchor-code")} href={a.href} />
+              <AnchorCard
+                key={a.label.en}
+                label={a.label[lang]}
+                detail={renderRich(a.detail[lang], criticalPct, "anchor-code")}
+                href={a.href}
+              />
             ))}
           </div>
-          <p
-            style={{
-              marginTop: 32,
-              fontSize: 13,
-              fontWeight: 600,
-              color: "var(--brand-amber-400)",
-              fontFamily: "var(--font-mono)",
-              letterSpacing: 0.3,
-            }}
-          >
-            {t.banner}
-          </p>
         </section>
       </main>
       <Footer />
@@ -519,7 +519,15 @@ export function ChangelogClient({ criticalPct }: { criticalPct: string }) {
   );
 }
 
-function AnchorCard({ label, detail, href }: { label: string; detail: React.ReactNode; href: string }) {
+function AnchorCard({
+  label,
+  detail,
+  href,
+}: {
+  label: string;
+  detail: React.ReactNode;
+  href: string;
+}) {
   return (
     <a
       href={href}
@@ -534,7 +542,9 @@ function AnchorCard({ label, detail, href }: { label: string; detail: React.Reac
         display: "block",
       }}
     >
-      <div style={{ fontSize: 13, fontWeight: 600, color: "var(--brand-amber)", marginBottom: 6 }}>{label} ↗</div>
+      <div style={{ fontSize: 13, fontWeight: 600, color: "var(--brand-amber)", marginBottom: 6 }}>
+        {label} ↗
+      </div>
       <div style={{ fontSize: 13, color: "var(--fg-2)", lineHeight: 1.55 }}>{detail}</div>
     </a>
   );
