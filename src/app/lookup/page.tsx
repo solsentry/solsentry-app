@@ -9,7 +9,7 @@
 // Spec: internal/marketing/strategy/WIREFRAME_v5.md §3.1
 
 import { redirect } from "next/navigation";
-import { fetchOperator, fetchToken } from "@/lib/api";
+import { quickEasyLookup } from "@/lib/scan-resolver";
 
 const BASE58_RE = /^[1-9A-HJ-NP-Za-km-z]{32,44}$/;
 
@@ -28,19 +28,12 @@ export default async function LookupPage({ searchParams }: PageProps) {
     redirect("/?err=invalid_address");
   }
 
-  // Parallel-fetch — safeFetch returns null on error so we never throw.
-  const [op, tok] = await Promise.all([fetchOperator(addr), fetchToken(addr)]);
-
-  const opKnown = !!op && op.known === true;
-  const opRugs = op?.confirmed_rugs ?? 0;
-  const tokKnown = !!tok && tok.known === true;
+  const res = await quickEasyLookup(addr);
 
   let target: string;
-  if (opKnown && tokKnown) {
-    target = opRugs > 0 ? `/operator/${addr}` : `/token/${addr}`;
-  } else if (opKnown) {
+  if (res?.kind === "operator") {
     target = `/operator/${addr}`;
-  } else if (tokKnown) {
+  } else if (res?.kind === "token" || res?.kind === "contract") {
     target = `/token/${addr}`;
   } else {
     target = `/scan?addr=${encodeURIComponent(addr)}`;
