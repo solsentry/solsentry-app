@@ -12,7 +12,7 @@ export const revalidate = 30;
 export const metadata = {
   title: "Live alerts — HIGH and CRITICAL risk feed",
   description:
-    "Real-time stream of HIGH and CRITICAL risk alerts from the SolSentry scanner. Last 50 events, refreshed every 30 seconds.",
+    "Live stream of HIGH and CRITICAL risk alerts from the SolSentry scanner. Last 50 events, refreshed every 30 seconds.",
 };
 
 export default async function AlertsPage() {

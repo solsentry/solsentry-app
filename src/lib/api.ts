@@ -63,6 +63,7 @@ export interface Operator {
   rug_rate_pct?: number;
   tags?: string[];
   patterns?: string[];
+  recent_scams?: boolean;
 }
 
 export interface TopOperator {
@@ -150,6 +151,9 @@ export interface TokenOperatorRef {
   risk_label?: string;
   confirmed_rugs?: number;
   total_tokens?: number;
+  known?: boolean;
+  rug_rate_pct?: number;
+  recent_scams?: boolean;
 }
 
 export interface Token {
@@ -164,6 +168,40 @@ export interface Token {
   operator?: TokenOperatorRef | string | null;
   symbol?: string | null;
   predicted_at?: string | null;
+  source?: string;
+  scanned_on_demand?: boolean;
+  risk_factors?: { category: string; detail: string; severity: string; source: string }[];
+  holders?: {
+    holder_count: number;
+    largest?: { wallet?: string; address?: string; amount: number; pct?: number; percentage?: number }[];
+    confidence?: number;
+    top1?: number;
+    top10?: number;
+    sampled?: number;
+    supply?: number;
+  };
+  cluster_evidence?: {
+    same_block_bundles?: number;
+    tight_clusters?: number;
+    wide_clusters?: number;
+    max_cluster_size?: number;
+    coordinated_buy_wallets?: number;
+    coordinated_sell_wallets?: number;
+    repeat_cluster_wallets?: number;
+    risk_score?: number;
+    flags?: string[];
+    confidence?: number;
+    swaps_analyzed?: number;
+  } | null;
+  launch_platform?: string;
+  has_mint_authority?: boolean;
+  has_freeze_authority?: boolean;
+  lp_locked_pct?: number;
+  lp_locked_usd?: number;
+  token_extensions?: string[];
+  creator_tokens?: number;
+  budget_mode?: "full" | "cheap" | "off";
+  latency_ms?: number;
 }
 
 export interface X402Stats {
@@ -252,9 +290,11 @@ export interface DrainTrace {
 }
 
 export interface HolderAccount {
-  wallet: string;
+  wallet?: string;
+  address?: string;
   amount: number;
-  pct: number;
+  pct?: number;
+  percentage?: number;
 }
 
 export interface Holders {

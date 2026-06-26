@@ -198,7 +198,7 @@ export default function LivePage() {
               color: "var(--fg-1)",
             }}
           >
-            Real-time alert stream
+            Live alert stream
           </h1>
           <p style={{ color: "var(--fg-2)", fontSize: 14, marginTop: 6 }}>
             Newest mainnet detections appear at the top. Sound + browser notifications optional.

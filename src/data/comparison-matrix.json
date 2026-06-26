@@ -70,7 +70,7 @@
     { "id": "token_2022", "label": "Token-2022 extension scanner", "group": "Detection" },
     { "id": "drain_trace", "label": "Post-rug drain trace", "group": "Detection", "ours": true },
     { "id": "bot_cluster", "label": "Bot cluster identification", "group": "Detection", "ours": true },
-    { "id": "bundle_forensics", "label": "Bundle forensics (Jito)", "group": "Detection" },
+    { "id": "bundle_forensics", "label": "Bot cluster forensics (Jito)", "group": "Detection" },
     { "id": "kol_shill", "label": "KOL / shill network mapping", "group": "Detection", "ours": true },
     { "id": "tx_simulation", "label": "Transaction simulation", "group": "Detection" },
     { "id": "holder_viz", "label": "Holder visualization", "group": "Detection" },

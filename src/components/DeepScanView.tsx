@@ -13,7 +13,7 @@ function formatMoney(value: number | undefined) {
   }).format(value);
 }
 
-export function DeepScanView({ mint, pt }: { mint: string; pt: boolean }) {
+export function DeepScanView({ mint, pt, onMarketFlags }: { mint: string; pt: boolean; onMarketFlags?: (f: string[]) => void }) {
   const [data, setData] = useState<Holders | null>(null);
   const [market, setMarket] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -23,12 +23,30 @@ export function DeepScanView({ mint, pt }: { mint: string; pt: boolean }) {
       try {
         const [h, m] = await Promise.all([
           fetchHolders(mint),
-          fetch(`/api/birdeye/token?mint=${mint}`)
-            .then((res) => res.json())
+          fetch(`/api/market/token?mint=${mint}`)
+            .then(async (res) => {
+              if (!res.ok) return null;
+              const json = await res.json();
+              if (json.error) return null;
+              return Object.keys(json).length > 0 ? json : null;
+            })
             .catch(() => null),
         ]);
         setData(h);
         setMarket(m);
+        
+        if (onMarketFlags) {
+          const flags: string[] = [];
+          if (m?.liquidity && m.liquidity < 10000) flags.push("LOW_LIQUIDITY");
+          if (h?.top1 && h.top1 > 25) flags.push(`CONCENTRATION_${Math.round(h.top1)}%`);
+          
+          if (m?.createdAt) {
+            const ageSeconds = (Date.now() - new Date(m.createdAt).getTime()) / 1000;
+            if (ageSeconds < 3600) flags.push("JUST_LAUNCHED");
+          }
+          
+          onMarketFlags(flags);
+        }
       } catch (e) {
         console.error("DeepScan failed", e);
       } finally {
@@ -36,7 +54,7 @@ export function DeepScanView({ mint, pt }: { mint: string; pt: boolean }) {
       }
     }
     load();
-  }, [mint]);
+  }, [mint, onMarketFlags]);
 
   if (loading) {
     return (
@@ -111,7 +129,7 @@ export function DeepScanView({ mint, pt }: { mint: string; pt: boolean }) {
     amount: h.amount ?? 0,
   }));
 
-  const mcap = market?.marketcap || market?.fdv || 0;
+  const mcap = market?.market_cap || market?.fdv || 0;
   const price = market?.price || 0;
   const liquidity = market?.liquidity || 0;
 
@@ -124,7 +142,11 @@ export function DeepScanView({ mint, pt }: { mint: string; pt: boolean }) {
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 16 }}>
         {/* Market cards only when Birdeye data is present — otherwise a missing key
             would render "$0.00 / LIQUIDITY $0.00 in red", a false rug signal. */}
-        {market && (
+        {!market || Object.keys(market).length === 0 ? (
+          <div style={{ gridColumn: "1 / -1", padding: 12, background: "var(--surface-2)", borderRadius: 6, color: "var(--fg-3)", fontSize: 13, textAlign: "center" }}>
+            {pt ? "Dados de mercado indisponíveis — tente novamente" : "Market data unavailable — try again"}
+          </div>
+        ) : (
           <>
             <div style={{ background: "var(--surface-2)", borderRadius: 6, padding: "10px 12px" }}>
               <div style={{ fontSize: 11, color: "var(--fg-3)" }}>
