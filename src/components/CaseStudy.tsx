@@ -22,7 +22,7 @@ export function CaseStudy() {
               </span>{" "}
               has deployed 2,939 tokens to date — 2,662 confirmed rugs, 1 confirmed safe, 276
               pending. Since coverage start on April 8, 2026 (first dev_wallet match), every
-              subsequent deployment triggers a sub-50ms CRITICAL classification at scan time, before
+              subsequent deployment triggers a CRITICAL classification at scan time, before
               any on-chain rug signal exists.
             </p>
             <p
@@ -57,7 +57,7 @@ export function CaseStudy() {
             <dt>Coverage start</dt>
             <dd>April 8, 2026 · 16:27 UTC — first dev_wallet match</dd>
             <dt>Detection</dt>
-            <dd>Sub-50ms cached operator lookup · CRITICAL at scan time</dd>
+            <dd>Sub-second cached operator lookup · CRITICAL at scan time</dd>
             <dt style={{ color: "var(--status-critical)" }}>Verdict</dt>
             <dd style={{ color: "var(--status-critical)" }}>
               Every subsequent deployment by this wallet → CRITICAL before any on-chain rug signal

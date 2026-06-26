@@ -410,7 +410,7 @@ export function ApiClient({ stats }: { stats: NetworkStats | null }) {
             <div className="panel">
               <div className="label-tag">{t.statLatency}</div>
               <div style={{ fontFamily: "var(--font-display)", fontSize: 28, fontWeight: 700, marginTop: 8 }}>
-                &lt; 50ms
+                &lt; 1s
               </div>
               <div style={{ fontSize: 11, color: "var(--fg-3)" }}>{t.statLatencySub}</div>
             </div>

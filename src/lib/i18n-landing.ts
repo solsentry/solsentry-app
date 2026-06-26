@@ -163,7 +163,7 @@ export const COPY: Record<Lang, LandingCopy> = {
     heroTitleEm: "before you sign.",
     heroSub:
       "Paste a Solana wallet or token mint. SolSentry tells you if the operator behind it has a history of rug pulls — across every token they ever deployed.",
-    heroScanPlaceholder: "Paste any Solana wallet — live scan in 50ms",
+    heroScanPlaceholder: "Paste any Solana wallet to scan",
     heroScanCta: "Scan",
     heroTrySample: "Try",
 
@@ -209,7 +209,7 @@ export const COPY: Record<Lang, LandingCopy> = {
     howStep2Title: "We check the deployer",
     howStep2Body:
       "SolSentry looks up that wallet in our operator graph — every token it ever deployed, every confirmed rug, every cluster it belongs to.",
-    howStep3Title: "Verdict in under 50ms",
+    howStep3Title: "Verdict in under a second",
     howStep3Body:
       "If the wallet has prior rugs, you get a CRITICAL alert before the buy button is clicked. If it's clean, you also know that — with audit trail.",
 
@@ -308,7 +308,7 @@ export const COPY: Record<Lang, LandingCopy> = {
     heroTitleEm: "antes de assinar.",
     heroSub:
       "Cole uma carteira ou um mint Solana. O SolSentry diz se o operador por trás dele já fez rug — em todos os tokens que ele já deployou.",
-    heroScanPlaceholder: "Cole qualquer wallet Solana — scan em 50ms",
+    heroScanPlaceholder: "Cole qualquer wallet Solana pra escanear",
     heroScanCta: "Escanear",
     heroTrySample: "Tente",
 
@@ -354,7 +354,7 @@ export const COPY: Record<Lang, LandingCopy> = {
     howStep2Title: "A gente checa o deployer",
     howStep2Body:
       "O SolSentry busca essa wallet no nosso grafo de operador — cada token que já deployou, cada rug confirmado, cada cluster a que pertence.",
-    howStep3Title: "Veredito em menos de 50ms",
+    howStep3Title: "Veredito em menos de um segundo",
     howStep3Body:
       "Se a wallet tem rugs anteriores, você recebe alerta CRITICAL antes do botão de compra. Se for clean, você também sabe — com trilha auditável.",
 

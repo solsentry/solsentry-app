@@ -284,8 +284,8 @@ const ANCHORS: Anchor[] = [
   {
     label: { en: "Free REST API", pt: "API REST gratuita" },
     detail: {
-      en: "No key, no signup. `/v1/operator/{wallet}`: risk level, confirmed rugs, serial-deployer flag, connected bot clusters. Sub-50ms scan response.",
-      pt: "Sem chave, sem cadastro. `/v1/operator/{wallet}`: nível de risco, rugs confirmados, flag de deployer serial, clusters de bots conectados. Resposta de scan abaixo de 50ms.",
+      en: "No key, no signup. `/v1/operator/{wallet}`: risk level, confirmed rugs, serial-deployer flag, connected bot clusters. Sub-second scan response.",
+      pt: "Sem chave, sem cadastro. `/v1/operator/{wallet}`: nível de risco, rugs confirmados, flag de deployer serial, clusters de bots conectados. Resposta de scan em menos de um segundo.",
     },
     href: "https://api.solsentry.app/v1/stats",
   },
