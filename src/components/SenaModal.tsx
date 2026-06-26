@@ -24,7 +24,7 @@ const TAG_TRANSLATIONS: Record<string, string> = {
   fast_deployer: "deploys rápidos (token novo a cada poucas horas)",
   serial_rugger: "rug em série (já queimou holders muitas vezes)",
   rebrand_artist: "rebrand artist (muda o nome do projeto pra esconder histórico)",
-  bundle_launch: "launch coordenado em bundle (compras simuladas no minuto 0)",
+  bundle_launch: "launch coordenado via bot cluster (compras simuladas no minuto 0)",
   honeypot: "honeypot (você compra mas não consegue vender)",
   freeze_authority: "tem freeze authority — pode congelar sua wallet a qualquer momento",
   mint_authority: "tem mint authority — pode imprimir tokens infinitos",

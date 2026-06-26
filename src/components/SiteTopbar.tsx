@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { detectLang } from "@/lib/i18n-landing";
+import { BetaAccessModal } from "@/components/BetaAccessModal";
 
 /**
  * SiteTopbar — the single source of truth for the top navigation.
@@ -99,6 +100,7 @@ export function SiteTopbar() {
           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
             {/* Mode tabs - new padrão (mesmo do ProShell) */}
             <div
+              className="hidden lg:inline-flex"
               style={{
                 display: "inline-flex",
                 alignItems: "center",
@@ -138,6 +140,40 @@ export function SiteTopbar() {
                 }}
               />
 
+              <div
+                title="Closed beta! Soon!"
+                style={{
+                  padding: "8px 12px",
+                  borderRadius: 4,
+                  color: "var(--fg-3)",
+                  background: "transparent",
+                  textDecoration: "none",
+                  fontWeight: 400,
+                  minHeight: 36,
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 6,
+                  fontSize: 11,
+                  cursor: "not-allowed",
+                  transition: "background 110ms ease, color 110ms ease, opacity 110ms ease",
+                }}
+              >
+                Pro
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.6 }}>
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+              </div>
+
+              <span
+                style={{
+                  width: 1,
+                  alignSelf: "stretch",
+                  background: "var(--border)",
+                  margin: "0 2px",
+                }}
+              />
+
               <Link
                 href="/api"
                 style={{
@@ -161,6 +197,7 @@ export function SiteTopbar() {
             {/* About */}
             <Link
               href="/about"
+              className="hidden md:flex"
               style={{
                 fontSize: 12,
                 padding: "10px 14px",
@@ -181,6 +218,7 @@ export function SiteTopbar() {
             {/* Changelog */}
             <Link
               href="/changelog"
+              className="hidden md:flex"
               style={{
                 fontSize: 12,
                 padding: "10px 14px",
@@ -261,8 +299,44 @@ export function SiteTopbar() {
               {theme === "dark" ? "☀" : "☾"}
             </button>
 
+            {/* Request Beta (Global) */}
+            <BetaAccessModal
+              triggerClassName="flex items-center gap-2 rounded-md bg-[rgba(217,119,6,0.1)] px-4 py-2 text-sm font-semibold text-[var(--brand-amber)] transition-colors hover:bg-[rgba(217,119,6,0.2)] border border-[var(--brand-amber)]/20 min-h-[38px]"
+            >
+              Request Beta
+            </BetaAccessModal>
+
             {/* Auth - exact same pill style as ProShell */}
             {/* Login/Pro removed — closed beta launches July 2026 */}
+            <div
+              title="Closed beta! Soon!"
+              className="hidden sm:flex"
+              style={{
+                fontSize: 12,
+                padding: "10px 14px",
+                minHeight: 38,
+                display: "flex",
+                alignItems: "center",
+                gap: 8,
+                background: "var(--surface)",
+                color: "var(--fg-3)",
+                border: "1px solid var(--border)",
+                borderRadius: 6,
+                cursor: "not-allowed",
+                fontWeight: 500,
+              }}
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"></path>
+                <path d="M3 5v14a2 2 0 0 0 2 2h16v-5"></path>
+                <path d="M18 12a2 2 0 0 0 0 4h4v-4Z"></path>
+              </svg>
+              Connect Wallet
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.6, marginLeft: 2 }}>
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+              </svg>
+            </div>
           </div>
         </div>
       </div>

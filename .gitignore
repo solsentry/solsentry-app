@@ -11,5 +11,10 @@ next-env.d.ts
 tsconfig.tsbuildinfo
 .open-next/
 
+# Cloudflare/wrangler — local state + dev secrets (never commit)
+.wrangler/
+.dev.vars
+.dev.vars.*
+
 # Local agent context (internal strategy — never commit)
 .agent/

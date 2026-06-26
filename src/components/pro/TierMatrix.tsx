@@ -14,10 +14,10 @@ const ROWS: { feature: string; free: string; pro: string; sentinel: string }[] =
   {
     feature: "x402 metered credits",
     free: "Pay-per-call",
-    pro: "Bundled monthly",
+    pro: "Packaged monthly",
     sentinel: "Volume rate",
   },
-  { feature: "Real-time webhook feed", free: "—", pro: "—", sentinel: "Yes" },
+  { feature: "Low-latency webhook feed", free: "—", pro: "—", sentinel: "Yes" },
   { feature: "Priority support · SLA", free: "—", pro: "Email", sentinel: "Dedicated" },
 ];
 

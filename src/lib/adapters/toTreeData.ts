@@ -1,5 +1,5 @@
 // Adapter: OperatorNetwork → recursive tree shape for tidy-tree viz.
-// Ported from internal/marketing/brand/sds/v4/06_ia_completa/casen_viz_prototype.html
+// Ported from internal/marketing/brand/sds/v4/06_ia_completa/operator_viz_prototype.html
 // (the static organograma user prefers for "version estática").
 
 import type { OperatorNetwork, OperatorNetworkNode } from "@/lib/api";

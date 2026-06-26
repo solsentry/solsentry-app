@@ -246,7 +246,7 @@ export const COPY: Record<Lang, LandingCopy> = {
 
     trustTitle: "Trust by design",
     trustOss: "Open-source MCP, docs and Birdeye Radar integration",
-    trustAudit: "97.7% CRITICAL precision · 95.6% HIGH precision — auditable per mint",
+    trustAudit: "97.x% CRITICAL — auditable per-mint",
     trustAuditNote: "Verify any prediction at /v1/predictions/{mint}. No metric is hand-tuned.",
     trustAbout: "Read the full About →",
 
@@ -256,11 +256,11 @@ export const COPY: Record<Lang, LandingCopy> = {
     themeLight: "Light",
 
     easyEyebrow: "EASY • FREE • INSTANT",
-    easyTitleA: "Paste wallet or mint.",
+    easyTitleA: "Paste wallet or token.",
     easyTitleB: "See the ",
     easyTitleEm: "risk",
     easySub: "No signup. No wallet connect.",
-    easyPlaceholder: "Paste wallet or mint (e.g. 4kxscute… or So1111…)",
+    easyPlaceholder: "Paste wallet or token (e.g. 4kxscute… or So1111…)",
     easyScanCta: "Scan",
     easyEmptyHint: "Paste any address or click a sample above.",
     easyProDev: "Full history, graphs and alerts live in Pro / Dev.",
@@ -391,7 +391,7 @@ export const COPY: Record<Lang, LandingCopy> = {
 
     trustTitle: "Confiança por design",
     trustOss: "MCP, docs e integração Birdeye Radar — tudo open-source",
-    trustAudit: "97,7% de precisão em CRITICAL · 95,6% em HIGH — auditável por mint",
+    trustAudit: "97.x% CRITICAL — auditable per-mint",
     trustAuditNote:
       "Verifique qualquer predição em /v1/predictions/{mint}. Nenhuma métrica é ajustada manualmente.",
     trustAbout: "Ler o Sobre completo →",
@@ -402,11 +402,11 @@ export const COPY: Record<Lang, LandingCopy> = {
     themeLight: "Claro",
 
     easyEyebrow: "FÁCIL • GRÁTIS • NA HORA",
-    easyTitleA: "Cole a wallet ou o mint.",
+    easyTitleA: "Cole a wallet ou o token.",
     easyTitleB: "Veja o ",
     easyTitleEm: "risco",
     easySub: "Sem cadastro. Sem conectar wallet.",
-    easyPlaceholder: "Cole wallet ou mint (ex.: 4kxscute… ou So1111…)",
+    easyPlaceholder: "Cole wallet ou token (ex.: 4kxscute… ou So1111…)",
     easyScanCta: "Escanear",
     easyEmptyHint: "Cole qualquer endereço ou clique num exemplo acima.",
     easyProDev: "Histórico completo, gráficos e alertas no Pro / Dev.",

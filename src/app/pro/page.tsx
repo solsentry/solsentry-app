@@ -267,7 +267,7 @@ function TierPanels() {
         title="Credits"
         href="/pro"
         status="live"
-        blurb="x402 balance, per-endpoint history, monthly bundles. CSV export for accounting."
+        blurb="x402 balance, per-endpoint history, monthly packages. CSV export for accounting."
       />
     </div>
   );

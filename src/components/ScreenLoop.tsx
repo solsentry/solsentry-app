@@ -11,6 +11,7 @@ interface Stats {
   confirmed_rugs?: number;
   high_risk_alerts?: number;
   runtime_hours?: number;
+  critical_precision_pct?: number;
 }
 
 interface Alert {
@@ -298,7 +299,7 @@ function BigNumberPanel({ stats }: { stats: Stats | null }) {
           marginTop: 12,
         }}
       >
-        97.7% CRITICAL precision · {fmtN(stats?.confirmed_rugs)} confirmed rugs
+        {stats?.critical_precision_pct?.toFixed(1) ?? "97.7"}% CRITICAL — auditable per-mint · {fmtN(stats?.confirmed_rugs)} confirmed rugs
       </div>
     </div>
   );
