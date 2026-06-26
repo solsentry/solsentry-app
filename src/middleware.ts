@@ -37,6 +37,8 @@ const ALLOWLIST_PREFIXES = [
   "/architecture",
   "/telegram",
   "/scan",
+  "/token",
+  "/operator",
 ];
 
 function isAllowed(pathname: string): boolean {

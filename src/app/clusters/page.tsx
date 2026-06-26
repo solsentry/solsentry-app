@@ -23,7 +23,7 @@ export default async function ClustersPage() {
         <PageHeader
           eyebrow={`Bot cluster registry · ${total_clusters} total`}
           title="Coordinated wallet groups"
-          sub="Clusters are sets of wallets identified as coordinated — through shared funding, identical bundle behaviour, or matching deployment fingerprints. Each cluster is a single adversary operating multiple wallets."
+          sub="Clusters are sets of wallets identified as coordinated — through shared funding, identical bot cluster behaviour, or matching deployment fingerprints. Each cluster is a single adversary operating multiple wallets."
         >
           <div style={{ display: "flex", gap: 12, marginTop: 16, flexWrap: "wrap" }}>
             <a

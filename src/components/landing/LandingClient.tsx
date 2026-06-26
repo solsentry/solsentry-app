@@ -13,19 +13,12 @@ import type { Lang, LandingCopy } from "@/lib/i18n-landing";
 
 import { ScanResultCard } from "@/components/ScanResultCard";
 import { quickEasyLookup, getUnknown, type ScanResult } from "@/lib/scan-resolver";
+import { BetaAccessModal } from "@/components/BetaAccessModal";
 
 interface Props {
   stats: LiveStatsPayload;
   topOperator?: any;
 }
-
-// Sample chips. Labels resolve from the i18n dict (labelKey) so the homepage
-// is fully bilingual; values stay verbatim.
-const SAMPLES: { labelKey: keyof LandingCopy; value: string }[] = [
-  { labelKey: "sampleOperator", value: "4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1" },
-  { labelKey: "sampleToken", value: "So11111111111111111111111111111111111111112" },
-  { labelKey: "sampleDevWallet", value: "9xQeWvG816bUx9EPjHmaT23yvVM2ZWbrrpZb9PusV9yN" },
-];
 
 export function LandingClient({ stats, hideChrome = false }: Props & { hideChrome?: boolean }) {
   const [query, setQuery] = useState("");
@@ -120,17 +113,8 @@ export function LandingClient({ stats, hideChrome = false }: Props & { hideChrom
                   <input
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") doLookup(query);
-                    }}
-                    onPaste={(e) => {
-                      // Trigger lookup shortly after paste (more reliable card appearance)
-                      setTimeout(() => {
-                        const val = (e.target as HTMLInputElement).value;
-                        if (val.length > 32) doLookup(val);
-                      }, 80);
-                    }}
-                    placeholder={copy.easyPlaceholder}
+                    disabled={true}
+                    placeholder="Scanner disabled during teaser phase..."
                     style={{
                       flex: 1,
                       fontFamily: "var(--font-mono)",
@@ -141,48 +125,26 @@ export function LandingClient({ stats, hideChrome = false }: Props & { hideChrom
                       borderRadius: 10,
                       color: "var(--fg-1)",
                       outline: "none",
+                      opacity: 0.5,
+                      cursor: "not-allowed",
                     }}
                   />
                   <button
-                    onClick={() => doLookup(query)}
-                    disabled={loading || !query.trim()}
+                    disabled={true}
                     style={{
-                      background: "var(--brand-amber)",
-                      color: "var(--fg-on-brand)",
-                      border: "none",
+                      background: "var(--surface-hover)",
+                      color: "var(--fg-3)",
+                      border: "1px solid var(--border)",
                       borderRadius: 8,
                       padding: "0 22px",
                       fontWeight: 600,
                       fontSize: 14,
-                      cursor: loading ? "wait" : "pointer",
-                      opacity: loading || !query.trim() ? 0.6 : 1,
+                      cursor: "not-allowed",
+                      opacity: 0.5,
                     }}
                   >
-                    {loading ? "..." : copy.easyScanCta}
+                    V1 Soon
                   </button>
-                </div>
-
-                {/* Samples use the same live lookup path as pasted addresses. */}
-                <div style={{ marginTop: 8, display: "flex", flexWrap: "wrap", gap: 6 }}>
-                  {SAMPLES.map((s, idx) => (
-                    <button
-                      key={idx}
-                      type="button"
-                      onClick={() => loadSample(s.value)}
-                      style={{
-                        fontFamily: "var(--font-mono)",
-                        fontSize: 11,
-                        padding: "4px 9px",
-                        borderRadius: 999,
-                        border: "1px solid var(--border)",
-                        background: "var(--surface-2)",
-                        color: "var(--fg-2)",
-                        cursor: "pointer",
-                      }}
-                    >
-                      {copy[s.labelKey]}
-                    </button>
-                  ))}
                 </div>
               </div>
 
@@ -194,32 +156,26 @@ export function LandingClient({ stats, hideChrome = false }: Props & { hideChrom
                   flexWrap: "wrap",
                   alignItems: "center",
                   justifyContent: "center",
-                  gap: 10,
+                  gap: 12,
                   marginBottom: 24,
-                  fontSize: 12,
+                  fontSize: 13,
                   color: "var(--fg-3)",
                 }}
               >
-                <span style={{ color: "var(--brand-amber)", fontWeight: 600 }}>
-                  {copy.betaNote}
-                </span>
+                <BetaAccessModal
+                  triggerClassName="rounded-lg bg-[rgba(217,119,6,0.15)] px-6 py-3 font-semibold text-[var(--brand-amber)] transition-colors hover:bg-[rgba(217,119,6,0.25)] border border-[var(--brand-amber)]/20"
+                >
+                  Request Beta Access ↗
+                </BetaAccessModal>
                 <span style={{ color: "var(--fg-4)" }}>·</span>
                 <span>{copy.betaFollow}:</span>
                 <a
                   href="https://x.com/solsentryai"
                   target="_blank"
                   rel="noopener noreferrer"
-                  style={{ color: "var(--brand-amber)", fontWeight: 600, textDecoration: "none" }}
+                  style={{ color: "var(--fg-2)", fontWeight: 500, textDecoration: "none" }}
                 >
                   @solsentryai
-                </a>
-                <a
-                  href="https://x.com/crashdiniz"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{ color: "var(--brand-amber)", fontWeight: 600, textDecoration: "none" }}
-                >
-                  @crashdiniz
                 </a>
               </div>
 

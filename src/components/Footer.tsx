@@ -130,14 +130,6 @@ export function Footer() {
                 X · @solsentryai
               </a>
               <a
-                href="https://t.me/solsentryai"
-                target="_blank"
-                rel="noreferrer"
-                style={{ color: "var(--fg-2)", textDecoration: "none" }}
-              >
-                Telegram · @solsentryai
-              </a>
-              <a
                 href="https://x.com/crashdiniz"
                 target="_blank"
                 rel="noreferrer"

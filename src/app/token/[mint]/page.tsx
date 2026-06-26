@@ -199,16 +199,19 @@ export default async function TokenPage({ params }: PageProps) {
   const deployer = isUntracked ? null : tok?.dev_wallet || opAddr(tok?.operator) || null;
 
   // Parallel fan-out — server-side, cached via fetchOperator/Timeline/Holders TTLs.
-  const [operator, timeline, holders] = await Promise.all([
+  const [operator, timeline, fetchedHolders] = await Promise.all([
     deployer ? fetchOperator(deployer) : Promise.resolve(null),
     deployer ? fetchOperatorTimeline(deployer) : Promise.resolve(null),
-    fetchHolders(mint),
+    !tok?.holders ? fetchHolders(mint) : Promise.resolve(null),
   ]);
 
+  const activeHolders = tok?.holders ?? fetchedHolders;
+  const rawLargest = tok?.holders?.largest ?? fetchedHolders?.largest ?? [];
+
   // Top-5 holders, sorted by share desc (defensive — API usually pre-sorts).
-  const topHolders = (holders?.largest ?? [])
+  const topHolders = rawLargest
     .slice()
-    .sort((a, b) => (b.pct ?? 0) - (a.pct ?? 0))
+    .sort((a, b) => (b.pct ?? b.percentage ?? 0) - (a.pct ?? a.percentage ?? 0))
     .slice(0, 5);
 
   const riskLevel = tok?.risk_level ?? "UNKNOWN";
@@ -324,19 +327,20 @@ export default async function TokenPage({ params }: PageProps) {
                   </div>
 
                   <KPI
-                    label="Risk score"
-                    value={
+                    label="Tier"
+                    value={tok.risk_level ?? "UNKNOWN"}
+                    hint={
                       tok.risk_score !== undefined && tok.risk_score !== null
-                        ? `${tok.risk_score}/100`
-                        : "—"
+                        ? `Score: ${tok.risk_score}`
+                        : "Auditável"
                     }
                   />
                   <KPI label="Outcome" value={tok.final_outcome || "pending"} />
-                  <KPI label="Flags" value={(tok.flags?.length ?? 0).toString()} />
+                  <KPI label="Flags" value={((tok.risk_factors?.length || tok.flags?.length) ?? 0).toString()} />
                   <KPI
                     label="Age"
                     value={ageString(tok.predicted_at)}
-                    hint={tok.is_bundle ? "bundle launch" : undefined}
+                    hint={tok.is_bundle ? "lançamento coordenado" : undefined}
                   />
                 </div>
               </div>
@@ -351,8 +355,22 @@ export default async function TokenPage({ params }: PageProps) {
                   fontFamily: "var(--font-mono)",
                 }}
               >
-                <span>{lastUpdatedString(tok.predicted_at)}</span>
-                <span>{tok.known ? "Indexed by SolSentry" : "Not yet scanned"}</span>
+                <span>
+                  {tok.source === "live_scan" ? (
+                    <span style={{ color: "var(--brand-teal)" }}>
+                      ● Escaneado agora {tok.latency_ms ? `(${tok.latency_ms}ms)` : ""}
+                    </span>
+                  ) : (
+                    lastUpdatedString(tok.predicted_at)
+                  )}
+                </span>
+                <span>
+                  {tok.scanned_on_demand
+                    ? "On-demand scan"
+                    : tok.known
+                      ? "Indexed by SolSentry"
+                      : "Not yet scanned"}
+                </span>
               </div>
             </section>
 
@@ -406,14 +424,36 @@ export default async function TokenPage({ params }: PageProps) {
                   )}
                 </div>
 
-                {!deployer && (
-                  <div style={{ color: "var(--fg-3)", fontSize: 13 }}>
-                    Deployer wallet not yet resolved. Stage-2 enrichment may still be running.
-                  </div>
-                )}
+                {(() => {
+                  const tokOp = typeof tok?.operator === "object" ? tok.operator : null;
+                  const combinedOp = { ...(operator || {}), ...(tokOp || {}) };
+                  const isDeployerKnown = tokOp?.known ?? operator?.known ?? true;
+                  
+                  if (!deployer) {
+                    return (
+                      <div style={{ color: "var(--fg-3)", fontSize: 13 }}>
+                        Deployer wallet not yet resolved. Stage-2 enrichment may still be running.
+                      </div>
+                    );
+                  }
 
-                {deployer && (
-                  <>
+                  if (!isDeployerKnown) {
+                    return (
+                      <div style={{ padding: "10px 0" }}>
+                        <div style={{ display: "flex", gap: 10, alignItems: "center", marginBottom: 12 }}>
+                          <AddrLink addr={deployer} head={12} tail={8} />
+                          <CopyText value={deployer} label="Copy" />
+                          <RiskBadge level="UNKNOWN" size="sm" />
+                        </div>
+                        <div style={{ color: "var(--status-warning)", fontSize: 13, fontWeight: 500 }}>
+                          Deployer sem histórico rastreado (nunca assuma seguro)
+                        </div>
+                      </div>
+                    );
+                  }
+
+                  return (
+                    <>
                     <div
                       style={{
                         display: "flex",
@@ -425,7 +465,7 @@ export default async function TokenPage({ params }: PageProps) {
                     >
                       <AddrLink addr={deployer} head={12} tail={8} />
                       <CopyText value={deployer} label="Copy" />
-                      {operator?.risk_level && <RiskBadge level={operator.risk_level} size="sm" />}
+                      {combinedOp?.risk_level && <RiskBadge level={combinedOp.risk_level} size="sm" />}
                       {(operator?.tags ?? []).map((t) => (
                         <Pill key={t} color="var(--brand-amber)" border="var(--brand-amber-line)">
                           {t}
@@ -442,19 +482,23 @@ export default async function TokenPage({ params }: PageProps) {
                     >
                       <KPI
                         label="Tokens deployed"
-                        value={operator?.total_tokens?.toLocaleString() ?? "—"}
+                        value={combinedOp?.total_tokens?.toLocaleString() ?? "—"}
                       />
                       <KPI
                         label="Rug rate"
                         value={
-                          operator?.rug_rate_pct !== undefined
-                            ? `${operator.rug_rate_pct.toFixed(1)}%`
+                          combinedOp?.rug_rate_pct !== undefined
+                            ? `${combinedOp.rug_rate_pct.toFixed(1)}%`
                             : "—"
                         }
                       />
                       <KPI
                         label="Confirmed rugs"
-                        value={operator?.confirmed_rugs?.toLocaleString() ?? "—"}
+                        value={combinedOp?.confirmed_rugs?.toLocaleString() ?? "—"}
+                      />
+                      <KPI
+                        label="Last Scam"
+                        value={combinedOp?.recent_scams ? "Recent" : "—"}
                       />
                       <KPI
                         label="First seen"
@@ -466,7 +510,8 @@ export default async function TokenPage({ params }: PageProps) {
                       />
                     </div>
                   </>
-                )}
+                );
+                })()}
               </div>
             </section>
 
@@ -489,9 +534,25 @@ export default async function TokenPage({ params }: PageProps) {
                       marginBottom: 8,
                     }}
                   >
-                    Signals firing
+                    Risk Factors
                   </div>
                   {(() => {
+                    if (tok.risk_factors && tok.risk_factors.length > 0) {
+                      return tok.risk_factors.map((rf, i) => {
+                        const color =
+                          rf.severity === "CRITICAL" ? "var(--status-critical)" :
+                          rf.severity === "HIGH" ? "var(--status-warning)" :
+                          rf.severity === "MEDIUM" ? "var(--brand-amber)" : "var(--brand-teal)";
+                        return (
+                          <div key={i} style={{ display: "flex", alignItems: "baseline", gap: 10, padding: "6px 0", borderBottom: "1px dashed var(--border)", fontSize: 13 }}>
+                            <span style={{ fontFamily: "var(--font-mono)", color, width: 14, flexShrink: 0, fontWeight: 700 }}>●</span>
+                            <span style={{ color: "var(--fg-1)", flex: 1 }}>{rf.category}</span>
+                            <span style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: "var(--fg-3)" }}>{rf.detail}</span>
+                          </div>
+                        );
+                      });
+                    }
+
                     const flagSet = new Set(tok.flags ?? []);
                     const known: Array<{ key: string; label: string }> = [
                       { key: "mint_authority", label: "Mint authority retained" },
@@ -549,6 +610,47 @@ export default async function TokenPage({ params }: PageProps) {
                   })()}
                 </div>
 
+                {/* Cluster Card */}
+                <div className="panel" style={{ padding: "14px 18px" }}>
+                  <div style={{ fontSize: 10, letterSpacing: 0.8, textTransform: "uppercase", color: "var(--fg-3)", marginBottom: 8 }}>
+                    Bot-cluster / Coordenação
+                  </div>
+                  {tok.cluster_evidence ? (
+                    <div style={{ fontSize: 13, color: "var(--fg-2)", display: "flex", flexDirection: "column", gap: 6 }}>
+                       <div style={{ display: "flex", justifyContent: "space-between" }}>
+                         <span>Same block coord:</span>
+                         <span style={{ fontFamily: "var(--font-mono)", color: "var(--fg-1)" }}>{tok.cluster_evidence.same_block_bundles ?? 0}</span>
+                       </div>
+                       <div style={{ display: "flex", justifyContent: "space-between" }}>
+                         <span>Tight clusters:</span>
+                         <span style={{ fontFamily: "var(--font-mono)", color: "var(--fg-1)" }}>{tok.cluster_evidence.tight_clusters ?? 0}</span>
+                       </div>
+                       <div style={{ display: "flex", justifyContent: "space-between" }}>
+                         <span>Coordinated buy wallets:</span>
+                         <span style={{ fontFamily: "var(--font-mono)", color: "var(--fg-1)" }}>{tok.cluster_evidence.coordinated_buy_wallets ?? 0}</span>
+                       </div>
+                       <div style={{ display: "flex", justifyContent: "space-between" }}>
+                         <span>Coordinated sell wallets:</span>
+                         <span style={{ fontFamily: "var(--font-mono)", color: "var(--fg-1)" }}>{tok.cluster_evidence.coordinated_sell_wallets ?? 0}</span>
+                       </div>
+                       {(tok.cluster_evidence.flags?.length ?? 0) > 0 && (
+                         <div style={{ marginTop: 8, color: "var(--status-critical)" }}>
+                           Flags: {tok.cluster_evidence.flags?.join(", ")}
+                         </div>
+                       )}
+                    </div>
+                  ) : tok.budget_mode === "cheap" ? (
+                    <div style={{ color: "var(--fg-3)", fontSize: 13, padding: "10px 0" }}>
+                      Análise de cluster sob demanda.<br/>
+                      <span style={{ color: "var(--brand-teal)", cursor: "pointer", textDecoration: "underline" }}>Re-scan com premium</span>
+                    </div>
+                  ) : (
+                    <div style={{ color: "var(--fg-3)", fontSize: 13 }}>
+                      Nenhuma evidência de coordenação ou análise parcial.
+                    </div>
+                  )}
+                </div>
+
                 <div className="panel" style={{ padding: "14px 18px" }}>
                   <div
                     style={{
@@ -569,10 +671,9 @@ export default async function TokenPage({ params }: PageProps) {
                       margin: "0 0 12px",
                     }}
                   >
-                    Risk score{" "}
-                    <strong style={{ color: "var(--fg-1)" }}>{tok.risk_score ?? "—"}/100</strong>{" "}
-                    derives from {tok.flags?.length ?? 0} signal
-                    {tok.flags?.length === 1 ? "" : "s"} plus deployer history
+                    Tier <strong style={{ color: "var(--fg-1)" }}>{tok.risk_level ?? "UNKNOWN"}</strong>{" "}
+                    (Score {tok.risk_score ?? "—"}/100) derives from {tok.risk_factors?.length ?? tok.flags?.length ?? 0} signal
+                    {((tok.risk_factors?.length ?? tok.flags?.length) === 1) ? "" : "s"} plus deployer history
                     {operator?.confirmed_rugs
                       ? ` (${operator.confirmed_rugs.toLocaleString()} confirmed rugs on file)`
                       : ""}
@@ -592,7 +693,37 @@ export default async function TokenPage({ params }: PageProps) {
               </div>
             </section>
 
-            {/* ─── 4. HOLDER PROFILE (stub) ─────────────────────────────── */}
+            {/* ─── 4. CONTRACT PARITY STRIP ───────────────────────────────── */}
+            <section className="wrap" style={{ padding: "0 24px", marginBottom: 16 }}>
+              <div className="panel" style={{ padding: 0, overflow: "hidden", display: "flex", flexWrap: "wrap" }}>
+                <KPI
+                  label="Mint Auth"
+                  value={tok.has_mint_authority === true ? "Retained" : tok.has_mint_authority === false ? "Revoked" : "—"}
+                  hint={tok.has_mint_authority === true ? "⚠️ Risk" : ""}
+                />
+                <KPI
+                  label="Freeze Auth"
+                  value={tok.has_freeze_authority === true ? "Retained" : tok.has_freeze_authority === false ? "Revoked" : "—"}
+                  hint={tok.has_freeze_authority === true ? "⚠️ Risk" : ""}
+                />
+                <KPI
+                  label="LP Locked"
+                  value={tok.lp_locked_pct !== undefined ? `${tok.lp_locked_pct.toFixed(1)}%` : "—"}
+                  hint={tok.lp_locked_usd ? `$${tok.lp_locked_usd.toLocaleString()}` : ""}
+                />
+                <KPI
+                  label="Platform"
+                  value={tok.launch_platform || "Unknown"}
+                  hint={tok.token_extensions?.length ? `Ext: ${tok.token_extensions.length}` : ""}
+                />
+                <KPI
+                  label="Creator Tokens"
+                  value={tok.creator_tokens != null ? tok.creator_tokens.toLocaleString() : "—"}
+                />
+              </div>
+            </section>
+
+            {/* ─── 5. HOLDER PROFILE ────────────────────────────────────── */}
             <section className="wrap" style={{ padding: "0 24px", marginBottom: 16 }}>
               <div className="panel" style={{ padding: 0, overflow: "hidden" }}>
                 <div
@@ -621,11 +752,11 @@ export default async function TokenPage({ params }: PageProps) {
                       color: "var(--fg-3)",
                     }}
                   >
-                    {holders
-                      ? `${holders.count.toLocaleString()} holders${
-                          holders.top1 ? ` · top1 ${holders.top1.toFixed(1)}%` : ""
+                    {activeHolders
+                      ? `${(activeHolders as any).count ?? (activeHolders as any).holder_count ?? "—"} holders${
+                          topHolders[0] ? ` · top1 ${((topHolders[0].pct ?? topHolders[0].percentage) ?? 0).toFixed(1)}%` : ""
                         }`
-                      : "—"}
+                      : "parcial/sob demanda"}
                   </div>
                 </div>
                 <table
@@ -656,7 +787,7 @@ export default async function TokenPage({ params }: PageProps) {
                     {topHolders.length > 0
                       ? topHolders.map((h, idx) => (
                           <tr
-                            key={h.wallet || idx}
+                            key={h.wallet || h.address || idx}
                             style={{
                               background:
                                 idx % 2 === 1
@@ -666,12 +797,12 @@ export default async function TokenPage({ params }: PageProps) {
                           >
                             <td style={{ padding: "6px 18px", color: "var(--fg-3)" }}>{idx + 1}</td>
                             <td style={{ padding: "6px 8px" }}>
-                              {h.wallet ? (
+                              {h.wallet || h.address ? (
                                 <Link
-                                  href={`/network/${h.wallet}`}
+                                  href={`/network/${h.wallet || h.address}`}
                                   style={{ color: "var(--fg-1)", textDecoration: "none" }}
                                 >
-                                  {truncate(h.wallet)}
+                                  {truncate(h.wallet || h.address || "")}
                                 </Link>
                               ) : (
                                 "—"
@@ -685,7 +816,7 @@ export default async function TokenPage({ params }: PageProps) {
                                 fontVariantNumeric: "tabular-nums",
                               }}
                             >
-                              {typeof h.pct === "number" ? `${h.pct.toFixed(1)}%` : "—"}
+                              {typeof h.pct === "number" ? `${h.pct.toFixed(1)}%` : typeof h.percentage === "number" ? `${h.percentage.toFixed(1)}%` : "—"}
                             </td>
                           </tr>
                         ))
@@ -719,7 +850,7 @@ export default async function TokenPage({ params }: PageProps) {
               </div>
             </section>
 
-            {/* ─── 5. ACTIVITY HEATMAP ──────────────────────────────────── */}
+            {/* ─── 6. ACTIVITY HEATMAP ──────────────────────────────────── */}
             {deployer && (
               <section className="wrap" style={{ padding: "0 24px", marginBottom: 16 }}>
                 <div className="panel" style={{ padding: "14px 18px" }}>
@@ -764,7 +895,7 @@ export default async function TokenPage({ params }: PageProps) {
               </section>
             )}
 
-            {/* ─── 6. RELATED LINKS STRIP ───────────────────────────────── */}
+            {/* ─── 7. RELATED LINKS STRIP ───────────────────────────────── */}
             <section className="wrap" style={{ padding: "0 24px", marginBottom: 16 }}>
               <div
                 className="panel"

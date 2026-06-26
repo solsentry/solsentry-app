@@ -285,7 +285,7 @@ function EmptyState({ onAddFirst }: { onAddFirst: () => void }) {
       </div>
       <h3 className="text-lg font-medium text-foreground mb-2">Track wallets you care about</h3>
       <p className="text-sm text-muted-foreground/60 mb-6 max-w-[280px]">
-        Get notified when risk levels change. Monitor suspicious activity in real-time.
+        Get notified when risk levels change. Monitor suspicious activity as it happens.
       </p>
       <Button onClick={onAddFirst} className="bg-primary hover:bg-[#d97706] text-black font-medium">
         <Plus className="w-4 h-4 mr-2" />
