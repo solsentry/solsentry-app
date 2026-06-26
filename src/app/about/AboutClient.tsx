@@ -114,7 +114,7 @@ const COPY: Record<Lang, AboutCopy> = {
     usLabel: "SolSentry",
     comparisons: [
       { dim: "Unit of analysis", others: "One token at a time", us: "Cross-token operator graph" },
-      { dim: "Discovery latency", others: "Post-rug (after the drain)", us: "Pre-rug (at deploy time, &lt;50ms)" },
+      { dim: "Discovery latency", others: "Post-rug (after the drain)", us: "Pre-rug (at deploy time)" },
       { dim: "Architecture", others: "Static rules engine", us: "ALife agents that evolve" },
       { dim: "Audience", others: "Enterprise / English-only", us: "Free retail + PT-BR consumer-first" },
       { dim: "Audit trail", others: "Black box / proprietary scores", us: "Reproducible from public outcome_predictions.json" },
@@ -197,7 +197,7 @@ const COPY: Record<Lang, AboutCopy> = {
     usLabel: "SolSentry",
     comparisons: [
       { dim: "Unidade de análise", others: "Um token por vez", us: "Grafo de operadores cross-token" },
-      { dim: "Latência de descoberta", others: "Pós-rug (depois do drain)", us: "Pré-rug (no momento do deploy, &lt;50ms)" },
+      { dim: "Latência de descoberta", others: "Pós-rug (depois do drain)", us: "Pré-rug (no momento do deploy)" },
       { dim: "Arquitetura", others: "Motor de regras estáticas", us: "Agentes ALife que evoluem" },
       { dim: "Público-alvo", others: "Enterprise / só inglês", us: "Varejo gratuito + consumidor PT-BR em primeiro lugar" },
       { dim: "Trilha de auditoria", others: "Caixa preta / scores proprietários", us: "Reproduzível a partir do outcome_predictions.json público" },
