@@ -114,7 +114,7 @@ export default function ArchitecturePage() {
             <Arrow down />
             <FlowNode
               title="05 · Operator graph"
-              desc="Profile dev_wallet. Cross-reference against 1.7K+ existing operators. Apply serial boost if confirmed_rugs > 0. Update bot cluster index."
+              desc="Profile dev_wallet. Cross-reference against existing operators. Apply serial boost if confirmed_rugs > 0. Update bot cluster index."
               accent="teal"
             />
             <Arrow down />

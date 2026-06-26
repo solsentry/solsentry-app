@@ -430,7 +430,7 @@ export function ChangelogClient({ criticalPct }: { criticalPct: string }) {
           <h2
             style={{
               fontFamily: "var(--font-display)",
-              fontSize: 22,
+              fontSize: 32,
               fontWeight: 700,
               color: "var(--fg-1)",
               marginBottom: 24,
@@ -471,7 +471,7 @@ export function ChangelogClient({ criticalPct }: { criticalPct: string }) {
         }
         .changelog-month-title {
           font-family: var(--font-display);
-          font-size: 20px;
+          font-size: 28px;
           font-weight: 700;
           color: var(--fg-1);
           margin-bottom: 20px;
@@ -486,11 +486,12 @@ export function ChangelogClient({ criticalPct }: { criticalPct: string }) {
           gap: 12px;
         }
         .changelog-list li {
-          font-size: 14px;
-          line-height: 1.65;
+          font-size: 15px;
+          line-height: 1.7;
           color: var(--fg-2);
           padding-left: 20px;
           position: relative;
+          margin-bottom: 8px;
         }
         .changelog-list li::before {
           content: "→";

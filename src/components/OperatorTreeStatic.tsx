@@ -2,7 +2,7 @@
 
 // OperatorTreeStatic.tsx — Hierarchical organograma with click-to-expand.
 // Static layout (D3 tidy-tree), NOT a force graph.
-// Ported from internal/marketing/brand/sds/v4/06_ia_completa/casen_viz_prototype.html
+// Ported from internal/marketing/brand/sds/v4/06_ia_completa/operator_viz_prototype.html
 
 import { useMemo, useState, useCallback } from "react";
 import { hierarchy, tree, type HierarchyPointNode } from "d3-hierarchy";

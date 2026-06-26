@@ -381,7 +381,7 @@ export function AboutClient({ stats }: { stats: NetworkStats | null }) {
                 </strong>
                 {t.honestAccuracyB}
                 {fmtInt(stats?.total_predictions)}{" "}
-                {lang === "pt" ? "predições resolvidas" : "resolved predictions"}
+                {lang === "pt" ? "predições" : "predictions"}
               </li>
             </ul>
           </div>

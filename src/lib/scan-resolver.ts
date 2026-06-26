@@ -36,7 +36,7 @@ export async function quickEasyLookup(raw: string): Promise<ScanResult | null> {
     }
 
     const tk = await get(`/v1/token/${encodeURIComponent(v)}`);
-    if (tk && tk.known === true) {
+    if (tk && !tk.error) {
       // Tokens may be sparse in the /token response (e.g. missing symbol, operator)
       // We can enrich it via a background contract-analysis query
       try {

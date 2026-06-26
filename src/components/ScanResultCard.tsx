@@ -133,9 +133,11 @@ export function ScanResultCard({
 }) {
   const d = r.data || {};
   const [showDeepScan, setShowDeepScan] = useState(false);
+  const [marketFlags, setMarketFlags] = useState<string[]>([]);
+  
   const isOp = r.kind === "operator";
   const isContract = r.kind === "contract";
-  const verdict = displayVerdict(r.kind, d, copy);
+  let verdict = displayVerdict(r.kind, d, copy);
   const pt = lang === "pt";
   const rugs = isOp ? (d.confirmed_rugs ?? "—") : "—";
   const tokens = isOp ? (d.total_tokens ?? "—") : "—";
@@ -150,9 +152,25 @@ export function ScanResultCard({
   }
   
   const rawTags: string[] = isOp ? [...(d.tags || []), ...(d.patterns || [])] : d.flags || [];
-  const tags = Array.from(new Set(rawTags.map(String))).filter((t) => !/bundle/i.test(t));
+  let dynamicTags = [...rawTags, ...marketFlags];
+  const tags = Array.from(new Set(dynamicTags.map(String))).filter((t) => !/bundle/i.test(t));
+  
+  if (tags.length > 0 && verdict.label === copy.verdictNoMajorFlags) {
+    verdict = { label: pt ? "ATENÇÃO (MERCADO)" : "MARKET CAUTION", color: "var(--brand-amber)" };
+  }
 
-  const narrative = r.narrative || buildNarrative(r.kind, d, lang);
+  let narrative = r.narrative || buildNarrative(r.kind, d, lang);
+  
+  const hasLowLiq = tags.includes("LOW_LIQUIDITY");
+  const hasConcentration = tags.some((t) => t.startsWith("CONCENTRATION"));
+  const justLaunched = tags.includes("JUST_LAUNCHED");
+  
+  if (hasLowLiq || hasConcentration || justLaunched) {
+    const marketNotes = pt 
+      ? `Atenção: ${hasLowLiq ? "Baixa liquidez. " : ""}${hasConcentration ? "Alta concentração no Top 1. " : ""}${justLaunched ? "Recém-lançado (<1h)." : ""}` 
+      : `Caution: ${hasLowLiq ? "Low liquidity. " : ""}${hasConcentration ? "High Top 1 concentration. " : ""}${justLaunched ? "Just launched (<1h)." : ""}`;
+    narrative = `${narrative} ${marketNotes}`.trim();
+  }
 
   return (
     <div
@@ -322,7 +340,7 @@ export function ScanResultCard({
               <div style={{ background: "var(--surface-2)", borderRadius: 6, padding: "8px 10px" }}>
                 <div style={{ fontSize: 11, color: "var(--fg-3)" }}>{pt ? "LANÇAMENTO" : "LAUNCH"}</div>
                 <div style={{ fontSize: 15, fontWeight: 700, fontFamily: "var(--font-display)", color: "var(--status-warning)" }}>
-                  BUNDLE
+                  BOT CLUSTER
                 </div>
               </div>
             )}
@@ -450,7 +468,7 @@ export function ScanResultCard({
               {pt ? "🔍 Analisar Dados de Mercado e Holders (Deep Scan)" : "🔍 Analyze Market & Holders (Deep Scan)"}
             </button>
           ) : (
-            <DeepScanView mint={r.addr} pt={pt} />
+            <DeepScanView mint={r.addr} pt={pt} onMarketFlags={(f) => setMarketFlags((prev) => Array.from(new Set([...prev, ...f])))} />
           )}
         </div>
       )}
