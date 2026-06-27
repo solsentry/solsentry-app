@@ -2,7 +2,6 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://api.solsentry.app";
 
 const TTL = {
   stats: 60,
-  topOperators: 300,
   operator: 30,
   token: 30,
   timeline: 60,
@@ -66,16 +65,6 @@ export interface Operator {
   recent_scams?: boolean;
 }
 
-export interface TopOperator {
-  rank: number;
-  wallet: string;
-  confirmed_rugs: number;
-  total_tokens: number;
-  pending: number;
-  rug_rate_pct: number;
-  risk_label?: string;
-  tags?: string[];
-}
 
 export interface Alert {
   mint: string;
@@ -323,13 +312,6 @@ export async function fetchStats(): Promise<NetworkStats | null> {
   return safeFetch<NetworkStats>("/v1/stats", TTL.stats);
 }
 
-export async function fetchTopOperators(limit = 10): Promise<TopOperator[]> {
-  const data = await safeFetch<{ operators: TopOperator[] }>(
-    `/v1/top-operators?limit=${limit}`,
-    TTL.topOperators,
-  );
-  return data?.operators ?? [];
-}
 
 export async function fetchOperator(wallet: string): Promise<Operator | null> {
   return safeFetch<Operator>(`/v1/operator/${encodeURIComponent(wallet)}`, TTL.operator);

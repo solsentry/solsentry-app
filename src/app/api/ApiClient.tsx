@@ -88,15 +88,7 @@ const ENDPOINTS: { group: { en: string; pt: string }; items: Endpoint[] }[] = [
         },
         example: "curl 'https://api.solsentry.app/v1/operator/{wallet}/network?tokens=14&clusters=5&peers=3'",
       },
-      {
-        method: "GET",
-        path: "/v1/top-operators?limit=10",
-        desc: {
-          en: "Ranked list of the highest-risk operators by confirmed rugs.",
-          pt: "Lista ranqueada dos operadores de maior risco por rugs confirmados.",
-        },
-        example: "curl https://api.solsentry.app/v1/top-operators?limit=20",
-      },
+
     ],
   },
   {

@@ -9,7 +9,7 @@ export const revalidate = 60;
 export const metadata = {
   title: "Wallet profiles — search and overview",
   description:
-    "SolSentry tracks wallet behaviour across Solana. Look up any wallet by address, or browse the top operators leaderboard.",
+    "SolSentry tracks wallet behaviour across Solana. Look up any wallet by address.",
 };
 
 export default async function WalletsPage() {
@@ -76,30 +76,7 @@ export default async function WalletsPage() {
               </p>
             </Link>
 
-            <Link
-              href="/top-operators"
-              className="panel panel-hover"
-              style={{ textDecoration: "none", color: "inherit", display: "block" }}
-            >
-              <div className="label-tag" style={{ color: "var(--brand-amber)", marginBottom: 8 }}>
-                Browse leaderboard
-              </div>
-              <div
-                style={{
-                  fontFamily: "var(--font-display)",
-                  fontWeight: 700,
-                  fontSize: 18,
-                  marginBottom: 8,
-                  color: "var(--fg-1)",
-                }}
-              >
-                Top operators →
-              </div>
-              <p style={{ color: "var(--fg-2)", fontSize: 13, lineHeight: 1.6 }}>
-                The 50 highest-risk operators by confirmed rug count. Each row links to the full
-                operator profile.
-              </p>
-            </Link>
+
           </div>
         </Section>
 
