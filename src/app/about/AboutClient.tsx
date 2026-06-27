@@ -141,7 +141,7 @@ const COPY: Record<Lang, AboutCopy> = {
     honestAccuracyB: " across ",
     trustTitle: "Trust & transparency",
     trust: [
-      { label: "Public REST API", detail: "No auth required for /v1/stats, /v1/operator, /v1/top-operators", href: "https://api.solsentry.app/v1/stats" },
+      { label: "Public REST API", detail: "No auth required for /v1/stats, /v1/operator, /v1/predictions", href: "https://api.solsentry.app/v1/stats" },
       { label: "Open source MCP", detail: "@solsentry/mcp on NPM · source on GitHub", href: "https://www.npmjs.com/package/@solsentry/mcp" },
       { label: "Open source docs", detail: "solsentry/solsentry-docs · audit logs reproducible", href: "https://github.com/solsentry/solsentry-docs" },
       { label: "Open source frontend", detail: "solsentry/solsentry-app · this site's code", href: "https://github.com/solsentry/solsentry-app" },
@@ -224,7 +224,7 @@ const COPY: Record<Lang, AboutCopy> = {
     honestAccuracyB: " em ",
     trustTitle: "Confiança e transparência",
     trust: [
-      { label: "API REST pública", detail: "Sem autenticação para /v1/stats, /v1/operator, /v1/top-operators", href: "https://api.solsentry.app/v1/stats" },
+      { label: "API REST pública", detail: "Sem autenticação para /v1/stats, /v1/operator, /v1/predictions", href: "https://api.solsentry.app/v1/stats" },
       { label: "MCP open source", detail: "@solsentry/mcp no NPM · código no GitHub", href: "https://www.npmjs.com/package/@solsentry/mcp" },
       { label: "Documentação open source", detail: "solsentry/solsentry-docs · logs de auditoria reproduzíveis", href: "https://github.com/solsentry/solsentry-docs" },
       { label: "Frontend open source", detail: "solsentry/solsentry-app · o código deste site", href: "https://github.com/solsentry/solsentry-app" },
