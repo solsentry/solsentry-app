@@ -5,13 +5,11 @@ import { ClusterPreview } from "@/components/pro/ClusterPreview";
 import {
   fetchStats,
   fetchAlertsRecent,
-  fetchTopOperators,
   fetchClusters,
   fmtInt,
   fmtPct,
   truncate,
   type Alert,
-  type TopOperator,
 } from "@/lib/api";
 import Link from "next/link";
 
@@ -24,10 +22,9 @@ export const metadata = {
 };
 
 export default async function ProOverviewPage() {
-  const [stats, alerts, operators, clustersResp] = await Promise.all([
+  const [stats, alerts, clustersResp] = await Promise.all([
     fetchStats(),
     fetchAlertsRecent(20),
-    fetchTopOperators(10),
     fetchClusters(8),
   ]);
 
@@ -40,7 +37,7 @@ export default async function ProOverviewPage() {
         <KpiStrip stats={stats} />
         <TierIntro />
         <TierPanels />
-        <DataCanvas alerts={criticalAlerts} operators={operators} />
+        <DataCanvas alerts={criticalAlerts} />
         <Section
           title="Cluster index"
           subtitle={`${(clustersResp.total_clusters ?? clustersResp.clusters.length).toLocaleString()} bot clusters mapped`}
@@ -273,12 +270,12 @@ function TierPanels() {
   );
 }
 
-function DataCanvas({ alerts, operators }: { alerts: Alert[]; operators: TopOperator[] }) {
+function DataCanvas({ alerts }: { alerts: Alert[] }) {
   return (
     <div
       style={{
         display: "grid",
-        gridTemplateColumns: "minmax(0, 1.6fr) minmax(0, 1fr)",
+        gridTemplateColumns: "1fr",
         gap: 16,
         marginBottom: 24,
       }}
@@ -295,15 +292,6 @@ function DataCanvas({ alerts, operators }: { alerts: Alert[]; operators: TopOper
         flush
       >
         <AlertsTable alerts={alerts} />
-      </Section>
-      <Section
-        title="Top serial operators"
-        subtitle="ranked by confirmed rugs"
-        href="/top-operators"
-        cta="Leaderboard →"
-        flush
-      >
-        <OperatorsTable operators={operators.slice(0, 10)} />
       </Section>
     </div>
   );
@@ -404,69 +392,7 @@ function AlertsTable({ alerts }: { alerts: Alert[] }) {
   );
 }
 
-function OperatorsTable({ operators }: { operators: TopOperator[] }) {
-  if (!operators.length) {
-    return (
-      <EmptyState
-        line="Leaderboard temporarily empty."
-        hint="Endpoint /v1/operators/top is live; refresh in a few seconds."
-      />
-    );
-  }
-  return (
-    <div style={{ overflowX: "auto" }}>
-      <table
-        style={{
-          width: "100%",
-          borderCollapse: "collapse",
-          fontFamily: "var(--font-mono)",
-          fontSize: 12,
-        }}
-      >
-        <thead>
-          <tr style={{ color: "var(--fg-3)" }}>
-            <Th>#</Th>
-            <Th align="left">Wallet</Th>
-            <Th align="right">Rugs</Th>
-            <Th align="right">Rate</Th>
-          </tr>
-        </thead>
-        <tbody>
-          {operators.map((op, i) => (
-            <tr
-              key={op.wallet}
-              style={{
-                background: i % 2 === 0 ? "transparent" : "var(--bg-elev-1)",
-                borderTop: "1px solid var(--border-soft)",
-              }}
-            >
-              <Td>{op.rank}</Td>
-              <Td align="left">
-                <Link
-                  href={`/operator/${op.wallet}`}
-                  style={{
-                    color: "var(--fg-1)",
-                    textDecoration: "none",
-                  }}
-                >
-                  {truncate(op.wallet, 4, 4)}
-                </Link>
-              </Td>
-              <Td align="right">
-                <span style={{ color: "var(--status-critical)" }}>{fmtInt(op.confirmed_rugs)}</span>
-              </Td>
-              <Td align="right">
-                <span style={{ color: "var(--brand-amber)", fontWeight: 600 }}>
-                  {op.rug_rate_pct.toFixed(0)}%
-                </span>
-              </Td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
-}
+
 
 function Section({
   title,

@@ -62,14 +62,7 @@ const FEATURES: Feature[] = [
     color: "var(--brand-teal)",
     external: true,
   },
-  {
-    title: "Top operators",
-    desc: "Ranked CRITICAL operators by confirmed rugs. The worst actors on Solana, updated live.",
-    href: "https://api.solsentry.app/v1/top-operators",
-    pillar: "TRACK",
-    color: "var(--brand-teal)",
-    external: true,
-  },
+
 ];
 
 export function FeatureSurface() {
@@ -77,7 +70,7 @@ export function FeatureSurface() {
     <section className="section-pad">
       <div className="container">
         <div className="section-head">
-          <span className="eyebrow">8 surfaces · one system</span>
+          <span className="eyebrow">7 surfaces · one system</span>
           <h2 className="section-title">The full product, on one page.</h2>
           <p className="section-sub">
             Every surface below hits the same API at{" "}

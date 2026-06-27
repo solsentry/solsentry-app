@@ -1,9 +1,7 @@
 import { OperatorsTable } from "@/components/operators-table";
 import { LiveFeedLive } from "@/components/LiveFeedLive";
 import { AISuggestionsCard } from "@/components/AISuggestionsCard";
-import type { Operator, RiskLevel } from "@/lib/mock-data";
-import { fetchTopOperators, type TopOperator } from "@/lib/api";
-
+import { mockOperators } from "@/lib/mock-data";
 export const metadata = {
   title: "Dashboard v3 lab",
   robots: { index: false, follow: false },
@@ -18,27 +16,8 @@ export const metadata = {
  * fields are filled with null/now/flat-line placeholders below until endpoints
  * expose them. */
 
-function mapOperator(o: TopOperator, i: number): Operator {
-  const rugRate = o.rug_rate_pct ?? 0;
-  const riskLevel: RiskLevel = rugRate >= 90 ? "CRITICAL" : rugRate >= 70 ? "HIGH" : "MEDIUM";
-  return {
-    rank: o.rank ?? i + 1,
-    wallet: o.wallet,
-    sns: null,
-    riskLevel,
-    rugRate,
-    rugs: o.confirmed_rugs ?? 0,
-    tokensDeployed: o.total_tokens ?? 0,
-    lastActive: new Date(), // endpoint has no last-active; placeholder
-    rugHistory: Array(7).fill(0), // endpoint has no 7d history; flat placeholder
-    tags: o.tags ?? [],
-    avatarUrl: null,
-  };
-}
-
 export default async function DashboardV3Page() {
-  const top = await fetchTopOperators(50);
-  const operators = top.map(mapOperator);
+  const operators = mockOperators;
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -46,9 +25,9 @@ export default async function DashboardV3Page() {
         <div>
           <h1 className="h2">Top Operators</h1>
           <p className="p-small">
-            Live from <code>/v1/top-operators</code>
+            Mocked data preview
             {operators.length === 0
-              ? " — no data (API unreachable at render)"
+              ? " — no data"
               : ` — ${operators.length} operators`}
           </p>
         </div>

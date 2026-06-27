@@ -112,7 +112,7 @@
       "sicariusguard": { "v": "no", "src": "https://github.com/Chronolapse411", "note": "Token/mint risk focus." }
     },
     "serial_deployer": {
-      "solsentry": { "v": "yes", "src": "https://api.solsentry.app/v1/top-operators" },
+      "solsentry": { "v": "yes", "src": "https://api.solsentry.app/v1/stats" },
       "rugcheck": { "v": "no", "src": "https://rugcheck.xyz" },
       "integrity_molt": { "v": "no", "src": "https://github.com/sendaifun/solana-agent-kit/pull/546" },
       "blowfish": { "v": "no", "src": "https://docs.blowfish.xyz" },

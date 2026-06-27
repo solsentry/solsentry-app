@@ -7,7 +7,6 @@ const PRO_LINKS: { label: string; href: string; icon: string }[] = [
   { label: "Overview", href: "/pro", icon: "◎" },
   { label: "Live feed", href: "/live", icon: "●" },
   { label: "Alerts", href: "/alerts", icon: "⚠" },
-  { label: "Leaderboard", href: "/top-operators", icon: "▲" },
   { label: "Bot clusters", href: "/clusters", icon: "◆" },
   { label: "Tokens", href: "/tokens", icon: "◇" },
   { label: "Wallets", href: "/wallets", icon: "○" },

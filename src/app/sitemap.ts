@@ -29,11 +29,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.9,
     },
-    {
-      path: "/top-operators",
-      changeFrequency: "hourly",
-      priority: 0.7,
-    },
+
     {
       path: "/dashboard",
       changeFrequency: "hourly",
@@ -49,11 +45,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "daily",
       priority: 0.6,
     },
-    {
-      path: "/operators",
-      changeFrequency: "hourly",
-      priority: 0.6,
-    },
+
     {
       path: "/tokens",
       changeFrequency: "hourly",

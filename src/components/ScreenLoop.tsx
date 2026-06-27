@@ -33,7 +33,7 @@ interface Operator {
   tags?: string[];
 }
 
-const PANELS = ["bignumber", "fourkx", "alerts", "leaderboard", "stats"] as const;
+const PANELS = ["bignumber", "alerts", "stats"] as const;
 type Panel = (typeof PANELS)[number];
 
 const ROTATE_MS = 8000; // 8s per panel
@@ -51,7 +51,6 @@ function shortAddr(a: string): string {
 export function ScreenLoop() {
   const [stats, setStats] = useState<Stats | null>(null);
   const [alerts, setAlerts] = useState<Alert[]>([]);
-  const [ops, setOps] = useState<Operator[]>([]);
   const [panel, setPanel] = useState<Panel>("bignumber");
   const [tick, setTick] = useState(0);
   const intervalRef = useRef<number | null>(null);
@@ -61,15 +60,13 @@ export function ScreenLoop() {
     let cancelled = false;
     async function fetchAll() {
       try {
-        const [s, a, o] = await Promise.all([
+        const [s, a] = await Promise.all([
           fetch("https://api.solsentry.app/v1/stats").then((r) => r.json()),
           fetch("https://api.solsentry.app/v1/alerts/recent?limit=20").then((r) => r.json()),
-          fetch("https://api.solsentry.app/v1/top-operators?limit=10").then((r) => r.json()),
         ]);
         if (cancelled) return;
         setStats(s);
         setAlerts(Array.isArray(a) ? a : (a.alerts ?? []));
-        setOps(Array.isArray(o) ? o : (o.operators ?? []));
       } catch {
         /* ignore */
       }
@@ -212,9 +209,7 @@ export function ScreenLoop() {
         }}
       >
         {panel === "bignumber" && <BigNumberPanel stats={stats} />}
-        {panel === "fourkx" && <FourkxPanel ops={ops} />}
         {panel === "alerts" && <AlertsPanel alerts={alerts} />}
-        {panel === "leaderboard" && <LeaderboardPanel ops={ops} />}
         {panel === "stats" && <StatsPanel stats={stats} />}
       </div>
 
@@ -305,81 +300,7 @@ function BigNumberPanel({ stats }: { stats: Stats | null }) {
   );
 }
 
-function FourkxPanel({ ops }: { ops: Operator[] }) {
-  const fourkx = ops.find((o) => o.wallet?.startsWith("4kxscute")) ?? ops[0];
-  if (!fourkx) return <div style={{ color: "var(--fg-3)" }}>loading…</div>;
-  return (
-    <div className="panel-fade" style={{ textAlign: "center", maxWidth: "100%" }}>
-      <div
-        style={{
-          padding: "8px 20px",
-          background: "rgba(255,68,68,0.12)",
-          border: "1px solid var(--status-critical)",
-          color: "var(--status-critical)",
-          borderRadius: 999,
-          display: "inline-block",
-          fontFamily: "var(--font-mono)",
-          fontSize: 12,
-          fontWeight: 600,
-          letterSpacing: "0.18em",
-          textTransform: "uppercase",
-          marginBottom: 28,
-          animation: "pulse-amber 2s ease-in-out infinite",
-        }}
-      >
-        ● CRITICAL · ATIVO HOJE
-      </div>
-      <div
-        style={{
-          fontFamily: "var(--font-mono)",
-          color: "var(--fg-3)",
-          fontSize: 14,
-          marginBottom: 16,
-          letterSpacing: "0.04em",
-        }}
-      >
-        4kxscute · operator
-      </div>
-      <div
-        style={{
-          fontFamily: "var(--font-display)",
-          fontWeight: 700,
-          fontSize: "min(180px, 18vw)",
-          letterSpacing: "-0.04em",
-          color: "var(--brand-amber)",
-          lineHeight: 0.95,
-          animation: "count-glow 3s ease-in-out infinite",
-        }}
-      >
-        {fmtN(fourkx.confirmed_rugs)}
-      </div>
-      <div
-        style={{
-          fontFamily: "var(--font-display)",
-          fontWeight: 600,
-          fontSize: 28,
-          color: "var(--fg-1)",
-          marginTop: 16,
-        }}
-      >
-        rugs em {fmtN(fourkx.total_tokens)} tokens · {fourkx.rug_rate_pct?.toFixed(1)}% rug rate
-      </div>
-      <div
-        style={{
-          fontFamily: "var(--font-display)",
-          fontStyle: "italic",
-          fontSize: 22,
-          color: "var(--fg-2)",
-          marginTop: 28,
-          maxWidth: 800,
-          marginInline: "auto",
-        }}
-      >
-        Não flagou o token. Flagou o operador. Essa é a diferença.
-      </div>
-    </div>
-  );
-}
+
 
 function AlertsPanel({ alerts }: { alerts: Alert[] }) {
   return (
@@ -473,97 +394,7 @@ function AlertsPanel({ alerts }: { alerts: Alert[] }) {
   );
 }
 
-function LeaderboardPanel({ ops }: { ops: Operator[] }) {
-  return (
-    <div className="panel-fade" style={{ width: "100%", maxWidth: 1100 }}>
-      <div
-        style={{
-          fontFamily: "var(--font-body)",
-          fontWeight: 600,
-          fontSize: 13,
-          letterSpacing: "0.3em",
-          color: "var(--brand-amber)",
-          textTransform: "uppercase",
-          marginBottom: 24,
-          textAlign: "center",
-        }}
-      >
-        The Solana rug hall of fame
-      </div>
-      <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-        {ops.slice(0, 8).map((o, i) => (
-          <div
-            key={o.wallet + i}
-            style={{
-              display: "grid",
-              gridTemplateColumns: "60px 1fr 180px 140px 100px",
-              gap: 16,
-              padding: "14px 24px",
-              background:
-                i === 0 ? "rgba(255,68,68,0.06)" : i < 3 ? "var(--surface)" : "transparent",
-              border: `1px solid ${i === 0 ? "var(--status-critical)" : "var(--border)"}`,
-              borderRadius: 10,
-              alignItems: "center",
-              animation: `slide-up 400ms ease-out ${i * 50}ms backwards`,
-            }}
-          >
-            <span
-              style={{
-                fontFamily: "var(--font-display)",
-                fontWeight: 700,
-                fontSize: 28,
-                color:
-                  i === 0 ? "var(--status-critical)" : i < 3 ? "var(--brand-amber)" : "var(--fg-3)",
-                letterSpacing: "-0.02em",
-              }}
-            >
-              #{i + 1}
-            </span>
-            <span
-              style={{
-                fontFamily: "var(--font-mono)",
-                fontSize: 14,
-                color: "var(--fg-1)",
-              }}
-            >
-              {shortAddr(o.wallet)}
-            </span>
-            <span
-              style={{
-                fontFamily: "var(--font-display)",
-                fontWeight: 700,
-                fontSize: 22,
-                color: "var(--status-critical)",
-              }}
-            >
-              {fmtN(o.confirmed_rugs)} rugs
-            </span>
-            <span
-              style={{
-                fontFamily: "var(--font-mono)",
-                fontSize: 13,
-                color: "var(--fg-2)",
-              }}
-            >
-              {fmtN(o.total_tokens)} tokens
-            </span>
-            <span
-              style={{
-                fontFamily: "var(--font-display)",
-                fontWeight: 700,
-                fontSize: 20,
-                color: "var(--brand-amber)",
-                textAlign: "right",
-              }}
-            >
-              {o.rug_rate_pct?.toFixed(0) ?? "—"}%
-            </span>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
+
 
 function StatsPanel({ stats }: { stats: Stats | null }) {
   const cards = [

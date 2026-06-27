@@ -59,7 +59,7 @@ interface McpCopy {
   toolsEyebrow: string;
   toolsTitle: string;
   toolsSub: string;
-  toolDesc: string[]; // 7, in TOOL order
+  toolDesc: string[]; // 6, in TOOL order
   whyEyebrow: string;
   whyTitle: string;
   whySub: string;
@@ -80,7 +80,7 @@ const COPY: Record<Lang, McpCopy> = {
     heroTitleEm: "AI agent",
     heroTitleB: ".",
     heroSub:
-      "Install once, query forever. Seven tools. Works in Claude Code, Cursor, Windsurf, Zed, or anything that speaks the Model Context Protocol. Your AI now knows every known Solana rug operator and can cite them by wallet.",
+      "Install once, query forever. Six tools. Works in Claude Code, Cursor, Windsurf, Zed, or anything that speaks the Model Context Protocol. Your AI now knows every known Solana rug operator and can cite them by wallet.",
     ctaNpm: "npm install →",
     ctaSetup: "Setup guide",
     ctaToolRef: "Tool reference",
@@ -94,14 +94,14 @@ const COPY: Record<Lang, McpCopy> = {
     cursorAddPre: "Add to ",
     cursorAddSuf: " or workspace settings:",
     firstUse: "First use",
-    toolsEyebrow: "7 tools · all public",
+    toolsEyebrow: "6 tools · all public",
     toolsTitle: "What the MCP exposes",
     toolsSub:
       "Every tool hits the production API at api.solsentry.app. Data is live, not cached beyond 30 seconds. No API key required for public tools.",
     toolDesc: [
       "Lookup operator profile — known flag, risk level, confirmed rugs, total tokens, rug rate, tags.",
       "Token analysis — risk, flags, dev wallet, bot cluster links, outcome if resolved.",
-      "Ranked list of the highest-risk operators by confirmed rugs and rate.",
+
       "Latest HIGH and CRITICAL alerts with mint, dev, and flag list.",
       "Outcome stream — which predictions were validated and which missed.",
       "SOL flow trace, up to 10 hops, with bridge + CEX classifications.",
@@ -152,7 +152,7 @@ const COPY: Record<Lang, McpCopy> = {
     heroTitleEm: "agente de IA",
     heroTitleB: ".",
     heroSub:
-      "Instale uma vez, consulte para sempre. Sete ferramentas. Funciona no Claude Code, Cursor, Windsurf, Zed ou qualquer coisa que fale Model Context Protocol. Sua IA agora conhece todo operador de rug conhecido na Solana e pode citá-los por wallet.",
+      "Instale uma vez, consulte para sempre. Seis ferramentas. Funciona no Claude Code, Cursor, Windsurf, Zed ou qualquer coisa que fale Model Context Protocol. Sua IA agora conhece todo operador de rug conhecido na Solana e pode citá-los por wallet.",
     ctaNpm: "npm install →",
     ctaSetup: "Guia de instalação",
     ctaToolRef: "Referência de ferramentas",
@@ -166,14 +166,14 @@ const COPY: Record<Lang, McpCopy> = {
     cursorAddPre: "Adicione ao ",
     cursorAddSuf: " ou nas configurações do workspace:",
     firstUse: "Primeiro uso",
-    toolsEyebrow: "7 ferramentas · todas públicas",
+    toolsEyebrow: "6 ferramentas · todas públicas",
     toolsTitle: "O que o MCP expõe",
     toolsSub:
       "Cada ferramenta acessa a API de produção em api.solsentry.app. Dados ao vivo, sem cache além de 30 segundos. Sem chave de API para ferramentas públicas.",
     toolDesc: [
       "Consulta de perfil do operador — flag known, nível de risco, rugs confirmados, total de tokens, taxa de rug, tags.",
       "Análise de token — risco, flags, dev wallet, links de cluster de bots, outcome se resolvido.",
-      "Lista ranqueada dos operadores de maior risco por rugs e taxa confirmados.",
+
       "Alertas HIGH e CRITICAL mais recentes com mint, dev e lista de flags.",
       "Stream de outcomes — quais predições foram validadas e quais falharam.",
       "Rastreamento de fluxo SOL, até 10 hops, com classificações de bridge + CEX.",
@@ -223,7 +223,7 @@ const COPY: Record<Lang, McpCopy> = {
 const TOOLS = [
   { name: "scan_wallet", args: "wallet: string" },
   { name: "scan_token", args: "mint: string" },
-  { name: "top_operators", args: "limit?: number" },
+
   { name: "recent_alerts", args: "limit?: number" },
   { name: "recent_resolutions", args: "limit?: number" },
   { name: "drain_trace", args: "wallet: string" },

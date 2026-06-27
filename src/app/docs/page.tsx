@@ -77,10 +77,7 @@ export default function DocsPage() {
                 <code>check_token</code>
                 <span>Risk profile of a token mint</span>
               </div>
-              <div className="docs-row">
-                <code>get_top_operators</code>
-                <span>Leaderboard of worst serial ruggers</span>
-              </div>
+
               <div className="docs-row">
                 <code>get_network_stats</code>
                 <span>System-wide live stats</span>
@@ -140,8 +137,6 @@ curl https://api.solsentry.app/v1/stats
 # Operator risk profile
 curl https://api.solsentry.app/v1/operator/4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1
 
-# Top serial ruggers
-curl "https://api.solsentry.app/v1/top-operators?limit=10"
 
 # Token risk
 curl https://api.solsentry.app/v1/token/<mint>
@@ -173,10 +168,7 @@ curl https://api.solsentry.app/v1/drain-trace/<wallet>`}</pre>
                 <code>GET /v1/token/&#123;mint&#125;</code>
                 <span>Token risk profile</span>
               </div>
-              <div className="docs-row">
-                <code>GET /v1/top-operators</code>
-                <span>Worst serial ruggers</span>
-              </div>
+
               <div className="docs-row">
                 <code>GET /v1/alerts/recent</code>
                 <span>Recent CRITICAL/HIGH alerts</span>
@@ -215,7 +207,7 @@ curl https://api.solsentry.app/v1/drain-trace/<wallet>`}</pre>
                   Read-only endpoints
                 </h3>
                 <ul className="price-list">
-                  <li>operator, token, stats, top-operators</li>
+                  <li>operator, token, stats</li>
                   <li>alerts/recent, resolutions/recent</li>
                   <li>clusters, cluster detail, health</li>
                   <li>No API key required</li>
