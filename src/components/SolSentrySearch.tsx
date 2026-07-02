@@ -10,7 +10,7 @@ import { Kbd } from "@/components/ui/kbd";
 // ============================================================================
 
 type SearchVariant = "hero" | "nav" | "dashboard";
-type RiskLevel = "CRITICAL" | "HIGH" | "MEDIUM" | "LOW" | "SAFE";
+type RiskLevel = "CRITICAL" | "HIGH" | "MEDIUM" | "LOW";
 type DetectionType = "sns" | "address" | "symbol" | "ai" | null;
 
 interface AutocompleteItem {
@@ -35,10 +35,10 @@ interface SolSentrySearchProps {
 // ============================================================================
 
 const PLACEHOLDERS = [
-  "4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1",
+  "So11111111111111111111111111111111111111112",
   "qual operador rodou mais rug essa semana?",
   "vagrant.sol",
-  "compare 4kxscute com 7ZqRsT em 14 dias",
+  "compare dois operadores em 14 dias",
   "USDC",
   "que tokens este cluster lançou nas últimas 24h?",
 ];
@@ -48,7 +48,6 @@ const RISK_COLORS: Record<RiskLevel, string> = {
   HIGH: "bg-primary/20 text-primary border-primary/30",
   MEDIUM: "bg-[#eab308]/20 text-[#eab308] border-[#eab308]/30",
   LOW: "bg-[#22c55e]/20 text-[#22c55e] border-[#22c55e]/30",
-  SAFE: "bg-[#14b8a6]/20 text-[#14b8a6] border-[#14b8a6]/30",
 };
 
 const VARIANT_STYLES: Record<SearchVariant, { container: string; input: string }> = {
@@ -257,13 +256,13 @@ export function SolSentrySearch({
   // Apply forced state
   React.useEffect(() => {
     if (forcedState === "typing-address") {
-      setValue("4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1");
+      setValue("So11111111111111111111111111111111111111112");
       setIsFocused(true);
     } else if (forcedState === "typing-ai") {
       setValue("qual operador rodou mais rug essa semana?");
       setIsFocused(true);
     } else if (forcedState === "loading") {
-      setValue("4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1");
+      setValue("So11111111111111111111111111111111111111112");
       setIsLoading(true);
     } else if (forcedState === "error") {
       setValue("asdfghjkl");
