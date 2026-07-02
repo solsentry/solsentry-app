@@ -4,7 +4,7 @@ export function CaseStudy() {
       <div className="container">
         <span className="section-kicker">Case study · live operator</span>
         <h2 className="section-title" style={{ marginBottom: 40 }}>
-          One operator, 2,939 tokens, 90.6% rug rate
+          One operator. CRITICAL before the rug — every time.
         </h2>
 
         <div className="case-grid">
@@ -20,8 +20,9 @@ export function CaseStudy() {
               <span className="mono" style={{ color: "var(--brand-amber)" }}>
                 4kxscute...
               </span>{" "}
-              has deployed 2,939 tokens to date — 2,662 confirmed rugs, 1 confirmed safe, 276
-              pending. Since coverage start on April 8, 2026 (first dev_wallet match), every
+              is a confirmed serial rugger with one of the largest confirmed-rug rap sheets in
+              the operator graph — the live count changes daily, so pull it straight from the
+              API below. Since coverage start on April 8, 2026 (first dev_wallet match), every
               subsequent deployment triggers a CRITICAL classification at scan time, before
               any on-chain rug signal exists.
             </p>
@@ -34,7 +35,7 @@ export function CaseStudy() {
             >
               Downstream integrators who monitor SolSentry alerts received a{" "}
               <strong style={{ color: "var(--status-critical)" }}>CRITICAL</strong> signal before a
-              single token was actually drained. No real-time transaction analysis was needed — the
+              single token was actually drained. No transaction analysis was needed — the
               operator&rsquo;s historical pattern was the signal.
             </p>
             <p
@@ -67,9 +68,10 @@ export function CaseStudy() {
             <dd style={{ color: "var(--fg-1)", fontSize: 18, fontWeight: 600 }}>
               Operator-history-driven (no per-token narrative)
             </dd>
-            <dt style={{ color: "var(--brand-teal)" }}>Operator lifetime (live · May 14)</dt>
+            <dt style={{ color: "var(--brand-teal)" }}>Operator lifetime</dt>
             <dd style={{ color: "var(--fg-1)" }}>
-              2,662 confirmed rugs · 2,939 tokens · 90.6% rug rate (99.96% over resolved) · CRITICAL
+              Serial CRITICAL — live counts via /v1/operator (they change daily; the curl above
+              is the source of truth)
             </dd>
           </dl>
         </div>
