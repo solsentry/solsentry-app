@@ -32,6 +32,55 @@ interface Month {
 
 const MONTHS: Month[] = [
   {
+    label: { en: "July 2026", pt: "Julho de 2026" },
+    title: {
+      en: "Agent payments, provider redundancy & attribution close-out",
+      pt: "Pagamentos para agentes, redundância de provider e fechamento de atribuição",
+    },
+    entries: [
+      {
+        lead: {
+          en: "Agent-native payments live on mainnet.",
+          pt: "Pagamentos nativos para agentes ao vivo na mainnet.",
+        },
+        body: {
+          en: "`/x402/v1/*` — autonomous agents pay per-call in USDC, no signup, no key. Curated endpoints exposed via the x402 standard; submitted to Solana's `pay-skills` registry.",
+          pt: "`/x402/v1/*` — agentes autônomos pagam por chamada em USDC, sem cadastro, sem chave. Endpoints curados expostos via o padrão x402; submetido ao registry `pay-skills` da Solana.",
+        },
+      },
+      {
+        lead: {
+          en: "Provider redundancy + failover.",
+          pt: "Redundância de provider + failover.",
+        },
+        body: {
+          en: "Multi-provider RPC routing with automatic failover and a metered budget guard across providers — resilience and lower latency on hot-wallet reads.",
+          pt: "Roteamento RPC multi-provider com failover automático e um budget guard medido entre providers — resiliência e menor latência nas leituras de hot wallet.",
+        },
+      },
+      {
+        lead: {
+          en: "Public Telegram channel + alert bot.",
+          pt: "Canal público no Telegram + bot de alertas.",
+        },
+        body: {
+          en: "`t.me/solsentryai` — CRITICAL alerts and an on-demand `/scan` command; invite-based DM onboarding.",
+          pt: "`t.me/solsentryai` — alertas CRITICAL e um comando `/scan` sob demanda; onboarding por DM via convite.",
+        },
+      },
+      {
+        lead: {
+          en: "Attribution correction complete.",
+          pt: "Correção de atribuição concluída.",
+        },
+        body: {
+          en: "The multi-source re-verification of historical dev-wallet attributions is finished and deployed; inflated legacy counts corrected. Honest data over big numbers.",
+          pt: "A re-verificação multi-fonte das atribuições históricas de dev wallets está concluída e deployada; contagens legadas infladas corrigidas. Dados honestos acima de números grandes.",
+        },
+      },
+    ],
+  },
+  {
     label: { en: "June 2026", pt: "Junho de 2026" },
     title: {
       en: "Hardening, low-latency layer & launch prep",
