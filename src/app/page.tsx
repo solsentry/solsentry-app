@@ -45,7 +45,7 @@ export default async function HomePage() {
       <div style={{ paddingTop: "72px" }}>
         {" "}
         {/* compensa a altura da topbar fixa */}
-        <LandingClient stats={statsPayload} hideChrome />
+        <LandingClient stats={statsPayload} />
       </div>
       <Footer />
     </>

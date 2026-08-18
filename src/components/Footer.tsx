@@ -160,9 +160,6 @@ export function Footer() {
               <Link href="/telegram" style={{ color: "var(--fg-2)", textDecoration: "none" }}>
                 Telegram Bot
               </Link>
-              <Link href="/scan" style={{ color: "var(--fg-2)", textDecoration: "none" }}>
-                Scan
-              </Link>
             </div>
           </div>
 

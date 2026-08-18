@@ -7,7 +7,7 @@
 // Phase 1 (this file): client detects kind and routes:
 //   .sol           → SNS (DISABLED in v1 — no resolver endpoint yet)
 //   base58 32-44   → /lookup?addr=... (server disambiguates wallet vs mint)
-//   ALL-CAPS short → /scan?symbol=...
+//   ALL-CAPS short → DISABLED (/scan removed in scan consolidation)
 //   NL (≥2 words)  → /app/playground?q=... (placeholder, no execute backend)
 //
 // Phase 2 (future): NL routes hit /v1/playground/estimate + /execute.
@@ -39,10 +39,10 @@ const SNS_RE = /\.sol$/i;
 const SYMBOL_RE = /^[A-Z0-9]{2,10}$/;
 
 const DEFAULT_PLACEHOLDERS = [
-  "4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1",
+  "7mPzKLxeNHr8vT5Yq2wWfJdCbnM4sKp9xRtGhUvYz3nE",
   "qual operador rodou mais rug essa semana?",
   "vagrant.sol",
-  "compare 4kxscute com 7ZqRsT... em 14 dias",
+  "compare 7mPzKL com 7ZqRsT... em 14 dias",
   "USDC",
   "que tokens este cluster lançou nas últimas 24h?",
 ] as const;
@@ -67,7 +67,8 @@ export function routeFor(kind: Kind, value: string): string | null {
     case "address":
       return `/lookup?addr=${encodeURIComponent(v)}`;
     case "symbol":
-      return `/scan?symbol=${encodeURIComponent(v.toUpperCase())}`;
+      // /scan page removed (scan consolidation) — no symbol-search surface.
+      return null;
     case "nl":
       return `/app/playground?q=${encodeURIComponent(v)}`;
     case "sns":

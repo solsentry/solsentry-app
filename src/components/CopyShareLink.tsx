@@ -7,20 +7,27 @@ import { useState } from "react";
 
 interface Props {
   wallet: string;
+  riskLevel?: string;
+  rugRate?: string;
+  totalTokens?: string;
 }
 
-export function CopyShareLink({ wallet }: Props) {
+export function CopyShareLink({ wallet, riskLevel, rugRate, totalTokens }: Props) {
   const [copied, setCopied] = useState(false);
 
   const url = `https://solsentry.app/share/operator/${wallet}`;
 
   async function handleCopy() {
+    let snippet = url;
+    if (riskLevel) {
+      snippet = `🚨 SolSentry Risk Alert\nOperator: ${wallet}\nRisk Level: ${riskLevel}\n${rugRate ? `Rug Rate: ${rugRate}%\n` : ""}${totalTokens ? `Tokens: ${totalTokens}\n` : ""}Proof of Threat: ${url}`;
+    }
+
     try {
-      await navigator.clipboard.writeText(url);
+      await navigator.clipboard.writeText(snippet);
       setCopied(true);
       setTimeout(() => setCopied(false), 1800);
     } catch {
-      // Fallback — open in new tab so the user can copy from address bar.
       window.open(url, "_blank", "noopener,noreferrer");
     }
   }

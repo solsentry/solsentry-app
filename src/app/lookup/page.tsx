@@ -4,7 +4,7 @@
 // Mirrors the backend GET /lookup handler in
 // integrations/mcp/http_api.py — duplicated client-side as a Next server
 // component so the user lands on /operator/X or /token/X without an extra
-// hop through the API. Falls back to /scan?addr=X when nothing is known.
+// hop through the API. Unknown addresses default to the operator page.
 //
 // Spec: internal/marketing/strategy/WIREFRAME_v5.md §3.1
 
@@ -36,7 +36,8 @@ export default async function LookupPage({ searchParams }: PageProps) {
   } else if (res?.kind === "token" || res?.kind === "contract") {
     target = `/token/${addr}`;
   } else {
-    target = `/scan?addr=${encodeURIComponent(addr)}`;
+    // If unknown, default to operator page which handles unknown states gracefully
+    target = `/operator/${addr}`;
   }
 
   redirect(target);

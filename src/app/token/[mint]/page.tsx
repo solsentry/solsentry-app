@@ -725,6 +725,13 @@ export default async function TokenPage({ params }: PageProps) {
 
             {/* ─── 5. HOLDER PROFILE ────────────────────────────────────── */}
             <section className="wrap" style={{ padding: "0 24px", marginBottom: 16 }}>
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
+                  gap: 12,
+                }}
+              >
               <div className="panel" style={{ padding: 0, overflow: "hidden" }}>
                 <div
                   style={{
@@ -848,6 +855,54 @@ export default async function TokenPage({ params }: PageProps) {
                   </tbody>
                 </table>
               </div>
+
+              {/* NEW: Related-wallet clusters */}
+              <div className="panel" style={{ padding: 0, overflow: "hidden" }}>
+                <div
+                  style={{
+                    padding: "10px 18px",
+                    borderBottom: "1px solid var(--border)",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  <div
+                    style={{
+                      fontSize: 10,
+                      letterSpacing: 0.8,
+                      textTransform: "uppercase",
+                      color: "var(--fg-3)",
+                    }}
+                  >
+                    Related-Wallet Clusters
+                  </div>
+                </div>
+                <div style={{ padding: "14px 18px" }}>
+                  {tok.cluster_evidence && tok.cluster_evidence.tight_clusters && tok.cluster_evidence.tight_clusters > 0 ? (
+                    <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                          <span style={{ color: "var(--status-critical)", fontFamily: "var(--font-mono)", fontSize: 13 }}>Cluster A</span>
+                          <span style={{ fontSize: 11, color: "var(--fg-3)" }}>{tok.cluster_evidence.tight_clusters} wallets</span>
+                        </div>
+                      </div>
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                          <span style={{ color: "var(--status-warning)", fontFamily: "var(--font-mono)", fontSize: 13 }}>Cluster B</span>
+                          <span style={{ fontSize: 11, color: "var(--fg-3)" }}>{tok.cluster_evidence.coordinated_buy_wallets || 0} wallets</span>
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div style={{ color: "var(--fg-3)", fontSize: 12 }}>
+                      Nenhum cluster co-relacionado detectado ou on-demand scan incompleto.
+                    </div>
+                  )}
+                </div>
+              </div>
+              </div>
+
             </section>
 
             {/* ─── 6. ACTIVITY HEATMAP ──────────────────────────────────── */}

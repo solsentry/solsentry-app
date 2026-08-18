@@ -204,6 +204,7 @@ export interface PricingPlan {
   id?: string;
   slug?: string;
   name?: string;
+  description?: string | null;
   // Live /v1/pricing tier fields (canonical):
   price_usd_monthly?: number | null;
   credits_per_period?: number | null;

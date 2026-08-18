@@ -7,6 +7,7 @@ import { SenaModal } from "@/components/SenaModal";
 import { SenaLauncher } from "@/components/SenaLauncher";
 import { ActivityHeatmap } from "@/components/ActivityHeatmap";
 import { CopyShareLink } from "@/components/CopyShareLink";
+import { ScanDepthControl } from "@/components/ScanDepthControl";
 import {
   fetchOperator,
   fetchOperatorTimeline,
@@ -166,21 +167,12 @@ export default async function OperatorPage({ params, searchParams }: PageProps) 
 
             {/* action row — real tools, Grok button styling */}
             <div style={{ marginTop: 16, display: "flex", gap: 10, flexWrap: "wrap" }}>
-              {operator && (
-                <SenaModal
-                  subject={{
-                    kind: "operator",
-                    wallet,
-                    riskLevel: operator.risk_level,
-                    riskScore: operator.risk_score,
-                    confirmedRugs: operator.confirmed_rugs,
-                    totalTokens: operator.total_tokens,
-                    rugRatePct: operator.rug_rate_pct,
-                    tags: operator.tags,
-                  }}
-                />
-              )}
-              <CopyShareLink wallet={wallet} />
+              <CopyShareLink 
+                wallet={wallet}
+                riskLevel={operator?.risk_level}
+                rugRate={operator?.rug_rate_pct !== undefined ? String(operator.rug_rate_pct) : undefined}
+                totalTokens={operator?.total_tokens !== undefined ? String(operator.total_tokens) : undefined}
+              />
               <Link href={`/network/${wallet}`} className="btn-ghost">
                 Organograma →
               </Link>
@@ -240,54 +232,63 @@ export default async function OperatorPage({ params, searchParams }: PageProps) 
 
           {operator && (
             <>
-              {/* ─── STATS BAR (Grok cards, real data only) ───────────── */}
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "repeat(auto-fit, minmax(170px, 1fr))",
-                  gap: 12,
-                  marginBottom: 28,
-                }}
-              >
-                <StatCard label="Total tokens" value={fmtInt(operator.total_tokens)} />
-                <StatCard
-                  label="Confirmed rugs"
-                  value={fmtInt(operator.confirmed_rugs)}
-                  accent={T.critical}
-                />
-                <StatCard
-                  label="Rug rate"
-                  value={fmtPct(operator.rug_rate_pct, 1)}
-                  accent={
-                    operator.rug_rate_pct && operator.rug_rate_pct > 80 ? T.critical : undefined
-                  }
-                />
-                {timeline && (
-                  <StatCard
-                    label="Tokens in window"
-                    value={fmtInt(timeline.total_tokens_in_window)}
-                  />
-                )}
-                {timeline && (
-                  <StatCard
-                    label="Rugs in window"
-                    value={fmtInt(timeline.confirmed_rugs_in_window)}
-                  />
-                )}
-              </div>
-
-              {/* ─── SENTINEL ASSESSMENT (Grok frame, factual + Sena CTA) ─ */}
+              {/* ─── VERDICT STRIP ──────────────────────────────────────── */}
               <div
                 style={{
                   ...card,
+                  padding: "16px 20px",
+                  marginBottom: 16,
+                  display: "flex",
+                  flexWrap: "wrap",
+                  alignItems: "center",
+                  gap: 20,
                   borderLeft: `4px solid ${accent}`,
-                  padding: 20,
-                  marginBottom: 28,
                 }}
               >
-                <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
-                  <span style={{ color: T.amber }}>✦</span>
-                  <span style={{ fontWeight: 700 }}>Sentinel’s Assessment</span>
+                <div>
+                  <div style={{ fontSize: 10, textTransform: "uppercase", color: T.dim, marginBottom: 4 }}>Tier</div>
+                  <div style={{ fontWeight: 700, fontSize: 18, color: accent }}>{operator.risk_level ?? "UNKNOWN"}</div>
+                </div>
+                <div>
+                  <div style={{ fontSize: 10, textTransform: "uppercase", color: T.dim, marginBottom: 4 }}>Confirmed Rugs</div>
+                  <div style={{ fontWeight: 700, fontSize: 18, color: operator.confirmed_rugs ? T.critical : T.text }}>
+                    {fmtInt(operator.confirmed_rugs)}
+                  </div>
+                </div>
+                <div>
+                  <div style={{ fontSize: 10, textTransform: "uppercase", color: T.dim, marginBottom: 4 }}>Total Tokens</div>
+                  <div style={{ fontWeight: 700, fontSize: 18, color: T.text }}>{fmtInt(operator.total_tokens)}</div>
+                </div>
+                <div>
+                  <div style={{ fontSize: 10, textTransform: "uppercase", color: T.dim, marginBottom: 4 }}>Rug Rate</div>
+                  <div style={{ fontWeight: 700, fontSize: 18, color: (operator.rug_rate_pct && operator.rug_rate_pct > 80) ? T.critical : T.text }}>
+                    {fmtPct(operator.rug_rate_pct, 1)}
+                  </div>
+                </div>
+                {(operator.tags && operator.tags.length > 0) && (
+                  <div style={{ borderLeft: `1px solid ${T.border}`, paddingLeft: 20, display: "flex", gap: 6, flexWrap: "wrap" }}>
+                    {operator.tags.map((t) => (
+                      <span key={t} style={{ fontSize: 11, padding: "2px 8px", background: "rgba(245,158,11,0.1)", color: T.amber, borderRadius: 999, border: `1px solid ${T.amber}30` }}>
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* ─── AI NARRATIVE (Sena) ────────────────────────────────── */}
+              <div
+                style={{
+                  ...card,
+                  padding: 20,
+                  marginBottom: 28,
+                  background: "var(--brand-amber-tint, rgba(245,158,11,0.05))",
+                  border: `1px solid var(--brand-amber-line, rgba(245,158,11,0.2))`,
+                }}
+              >
+                <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12 }}>
+                  <span style={{ color: T.amber, fontSize: 16 }}>✦</span>
+                  <span style={{ fontWeight: 700, color: T.amber }}>Sena AI Narrative</span>
                   {operator.risk_label && (
                     <span style={{ marginLeft: "auto", fontSize: 12, color: T.dim }}>
                       {operator.risk_label}
@@ -296,13 +297,24 @@ export default async function OperatorPage({ params, searchParams }: PageProps) 
                 </div>
                 <p style={{ lineHeight: 1.6, color: T.text, margin: 0 }}>
                   {operator.known
-                    ? `Tracked operator with ${fmtInt(operator.confirmed_rugs)} confirmed rugs across ${fmtInt(operator.total_tokens)} deployed tokens (${fmtPct(operator.rug_rate_pct, 1)} rug rate). Risk level ${operator.risk_level ?? "—"}, score ${operator.risk_score ?? "—"}/100.${operator.tags?.length ? ` Behavioral tags: ${operator.tags.join(", ")}.` : ""}`
+                    ? `Sena analysis indicates this is a tracked operator with ${fmtInt(operator.confirmed_rugs)} confirmed rugs across ${fmtInt(operator.total_tokens)} deployed tokens, resulting in a ${fmtPct(operator.rug_rate_pct, 1)} rug rate. Assigned risk level is ${operator.risk_level ?? "—"} (score ${operator.risk_score ?? "—"}/100).${operator.tags?.length ? ` Behavioral patterns show: ${operator.tags.join(", ")}.` : ""}`
                     : UNKNOWN_OPERATOR_MESSAGE}
                 </p>
-                <p style={{ marginTop: 10, marginBottom: 0, fontSize: 12, color: T.dim }}>
-                  Open <strong style={{ color: T.amber }}>Sena AI</strong> (above) for the full
-                  natural-language analysis.
-                </p>
+                <div style={{ marginTop: 16 }}>
+                  <ScanDepthControl />
+                  <SenaModal
+                    subject={{
+                      kind: "operator",
+                      wallet,
+                      riskLevel: operator.risk_level,
+                      riskScore: operator.risk_score,
+                      confirmedRugs: operator.confirmed_rugs,
+                      totalTokens: operator.total_tokens,
+                      rugRatePct: operator.rug_rate_pct,
+                      tags: operator.tags,
+                    }}
+                  />
+                </div>
               </div>
 
               {/* ─── ACTIVITY HEATMAP 365d (real) ─────────────────────── */}

@@ -140,30 +140,24 @@ export function SiteTopbar() {
                 }}
               />
 
-              <div
-                title="Closed beta! Soon!"
+              <Link
+                href="/pro"
                 style={{
                   padding: "8px 12px",
                   borderRadius: 4,
-                  color: "var(--fg-3)",
-                  background: "transparent",
+                  color: activeMode === "pro" ? "var(--brand-amber)" : "var(--fg-2)",
+                  background: activeMode === "pro" ? "var(--brand-amber-tint)" : "transparent",
                   textDecoration: "none",
-                  fontWeight: 400,
+                  fontWeight: activeMode === "pro" ? 600 : 400,
                   minHeight: 36,
                   display: "flex",
                   alignItems: "center",
-                  gap: 6,
                   fontSize: 11,
-                  cursor: "not-allowed",
                   transition: "background 110ms ease, color 110ms ease, opacity 110ms ease",
                 }}
               >
                 Pro
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.6 }}>
-                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-                </svg>
-              </div>
+              </Link>
 
               <span
                 style={{
@@ -234,6 +228,28 @@ export function SiteTopbar() {
               }}
             >
               Changelog
+            </Link>
+
+            {/* Risk API Highlight */}
+            <Link
+              href="/api"
+              className="hidden md:flex"
+              style={{
+                fontSize: 12,
+                padding: "10px 14px",
+                minHeight: 38,
+                display: "flex",
+                alignItems: "center",
+                background: "var(--brand-amber-tint)",
+                color: "var(--brand-amber)",
+                border: "1px solid var(--brand-amber-line)",
+                borderRadius: 6,
+                fontWeight: 600,
+                textDecoration: "none",
+                transition: "background 110ms ease, color 110ms ease, opacity 110ms ease",
+              }}
+            >
+              For agents / Risk API
             </Link>
 
             {/* Language - exact same as ProShell */}

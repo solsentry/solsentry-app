@@ -121,13 +121,11 @@ export function ProTopbar() {
     const q = query.trim();
     if (!q) return;
     if (q.length >= 32 && q.length <= 44) {
-      // Heuristic for token vs wallet:
-      // Pump.fun mints end in "pump", Bonk-style in "bonk", etc → /token
-      // Otherwise default to /operator (most common Solana wallet)
-      const isToken = /pump$/i.test(q) || /moon$/i.test(q) || /bonk$/i.test(q);
-      router.push(isToken ? `/token/${q}` : `/operator/${q}`);
+      router.push(`/lookup?addr=${encodeURIComponent(q)}`);
       return;
     }
+    // Also push to lookup as fallback
+    router.push(`/lookup?addr=${encodeURIComponent(q)}`);
     setQuery("");
   }
 
