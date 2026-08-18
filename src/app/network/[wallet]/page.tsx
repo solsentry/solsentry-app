@@ -11,6 +11,7 @@ import {
 } from "@/components/TraceNetworkGraph";
 import { fetchOperatorNetwork, truncate } from "@/lib/api";
 import Link from "next/link";
+import { InflowOutflowPanel } from "@/components/InflowOutflowPanel";
 
 export const revalidate = 120;
 
@@ -94,26 +95,29 @@ export default async function NetworkPage({ params }: PageProps) {
                   informação, experiência premium
                 </div>
 
-                <TraceNetworkGraph
-                  centerWallet={wallet}
-                  nodes={net.nodes.map((n: any, i: number) => ({
-                    id: n.address,
-                    address: n.address,
-                    label: truncate(n.address, 4, 4),
-                    type: n.address === wallet ? "operator" : n.type || "wallet",
-                    risk: n.risk,
-                    column: n.address === wallet ? 0 : (i % 5) - 2,
-                    tag: n.type,
-                  }))}
-                  edges={(net.edges || []).map((e: any, i: number) => ({
-                    id: `e${i}`,
-                    source: e.from || e.source,
-                    target: e.to || e.target,
-                    amount: e.weight ? Math.round(e.weight * 120) : undefined,
-                    kind: e.kind,
-                  }))}
-                  height={620}
-                />
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 350px", gap: 16 }}>
+                  <TraceNetworkGraph
+                    centerWallet={wallet}
+                    nodes={net.nodes.map((n: any, i: number) => ({
+                      id: n.address,
+                      address: n.address,
+                      label: truncate(n.address, 4, 4),
+                      type: n.address === wallet ? "operator" : n.type || "wallet",
+                      risk: n.risk,
+                      column: n.address === wallet ? 0 : (i % 5) - 2,
+                      tag: n.type,
+                    }))}
+                    edges={(net.edges || []).map((e: any, i: number) => ({
+                      id: `e${i}`,
+                      source: e.from || e.source,
+                      target: e.to || e.target,
+                      amount: e.weight ? Math.round(e.weight * 120) : undefined,
+                      kind: e.kind,
+                    }))}
+                    height={620}
+                  />
+                  <InflowOutflowPanel wallet={wallet} />
+                </div>
               </Section>
             )}
             {net.nodes && net.nodes.length > 0 && (

@@ -525,6 +525,7 @@ export function OperatorGraph({ center, nodes, edges, height = 600 }: Props) {
               · {degree[hover]} connections
             </span>
           )}
+          <div style={{ marginTop: 4, color: "var(--brand-amber)", fontSize: 9 }}>Click node to copy address</div>
         </div>
       )}
 
@@ -535,6 +536,9 @@ export function OperatorGraph({ center, nodes, edges, height = 600 }: Props) {
         edgeTypes={edgeTypes}
         onNodeMouseEnter={onNodeMouseEnter}
         onNodeMouseLeave={onNodeMouseLeave}
+        onNodeClick={(_, node) => {
+          navigator.clipboard.writeText(node.id);
+        }}
         fitView
         fitViewOptions={{ padding: 0.18 }}
         proOptions={{ hideAttribution: true }}

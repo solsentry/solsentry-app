@@ -50,7 +50,7 @@ export function AISuggestionsCard({ loggedIn = false }: AISuggestionsCardProps) 
           icon: <span>📈</span>,
           title: "Trojan bot accumulating $RUGX",
           subtitle: "Large position building in the last 18 minutes",
-          href: "/scan/4kxsCuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1",
+          href: "/lookup?addr=4kxsCuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1",
         },
       ]
     : [

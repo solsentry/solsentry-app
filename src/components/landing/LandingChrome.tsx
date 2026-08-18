@@ -45,17 +45,17 @@ export function LandingChrome({ copy, lang, theme, onLang, onTheme }: Props) {
               </button>
               <Link
                 href="/pro"
-                className="mode-tab locked"
-                title="Pro: unlimited scans, watchlists, alerts, full history. Login required."
+                className="mode-tab"
+                title="Pro mode overview"
               >
-                Pro <span style={{ fontSize: "10px", opacity: 0.8 }}>🔒</span>
+                Pro
               </Link>
               <Link
                 href="/api"
-                className="mode-tab locked"
-                title="Dev: API, MCP server, raw endpoints. Login + credits."
+                className="mode-tab"
+                title="API endpoints"
               >
-                Dev <span style={{ fontSize: "10px", opacity: 0.8 }}>🔒</span>
+                Dev
               </Link>
             </div>
 

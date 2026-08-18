@@ -80,7 +80,7 @@
     { "id": "auditable_per_mint", "label": "Per-mint auditable predictions", "group": "Trust", "ours": true },
     { "id": "open_source", "label": "Open-source client/plugin", "group": "Trust" },
     { "id": "no_token", "label": "No native token (ever)", "group": "Trust" },
-    { "id": "real_time_alerts", "label": "Real-time CRITICAL alerts (<5s)", "group": "Delivery" },
+    { "id": "low_latency_alerts", "label": "Low-latency CRITICAL alerts (<5s)", "group": "Delivery" },
     { "id": "telegram_bot", "label": "Telegram bot delivery", "group": "Delivery" },
     { "id": "mcp_server", "label": "MCP server (npm)", "group": "Delivery" },
     { "id": "rest_api_free", "label": "Free REST API tier", "group": "Delivery" },
@@ -291,7 +291,7 @@
       "bubblemaps": { "v": "no", "src": "https://bubblemaps.io", "note": "$BMT token exists." },
       "sicariusguard": { "v": "yes", "src": "https://github.com/Chronolapse411" }
     },
-    "real_time_alerts": {
+    "low_latency_alerts": {
       "solsentry": { "v": "yes", "src": "https://api.solsentry.app/v1/recent-alerts", "note": "<5s CRITICAL alert path (stage1 fast)." },
       "rugcheck": { "v": "partial", "src": "https://rugcheck.xyz" },
       "integrity_molt": { "v": "no", "src": "https://github.com/sendaifun/solana-agent-kit/pull/546" },
