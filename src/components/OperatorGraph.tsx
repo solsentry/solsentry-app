@@ -299,6 +299,7 @@ export function OperatorGraph({ center, nodes, edges, height = 600 }: Props) {
   const [layout, setLayout] = useState<Record<string, { x: number; y: number }>>({});
   const [busy, setBusy] = useState(true);
   const [hover, setHover] = useState<string | null>(null);
+  const [copied, setCopied] = useState<string | null>(null);
   const workerRef = useRef<Worker | null>(null);
 
   // Degree per node (for tier ranking + metric display)
@@ -465,6 +466,16 @@ export function OperatorGraph({ center, nodes, edges, height = 600 }: Props) {
   }, []);
   const onNodeMouseLeave = useCallback(() => setHover(null), []);
 
+  const copyAddress = useCallback(async (address: string) => {
+    try {
+      await navigator.clipboard.writeText(address);
+      setCopied(address);
+      setTimeout(() => setCopied((cur) => (cur === address ? null : cur)), 1600);
+    } catch {
+      // clipboard write can fail (permissions/insecure context); silently no-op.
+    }
+  }, []);
+
   return (
     <div
       className="operator-graph-container"
@@ -525,7 +536,9 @@ export function OperatorGraph({ center, nodes, edges, height = 600 }: Props) {
               · {degree[hover]} connections
             </span>
           )}
-          <div style={{ marginTop: 4, color: "var(--brand-amber)", fontSize: 9 }}>Click node to copy address</div>
+          <div style={{ marginTop: 4, color: "var(--brand-amber)", fontSize: 9 }}>
+            {copied === hover ? "Copied ✓" : "Click node to copy address"}
+          </div>
         </div>
       )}
 
@@ -537,7 +550,7 @@ export function OperatorGraph({ center, nodes, edges, height = 600 }: Props) {
         onNodeMouseEnter={onNodeMouseEnter}
         onNodeMouseLeave={onNodeMouseLeave}
         onNodeClick={(_, node) => {
-          navigator.clipboard.writeText(node.id);
+          copyAddress(node.id);
         }}
         fitView
         fitViewOptions={{ padding: 0.18 }}
