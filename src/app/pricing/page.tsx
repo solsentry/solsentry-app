@@ -267,19 +267,19 @@ export default async function PricingPage() {
             }}
           >
             <PricingCard
-              tier="Free"
+              tier={free?.name || "Free"}
               price={planPrice(free)}
               priceSuffix={priceSuffix(free)}
-              description="Para builders, devs e curious users testando o stack."
+              description={free?.description || "Para builders, devs e curious users testando o stack."}
               features={planFeatures(free, "day")}
               ctaLabel="Get started"
               ctaHref="/login"
             />
             <PricingCard
-              tier="Pro"
+              tier={pro?.name || "Pro"}
               price={planPrice(pro)}
               priceSuffix={priceSuffix(pro)}
-              description="Para power users, traders e analistas que precisam de profundidade."
+              description={pro?.description || "Para power users, traders e analistas que precisam de profundidade."}
               features={planFeatures(pro, "month")}
               ctaLabel="Upgrade"
               ctaHref="/login"
@@ -287,10 +287,10 @@ export default async function PricingPage() {
               badge="Most popular"
             />
             <PricingCard
-              tier="B2B"
+              tier={b2b?.name || "B2B"}
               price={planPrice(b2b, "Contact")}
               priceSuffix={priceSuffix(b2b)}
-              description="Para protocolos, wallets, bots e exchanges. Volume + SLA + webhooks."
+              description={b2b?.description || "Para protocolos, wallets, bots e exchanges. Volume + SLA + webhooks."}
               features={planFeatures(b2b, "month")}
               ctaLabel="Contact sales"
               ctaHref="mailto:sales@solsentry.app"

@@ -113,8 +113,11 @@ export function LandingClient({ stats, hideChrome = false }: Props & { hideChrom
                   <input
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
-                    disabled={true}
-                    placeholder="Scanner disabled during teaser phase..."
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") doLookup(query);
+                    }}
+                    disabled={loading}
+                    placeholder="Paste a Solana wallet or mint address…"
                     style={{
                       flex: 1,
                       fontFamily: "var(--font-mono)",
@@ -125,25 +128,25 @@ export function LandingClient({ stats, hideChrome = false }: Props & { hideChrom
                       borderRadius: 10,
                       color: "var(--fg-1)",
                       outline: "none",
-                      opacity: 0.5,
-                      cursor: "not-allowed",
                     }}
                   />
                   <button
-                    disabled={true}
+                    disabled={loading || !query.trim()}
+                    onClick={() => doLookup(query)}
                     style={{
-                      background: "var(--surface-hover)",
-                      color: "var(--fg-3)",
-                      border: "1px solid var(--border)",
+                      background: "var(--brand-amber)",
+                      color: "var(--fg-on-brand)",
+                      border: "0",
                       borderRadius: 8,
                       padding: "0 22px",
                       fontWeight: 600,
                       fontSize: 14,
-                      cursor: "not-allowed",
-                      opacity: 0.5,
+                      cursor: loading || !query.trim() ? "not-allowed" : "pointer",
+                      opacity: loading || !query.trim() ? 0.7 : 1,
+                      transition: "opacity 150ms",
                     }}
                   >
-                    V1 Soon
+                    {loading ? "Scanning…" : "Scan"}
                   </button>
                 </div>
               </div>

@@ -145,21 +145,37 @@ export function SenaDrawer({
       setDraft("");
       setTyping(true);
       try {
-        const res = await fetch("/api/sena/chat", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            entity_type: entity.type,
-            entity_id: entity.id,
-            summary: entity.summary ?? {},
-            message: trimmed,
-            history: messages.map((m) => ({ role: m.role, text: m.text })),
-          }),
-        });
-        const data = (await res.json()) as { reply: string };
+        let replyText = "";
+        
+        if (process.env.NODE_ENV === "development") {
+          // Mock response in development to avoid hitting the 20 requests/day cap
+          await new Promise((r) => setTimeout(r, 800)); // simulated latency
+          replyText = `[MOCK] This is a mock response from Sena AI in development mode. I received your message: "${trimmed}".`;
+        } else {
+          const API_BASE = process.env.NEXT_PUBLIC_API_URL || "https://api.solsentry.app";
+          const res = await fetch(`${API_BASE}/v1/sena/chat`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              entity_type: entity.type,
+              entity_id: entity.id,
+              summary: entity.summary ?? {},
+              message: trimmed,
+              history: messages.map((m) => ({ role: m.role, text: m.text })),
+            }),
+          });
+          const data = (await res.json()) as { reply?: string; fallback_client_cap?: boolean };
+          
+          if (data.fallback_client_cap) {
+            replyText = "API daily cap reached (20 calls/day per IP). Please check back later.";
+          } else {
+            replyText = data.reply ?? "Received an empty response.";
+          }
+        }
+
         // Simulated typing delay handled server-side; small UI delay too
         await new Promise((r) => setTimeout(r, 200));
-        setMessages((m) => [...m, { role: "sena", text: data.reply, ts: Date.now() }]);
+        setMessages((m) => [...m, { role: "sena", text: replyText, ts: Date.now() }]);
       } catch {
         setMessages((m) => [
           ...m,
