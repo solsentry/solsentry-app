@@ -107,7 +107,7 @@
       "helius_orb": { "v": "partial", "src": "https://orb.helius.dev", "note": "Reactive explorer — shows wallet activity but no deployer-graph aggregation." },
       "zauth": { "v": "no", "src": "https://zauth.io", "note": "Scores endpoints/agents, not deployer wallets." },
       "webacy": { "v": "partial", "src": "https://webacy.com", "note": "Wallet risk score exists but no Solana operator-graph depth." },
-      "chainalysis": { "v": "partial", "src": "https://www.chainalysis.com/solutions/reactor/", "note": "Reactor builds attribution graphs — enterprise tier, not retail Solana real-time." },
+      "chainalysis": { "v": "partial", "src": "https://www.chainalysis.com/solutions/reactor/", "note": "Reactor builds attribution graphs — enterprise tier, not retail Solana monitoring." },
       "bubblemaps": { "v": "no", "src": "https://bubblemaps.io", "note": "Holder bubble viz; no deployer tracking." },
       "sicariusguard": { "v": "no", "src": "https://github.com/Chronolapse411", "note": "Token/mint risk focus." }
     },
