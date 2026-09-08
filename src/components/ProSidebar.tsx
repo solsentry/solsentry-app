@@ -10,7 +10,6 @@ const PRO_LINKS: { label: string; href: string; icon: string }[] = [
   { label: "Bot clusters", href: "/clusters", icon: "◆" },
   { label: "Tokens", href: "/tokens", icon: "◇" },
   { label: "Wallets", href: "/wallets", icon: "○" },
-  { label: "KOL trackers", href: "/kols", icon: "★" },
   { label: "Brain skills", href: "/skills", icon: "✦" },
   { label: "x402 ledger", href: "/x402", icon: "$" },
   { label: "Architecture", href: "/architecture", icon: "⌗" },
