@@ -1,7 +1,7 @@
 "use client";
 
-import { LiveFeedLive } from "@/components/LiveFeedLive";
 import { WatchlistPanel } from "@/components/WatchlistPanel";
+import { WatchlistEventsFeed } from "@/components/WatchlistEventsFeed";
 
 export function MyRadarClient() {
   return (
@@ -18,12 +18,7 @@ export function MyRadarClient() {
 
       <div className="grid items-start gap-6 xl:grid-cols-[minmax(0,1fr)_minmax(340px,0.75fr)]">
         <WatchlistPanel />
-        <section className="space-y-3" aria-labelledby="recent-alerts-heading">
-          <h2 id="recent-alerts-heading" className="text-base font-semibold text-foreground">
-            Recent alerts
-          </h2>
-          <LiveFeedLive />
-        </section>
+        <WatchlistEventsFeed />
       </div>
     </main>
   );

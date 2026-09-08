@@ -1,6 +1,4 @@
 import type { Metadata } from "next";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 import { MyRadarClient } from "@/components/MyRadarClient";
 import { ProShell } from "@/components/ProShell";
 
@@ -9,12 +7,7 @@ export const metadata: Metadata = {
   robots: { index: false },
 };
 
-export default async function MyRadarPage() {
-  const cookieStore = await cookies();
-  if (!cookieStore.get("solsentry_session")) {
-    redirect("/login?callback=/app");
-  }
-
+export default function MyRadarPage() {
   return (
     <ProShell>
       <MyRadarClient />
