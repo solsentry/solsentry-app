@@ -1,61 +1,80 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import Link from "next/link";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import {
+  addWatch,
+  isWatchlistError,
+  removeWatch,
+  useWatchlist,
+  type WatchKind,
+} from "@/lib/watchlist";
 
-const KEY = "solsentry:watchlist";
+export function TrackButton({ addr, kind }: { addr: string; kind: WatchKind }) {
+  const watchlist = useWatchlist();
+  const router = useRouter();
+  const [error, setError] = useState<string | null>(null);
+  const [busy, setBusy] = useState(false);
+  const tracked = watchlist.items.find((item) => item.addr === addr && item.kind === kind);
 
-function loadList(): string[] {
-  if (typeof window === "undefined") return [];
-  try {
-    const raw = window.localStorage.getItem(KEY);
-    if (!raw) return [];
-    const arr = JSON.parse(raw);
-    return Array.isArray(arr) ? arr.filter((x) => typeof x === "string") : [];
-  } catch {
-    return [];
-  }
-}
-
-function saveList(list: string[]) {
-  if (typeof window === "undefined") return;
-  window.localStorage.setItem(KEY, JSON.stringify(list));
-}
-
-export function TrackButton({ wallet }: { wallet: string }) {
-  const [tracked, setTracked] = useState(false);
-
-  useEffect(() => {
-    setTracked(loadList().includes(wallet));
-  }, [wallet]);
-
-  function toggle() {
-    const list = loadList();
-    if (list.includes(wallet)) {
-      saveList(list.filter((w) => w !== wallet));
-      setTracked(false);
-    } else {
-      saveList([...list, wallet]);
-      setTracked(true);
+  async function toggle() {
+    setError(null);
+    setBusy(true);
+    if (tracked) {
+      const result = await removeWatch(tracked.id);
+      if (isWatchlistError(result)) {
+        if (result.code === "unauthenticated") router.push("/login?callback=/app");
+        else setError(result.error);
+      }
+      setBusy(false);
+      return;
     }
+
+    const result = await addWatch({ addr, kind });
+    if (isWatchlistError(result)) {
+      if (result.code === "unauthenticated") {
+        router.push("/login?callback=/app");
+        setBusy(false);
+        return;
+      }
+      setError(
+        result.code === "slot_limit"
+          ? `${result.limit ?? watchlist.limit}/${result.limit ?? watchlist.limit} slots used.`
+          : result.error,
+      );
+    }
+    setBusy(false);
   }
 
   return (
-    <button
-      type="button"
-      onClick={toggle}
-      style={{
-        padding: "6px 10px",
-        background: tracked ? "var(--brand-amber-tint)" : "transparent",
-        color: tracked ? "var(--brand-amber)" : "var(--fg-2)",
-        border: `1px solid ${tracked ? "var(--brand-amber-line)" : "var(--border)"}`,
-        borderRadius: 4,
-        fontFamily: "var(--font-mono)",
-        fontSize: 11,
-        cursor: "pointer",
-        alignSelf: "flex-start",
-      }}
-    >
-      {tracked ? "★ Tracking" : "☆ Track this KOL"}
-    </button>
+    <span className="inline-flex items-center gap-2">
+      <button
+        type="button"
+        onClick={toggle}
+        disabled={busy || watchlist.loading}
+        className="whitespace-nowrap rounded border px-2.5 py-1.5 font-mono text-[11px] transition-colors"
+        style={{
+          background: tracked ? "var(--brand-amber-tint)" : "transparent",
+          color: tracked ? "var(--brand-amber)" : "var(--fg-2)",
+          borderColor: tracked ? "var(--brand-amber-line)" : "var(--border)",
+        }}
+      >
+        {busy ? "Updating…" : tracked ? "★ Tracking" : `☆ Track ${kind}`}
+      </button>
+      {error && (
+        <span className="whitespace-nowrap text-[11px] text-muted-foreground" role="status">
+          {error}{" "}
+          <Link href="/app" className="text-primary hover:underline">
+            Manage radar
+          </Link>
+        </span>
+      )}
+      {!error && watchlist.notice && (
+        <span className="max-w-sm text-[11px] text-muted-foreground" role="status">
+          {watchlist.notice}
+        </span>
+      )}
+    </span>
   );
 }

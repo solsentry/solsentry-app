@@ -8,6 +8,7 @@ import { SenaLauncher } from "@/components/SenaLauncher";
 import { ActivityHeatmap } from "@/components/ActivityHeatmap";
 import { CopyShareLink } from "@/components/CopyShareLink";
 import { ScanDepthControl } from "@/components/ScanDepthControl";
+import { TrackButton } from "@/components/TrackButton";
 import {
   fetchOperator,
   fetchOperatorTimeline,
@@ -113,6 +114,7 @@ export default async function OperatorPage({ params, searchParams }: PageProps) 
               >
                 {wallet}
               </div>
+              <TrackButton addr={wallet} kind="operator" />
               {operator ? (
                 <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
                   <div style={{ fontSize: 36, fontWeight: 800, color: accent, lineHeight: 1 }}>

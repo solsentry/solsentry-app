@@ -203,7 +203,7 @@ function EventRow({ event, isNew }: { event: FeedEvent; isNew?: boolean }) {
 }
 
 // Empty state
-function EmptyState({ isConnected }: { isConnected: boolean }) {
+function EmptyState({ isConnected, isExternal }: { isConnected: boolean; isExternal: boolean }) {
   return (
     <div className="flex h-48 flex-col items-center justify-center gap-2 text-center">
       <div className="flex items-center gap-2">
@@ -218,7 +218,7 @@ function EmptyState({ isConnected }: { isConnected: boolean }) {
         </span>
       </div>
       <span className="font-mono text-xs text-muted-foreground/60">
-        Waiting for events... 0 in last 60s
+        {isExternal ? "Waiting for recent alerts..." : "Waiting for events... 0 in last 60s"}
       </span>
     </div>
   );
@@ -248,6 +248,7 @@ export function LiveFeed({
   showScanlines = true,
   events: externalEvents,
 }: LiveFeedProps) {
+  const isExternal = externalEvents !== undefined;
   const [events, setEvents] = useState<FeedEvent[]>([]);
   const [filter, setFilter] = useState<FilterType>("all");
   const [isPaused, setIsPaused] = useState(false);
@@ -271,7 +272,7 @@ export function LiveFeed({
 
   // Simulate new events coming in (mock mode only).
   useEffect(() => {
-    if (externalEvents || isPaused) return;
+    if (isExternal || isPaused) return;
 
     const interval = setInterval(() => {
       const newEvent: FeedEvent = {
@@ -313,7 +314,7 @@ export function LiveFeed({
     }, 5000);
 
     return () => clearInterval(interval);
-  }, [isPaused]);
+  }, [isExternal, isPaused]);
 
   // Filter events
   const filteredEvents = events.filter((event) => {
@@ -370,12 +371,14 @@ export function LiveFeed({
           </div>
 
           {/* Event rate */}
-          <span className="hidden font-mono text-[10px] text-muted-foreground/60 sm:inline sm:text-xs">
-            {eventRate} events/min
-          </span>
+          {!isExternal && (
+            <span className="hidden font-mono text-[10px] text-muted-foreground/60 sm:inline sm:text-xs">
+              {eventRate} events/min
+            </span>
+          )}
 
           {/* Paused badge */}
-          {isPaused && (
+          {!isExternal && isPaused && (
             <span className="rounded bg-primary/20 px-1.5 py-0.5 font-mono text-[10px] text-primary">
               paused
             </span>
@@ -415,15 +418,17 @@ export function LiveFeed({
           </DropdownMenu>
 
           {/* Pause/Resume */}
-          <Button
-            variant="ghost"
-            size="icon-sm"
-            onClick={() => setIsPaused(!isPaused)}
-            className="size-7 text-muted-foreground hover:bg-secondary hover:text-foreground"
-            title={isPaused ? "Resume" : "Pause"}
-          >
-            {isPaused ? <Play className="size-3.5" /> : <Pause className="size-3.5" />}
-          </Button>
+          {!isExternal && (
+            <Button
+              variant="ghost"
+              size="icon-sm"
+              onClick={() => setIsPaused(!isPaused)}
+              className="size-7 text-muted-foreground hover:bg-secondary hover:text-foreground"
+              title={isPaused ? "Resume" : "Pause"}
+            >
+              {isPaused ? <Play className="size-3.5" /> : <Pause className="size-3.5" />}
+            </Button>
+          )}
         </div>
       </div>
 
@@ -440,7 +445,7 @@ export function LiveFeed({
         }}
       >
         {filteredEvents.length === 0 ? (
-          <EmptyState isConnected={isConnected} />
+          <EmptyState isConnected={isConnected} isExternal={isExternal} />
         ) : (
           filteredEvents.map((event) => (
             <EventRow key={event.id} event={event} isNew={newEventIds.has(event.id)} />
@@ -453,16 +458,18 @@ export function LiveFeed({
         <span className="font-mono text-[10px] text-muted-foreground/60 sm:text-xs">
           Showing last {Math.min(filteredEvents.length, 50)}
         </span>
-        <a
-          href="#"
-          className="font-mono text-[10px] text-primary transition-colors hover:text-primary/80 sm:text-xs"
-          onClick={(e) => {
-            e.preventDefault();
-            console.log("[v0] Connect Pro clicked");
-          }}
-        >
-          connect Pro for unlimited
-        </a>
+        {!isExternal && (
+          <a
+            href="#"
+            className="font-mono text-[10px] text-primary transition-colors hover:text-primary/80 sm:text-xs"
+            onClick={(e) => {
+              e.preventDefault();
+              console.log("[v0] Connect Pro clicked");
+            }}
+          >
+            connect Pro for unlimited
+          </a>
+        )}
       </div>
 
       {/* CSS for animation */}

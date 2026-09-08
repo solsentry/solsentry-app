@@ -25,6 +25,7 @@ import { SenaModal } from "@/components/SenaModal";
 import { SenaLauncher } from "@/components/SenaLauncher";
 import { ActivityHeatmap } from "@/components/ActivityHeatmap";
 import { CopyText } from "@/components/CopyText";
+import { TrackButton } from "@/components/TrackButton";
 import {
   fetchToken,
   fetchOperator,
@@ -323,6 +324,7 @@ export default async function TokenPage({ params }: PageProps) {
                         {truncate(mint, 10, 8)}
                       </code>
                       <CopyText value={mint} label="Copy mint" />
+                      <TrackButton addr={mint} kind="token" />
                     </div>
                   </div>
 

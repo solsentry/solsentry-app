@@ -37,6 +37,9 @@ const ALLOWLIST_PREFIXES = [
   "/architecture",
   "/telegram",
   "/auth/verify", // magic-link landing — without this the emailed link 307s to / and eats the token
+  // This flag is the per-phase route gate.
+  // Its value is decided by the owner.
+  ...(process.env.NEXT_PUBLIC_M2_APP_OPEN === "1" ? ["/app", "/login"] : []),
 ];
 
 function isAllowed(pathname: string): boolean {
