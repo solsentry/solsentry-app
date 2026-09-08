@@ -70,7 +70,8 @@ export function routeFor(kind: Kind, value: string): string | null {
       // /scan page removed (scan consolidation) — no symbol-search surface.
       return null;
     case "nl":
-      return `/app/playground?q=${encodeURIComponent(v)}`;
+      // /app/playground removed — AI search disabled for now.
+      return null;
     case "sns":
       // v1: no resolver endpoint — disabled.
       return null;
@@ -107,6 +108,10 @@ export function AISearchBar({
 
     if (kind === "sns") {
       setError("SNS (.sol) resolution coming soon. Paste the wallet address.");
+      return;
+    }
+    if (kind === "nl") {
+      setError("Natural language search coming soon. Paste a wallet or token address.");
       return;
     }
     if (kind === "unknown") {
