@@ -11,13 +11,10 @@ const MOCK_TOKEN = "F4GpAFr6vrxU3Y887F3XWkXRgybCVjZNk63m72f6pump"; // from scree
 
 export default function DebugHubPage() {
   const links = [
-    { name: "Screen Gate (Form)", path: "/screen", desc: "Formulário de submissão manual x402." },
     { name: "Operator Network (Valid)", path: `/network/${TEST_OPERATOR}`, desc: "Visualização do grafo + Inflow/Outflow." },
     { name: "Token Analysis (Valid)", path: `/token/${TEST_TOKEN}`, desc: "Página de risco com a tabela de Holders e Clusters reais." },
     { name: "Token Analysis (Mock from image)", path: `/token/${MOCK_TOKEN}`, desc: "O token do seu screenshot, para testar a resposta da API (pode dar 404)." },
     { name: "Live Feed", path: "/tokens", desc: "Feed ao vivo de todos os tokens recentes." },
-    { name: "Operator List", path: "/wallets", desc: "Lista de operadores monitorados." },
-    { name: "Birdeye Radar", path: "/birdeye-radar", desc: "Radar de trending integrado com Birdeye." },
   ];
 
   return (
