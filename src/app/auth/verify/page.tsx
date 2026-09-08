@@ -28,7 +28,10 @@ function VerifyInner() {
       .then(async (r) => {
         if (r.ok) {
           setStatus("ok");
-          router.replace("/dashboard");
+          const callback = params.get("callback");
+          const destination =
+            callback?.startsWith("/") && !callback.startsWith("//") ? callback : "/app";
+          router.replace(destination);
         } else {
           setStatus("error");
           setMessage("Link expired or invalid.");
