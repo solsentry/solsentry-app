@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
  * Allowlist-based middleware (default-deny).
  *
  * Public routes: / · /about · /docs · /changelog · /mcp · /api · /architecture
- *                /telegram · /scan
+ *                /telegram · /auth/verify
  *
  * Everything else → 307 redirect to / + X-Robots-Tag: noindex.
  * Static assets, Next internals, and /api route handlers are always allowed.
@@ -36,7 +36,10 @@ const ALLOWLIST_PREFIXES = [
   "/api",
   "/architecture",
   "/telegram",
-  "/scan",
+  "/auth/verify", // magic-link landing — without this the emailed link 307s to / and eats the token
+  // This flag is the per-phase route gate.
+  // Its value is decided by the owner.
+  ...(process.env.NEXT_PUBLIC_M2_APP_OPEN === "1" ? ["/app", "/login"] : []),
 ];
 
 function isAllowed(pathname: string): boolean {

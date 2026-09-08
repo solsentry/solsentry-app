@@ -20,11 +20,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
     },
     {
-      path: "/scan",
-      changeFrequency: "daily",
-      priority: 0.8,
-    },
-    {
       path: "/pricing",
       changeFrequency: "monthly",
       priority: 0.9,
@@ -49,11 +44,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     {
       path: "/tokens",
       changeFrequency: "hourly",
-      priority: 0.6,
-    },
-    {
-      path: "/wallets",
-      changeFrequency: "daily",
       priority: 0.6,
     },
     {

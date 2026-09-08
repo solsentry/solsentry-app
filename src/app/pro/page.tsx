@@ -2,6 +2,8 @@ import { ProShell } from "@/components/ProShell";
 import { ProTierCard } from "@/components/pro/ProTierCard";
 import { TierMatrix } from "@/components/pro/TierMatrix";
 import { ClusterPreview } from "@/components/pro/ClusterPreview";
+import { DrainOfTheDay } from "@/components/drain-of-the-day";
+import { DailyIntelCard } from "@/components/daily-intel-card";
 import {
   fetchStats,
   fetchAlertsRecent,
@@ -32,11 +34,17 @@ export default async function ProOverviewPage() {
 
   return (
     <ProShell>
-      <div style={{ maxWidth: 1320, margin: "0 auto" }}>
+      <div style={{ maxWidth: 1320, margin: "0 auto", padding: "0 16px" }}>
         <Header stats={stats} />
         <KpiStrip stats={stats} />
         <TierIntro />
         <TierPanels />
+        
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(400px, 1fr))", gap: 16, marginBottom: 32 }}>
+          <DailyIntelCard />
+          <DrainOfTheDay />
+        </div>
+
         <DataCanvas alerts={criticalAlerts} />
         <Section
           title="Cluster index"

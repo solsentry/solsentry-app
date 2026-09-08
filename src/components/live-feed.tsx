@@ -30,10 +30,9 @@ export interface FeedEvent {
 
 type FilterType = "all" | "critical" | "high+" | "drains" | "deploys";
 
-// Mock data generator
+// Mock data generator fallback if API fails
 function generateMockEvents(): FeedEvent[] {
   const now = new Date();
-
   return [
     {
       id: "1",
@@ -42,121 +41,11 @@ function generateMockEvents(): FeedEvent[] {
       wallet: "7ZqRsT8n4kLmPqWx5pH1",
       eventType: "deploy",
       description: "deployed token PEPE2",
-      metrics: [
-        { label: "risk", value: 94 },
-        { label: "serial", value: "7x" },
-      ],
-    },
-    {
-      id: "2",
-      timestamp: new Date(now.getTime() - 14000),
-      riskLevel: "HIGH",
-      wallet: "4kxscuteRLQd5pH1",
-      eventType: "drain",
-      description: "drain detected on WOJAK",
-      metrics: [
-        { label: "amount", value: "$47K" },
-        { label: "holders", value: 312 },
-      ],
-    },
-    {
-      id: "3",
-      timestamp: new Date(now.getTime() - 38000),
-      riskLevel: "HIGH",
-      wallet: "9XmNpQ2rVbYt3pH1",
-      eventType: "cluster",
-      description: "cluster expanded +12 wallets",
-      metrics: [
-        { label: "total", value: 89 },
-        { label: "vol", value: "$1.2M" },
-      ],
-    },
-    {
-      id: "4",
-      timestamp: new Date(now.getTime() - 67000),
-      riskLevel: "MEDIUM",
-      wallet: "KoLwAlLeT8x2nM5pH1",
-      eventType: "kol",
-      description: "KOL @pumpdotfun sold 80%",
-      metrics: [
-        { label: "profit", value: "+$23K" },
-        { label: "time", value: "4h" },
-      ],
-    },
-    {
-      id: "5",
-      timestamp: new Date(now.getTime() - 120000),
-      riskLevel: "CRITICAL",
-      wallet: "3FgHjK9pLmNq5pH1",
-      eventType: "deploy",
-      description: "deployed token DOGE3",
-      metrics: [
-        { label: "risk", value: 91 },
-        { label: "serial", value: "4x" },
-      ],
-    },
-    {
-      id: "6",
-      timestamp: new Date(now.getTime() - 180000),
-      riskLevel: "HIGH",
-      wallet: "8BnMpQrStUv5pH1",
-      eventType: "flow",
-      description: "USDC flow $89K to mixer",
-      metrics: [
-        { label: "hops", value: 3 },
-        { label: "dest", value: "Tornado" },
-      ],
-    },
-    {
-      id: "7",
-      timestamp: new Date(now.getTime() - 245000),
-      riskLevel: "MEDIUM",
-      wallet: "5CdEfGhIjK5pH1",
-      eventType: "deploy",
-      description: "deployed token SHIB2",
-      metrics: [
-        { label: "risk", value: 67 },
-        { label: "serial", value: "2x" },
-      ],
-    },
-    {
-      id: "8",
-      timestamp: new Date(now.getTime() - 312000),
-      riskLevel: "HIGH",
-      wallet: "2AbCdEfGhI5pH1",
-      eventType: "drain",
-      description: "drain detected on BONK2",
-      metrics: [
-        { label: "amount", value: "$12K" },
-        { label: "holders", value: 89 },
-      ],
-    },
-    {
-      id: "9",
-      timestamp: new Date(now.getTime() - 420000),
-      riskLevel: "CRITICAL",
-      wallet: "6JkLmNoPqR5pH1",
-      eventType: "cluster",
-      description: "new cluster identified",
-      metrics: [
-        { label: "wallets", value: 23 },
-        { label: "rugs", value: 18 },
-      ],
-    },
-    {
-      id: "10",
-      timestamp: new Date(now.getTime() - 540000),
-      riskLevel: "HIGH",
-      wallet: "1ZxYwVuTsR5pH1",
-      eventType: "kol",
-      description: "KOL @whale_alert entry",
-      metrics: [
-        { label: "amount", value: "$156K" },
-        { label: "token", value: "WIF" },
-      ],
-    },
+      metrics: [{ label: "risk", value: 94 }],
+    }
   ];
 }
+
 
 // Time ago formatter
 function formatTimeAgo(date: Date): string {
@@ -314,7 +203,7 @@ function EventRow({ event, isNew }: { event: FeedEvent; isNew?: boolean }) {
 }
 
 // Empty state
-function EmptyState({ isConnected }: { isConnected: boolean }) {
+function EmptyState({ isConnected, isExternal }: { isConnected: boolean; isExternal: boolean }) {
   return (
     <div className="flex h-48 flex-col items-center justify-center gap-2 text-center">
       <div className="flex items-center gap-2">
@@ -329,7 +218,7 @@ function EmptyState({ isConnected }: { isConnected: boolean }) {
         </span>
       </div>
       <span className="font-mono text-xs text-muted-foreground/60">
-        Waiting for events... 0 in last 60s
+        {isExternal ? "Waiting for recent alerts..." : "Waiting for events... 0 in last 60s"}
       </span>
     </div>
   );
@@ -359,6 +248,7 @@ export function LiveFeed({
   showScanlines = true,
   events: externalEvents,
 }: LiveFeedProps) {
+  const isExternal = externalEvents !== undefined;
   const [events, setEvents] = useState<FeedEvent[]>([]);
   const [filter, setFilter] = useState<FilterType>("all");
   const [isPaused, setIsPaused] = useState(false);
@@ -382,7 +272,7 @@ export function LiveFeed({
 
   // Simulate new events coming in (mock mode only).
   useEffect(() => {
-    if (externalEvents || isPaused) return;
+    if (isExternal || isPaused) return;
 
     const interval = setInterval(() => {
       const newEvent: FeedEvent = {
@@ -424,7 +314,7 @@ export function LiveFeed({
     }, 5000);
 
     return () => clearInterval(interval);
-  }, [isPaused]);
+  }, [isExternal, isPaused]);
 
   // Filter events
   const filteredEvents = events.filter((event) => {
@@ -481,12 +371,14 @@ export function LiveFeed({
           </div>
 
           {/* Event rate */}
-          <span className="hidden font-mono text-[10px] text-muted-foreground/60 sm:inline sm:text-xs">
-            {eventRate} events/min
-          </span>
+          {!isExternal && (
+            <span className="hidden font-mono text-[10px] text-muted-foreground/60 sm:inline sm:text-xs">
+              {eventRate} events/min
+            </span>
+          )}
 
           {/* Paused badge */}
-          {isPaused && (
+          {!isExternal && isPaused && (
             <span className="rounded bg-primary/20 px-1.5 py-0.5 font-mono text-[10px] text-primary">
               paused
             </span>
@@ -526,15 +418,17 @@ export function LiveFeed({
           </DropdownMenu>
 
           {/* Pause/Resume */}
-          <Button
-            variant="ghost"
-            size="icon-sm"
-            onClick={() => setIsPaused(!isPaused)}
-            className="size-7 text-muted-foreground hover:bg-secondary hover:text-foreground"
-            title={isPaused ? "Resume" : "Pause"}
-          >
-            {isPaused ? <Play className="size-3.5" /> : <Pause className="size-3.5" />}
-          </Button>
+          {!isExternal && (
+            <Button
+              variant="ghost"
+              size="icon-sm"
+              onClick={() => setIsPaused(!isPaused)}
+              className="size-7 text-muted-foreground hover:bg-secondary hover:text-foreground"
+              title={isPaused ? "Resume" : "Pause"}
+            >
+              {isPaused ? <Play className="size-3.5" /> : <Pause className="size-3.5" />}
+            </Button>
+          )}
         </div>
       </div>
 
@@ -551,7 +445,7 @@ export function LiveFeed({
         }}
       >
         {filteredEvents.length === 0 ? (
-          <EmptyState isConnected={isConnected} />
+          <EmptyState isConnected={isConnected} isExternal={isExternal} />
         ) : (
           filteredEvents.map((event) => (
             <EventRow key={event.id} event={event} isNew={newEventIds.has(event.id)} />
@@ -564,16 +458,18 @@ export function LiveFeed({
         <span className="font-mono text-[10px] text-muted-foreground/60 sm:text-xs">
           Showing last {Math.min(filteredEvents.length, 50)}
         </span>
-        <a
-          href="#"
-          className="font-mono text-[10px] text-primary transition-colors hover:text-primary/80 sm:text-xs"
-          onClick={(e) => {
-            e.preventDefault();
-            console.log("[v0] Connect Pro clicked");
-          }}
-        >
-          connect Pro for unlimited
-        </a>
+        {!isExternal && (
+          <a
+            href="#"
+            className="font-mono text-[10px] text-primary transition-colors hover:text-primary/80 sm:text-xs"
+            onClick={(e) => {
+              e.preventDefault();
+              console.log("[v0] Connect Pro clicked");
+            }}
+          >
+            connect Pro for unlimited
+          </a>
+        )}
       </div>
 
       {/* CSS for animation */}

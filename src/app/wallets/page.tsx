@@ -10,6 +10,7 @@ export const metadata = {
   title: "Wallet profiles — search and overview",
   description:
     "SolSentry tracks wallet behaviour across Solana. Look up any wallet by address.",
+  robots: { index: false },
 };
 
 export default async function WalletsPage() {
