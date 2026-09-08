@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState, useSyncExternalStore } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { Bell, BellOff, ChevronDown, ChevronRight, Save, Trash2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -9,10 +10,9 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import {
   isWatchlistError,
-  listWatchlist,
   removeWatch,
-  subscribe,
   updateWatch,
+  useWatchlist,
   type WatchItem,
 } from "@/lib/watchlist";
 
@@ -41,8 +41,8 @@ function WatchlistRow({ item }: { item: WatchItem }) {
 
   const href = item.kind === "operator" ? `/operator/${item.addr}` : `/token/${item.addr}`;
 
-  function saveDetails() {
-    const result = updateWatch(item.id, {
+  async function saveDetails() {
+    const result = await updateWatch(item.id, {
       label,
       tags: tags
         .split(",")
@@ -57,13 +57,13 @@ function WatchlistRow({ item }: { item: WatchItem }) {
     setMessage("Saved.");
   }
 
-  function toggleAlerts() {
-    const result = updateWatch(item.id, { alerts: !item.alerts });
+  async function toggleAlerts() {
+    const result = await updateWatch(item.id, { alerts: !item.alerts });
     setMessage(isWatchlistError(result) ? result.error : null);
   }
 
-  function remove() {
-    const result = removeWatch(item.id);
+  async function remove() {
+    const result = await removeWatch(item.id);
     if (isWatchlistError(result)) setMessage(result.error);
   }
 
@@ -171,7 +171,14 @@ function WatchlistRow({ item }: { item: WatchItem }) {
 }
 
 export function WatchlistPanel() {
-  const watchlist = useSyncExternalStore(subscribe, listWatchlist, listWatchlist);
+  const watchlist = useWatchlist();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (watchlist.error?.code === "unauthenticated") {
+      router.replace("/login?callback=/app");
+    }
+  }, [router, watchlist.error]);
 
   return (
     <Card>
@@ -190,7 +197,25 @@ export function WatchlistPanel() {
       </CardHeader>
 
       <CardContent className="p-0">
-        {watchlist.items.length === 0 ? (
+        {watchlist.notice && (
+          <div className="border-b border-primary/30 bg-primary/5 px-4 py-3">
+            <p className="text-xs text-muted-foreground" role="status">
+              {watchlist.notice}
+            </p>
+          </div>
+        )}
+        {watchlist.error && watchlist.error.code !== "unauthenticated" && (
+          <div className="border-b border-border px-4 py-3">
+            <p className="text-xs text-destructive" role="alert">
+              {watchlist.error.error}
+            </p>
+          </div>
+        )}
+        {watchlist.loading && !watchlist.initialized ? (
+          <div className="px-6 py-12 text-center text-sm text-muted-foreground">
+            Loading your watchlist…
+          </div>
+        ) : watchlist.items.length === 0 ? (
           <div className="px-6 py-12 text-center">
             <h3 className="text-sm font-medium text-foreground">Your radar is empty</h3>
             <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-muted-foreground">
