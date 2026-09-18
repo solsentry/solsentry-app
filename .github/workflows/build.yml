@@ -13,11 +13,36 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "22"
           cache: "npm"
       - run: npm ci
       - run: npm run build
       - run: npm run pages:build
+
+  preview:
+    needs: build
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+      - run: npm ci
+      - run: npm run build
+      - run: npm run pages:build
+      - name: Upload preview version (not deployed — preview URL only)
+        id: preview
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: versions upload --message "PR #${{ github.event.pull_request.number }} ${{ github.event.pull_request.head.sha }}"
+      - name: Print preview URL
+        run: |
+          echo "### Preview" >> "$GITHUB_STEP_SUMMARY"
+          echo '${{ steps.preview.outputs.command-output }}' | grep -Eo 'https://[^ ]+workers\.dev[^ ]*' | head -1 >> "$GITHUB_STEP_SUMMARY" || echo "(no preview URL in wrangler output — enable Preview URLs on the Worker)" >> "$GITHUB_STEP_SUMMARY"
 
   deploy:
     needs: build
@@ -27,7 +52,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "22"
           cache: "npm"
       - run: npm ci
       - run: npm run build
