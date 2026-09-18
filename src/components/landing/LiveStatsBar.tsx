@@ -65,8 +65,8 @@ export function LiveStatsBar({ copy, lang, stats }: Props) {
       href: "https://api.solsentry.app/v1/stats",
     },
     {
-      label: copy.statsLabelAccuracy,
-      value: fmtPct(stats.accuracyPct),
+      label: copy.statsLabelCritical,
+      value: fmtPct(stats.criticalPrecisionPct),
       href: "https://api.solsentry.app/v1/stats",
     },
     {
@@ -75,8 +75,8 @@ export function LiveStatsBar({ copy, lang, stats }: Props) {
       href: "https://api.solsentry.app/health",
     },
     {
-      label: "CRITICAL precision",
-      value: fmtPct(stats.criticalPrecisionPct),
+      label: copy.statsLabelAccuracy,
+      value: fmtPct(stats.accuracyPct),
       href: "https://api.solsentry.app/v1/stats",
     },
     {
