@@ -118,8 +118,8 @@ function KpiStrip({ stats }: { stats: Awaited<ReturnType<typeof fetchStats>> }) 
         },
         { label: "Predictions", value: fmtInt(stats.total_predictions) },
         {
-          label: "CRITICAL precision",
-          value: fmtPct(stats.accuracy_pct, 1),
+          label: "CRITICAL precision · per-mint",
+          value: fmtPct(stats.critical_precision_pct, 1),
           accent: "amber",
         },
         {

@@ -181,6 +181,9 @@ export default async function OperatorPage({ params, searchParams }: PageProps) 
               <Link href={`/drain/${wallet}`} className="btn-ghost">
                 Trace drain
               </Link>
+              <Link href={`/dossier/${wallet}`} className="btn-ghost">
+                Dossier →
+              </Link>
               <a
                 href={`https://api.solsentry.app/v1/operator/${wallet}`}
                 target="_blank"
