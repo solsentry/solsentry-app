@@ -32,6 +32,7 @@ export interface LandingCopy {
   // stats
   statsLabelScans: string;
   statsLabelAccuracy: string;
+  statsLabelCritical: string;
   statsLabelUptime: string;
   statsLabelOperators: string;
   statsLabelRugs: string;
@@ -171,7 +172,8 @@ export const COPY: Record<Lang, LandingCopy> = {
     taglineSub: "And where they're going next. Operator-centric, not token-centric.",
 
     statsLabelScans: "Scans · live mainnet",
-    statsLabelAccuracy: "Accuracy · resolved",
+    statsLabelAccuracy: "Aggregate accuracy · resolved",
+    statsLabelCritical: "CRITICAL precision · auditable per-mint",
     statsLabelUptime: "Continuous mainnet",
     statsLabelOperators: "Operators tracked",
     statsLabelRugs: "Confirmed rugs",
@@ -316,7 +318,8 @@ export const COPY: Record<Lang, LandingCopy> = {
     taglineSub: "E pra onde ele tá indo agora. Foco no operador, não no token.",
 
     statsLabelScans: "Scans · mainnet live",
-    statsLabelAccuracy: "Acurácia · resolvido",
+    statsLabelAccuracy: "Acurácia agregada · resolvido",
+    statsLabelCritical: "Precisão CRITICAL · auditável por mint",
     statsLabelUptime: "Mainnet contínuo",
     statsLabelOperators: "Operadores rastreados",
     statsLabelRugs: "Rugs confirmados",
