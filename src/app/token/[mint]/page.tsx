@@ -422,6 +422,13 @@ export default async function TokenPage({ params }: PageProps) {
                       >
                         Trace drain
                       </Link>
+                      <Link
+                        href={`/dossier/${deployer}`}
+                        className="btn-ghost"
+                        style={{ fontSize: 12, padding: "4px 10px" }}
+                      >
+                        Dossier →
+                      </Link>
                     </div>
                   )}
                 </div>

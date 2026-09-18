@@ -522,19 +522,38 @@ export async function fetchHuntersActiveCount(): Promise<number | undefined> {
   return data?.count_total;
 }
 
+export interface DossierIdentitySignal {
+  kind?: string;
+  confidence?: string;
+  description?: string;
+  evidence?: Record<string, unknown>;
+}
+
+// Shape = brain.dossier_builder.DossierReport.to_dict() + handle_dossier additions
+// (tests/fixtures/x402_route_payload_shapes.json, key "dossier").
 export interface Dossier {
   wallet: string;
   built_at?: string;
+  elapsed_s?: number;
   schema_version?: number;
   operator_id?: string | null;
   risk_level?: string | null;
   rug_rate_pct?: number | null;
   total_tokens?: number | null;
   confirmed_rugs?: number | null;
-  genesis?: unknown;
-  first_funder?: unknown;
-  second_funder?: unknown;
+  genesis?: Record<string, unknown> | null;
+  first_funder?: Record<string, unknown> | null;
+  second_funder?: Record<string, unknown> | null;
+  assets?: Record<string, unknown> | null;
+  token_authority_map?: Record<string, unknown> | null;
+  timing_siblings?: unknown[];
   cex_exits?: unknown[];
+  identity_signals?: DossierIdentitySignal[];
+  confidence?: string | null;
+  sources?: string[];
+  errors?: string[];
+  cached?: boolean;
+  latency_ms?: number;
   identity?: unknown;
 }
 
