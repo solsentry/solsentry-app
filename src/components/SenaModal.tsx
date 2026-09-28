@@ -60,7 +60,7 @@ function buildExplanation(s: SenaSubject): string[] {
     }
     if (s.riskLevel === "CRITICAL") {
       lines.push(
-        `Risk level: **CRITICAL ${s.riskScore ?? ""}**. SolSentry só marca CRITICAL com evidência forte — zero falso-positivos confirmados nessa categoria.`,
+        `Risk level: **CRITICAL ${s.riskScore ?? ""}**. SolSentry só marca CRITICAL com evidência forte — a precisão do CRITICAL é auditável por mint em /v1/predictions/{mint}.`,
       );
     } else if (s.riskLevel === "HIGH") {
       lines.push(`Risk level: **HIGH ${s.riskScore ?? ""}**. Indicadores fortes de risco.`);
