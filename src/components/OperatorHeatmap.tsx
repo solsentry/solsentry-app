@@ -110,12 +110,12 @@ function generateMockOperators(): Operator[] {
 
   const operators: Operator[] = [
     {
-      wallet: "4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1",
+      wallet: "DemoXopRatorWa11etExamp1e1111111111111111111",
       riskLevel: "CRITICAL",
       days: createDays("bot"),
-      totalDeploys: 3212,
-      totalRugs: 2953,
-      rugRate: 91.9,
+      totalDeploys: 1240,
+      totalRugs: 1016,
+      rugRate: 81.9,
       lastActive: new Date(now.getTime() - 1000 * 60 * 5),
       isBotFarm: true,
     },

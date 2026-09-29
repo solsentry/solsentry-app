@@ -56,7 +56,7 @@ interface DailyIntelCardProps {
 // Mock data
 const MOCK_DATA: IntelData = {
   date: "May 19",
-  headline: "1.247 novos tokens · 89 rugs detectados · 4kxscute liderou com 47 deploys",
+  headline: "1.247 novos tokens · 89 rugs detectados · 1 operador liderou com 47 deploys",
   highlights: [
     "Bot cluster #847 expanded to 12 wallets — now largest active cluster",
     "Drain alert: 8.2K SOL routed via Cloak mixer in 3 txns",

@@ -5,13 +5,11 @@ import { Section } from "@/components/Section";
 
 export const metadata = { title: "Debug Hub · SolSentry" };
 
-const TEST_OPERATOR = "4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1";
 const TEST_TOKEN = "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263"; // Bonk or any valid token
 const MOCK_TOKEN = "F4GpAFr6vrxU3Y887F3XWkXRgybCVjZNk63m72f6pump"; // from screenshot
 
 export default function DebugHubPage() {
   const links = [
-    { name: "Operator Network (Valid)", path: `/network/${TEST_OPERATOR}`, desc: "Visualização do grafo + Inflow/Outflow." },
     { name: "Token Analysis (Valid)", path: `/token/${TEST_TOKEN}`, desc: "Página de risco com a tabela de Holders e Clusters reais." },
     { name: "Token Analysis (Mock from image)", path: `/token/${MOCK_TOKEN}`, desc: "O token do seu screenshot, para testar a resposta da API (pode dar 404)." },
     { name: "Live Feed", path: "/tokens", desc: "Feed ao vivo de todos os tokens recentes." },

@@ -29,9 +29,9 @@ const CURSOR_CONFIG = `{
 // Illustrative agent prompt — kept in English (code-style example) in both langs.
 const EXAMPLE_PROMPT = `Ask your agent:
 
-  "Use solsentry.scan_wallet to check
-   4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1,
-   then summarize the operator history."
+  "Use solsentry.check_token to check
+   6n6iS9z5Lz3zMfrGHascQov4ZJu939DRVLUpmAjC55ch,
+   then summarize the risk verdict."
 
 The agent calls the tool, gets back JSON,
 and writes you a human answer. No setup

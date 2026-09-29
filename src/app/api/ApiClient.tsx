@@ -68,7 +68,7 @@ const ENDPOINTS: { group: { en: string; pt: string }; items: Endpoint[] }[] = [
           en: "Full operator profile — known flag, risk level, confirmed rugs, total tokens, rug rate, tags, patterns.",
           pt: "Perfil completo do operador — flag known, nível de risco, rugs confirmados, total de tokens, taxa de rug, tags, padrões.",
         },
-        example: "curl https://api.solsentry.app/v1/operator/4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1",
+        example: "curl https://api.solsentry.app/v1/operator/{wallet}",
       },
       {
         method: "GET",
@@ -181,8 +181,9 @@ const ENDPOINTS: { group: { en: string; pt: string }; items: Endpoint[] }[] = [
 export const ENDPOINT_COUNT = ENDPOINTS.reduce((n, g) => n + g.items.length, 0);
 
 const JS_SAMPLE = `// TypeScript
+const wallet = "<WALLET_ADDRESS>";
 const res = await fetch(
-  "https://api.solsentry.app/v1/operator/4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1"
+  \`https://api.solsentry.app/v1/operator/\${wallet}\`
 );
 const op = await res.json();
 
@@ -195,7 +196,7 @@ if (op.known && op.risk_level === "CRITICAL") {
 const PY_SAMPLE = `# Python
 import requests
 
-wallet = "4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1"
+wallet = "<WALLET_ADDRESS>"
 r = requests.get(f"https://api.solsentry.app/v1/operator/{wallet}")
 op = r.json()
 
@@ -205,7 +206,7 @@ if op["known"] and op.get("risk_level") == "CRITICAL":
 const RUST_SAMPLE = `// Rust
 use reqwest;
 
-let wallet = "4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1";
+let wallet = "<WALLET_ADDRESS>";
 let url = format!("https://api.solsentry.app/v1/operator/{}", wallet);
 let op: serde_json::Value = reqwest::get(&url).await?.json().await?;
 println!("Risk: {}", op["risk_level"]);`;

@@ -35,8 +35,8 @@ export function AISuggestionsCard({ loggedIn = false }: AISuggestionsCardProps) 
           id: 1,
           icon: <span>⚠️</span>,
           title: "New serial rugger detected",
-          subtitle: "4kxscute... just launched 3 new tokens in the last 40m",
-          href: "/operator/4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1",
+          subtitle: "DemoXo... just launched 3 new tokens in the last 40m",
+          href: "/operator/DemoXopRatorWa11etExamp1e1111111111111111111",
         },
         {
           id: 2,
@@ -50,7 +50,7 @@ export function AISuggestionsCard({ loggedIn = false }: AISuggestionsCardProps) 
           icon: <span>📈</span>,
           title: "Trojan bot accumulating $RUGX",
           subtitle: "Large position building in the last 18 minutes",
-          href: "/lookup?addr=4kxsCuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1",
+          href: "/lookup?addr=DemoXopRatorWa11etExamp1e1111111111111111111",
         },
       ]
     : [
@@ -58,8 +58,8 @@ export function AISuggestionsCard({ loggedIn = false }: AISuggestionsCardProps) 
           id: 1,
           icon: <span>⚠️</span>,
           title: "New CRITICAL operator active",
-          subtitle: "Same deployer behind 2,953 previous rugs launched again",
-          href: "/operator/4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1",
+          subtitle: "A deployer with prior confirmed rugs launched again",
+          href: "/operator/DemoXopRatorWa11etExamp1e1111111111111111111",
         },
         {
           id: 2,
