@@ -50,19 +50,19 @@ const snsNames = [
 function generateMockOperators(): Operator[] {
   const operators: Operator[] = [];
 
-  // #1 - Canonical case from spec
+  // #1 - Fixed demo entry (synthetic address, illustrative numbers)
   operators.push({
     rank: 1,
-    wallet: "4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1",
+    wallet: "DemoXopRatorWa11etExamp1e1111111111111111111",
     sns: null,
     riskLevel: "CRITICAL",
-    rugRate: 91.9,
-    rugs: 2953,
-    tokensDeployed: 3212,
+    rugRate: 81.9,
+    rugs: 1016,
+    tokensDeployed: 1240,
     lastActive: new Date(Date.now() - 12 * 60000), // 12m ago
     rugHistory: [8, 12, 15, 9, 11, 14, 10],
     tags: ["serial_deployer", "fast_deployer"],
-    avatarUrl: "https://api.dicebear.com/7.x/identicon/svg?seed=4kxscute&backgroundColor=131313",
+    avatarUrl: "https://api.dicebear.com/7.x/identicon/svg?seed=demo-operator&backgroundColor=131313",
   });
 
   // Generate 7 more CRITICAL (total 8)

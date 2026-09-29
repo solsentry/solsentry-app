@@ -50,7 +50,7 @@ export default async function WalletsPage() {
 
           <div className="grid-2">
             <Link
-              href="/operator/4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1"
+              href="/token/6n6iS9z5Lz3zMfrGHascQov4ZJu939DRVLUpmAjC55ch"
               className="panel panel-hover"
               style={{ textDecoration: "none", color: "inherit", display: "block" }}
             >
@@ -58,7 +58,7 @@ export default async function WalletsPage() {
                 className="label-tag"
                 style={{ color: "var(--status-critical)", marginBottom: 8 }}
               >
-                Sample · CRITICAL
+                Sample · resolved CRITICAL prediction
               </div>
               <div
                 style={{
@@ -69,11 +69,11 @@ export default async function WalletsPage() {
                   color: "var(--fg-1)",
                 }}
               >
-                4kxscute…5pH1
+                6n6iS9z5…55ch
               </div>
               <p style={{ color: "var(--fg-2)", fontSize: 13, lineHeight: 1.6 }}>
-                Illustrative operator entry. Open the profile for current API-backed risk and
-                activity data.
+                A mint-level example. Open it for the live risk verdict, then audit the call at
+                <code>{"/v1/predictions/{mint}"}</code>.
               </p>
             </Link>
 

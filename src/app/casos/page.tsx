@@ -5,9 +5,7 @@ export const metadata = {
   title: "Casos — Investigações forenses on-chain | SolSentry",
   description:
     "Investigações forenses publicadas pela SolSentry. Cada caso é reproduzível via API pública, com dados live e trilha de auditoria.",
-  // Holding noindex pending Crash "go" on 4kxscute-as-public-hero (product
-  // gate) + live re-check of the operator-level numbers in the case copy
-  // (LOCK-01; current numbers are stale per CLAUDE.local.md). Reversible.
+  // Holding noindex until a published case is live. Reversible.
   robots: { index: false, follow: false },
 };
 
@@ -23,17 +21,6 @@ interface CaseCard {
 }
 
 const CASES: CaseCard[] = [
-  {
-    slug: "4kxscute",
-    href: "/casos/4kxscute",
-    title: "1 operador. 3.212 tokens. 2.953 rugs em 14 dias.",
-    kicker:
-      "Um único wallet observado ao vivo na mainnet, 40 dias de cobertura, taxa de rug de 96,7%. Cada mint auditável.",
-    readingTime: "8 min de leitura",
-    date: "2026-05-18",
-    status: "live",
-    accent: "#C17D0E",
-  },
   {
     slug: "foundation-watch",
     href: "/casos",

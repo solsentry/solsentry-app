@@ -331,7 +331,7 @@ button { font-family: inherit; }
 const { useState, useEffect, useRef, useCallback } = React;
 
 const API = 'https://api.solsentry.app';
-const DEFAULT_DANGER = '4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1';
+const DEFAULT_DANGER = '6n6iS9z5Lz3zMfrGHascQov4ZJu939DRVLUpmAjC55ch';
 const DEFAULT_SAFE = 'So11111111111111111111111111111111111111112';
 
 // ── API ───────────────────────────────────────────────────────
@@ -646,7 +646,7 @@ function FunMode() {
 
       <div className="fun-examples">
         <span style={{ fontSize: 12, color: 'var(--muted)', alignSelf: 'center', marginRight: 4 }}>Experimente:</span>
-        <button className="fun-example" onClick={() => tryExample(DEFAULT_DANGER)}>⚠️ Operator perigoso</button>
+        <button className="fun-example" onClick={() => tryExample(DEFAULT_DANGER)}>⚠️ Token perigoso (CRITICAL resolvido)</button>
         <button className="fun-example" onClick={() => tryExample(DEFAULT_SAFE)}>✅ Trusted token (SOL)</button>
       </div>
 
@@ -932,17 +932,17 @@ function DevMode() {
 
   const [snippetType, setSnippetType] = useState('curl');
   const examples = {
-    curl: `curl http://localhost:8081/v1/operator/4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1`,
+    curl: `curl http://localhost:8081/v1/operator/<WALLET_ADDRESS>`,
     python: `import requests
-r = requests.get('http://localhost:8081/v1/operator/4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1')
+r = requests.get('http://localhost:8081/v1/operator/<WALLET_ADDRESS>')
 data = r.json()
 print(data['risk_level'], data['confirmed_rugs'])`,
-    ts: `const res = await fetch('http://localhost:8081/v1/operator/4kxscute...');
+    ts: `const res = await fetch('http://localhost:8081/v1/operator/<WALLET_ADDRESS>');
 const data = await res.json();
 console.log(data.risk_level, data.confirmed_rugs);`,
     mcp: `# From MCP-compatible client:
 tool: check_operator
-args: { wallet: "4kxscuteRLQdNi..." }
+args: { wallet: "<WALLET_ADDRESS>" }
 # Returns structured risk profile`
   };
 
@@ -1000,7 +1000,7 @@ args: { wallet: "4kxscuteRLQdNi..." }
         <div className="dev-section-title">Response Schema — Operator</div>
         <div className="dev-code">
           <button className="dev-code-copy" onClick={() => copyToClipboard(`{
-  "wallet": "4kxscuteRLQdNi...",
+  "wallet": "<WALLET_ADDRESS>",
   "known": true,
   "risk_level": "CRITICAL",
   "risk_label": "serial_rugger",
@@ -1013,7 +1013,7 @@ args: { wallet: "4kxscuteRLQdNi..." }
   "last_seen": 1745136000
 }`)}>Copy</button>
 <pre style={{ whiteSpace: 'pre-wrap', margin: 0, fontFamily: 'inherit', color: '#88ddff' }}>{`{
-  "wallet": "4kxscuteRLQdNi...",
+  "wallet": "<WALLET_ADDRESS>",
   "known": true,
   "risk_level": "CRITICAL",
   "risk_label": "serial_rugger",

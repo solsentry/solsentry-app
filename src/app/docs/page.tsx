@@ -108,14 +108,15 @@ export default function DocsPage() {
             >{`import { SolSentryClient } from "@solsentry/mcp/client";
 
 const sol = new SolSentryClient();
+const wallet = "<WALLET_ADDRESS>";
 
 const op = await sol.get<{
   risk_level: string;
   confirmed_rugs: number;
-}>("/v1/operator/4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1");
+}>(\`/v1/operator/\${wallet}\`);
 
 if (op.risk_level === "CRITICAL") {
-  console.warn(\`Serial rugger: \${op.confirmed_rugs} confirmed rugs\`);
+  console.warn(\`CRITICAL operator: \${op.confirmed_rugs} confirmed rugs\`);
 }`}</pre>
           </div>
         </section>
@@ -135,7 +136,7 @@ if (op.risk_level === "CRITICAL") {
 curl https://api.solsentry.app/v1/stats
 
 # Operator risk profile
-curl https://api.solsentry.app/v1/operator/4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1
+curl https://api.solsentry.app/v1/operator/<wallet>
 
 
 # Token risk

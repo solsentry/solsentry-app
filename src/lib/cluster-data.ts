@@ -45,7 +45,7 @@ export function generateMockClusters(): BotCluster[] {
       tags: ["fast_deployer", "high_volume", "coordinated"],
       topWallets: [
         {
-          address: "4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1",
+          address: "DemoXopRatorWa11etExamp1e1111111111111111111",
           deploys: 423,
           rugs: 401,
           rugRate: 94.8,

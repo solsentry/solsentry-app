@@ -23,12 +23,12 @@ npm run lint         # eslint
 npm run format       # prettier --write src
 npm run format:check # prettier --check
 ```
-Antes de fechar: `npm run build` verde + `git grep -niE "real.?time" src/` só com a negação aceitável do CaseStudy.
+Antes de fechar: `npm run build` verde + `git grep -niE "real.?time" src/` só com negação aceitável.
 
 ## 🚦 GATE de copy (resumo — autoridade `.agent/site-context/brand-voice/19_ANTI_POSITIONING.md §2)
 NUNCA: "zero false positives" · "real-time" sem qualifier (→ "low-latency") · "AI-powered" (→ "ALife agents"/"operator graph") ·
-mitologia (token #62 / 19min / 1.059) · agregados operator-level de SISTEMA (LOCK-01) · 4kxscute como pessoa nomeada (é wallet/cluster) ·
-buzzword. SEMPRE: número só de `/v1/stats` live (nunca hardcodar) · "97.7% CRITICAL precision — auditable per-mint".
+mitologia (token #62 / 19min / 1.059) · agregados operator-level de SISTEMA (LOCK-01) · operador nomeado como "serial rugger"/"deployer" ou número por operador vindo de `operator_profiles` (LOCK-03; exemplo = mint-level ou placeholder `<WALLET_ADDRESS>`) ·
+buzzword. SEMPRE: número só de `/v1/stats` live (nunca hardcodar) · "XX.X% CRITICAL precision — auditable per-mint" (XX.X = valor live do dia).
 
 ## Git
 - `.agent/` é gitignored — nunca commitar (estratégia/competidor interna).

@@ -625,7 +625,7 @@ function SenaChat({
           "O hot wallet da Binance recebeu os fundos às 18:35. Estimativa de liquidação: 2-4h após depósito baseado em padrões históricos deste cluster.",
         fast: "O padrão 'fast-cashout' é caracterizado por: split inicial em 3+ wallets, consolidação em menos de 4h, e destino final em CEX tier-1. Detectamos 8 eventos similares nos últimos 7 dias.",
         cluster:
-          "Cluster #847 inclui 23 wallets identificadas, com 91.9% de taxa de rug. Operador principal: 4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1 (serial_deployer).",
+          "Cluster #847 inclui 23 wallets identificadas, com 91.9% de taxa de rug. Operador principal (exemplo): DemoXo…1111 (serial_deployer).",
         recover:
           "Infelizmente, uma vez que os fundos chegaram ao CEX, a recuperação depende de ação legal junto à exchange. Recomendamos reportar o incidente à Binance com os hashes das transações.",
       };
