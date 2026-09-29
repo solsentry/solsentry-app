@@ -22,8 +22,6 @@ import Link from "next/link";
 
 export const revalidate = 60;
 
-const SAMPLE_WALLET = "4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1";
-
 // Grok design tokens (dark-only, matches the site's amber palette).
 const T = {
   bg: "#0a0a0a",
@@ -94,11 +92,7 @@ export default async function OperatorPage({ params, searchParams }: PageProps) 
               }}
             >
               Operator profile ·{" "}
-              {wallet === SAMPLE_WALLET
-                ? "sample · CRITICAL"
-                : op?.known
-                  ? "live · tracked"
-                  : "live"}
+              {op?.known ? "live · tracked" : "live"}
             </div>
             <div style={{ display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap" }}>
               <div

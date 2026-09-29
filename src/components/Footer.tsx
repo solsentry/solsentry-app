@@ -48,12 +48,12 @@ export function Footer() {
                 Live stats
               </a>
               <a
-                href="https://api.solsentry.app/v1/operator/4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1"
+                href="https://api.solsentry.app/v1/predictions/6n6iS9z5Lz3zMfrGHascQov4ZJu939DRVLUpmAjC55ch"
                 target="_blank"
                 rel="noreferrer"
                 style={{ color: "var(--fg-2)", textDecoration: "none" }}
               >
-                Operator example
+                Audit a prediction
               </a>
               <a
                 href="https://api.solsentry.app/health"

@@ -107,8 +107,8 @@ const COPY: Record<Lang, AboutCopy> = {
     originP2Strong: "The unit of analysis is wrong.",
     originP2Rest:
       " The token is disposable. The operator is the persistent identity. SolSentry is the operator graph that didn’t exist — a cross-token, cross-wallet database of who deploys what on Solana, computed live from the chain, free for retail.",
-    originP3Pre: "Started January 2025. First mainnet write April 8, 2026. A tracked operator wallet (",
-    originP3Post: ") remains a live sample for public verification.",
+    originP3Pre: "Started January 2025. First mainnet write April 8, 2026. Every call is auditable per mint — for example, one resolved CRITICAL prediction (",
+    originP3Post: ") is served live for public verification.",
     diffTitle: "What makes it different",
     othersLabel: "Others",
     usLabel: "SolSentry",
@@ -190,8 +190,8 @@ const COPY: Record<Lang, AboutCopy> = {
     originP2Rest:
       " O token é descartável. O operador é a identidade persistente. O SolSentry é o grafo de operadores que não existia — um banco de dados cross-token, cross-wallet de quem deploya o quê na Solana, computado ao vivo da chain, gratuito para o varejo.",
     originP3Pre:
-      "Iniciado em janeiro de 2025. Primeira escrita na mainnet em 8 de abril de 2026. Uma wallet de operador rastreada (",
-    originP3Post: ") continua como amostra ao vivo para verificação pública.",
+      "Iniciado em janeiro de 2025. Primeira escrita na mainnet em 8 de abril de 2026. Cada chamada é auditável por mint — por exemplo, uma predição CRITICAL já resolvida (",
+    originP3Post: ") é servida ao vivo para verificação pública.",
     diffTitle: "O que o torna diferente",
     othersLabel: "Outros",
     usLabel: "SolSentry",
@@ -302,12 +302,12 @@ export function AboutClient({ stats }: { stats: NetworkStats | null }) {
             <p>
               {t.originP3Pre}
               <a
-                href="https://api.solsentry.app/v1/operator/4kxscuteRLQdNiTXA33YYsvywAPNA6DQTifswxjL5pH1"
+                href="https://api.solsentry.app/v1/predictions/6n6iS9z5Lz3zMfrGHascQov4ZJu939DRVLUpmAjC55ch"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-link"
               >
-                4kxscute…
+                6n6iS9z5…55ch
               </a>
               {t.originP3Post}
             </p>
