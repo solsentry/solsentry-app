@@ -5,6 +5,8 @@ import { NextRequest, NextResponse } from "next/server";
  *
  * Public routes: / · /about · /docs · /changelog · /mcp · /api · /architecture
  *                /telegram · /auth/verify
+ * Gated by NEXT_PUBLIC_M2_APP_OPEN=1: /app · /login · /pricing · /token · /operator
+ *                /network · /drain · /dossier
  *
  * Everything else → 307 redirect to / + X-Robots-Tag: noindex.
  * Static assets, Next internals, and /api route handlers are always allowed.
@@ -39,7 +41,12 @@ const ALLOWLIST_PREFIXES = [
   "/auth/verify", // magic-link landing — without this the emailed link 307s to / and eats the token
   // This flag is the per-phase route gate.
   // Its value is decided by the owner.
-  ...(process.env.NEXT_PUBLIC_M2_APP_OPEN === "1" ? ["/app", "/login"] : []),
+  // M3 (D+7): /app's watchlist links land on /token and /operator, whose cards
+  // link on to /network, /drain and /dossier; /pricing is the live-priced page.
+  // Without these the cohort clicks a tracked token and 307s back to /.
+  ...(process.env.NEXT_PUBLIC_M2_APP_OPEN === "1"
+    ? ["/app", "/login", "/pricing", "/token", "/operator", "/network", "/drain", "/dossier"]
+    : []),
 ];
 
 function isAllowed(pathname: string): boolean {
