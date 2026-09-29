@@ -102,7 +102,7 @@ export default function ArchitecturePage() {
             <Arrow down />
             <FlowNode
               title="03 · Stage 2 — Deep enrichment"
-              desc="HolderEngine via Helius DAS · InsightX (5 keys, 60s cooldown) · DexScreener for symbol · Nansen on demand. Background, async."
+              desc="HolderEngine via Helius DAS · InsightX · DexScreener for symbol · Nansen on demand. Background, async."
               accent="amber"
             />
             <Arrow down />
