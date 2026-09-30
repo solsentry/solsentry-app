@@ -5,6 +5,8 @@ import { NextRequest, NextResponse } from "next/server";
  *
  * Public routes: / · /about · /docs · /changelog · /mcp · /api · /architecture
  *                /telegram · /auth/verify
+ * Closed beta (token card only): /lookup · /token/*
+ *   Wallet surfaces (/operator/*, /dossier/*, /network/*, /drain/*) stay CLOSED.
  *
  * Everything else → 307 redirect to / + X-Robots-Tag: noindex.
  * Static assets, Next internals, and /api route handlers are always allowed.
@@ -37,6 +39,8 @@ const ALLOWLIST_PREFIXES = [
   "/architecture",
   "/telegram",
   "/auth/verify", // magic-link landing — without this the emailed link 307s to / and eats the token
+  "/lookup", // closed beta: address search entry (token mints only; wallets get a "not open yet" message)
+  "/token", // closed beta: token risk card /token/[mint] (NOT /tokens — prefix match is exact or "/token/")
   // This flag is the per-phase route gate.
   // Its value is decided by the owner.
   ...(process.env.NEXT_PUBLIC_M2_APP_OPEN === "1" ? ["/app", "/login"] : []),
