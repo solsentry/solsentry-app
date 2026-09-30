@@ -16,11 +16,6 @@ function fmtInt(n: number | undefined | null): string {
   return n.toLocaleString();
 }
 
-function fmtPct(n: number | undefined | null, d = 1): string {
-  if (n == null) return "—";
-  return `${n.toFixed(d)}%`;
-}
-
 function fmtHours(lang: Lang, n: number | undefined | null): string {
   if (n == null) return "—";
   if (n >= 1000) return `${(n / 24).toFixed(0)} ${lang === "pt" ? "dias" : "days"}`;
@@ -41,8 +36,6 @@ interface AboutCopy {
   heroSub: string;
   statContinuous: string;
   statPredictions: string;
-  statCritical: string;
-  statAccuracy: string;
   statsFootnote: string;
   // §2 origin
   originTitle: string;
@@ -70,8 +63,7 @@ interface AboutCopy {
   honestTitle: string;
   honestPre: string;
   honestPost: string;
-  honestAccuracyA: string;
-  honestAccuracyB: string;
+  honestAudit: string;
   // §6 trust
   trustTitle: string;
   trust: { label: string; detail: string; href: string }[];
@@ -98,8 +90,6 @@ const COPY: Record<Lang, AboutCopy> = {
       "Solo-built. Free. Open-core. Live mainnet since April 2026 — tracking the wallets behind serial rug deployments before they catch the next buyer.",
     statContinuous: "Continuous mainnet",
     statPredictions: "Predictions issued",
-    statCritical: "CRITICAL precision",
-    statAccuracy: "Accuracy (resolved)",
     statsFootnote: "All numbers live. Click any stat to verify against the public API.",
     originTitle: "Why SolSentry exists",
     originP1:
@@ -137,8 +127,7 @@ const COPY: Record<Lang, AboutCopy> = {
     honestTitle: "The honest numbers",
     honestPre: "Aggregate metrics on this page refresh from ",
     honestPost: " every 60 seconds.",
-    honestAccuracyA: "Aggregate accuracy ",
-    honestAccuracyB: " across ",
+    honestAudit: "Every prediction is auditable per mint at",
     trustTitle: "Trust & transparency",
     trust: [
       { label: "Public REST API", detail: "No auth required for /v1/stats, /v1/operator, /v1/predictions", href: "https://api.solsentry.app/v1/stats" },
@@ -180,8 +169,6 @@ const COPY: Record<Lang, AboutCopy> = {
       "Construído solo. Gratuito. Open-core. Mainnet ao vivo desde abril de 2026 — rastreando as wallets por trás de rugs seriais antes que peguem o próximo comprador.",
     statContinuous: "Mainnet contínua",
     statPredictions: "Predições emitidas",
-    statCritical: "Precisão CRITICAL",
-    statAccuracy: "Acurácia (resolvidas)",
     statsFootnote: "Todos os números são ao vivo. Clique em qualquer stat para verificar na API pública.",
     originTitle: "Por que o SolSentry existe",
     originP1:
@@ -220,8 +207,7 @@ const COPY: Record<Lang, AboutCopy> = {
     honestTitle: "Os números honestos",
     honestPre: "As métricas agregadas nesta página são atualizadas de ",
     honestPost: " a cada 60 segundos.",
-    honestAccuracyA: "Acurácia agregada ",
-    honestAccuracyB: " em ",
+    honestAudit: "Cada previsão é auditável por mint em",
     trustTitle: "Confiança e transparência",
     trust: [
       { label: "API REST pública", detail: "Sem autenticação para /v1/stats, /v1/operator, /v1/predictions", href: "https://api.solsentry.app/v1/stats" },
@@ -280,8 +266,6 @@ export function AboutClient({ stats }: { stats: NetworkStats | null }) {
             <div className="about-stat-grid">
               <AboutStat label={t.statContinuous} value={fmtHours(lang, stats?.runtime_hours)} href="https://api.solsentry.app/v1/stats" />
               <AboutStat label={t.statPredictions} value={fmtInt(stats?.total_predictions)} href="https://api.solsentry.app/v1/stats" />
-              <AboutStat label={t.statCritical} value={fmtPct(stats?.critical_precision_pct)} href="https://api.solsentry.app/v1/stats" />
-              <AboutStat label={t.statAccuracy} value={fmtPct(stats?.accuracy_pct)} href="https://api.solsentry.app/v1/stats" />
             </div>
 
             <p style={{ fontSize: 11, color: "var(--fg-3)", fontFamily: "var(--font-mono)", marginTop: 12 }}>
@@ -373,17 +357,9 @@ export function AboutClient({ stats }: { stats: NetworkStats | null }) {
               </a>
               {t.honestPost}
             </p>
-            <ul style={{ lineHeight: 1.8, color: "var(--fg-2)" }}>
-              <li>
-                <strong>
-                  {t.honestAccuracyA}
-                  {fmtPct(stats?.accuracy_pct)}
-                </strong>
-                {t.honestAccuracyB}
-                {fmtInt(stats?.total_predictions)}{" "}
-                {lang === "pt" ? "predições" : "predictions"}
-              </li>
-            </ul>
+            <p>
+              {t.honestAudit} <code>/v1/predictions/{"{mint}"}</code>.
+            </p>
           </div>
         </section>
 

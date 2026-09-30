@@ -222,8 +222,8 @@ export function generateMockClusters(): BotCluster[] {
       clusterId: 445,
       walletCount: 51,
       totalDeploys: 1567,
-      totalRugs: 940,
-      rugRate: 60.0,
+      totalRugs: 941,
+      rugRate: 60.1,
       risk: "MEDIUM",
       tags: ["mixed_behavior", "moderate_risk"],
       topWallets: [
