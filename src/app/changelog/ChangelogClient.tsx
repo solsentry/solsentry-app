@@ -2,8 +2,7 @@
 
 // /changelog — bilingual client body (PT/EN from saved pref or
 // navigator.language; see useLang / B8.4a). The server wrapper (page.tsx)
-// keeps EN metadata + fetches the live CRITICAL precision, passed as
-// `criticalPct` so there's no client "…%" flash on this CTA page.
+// keeps EN metadata + revalidate.
 //
 // Endpoint paths, package names and code identifiers stay verbatim in both
 // languages (backtick segments render as <code>). Plan is closed/invite-only
@@ -104,8 +103,8 @@ const MONTHS: Month[] = [
       {
         lead: { en: "Classifier self-correction.", pt: "Autocorreção do classificador." },
         body: {
-          en: "Found and fixed a false-positive class (position-NFTs read as tokens); backfilled affected predictions. CRITICAL-tier precision now {criticalPct}, auditable per-mint at `/v1/predictions/{mint}`.",
-          pt: "Encontrou e corrigiu uma classe de falso positivo (position-NFTs lidos como tokens); predições afetadas preenchidas retroativamente. Precisão CRITICAL agora em {criticalPct}, auditável por mint em `/v1/predictions/{mint}`.",
+          en: "Found and fixed a false-positive class (position-NFTs read as tokens); backfilled affected predictions. Every prediction is auditable per mint at `/v1/predictions/{mint}`.",
+          pt: "Encontrou e corrigiu uma classe de falso positivo (position-NFTs lidos como tokens); predições afetadas preenchidas retroativamente. Toda predição é auditável por mint em `/v1/predictions/{mint}`.",
         },
       },
       {
@@ -397,9 +396,9 @@ const COPY: Record<Lang, CLCopy> = {
   },
 };
 
-// Render text where backtick segments become <code> and {criticalPct} is
-// substituted with the live value. {wallet}/{mint} inside code stay literal.
-function renderRich(text: string, criticalPct: string, codeClass?: string): React.ReactNode {
+// Render text where backtick segments become <code>.
+// {wallet}/{mint} inside code stay literal.
+function renderRich(text: string, codeClass?: string): React.ReactNode {
   const segs = text.split("`");
   return segs.map((seg, i) =>
     i % 2 === 1 ? (
@@ -407,12 +406,12 @@ function renderRich(text: string, criticalPct: string, codeClass?: string): Reac
         {seg}
       </code>
     ) : (
-      <span key={i}>{seg.split("{criticalPct}").join(criticalPct)}</span>
+      <span key={i}>{seg}</span>
     ),
   );
 }
 
-export function ChangelogClient({ criticalPct }: { criticalPct: string }) {
+export function ChangelogClient() {
   const lang = useLang();
   const t = COPY[lang];
 
@@ -461,8 +460,8 @@ export function ChangelogClient({ criticalPct }: { criticalPct: string }) {
                 <ul className="changelog-list">
                   {m.entries.map((e) => (
                     <li key={e.lead.en}>
-                      <strong>{renderRich(e.lead[lang], criticalPct)}</strong>{" "}
-                      {renderRich(e.body[lang], criticalPct)}
+                      <strong>{renderRich(e.lead[lang])}</strong>{" "}
+                      {renderRich(e.body[lang])}
                     </li>
                   ))}
                 </ul>
@@ -493,7 +492,7 @@ export function ChangelogClient({ criticalPct }: { criticalPct: string }) {
               <AnchorCard
                 key={a.label.en}
                 label={a.label[lang]}
-                detail={renderRich(a.detail[lang], criticalPct, "anchor-code")}
+                detail={renderRich(a.detail[lang], "anchor-code")}
                 href={a.href}
               />
             ))}

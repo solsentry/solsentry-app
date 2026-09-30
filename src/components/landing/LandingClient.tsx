@@ -212,9 +212,10 @@ export function LandingClient({ stats, hideChrome = false }: Props & { hideChrom
                   }}
                 >
                   LIVE • {stats.totalPredictions?.toLocaleString?.() || "?"}{" "}
-                  {lang === "pt" ? "predições" : "predictions"} • {stats.accuracyPct ?? "?"}%{" "}
-                  {lang === "pt" ? "acurácia" : "accuracy"} • {stats.criticalPrecisionPct ?? "?"}%
-                  CRITICAL precision — auditable per-mint
+                  {lang === "pt" ? "predições" : "predictions"} •{" "}
+                  {lang === "pt"
+                    ? "cada predição auditável por mint"
+                    : "every prediction auditable per mint"}
                 </div>
               )}
             </div>

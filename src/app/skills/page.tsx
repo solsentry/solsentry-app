@@ -4,47 +4,26 @@ import { fetchBrainSkills } from "@/lib/api";
 export const revalidate = 120;
 
 export const metadata = {
-  title: "Brain skills — TP/FP per detection",
+  title: "Brain skills — detection signals",
   description:
-    "SolSentry brain skills — true-positive vs false-positive ratios per detection signal. Live precision from outcome resolutions.",
+    "SolSentry brain skills — the detection signals the brain can fire, with firing counts.",
 };
 
 interface SkillRow {
   name: string;
   description?: string;
-  tp: number;
-  fp: number;
-  precision: number;
   fired: number;
 }
 
 function normalize(raw: Record<string, unknown>): SkillRow {
-  const tpCandidate =
-    (raw.tp as number | undefined) ??
-    (raw.true_positives as number | undefined) ??
-    (raw.true_positive as number | undefined) ??
-    0;
-  const fpCandidate =
-    (raw.fp as number | undefined) ??
-    (raw.false_positives as number | undefined) ??
-    (raw.false_positive as number | undefined) ??
-    0;
-  const tp = Number.isFinite(tpCandidate) ? Number(tpCandidate) : 0;
-  const fp = Number.isFinite(fpCandidate) ? Number(fpCandidate) : 0;
-  const total = tp + fp;
-  const precisionRaw =
-    (raw.precision as number | undefined) ?? (raw.precision_pct as number | undefined);
-  let precision = total > 0 ? tp / total : 0;
-  if (precisionRaw !== undefined && Number.isFinite(precisionRaw)) {
-    precision = precisionRaw > 1 ? precisionRaw / 100 : precisionRaw;
-  }
+  const num = (v: unknown): number => (typeof v === "number" && Number.isFinite(v) ? v : 0);
+  const outcomes =
+    num(raw.tp ?? raw.true_positives ?? raw.true_positive) +
+    num(raw.fp ?? raw.false_positives ?? raw.false_positive);
   return {
     name: String(raw.name ?? raw.invariant ?? raw.skill ?? "unknown"),
     description: raw.description ? String(raw.description) : undefined,
-    tp,
-    fp,
-    precision,
-    fired: (raw.fired as number | undefined) ?? (raw.firings as number | undefined) ?? total,
+    fired: num(raw.fired ?? raw.firings) || outcomes,
   };
 }
 
@@ -54,8 +33,8 @@ export default async function SkillsPage() {
 
   const skills: SkillRow[] = rawSkills
     .map(normalize)
-    .filter((s) => s.fired > 0 || s.tp + s.fp > 0)
-    .sort((a, b) => b.precision - a.precision);
+    .filter((s) => s.fired > 0)
+    .sort((a, b) => a.name.localeCompare(b.name));
 
   return (
     <ProShell>
@@ -70,7 +49,7 @@ export default async function SkillsPage() {
               marginBottom: 6,
             }}
           >
-            BRAIN · SKILLS · sorted by precision
+            BRAIN · SKILLS · sorted by name
           </div>
           <h1
             style={{
@@ -85,10 +64,8 @@ export default async function SkillsPage() {
             Detection skill audit
           </h1>
           <p style={{ color: "var(--fg-2)", fontSize: 14, marginTop: 6 }}>
-            Each skill is one detection signal the brain can fire. Ground-truth comes from token
-            outcome resolutions — we count true positives against false positives per skill in
-            production. Green = trustworthy (&gt;75%). Amber = monitored (40–75%). Red = under
-            review (&lt;40%).
+            Each skill is one detection signal the brain can fire. Per-signal outcome statistics are
+            paused until the next re-measurement; firing counts below are raw volume.
           </p>
         </header>
 
@@ -128,19 +105,6 @@ export default async function SkillsPage() {
             }}
           >
             {skills.map((s) => {
-              const pct = s.precision * 100;
-              const color =
-                pct >= 75
-                  ? "var(--brand-teal)"
-                  : pct >= 40
-                    ? "var(--brand-amber)"
-                    : "var(--status-critical)";
-              const bg =
-                pct >= 75
-                  ? "var(--brand-teal-tint)"
-                  : pct >= 40
-                    ? "var(--brand-amber-tint)"
-                    : "var(--status-critical-tint)";
               return (
                 <li
                   key={s.name}
@@ -148,7 +112,7 @@ export default async function SkillsPage() {
                     padding: 14,
                     background: "var(--surface)",
                     border: `1px solid var(--border)`,
-                    borderLeft: `3px solid ${color}`,
+                    borderLeft: "3px solid var(--brand-amber)",
                     borderRadius: 6,
                   }}
                 >
@@ -170,20 +134,6 @@ export default async function SkillsPage() {
                       }}
                     >
                       {s.name}
-                    </span>
-                    <span
-                      style={{
-                        fontFamily: "var(--font-display)",
-                        fontWeight: 700,
-                        fontSize: 22,
-                        color,
-                        letterSpacing: "-0.01em",
-                        background: bg,
-                        padding: "2px 10px",
-                        borderRadius: 4,
-                      }}
-                    >
-                      {pct.toFixed(1)}%
                     </span>
                   </div>
                   {s.description && (
@@ -207,18 +157,6 @@ export default async function SkillsPage() {
                       color: "var(--fg-3)",
                     }}
                   >
-                    <span>
-                      TP{" "}
-                      <strong style={{ color: "var(--brand-teal)" }}>
-                        {s.tp.toLocaleString()}
-                      </strong>
-                    </span>
-                    <span>
-                      FP{" "}
-                      <strong style={{ color: "var(--status-critical)" }}>
-                        {s.fp.toLocaleString()}
-                      </strong>
-                    </span>
                     <span>
                       Fired{" "}
                       <strong style={{ color: "var(--fg-1)" }}>{s.fired.toLocaleString()}</strong>

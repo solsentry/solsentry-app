@@ -4,14 +4,12 @@ import { useEffect, useState, useRef } from "react";
 
 interface Stats {
   total_predictions?: number;
-  accuracy_pct?: number;
   total_operators?: number;
   serial_ruggers?: number;
   bot_clusters?: number;
   confirmed_rugs?: number;
   high_risk_alerts?: number;
   runtime_hours?: number;
-  critical_precision_pct?: number;
 }
 
 interface Alert {
@@ -284,7 +282,7 @@ function BigNumberPanel({ stats }: { stats: Stats | null }) {
           marginTop: 16,
         }}
       >
-        tokens scanned · {stats?.accuracy_pct?.toFixed(1) ?? "—"}% accuracy
+        tokens scanned
       </div>
       <div
         style={{
@@ -294,7 +292,7 @@ function BigNumberPanel({ stats }: { stats: Stats | null }) {
           marginTop: 12,
         }}
       >
-        {stats?.critical_precision_pct?.toFixed(1) ?? "97.7"}% CRITICAL — auditable per-mint · {fmtN(stats?.confirmed_rugs)} confirmed rugs
+        every prediction auditable per mint · {fmtN(stats?.confirmed_rugs)} confirmed rugs
       </div>
     </div>
   );

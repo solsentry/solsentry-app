@@ -13,8 +13,6 @@ import type { LandingCopy } from "@/lib/i18n-landing";
 export interface LiveStatsPayload {
   ok: boolean;
   totalPredictions?: number;
-  accuracyPct?: number;
-  criticalPrecisionPct?: number;
   runtimeHours?: number;
   rugs?: number;
 }
@@ -22,11 +20,6 @@ export interface LiveStatsPayload {
 function fmtInt(n?: number): string {
   if (n == null) return "—";
   return n.toLocaleString("en-US");
-}
-
-function fmtPct(n?: number): string {
-  if (n == null) return "—";
-  return `${n.toFixed(1)}%`;
 }
 
 function fmtUptime(hours: number | undefined, lang: "en" | "pt"): string {
@@ -65,19 +58,9 @@ export function LiveStatsBar({ copy, lang, stats }: Props) {
       href: "https://api.solsentry.app/v1/stats",
     },
     {
-      label: copy.statsLabelAccuracy,
-      value: fmtPct(stats.accuracyPct),
-      href: "https://api.solsentry.app/v1/stats",
-    },
-    {
       label: copy.statsLabelUptime,
       value: fmtUptime(stats.runtimeHours, lang),
       href: "https://api.solsentry.app/health",
-    },
-    {
-      label: "CRITICAL precision",
-      value: fmtPct(stats.criticalPrecisionPct),
-      href: "https://api.solsentry.app/v1/stats",
     },
     {
       label: copy.statsLabelRugs,

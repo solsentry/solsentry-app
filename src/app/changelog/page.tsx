@@ -1,12 +1,10 @@
-// /changelog — server wrapper: keeps EN metadata (SEO) + revalidate + the
-// live CRITICAL precision fetch (server-rendered so there's no client "…%"
-// flash on this CTA page), then renders the bilingual client body (PT/EN
-// from saved pref or navigator.language; see useLang / B8.4a).
+// /changelog — server wrapper: keeps EN metadata (SEO) + revalidate, then
+// renders the bilingual client body (PT/EN from saved pref or
+// navigator.language; see useLang / B8.4a).
 //
 // Content source: internal/marketing/social/CHANGELOG_PUBLIC.md (curated,
 // gate-checked). NOTE: no noindex — this page is intentionally public.
 
-import { fetchStats } from "@/lib/api";
 import { ChangelogClient } from "./ChangelogClient";
 
 export const metadata = {
@@ -24,8 +22,5 @@ export const metadata = {
 export const revalidate = 60;
 
 export default async function ChangelogPage() {
-  const stats = await fetchStats();
-  const criticalPct =
-    stats?.critical_precision_pct != null ? `${stats.critical_precision_pct.toFixed(1)}%` : "—";
-  return <ChangelogClient criticalPct={criticalPct} />;
+  return <ChangelogClient />;
 }
