@@ -19,7 +19,7 @@ import { BetaAccessModal } from "@/components/BetaAccessModal";
  * Currently used on homepage via LandingChrome (will be unified).
  * Regular pages still use the older Nav.tsx during migration.
  */
-export function SiteTopbar() {
+export function SiteTopbar({ hideClosedLinks = false }: { hideClosedLinks?: boolean } = {}) {
   const pathname = usePathname();
   const [lang, setLang] = useState<"en" | "pt">("en");
   const [theme, setTheme] = useState<"dark" | "light">("dark");
@@ -140,7 +140,26 @@ export function SiteTopbar() {
                 }}
               />
 
-              <Link
+{hideClosedLinks ? (
+                <span
+                  aria-disabled="true"
+                  title="Not open yet"
+                  style={{
+                    padding: "8px 12px",
+                    borderRadius: 4,
+                    color: "var(--fg-3)",
+                    opacity: 0.5,
+                    minHeight: 36,
+                    display: "flex",
+                    alignItems: "center",
+                    fontSize: 11,
+                    cursor: "not-allowed",
+                  }}
+                >
+                  Pro
+                </span>
+              ) : (
+                              <Link
                 href="/pro"
                 style={{
                   padding: "8px 12px",
@@ -158,6 +177,7 @@ export function SiteTopbar() {
               >
                 Pro
               </Link>
+              )}
 
               <span
                 style={{

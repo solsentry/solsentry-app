@@ -183,6 +183,13 @@ export interface Token {
     swaps_analyzed?: number;
   } | null;
   launch_platform?: string;
+  // Deployer-attribution gate (closed-beta token card): the raw `dev_wallet` is NOT
+  // necessarily the deployer (can be an LP-position holder / third party). Only
+  // render it when attribution === "verified" AND verdict === "verified_deployer".
+  dev_wallet_attribution?: string | null;
+  dev_wallet_verdict?: string | null;
+  dev_wallet_source?: string | null;
+  dev_wallet_note?: string | null;
   has_mint_authority?: boolean;
   has_freeze_authority?: boolean;
   lp_locked_pct?: number;
@@ -327,6 +334,32 @@ export async function fetchOperatorTimeline(wallet: string): Promise<OperatorTim
 
 export async function fetchToken(mint: string): Promise<Token | null> {
   return safeFetch<Token>(`/v1/token/${encodeURIComponent(mint)}`, TTL.token);
+}
+
+export type TokenFetchState =
+  | { status: "ok"; token: Token }
+  | { status: "not_found" }
+  | { status: "unavailable" };
+
+/**
+ * Token fetch that tells "unknown mint" (404) apart from "API slow/down/rate-limited"
+ * (timeout, 429, 5xx, network) so the card can show the right message.
+ * Hard 10s timeout so a slow API never hangs the page.
+ */
+export async function fetchTokenState(mint: string): Promise<TokenFetchState> {
+  try {
+    const res = await fetch(`${API_URL}/v1/token/${encodeURIComponent(mint)}`, {
+      next: { revalidate: TTL.token },
+      signal: AbortSignal.timeout(10_000),
+    });
+    if (res.status === 404) return { status: "not_found" };
+    if (!res.ok) return { status: "unavailable" };
+    const token = (await res.json()) as Token;
+    if (!token || typeof token !== "object") return { status: "unavailable" };
+    return { status: "ok", token };
+  } catch {
+    return { status: "unavailable" };
+  }
 }
 
 export async function fetchHolders(mint: string): Promise<Holders | null> {
