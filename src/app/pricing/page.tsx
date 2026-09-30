@@ -50,7 +50,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "Open-core, certo?",
-    a: "Sim. MCP client (@solsentry/mcp) é MIT open-source. Core data e AI features ficam atrás do paywall, sustentando o desenvolvimento e a infraestrutura.",
+    a: "Sim. O cliente MCP (@solsentry/mcp) tem licença MIT — o SolSentry é open-core. Core data e AI features ficam atrás do paywall, sustentando o desenvolvimento e a infraestrutura.",
   },
 ];
 

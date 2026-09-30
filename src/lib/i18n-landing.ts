@@ -228,7 +228,7 @@ export const COPY: Record<Lang, LandingCopy> = {
     senaSub:
       "Sena is the face of our autonomous brain. She explains risk in plain language — direct, evidence-first, never sensationalized.",
     senaSample:
-      "“This operator has 2,898 confirmed rugs across 3,110 tokens. Tags: rebrand_artist, fast_deployer. Want me to show the last five deployments?”",
+      "“This deployer has confirmed rugs on record, each one verified on-chain. Tags: rebrand_artist, fast_deployer. Want me to show the last five deployments?”",
     senaCta: "Open Sena on a live operator →",
     senaHint: "Free preview — three messages per session before sign-in is required.",
 
@@ -245,7 +245,7 @@ export const COPY: Record<Lang, LandingCopy> = {
     buildCta: "Open",
 
     trustTitle: "Trust by design",
-    trustOss: "Open-source MCP, docs and Birdeye Radar integration",
+    trustOss: "MIT-licensed MCP client, public docs and Birdeye Radar integration",
     trustAudit: "97.x% CRITICAL — auditable per-mint",
     trustAuditNote: "Verify any prediction at /v1/predictions/{mint}. No metric is hand-tuned.",
     trustAbout: "Read the full About →",
@@ -373,7 +373,7 @@ export const COPY: Record<Lang, LandingCopy> = {
     senaSub:
       "A Sena é a face do nosso cérebro autônomo. Explica risco em linguagem direta — baseada em dados, sem sensacionalismo.",
     senaSample:
-      "“Esse operador tem 2.898 rugs confirmados em 3.110 tokens. Tags: rebrand_artist, fast_deployer. Quer que eu mostre os últimos cinco deploys?”",
+      "“Esse deployer tem rugs confirmados no histórico, cada um verificado on-chain. Tags: rebrand_artist, fast_deployer. Quer que eu mostre os últimos cinco deploys?”",
     senaCta: "Abrir Sena num operador ao vivo →",
     senaHint: "Preview gratuito — três mensagens por sessão antes do login.",
 
@@ -390,7 +390,7 @@ export const COPY: Record<Lang, LandingCopy> = {
     buildCta: "Abrir",
 
     trustTitle: "Confiança por design",
-    trustOss: "MCP, docs e integração Birdeye Radar — tudo open-source",
+    trustOss: "Cliente MCP com licença MIT, docs públicas e integração Birdeye Radar",
     trustAudit: "97.x% CRITICAL — auditable per-mint",
     trustAuditNote:
       "Verifique qualquer predição em /v1/predictions/{mint}. Nenhuma métrica é ajustada manualmente.",

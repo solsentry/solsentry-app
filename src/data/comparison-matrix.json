@@ -78,7 +78,7 @@
     { "id": "mainnet_runtime", "label": "Continuous mainnet runtime (800h+)", "group": "Trust", "ours": true },
     { "id": "outcome_resolution", "label": "Outcome-resolution feedback loop", "group": "Trust", "ours": true },
     { "id": "auditable_per_mint", "label": "Per-mint auditable predictions", "group": "Trust", "ours": true },
-    { "id": "open_source", "label": "Open-source client/plugin", "group": "Trust" },
+    { "id": "open_source", "label": "MIT-licensed client/plugin", "group": "Trust" },
     { "id": "no_token", "label": "No native token (ever)", "group": "Trust" },
     { "id": "low_latency_alerts", "label": "Low-latency CRITICAL alerts (<5s)", "group": "Delivery" },
     { "id": "telegram_bot", "label": "Telegram bot delivery", "group": "Delivery" },
@@ -244,7 +244,7 @@
       "sicariusguard": { "v": "partial", "src": "https://github.com/Chronolapse411", "note": "Hackathon project, no public runtime metric." }
     },
     "outcome_resolution": {
-      "solsentry": { "v": "yes", "src": "https://api.solsentry.app/v1/stats", "note": "94.7% resolve rate, outcome_tracker feedback loop." },
+      "solsentry": { "v": "yes", "src": "https://api.solsentry.app/v1/stats", "note": "Live resolve rate at /v1/stats, outcome_tracker feedback loop." },
       "rugcheck": { "v": "no", "src": "https://rugcheck.xyz" },
       "integrity_molt": { "v": "no", "src": "https://github.com/sendaifun/solana-agent-kit/pull/546" },
       "blowfish": { "v": "no", "src": "https://docs.blowfish.xyz" },

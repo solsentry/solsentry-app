@@ -1,7 +1,7 @@
 "use client";
 
 // TrustStrip — closing section. Three trust signals:
-//   1. Open-source (MCP + docs + radar)
+//   1. Open-core (MIT MCP client + docs + radar)
 //   2. Auditable precision (precision per tier, links to /v1/predictions/{mint})
 //   3. Public, no-auth API
 // Note: the precision wording follows the canonical reframe locked
