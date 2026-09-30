@@ -100,7 +100,7 @@ function Header({ stats }: { stats: Awaited<ReturnType<typeof fetchStats>> }) {
         }}
       >
         {stats
-          ? `${fmtInt(stats.runtime_hours)}h continuous mainnet · ${fmtInt(stats.total_predictions)} predictions · ${fmtPct(stats.accuracy_pct, 1)} aggregate accuracy on ${fmtPct(stats.resolve_rate_pct, 1)} resolved.`
+          ? `${fmtInt(stats.runtime_hours)}h continuous mainnet · ${fmtInt(stats.total_predictions)} predictions · ${fmtPct(stats.resolve_rate_pct, 1)} resolved.`
           : "Loading live metrics…"}
       </p>
     </header>
@@ -117,11 +117,6 @@ function KpiStrip({ stats }: { stats: Awaited<ReturnType<typeof fetchStats>> }) 
           accent: "critical",
         },
         { label: "Predictions", value: fmtInt(stats.total_predictions) },
-        {
-          label: "CRITICAL precision",
-          value: fmtPct(stats.accuracy_pct, 1),
-          accent: "amber",
-        },
         {
           label: "Resolve rate",
           value: fmtPct(stats.resolve_rate_pct, 1),

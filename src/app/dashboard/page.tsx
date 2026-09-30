@@ -10,7 +10,7 @@ export const revalidate = 30;
 export const metadata = {
   title: "Live ops dashboard",
   description:
-    "Live operational metrics for the SolSentry mainnet scanner. Accuracy, runtime, alert volume, invariants check.",
+    "Live operational metrics for the SolSentry mainnet scanner. Runtime, alert volume, invariants check.",
 };
 
 export default async function DashboardPage() {
@@ -32,7 +32,7 @@ export default async function DashboardPage() {
           }
           sub={
             stats
-              ? `${fmtInt(stats.runtime_hours)}h continuous runtime. ${fmtInt(stats.total_predictions)} scans processed. ${fmtPct(stats.accuracy_pct, 1)} accuracy on ${fmtPct(stats.resolve_rate_pct, 1)} resolved.`
+              ? `${fmtInt(stats.runtime_hours)}h continuous runtime. ${fmtInt(stats.total_predictions)} scans processed. ${fmtPct(stats.resolve_rate_pct, 1)} resolved.`
               : "Resolving live metrics from the API."
           }
         >
@@ -71,11 +71,6 @@ export default async function DashboardPage() {
                 label="Tokens scanned"
                 value={fmtInt(stats.total_predictions)}
                 meta={`${fmtPct(stats.resolve_rate_pct, 1)} resolved`}
-              />
-              <Card
-                label="Accuracy"
-                value={fmtPct(stats.accuracy_pct, 1)}
-                meta="live aggregate from /v1/stats"
               />
               <Card
                 label="HIGH+ alerts"

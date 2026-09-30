@@ -31,7 +31,6 @@ export interface LandingCopy {
 
   // stats
   statsLabelScans: string;
-  statsLabelAccuracy: string;
   statsLabelUptime: string;
   statsLabelOperators: string;
   statsLabelRugs: string;
@@ -171,7 +170,6 @@ export const COPY: Record<Lang, LandingCopy> = {
     taglineSub: "And where they're going next. Operator-centric, not token-centric.",
 
     statsLabelScans: "Scans · live mainnet",
-    statsLabelAccuracy: "Accuracy · resolved",
     statsLabelUptime: "Continuous mainnet",
     statsLabelOperators: "Operators tracked",
     statsLabelRugs: "Confirmed rugs",
@@ -246,7 +244,7 @@ export const COPY: Record<Lang, LandingCopy> = {
 
     trustTitle: "Trust by design",
     trustOss: "MIT-licensed MCP client, public docs and Birdeye Radar integration",
-    trustAudit: "97.x% CRITICAL — auditable per-mint",
+    trustAudit: "Every prediction auditable per mint at /v1/predictions/{mint}",
     trustAuditNote: "Verify any prediction at /v1/predictions/{mint}. No metric is hand-tuned.",
     trustAbout: "Read the full About →",
 
@@ -316,7 +314,6 @@ export const COPY: Record<Lang, LandingCopy> = {
     taglineSub: "E pra onde ele tá indo agora. Foco no operador, não no token.",
 
     statsLabelScans: "Scans · mainnet live",
-    statsLabelAccuracy: "Acurácia · resolvido",
     statsLabelUptime: "Mainnet contínuo",
     statsLabelOperators: "Operadores rastreados",
     statsLabelRugs: "Rugs confirmados",
@@ -391,7 +388,7 @@ export const COPY: Record<Lang, LandingCopy> = {
 
     trustTitle: "Confiança por design",
     trustOss: "Cliente MCP com licença MIT, docs públicas e integração Birdeye Radar",
-    trustAudit: "97.x% CRITICAL — auditable per-mint",
+    trustAudit: "Toda predição auditável por mint em /v1/predictions/{mint}",
     trustAuditNote:
       "Verifique qualquer predição em /v1/predictions/{mint}. Nenhuma métrica é ajustada manualmente.",
     trustAbout: "Ler o Sobre completo →",
