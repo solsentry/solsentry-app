@@ -100,7 +100,7 @@ export function DeepScanView({ mint, pt, onMarketFlags }: { mint: string; pt: bo
   // Graceful degradation: holders/market may be unavailable (anon credit quota
   // exhausted → 429, or Birdeye key not configured). Show a clear note instead of
   // silently vanishing after the user clicked "deep scan". The primary verdict +
-  // authorities + operator already render in ScanResultCard above this.
+  // authorities already render in ScanResultCard above this.
   if (!data && !market) {
     return (
       <div
@@ -117,8 +117,8 @@ export function DeepScanView({ mint, pt, onMarketFlags }: { mint: string; pt: bo
           {pt ? "DETALHE DE MERCADO & HOLDERS" : "MARKET & HOLDERS DETAIL"}
         </div>
         {pt
-          ? "Indisponível no momento (cota gratuita de scans excedida ou dados de mercado fora). O veredito, as autoridades e o operador acima continuam válidos. Tente de novo mais tarde."
-          : "Currently unavailable (free scan quota exceeded or market data offline). The verdict, authorities and operator above still apply. Try again later."}
+          ? "Indisponível no momento (cota gratuita de scans excedida ou dados de mercado fora). O veredito e as autoridades acima continuam válidos. Tente de novo mais tarde."
+          : "Currently unavailable (free scan quota exceeded or market data offline). The verdict and authorities above still apply. Try again later."}
       </div>
     );
   }

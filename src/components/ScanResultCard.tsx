@@ -1,10 +1,10 @@
 "use client";
 
-import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { DeepScanView } from "./DeepScanView";
 import type { Lang, LandingCopy } from "@/lib/i18n-landing";
 import type { ScanResult, ScanKind } from "@/lib/scan-resolver";
+import { verifiedDeployer, hasDeployerFields, isWalletHistoryTag } from "@/lib/token-card";
 
 function formatAddr(a: string) {
   return a.length > 16 ? `${a.slice(0, 8)}…${a.slice(-6)}` : a;
@@ -35,6 +35,8 @@ function displayVerdict(
     }
   }
   if (kind === "unknown") return { label: copy.verdictNotIndex, color: C.neutral };
+  // Operator-level data is not shown on the public card.
+  if (kind === "operator") return { label: copy.verdictInconclusive, color: C.neutral };
   switch (String(d.risk_level || "UNKNOWN").toUpperCase()) {
     case "CRITICAL":
       return { label: "CRITICAL", color: C.danger };
@@ -54,17 +56,9 @@ function displayVerdict(
 function buildNarrative(kind: ScanKind, d: any, lang: Lang): string {
   const pt = lang === "pt";
   if (kind === "operator") {
-    const lbl = d.risk_label && d.risk_label !== "unknown" ? `${d.risk_label} ` : "";
-    const rugs = d.confirmed_rugs ?? 0;
-    const toks = d.total_tokens ?? "?";
-    if (pt) {
-      const rate =
-        typeof d.rug_rate_pct === "number" ? ` — taxa de rug de ${d.rug_rate_pct.toFixed(1)}%` : "";
-      return `Operador ${lbl}rastreado: ${rugs} rugs confirmados em ${toks} tokens${rate}.`;
-    }
-    const rate =
-      typeof d.rug_rate_pct === "number" ? ` — ${d.rug_rate_pct.toFixed(1)}% rug rate` : "";
-    return `Tracked ${lbl}operator: ${rugs} confirmed rugs across ${toks} tokens${rate}.`;
+    return pt
+      ? "Dados por operador não são exibidos durante o beta."
+      : "Operator-level data is not shown during the beta.";
   }
   if (kind === "token") {
     const lvl = String(d.risk_level || "").toUpperCase();
@@ -139,9 +133,8 @@ export function ScanResultCard({
   const isContract = r.kind === "contract";
   let verdict = displayVerdict(r.kind, d, copy);
   const pt = lang === "pt";
-  const rugs = isOp ? (d.confirmed_rugs ?? "—") : "—";
-  const tokens = isOp ? (d.total_tokens ?? "—") : "—";
-  const rate = isOp && typeof d.rug_rate_pct === "number" ? `${d.rug_rate_pct.toFixed(1)}%` : "—";
+  const deployer = r.kind === "token" ? verifiedDeployer(d) : null;
+  const showDeployerCell = r.kind === "token" && hasDeployerFields(d);
   
   // Extract symbol for raw contract analysis (if present in extensions)
   let contractSymbol = null;
@@ -151,9 +144,11 @@ export function ScanResultCard({
     else if (d.known_label) contractSymbol = d.known_label;
   }
   
-  const rawTags: string[] = isOp ? [...(d.tags || []), ...(d.patterns || [])] : d.flags || [];
+  const rawTags: string[] = isOp ? [] : d.flags || [];
   let dynamicTags = [...rawTags, ...marketFlags];
-  const tags = Array.from(new Set(dynamicTags.map(String))).filter((t) => !/bundle/i.test(t));
+  const tags = Array.from(new Set(dynamicTags.map(String))).filter(
+    (t) => !/bundle/i.test(t) && !isWalletHistoryTag(t),
+  );
   
   if (tags.length > 0 && verdict.label === copy.verdictNoMajorFlags) {
     verdict = { label: pt ? "ATENÇÃO (MERCADO)" : "MARKET CAUTION", color: "var(--brand-amber)" };
@@ -248,52 +243,6 @@ export function ScanResultCard({
           marginBottom: 14,
         }}
       >
-        {isOp && (
-          <>
-            <div style={{ background: "var(--surface-2)", borderRadius: 6, padding: "8px 10px" }}>
-              <div style={{ fontSize: 11, color: "var(--fg-3)" }}>{copy.cardConfirmedRugs}</div>
-              <div
-                style={{
-                  fontSize: 22,
-                  fontWeight: 700,
-                  fontFamily: "var(--font-display)",
-                  color:
-                    verdict.color === "var(--status-critical)"
-                      ? "var(--status-critical)"
-                      : "var(--fg-1)",
-                }}
-              >
-                {rugs}
-              </div>
-            </div>
-            <div style={{ background: "var(--surface-2)", borderRadius: 6, padding: "8px 10px" }}>
-              <div style={{ fontSize: 11, color: "var(--fg-3)" }}>{copy.cardTokens}</div>
-              <div style={{ fontSize: 22, fontWeight: 700, fontFamily: "var(--font-display)" }}>
-                {tokens}
-              </div>
-            </div>
-            <div style={{ background: "var(--surface-2)", borderRadius: 6, padding: "8px 10px" }}>
-              <div style={{ fontSize: 11, color: "var(--fg-3)" }}>{copy.cardRugRate}</div>
-              <div style={{ fontSize: 22, fontWeight: 700, fontFamily: "var(--font-display)" }}>
-                {rate}
-              </div>
-            </div>
-            <div style={{ background: "var(--surface-2)", borderRadius: 6, padding: "8px 10px" }}>
-              <div style={{ fontSize: 11, color: "var(--fg-3)" }}>{copy.cardRiskScore}</div>
-              <div style={{ fontSize: 22, fontWeight: 700, fontFamily: "var(--font-display)" }}>
-                {typeof d.risk_score === "number" ? `${d.risk_score}/100` : "—"}
-              </div>
-            </div>
-            {typeof d.pending === "number" && d.pending > 0 && (
-              <div style={{ background: "var(--surface-2)", borderRadius: 6, padding: "8px 10px" }}>
-                <div style={{ fontSize: 11, color: "var(--fg-3)" }}>{copy.cardPending}</div>
-                <div style={{ fontSize: 22, fontWeight: 700, fontFamily: "var(--font-display)" }}>
-                  {d.pending}
-                </div>
-              </div>
-            )}
-          </>
-        )}
         {r.kind === "token" && (
           <>
             {d.symbol && (
@@ -344,34 +293,26 @@ export function ScanResultCard({
                 </div>
               </div>
             )}
-            <div style={{ background: "var(--surface-2)", borderRadius: 6, padding: "8px 10px" }}>
-              <div style={{ fontSize: 11, color: "var(--fg-3)" }}>{copy.cardOperator}</div>
-              <div
-                style={{
-                  fontSize: 13,
-                  fontWeight: 600,
-                  fontFamily: "var(--font-mono)",
-                  wordBreak: "break-all",
-                  color: d.operator ? "inherit" : "var(--fg-3)"
-                }}
-              >
-                {d.operator ? formatAddr(String(d.operator)) : (pt ? "NÃO RASTREADO" : "UNTRACKED")}
+            {showDeployerCell && (
+              <div style={{ background: "var(--surface-2)", borderRadius: 6, padding: "8px 10px" }}>
+                <div style={{ fontSize: 11, color: "var(--fg-3)" }}>{copy.cardDevWallet}</div>
+                <div
+                  style={{
+                    fontSize: 13,
+                    fontWeight: 600,
+                    fontFamily: "var(--font-mono)",
+                    wordBreak: "break-all",
+                    color: deployer ? "inherit" : "var(--fg-3)",
+                  }}
+                >
+                  {deployer
+                    ? formatAddr(deployer)
+                    : pt
+                      ? "Deployer não verificado"
+                      : "Deployer not verified"}
+                </div>
               </div>
-            </div>
-            <div style={{ background: "var(--surface-2)", borderRadius: 6, padding: "8px 10px" }}>
-              <div style={{ fontSize: 11, color: "var(--fg-3)" }}>{copy.cardDevWallet}</div>
-              <div
-                style={{
-                  fontSize: 13,
-                  fontWeight: 600,
-                  fontFamily: "var(--font-mono)",
-                  wordBreak: "break-all",
-                  color: d.dev_wallet ? "inherit" : "var(--fg-3)"
-                }}
-              >
-                {d.dev_wallet ? formatAddr(String(d.dev_wallet)) : (pt ? "NÃO RASTREADO" : "UNTRACKED")}
-              </div>
-            </div>
+            )}
           </>
         )}
         {isContract && (
@@ -411,22 +352,6 @@ export function ScanResultCard({
                   {d.known_label}
                 </div>
               </div>
-            )}
-            {d.kind === "mint" && (
-              <>
-                <div style={{ background: "var(--surface-2)", borderRadius: 6, padding: "8px 10px" }}>
-                  <div style={{ fontSize: 11, color: "var(--fg-3)" }}>{copy.cardOperator}</div>
-                  <div style={{ fontSize: 13, fontWeight: 600, fontFamily: "var(--font-mono)", wordBreak: "break-all", color: "var(--fg-3)" }}>
-                    {pt ? "NÃO RASTREADO" : "UNTRACKED"}
-                  </div>
-                </div>
-                <div style={{ background: "var(--surface-2)", borderRadius: 6, padding: "8px 10px" }}>
-                  <div style={{ fontSize: 11, color: "var(--fg-3)" }}>{copy.cardDevWallet}</div>
-                  <div style={{ fontSize: 13, fontWeight: 600, fontFamily: "var(--font-mono)", wordBreak: "break-all", color: "var(--fg-3)" }}>
-                    {pt ? "NÃO RASTREADO" : "UNTRACKED"}
-                  </div>
-                </div>
-              </>
             )}
           </>
         )}
@@ -533,6 +458,7 @@ export function ScanResultCard({
         <div>
           {used}/5 {copy.cardScansUsed} • {copy.cardRateLimited}
         </div>
+        <div>{pt ? "Beta — scores em re-medição" : "Beta — scores are being re-measured"}</div>
       </div>
     </div>
   );
