@@ -134,7 +134,7 @@ const COPY: Record<Lang, AboutCopy> = {
       { label: "Open source MCP", detail: "@solsentry/mcp on NPM · source on GitHub", href: "https://www.npmjs.com/package/@solsentry/mcp" },
       { label: "Open source docs", detail: "solsentry/solsentry-docs · audit logs reproducible", href: "https://github.com/solsentry/solsentry-docs" },
       { label: "Open source frontend", detail: "solsentry/solsentry-app · this site's code", href: "https://github.com/solsentry/solsentry-app" },
-      { label: "Live health", detail: "api.solsentry.app/health · invariants checked daily", href: "https://api.solsentry.app/health" },
+      { label: "Live health", detail: "api.solsentry.app/health · service status (up / down)", href: "https://api.solsentry.app/health" },
     ],
     teamTitle: "Team",
     teamCrashPre: " — founder, sole developer. Self-taught since the early 2000s: Slackware, Unix, Oracle networking. No university, no bootcamp. Started learning Python in January 2025. Currently: ",
@@ -214,7 +214,7 @@ const COPY: Record<Lang, AboutCopy> = {
       { label: "MCP open source", detail: "@solsentry/mcp no NPM · código no GitHub", href: "https://www.npmjs.com/package/@solsentry/mcp" },
       { label: "Documentação open source", detail: "solsentry/solsentry-docs · logs de auditoria reproduzíveis", href: "https://github.com/solsentry/solsentry-docs" },
       { label: "Frontend open source", detail: "solsentry/solsentry-app · o código deste site", href: "https://github.com/solsentry/solsentry-app" },
-      { label: "Saúde ao vivo", detail: "api.solsentry.app/health · invariantes verificadas diariamente", href: "https://api.solsentry.app/health" },
+      { label: "Saúde ao vivo", detail: "api.solsentry.app/health · status do serviço (no ar ou fora)", href: "https://api.solsentry.app/health" },
     ],
     teamTitle: "Equipe",
     teamCrashPre:

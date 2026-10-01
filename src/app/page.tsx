@@ -32,6 +32,8 @@ export default async function HomePage() {
     ? {
         ok: true,
         totalPredictions: stats.total_predictions,
+        // Per-token N once the api serves it (#396); the row count stays the fallback.
+        trackedTokens: stats.unique_mints_predicted,
         runtimeHours: stats.runtime_hours,
         rugs: stats.confirmed_rugs,
       }

@@ -211,11 +211,22 @@ export function LandingClient({ stats, hideChrome = false }: Props & { hideChrom
                     fontFamily: "var(--font-mono)",
                   }}
                 >
-                  LIVE • {stats.totalPredictions?.toLocaleString?.() || "?"}{" "}
-                  {lang === "pt" ? "predições" : "predictions"} •{" "}
-                  {lang === "pt"
-                    ? "cada predição auditável por mint"
-                    : "every prediction auditable per mint"}
+                  {stats.trackedTokens != null ? (
+                    <>
+                      LIVE •{" "}
+                      {lang === "pt"
+                        ? `mais de ${stats.trackedTokens.toLocaleString("pt-BR")} tokens com predição rastreada até o desfecho, cada uma auditável por mint`
+                        : `over ${stats.trackedTokens.toLocaleString("en-US")} tokens with outcome-tracked predictions, each auditable per mint`}
+                    </>
+                  ) : (
+                    <>
+                      LIVE • {stats.totalPredictions?.toLocaleString?.() || "?"}{" "}
+                      {lang === "pt" ? "predições" : "predictions"} •{" "}
+                      {lang === "pt"
+                        ? "cada predição auditável por mint"
+                        : "every prediction auditable per mint"}
+                    </>
+                  )}
                 </div>
               )}
             </div>

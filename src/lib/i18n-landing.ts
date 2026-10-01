@@ -32,7 +32,7 @@ export interface LandingCopy {
   // stats
   statsLabelScans: string;
   statsLabelUptime: string;
-  statsLabelOperators: string;
+  statsLabelTokens: string;
   statsLabelRugs: string;
   statsFootnote: string;
   statsOffline: string;
@@ -73,14 +73,6 @@ export interface LandingCopy {
   opRate: string;
   opCta: string;
   opUnavailable: string;
-
-  // sena teaser
-  senaEyebrow: string;
-  senaTitle: string;
-  senaSub: string;
-  senaSample: string;
-  senaCta: string;
-  senaHint: string;
 
   // builder panel
   buildEyebrow: string;
@@ -171,7 +163,7 @@ export const COPY: Record<Lang, LandingCopy> = {
 
     statsLabelScans: "Scans · live mainnet",
     statsLabelUptime: "Continuous mainnet",
-    statsLabelOperators: "Operators tracked",
+    statsLabelTokens: "Tokens · outcome-tracked",
     statsLabelRugs: "Confirmed rugs",
     statsFootnote:
       "All numbers live. Refreshed every 60s from api.solsentry.app/v1/stats. Click any cell to audit.",
@@ -221,15 +213,6 @@ export const COPY: Record<Lang, LandingCopy> = {
     opCta: "Investigate operator →",
     opUnavailable: "Top-operator feed temporarily unavailable.",
 
-    senaEyebrow: "Sena · the AI persona",
-    senaTitle: "Ask Sena anything about an operator",
-    senaSub:
-      "Sena is the face of our autonomous brain. She explains risk in plain language — direct, evidence-first, never sensationalized.",
-    senaSample:
-      "“This deployer has confirmed rugs on record, each one verified on-chain. Tags: rebrand_artist, fast_deployer. Want me to show the last five deployments?”",
-    senaCta: "Open Sena on a live operator →",
-    senaHint: "Free preview — three messages per session before sign-in is required.",
-
     buildEyebrow: "For builders",
     buildTitle: "Three free entry points",
     buildTgTitle: "Telegram bot",
@@ -261,7 +244,7 @@ export const COPY: Record<Lang, LandingCopy> = {
     easyPlaceholder: "Paste wallet or token (e.g. 7mPzKL… or So1111…)",
     easyScanCta: "Scan",
     easyEmptyHint: "Paste any address or click a sample above.",
-    easyProDev: "Full history, graphs and alerts live in Pro / Dev.",
+    easyProDev: "Full history, graphs and alerts are coming in Pro / Dev.",
     sampleOperator: "Tracked operator",
     sampleToken: "Wrapped SOL",
     sampleDevWallet: "Known dev wallet",
@@ -315,7 +298,7 @@ export const COPY: Record<Lang, LandingCopy> = {
 
     statsLabelScans: "Scans · mainnet live",
     statsLabelUptime: "Mainnet contínuo",
-    statsLabelOperators: "Operadores rastreados",
+    statsLabelTokens: "Tokens · desfecho rastreado",
     statsLabelRugs: "Rugs confirmados",
     statsFootnote:
       "Tudo ao vivo. Atualizado a cada 60s a partir de api.solsentry.app/v1/stats. Clique em qualquer célula pra auditar.",
@@ -365,15 +348,6 @@ export const COPY: Record<Lang, LandingCopy> = {
     opCta: "Investigar operador →",
     opUnavailable: "Feed do top-operator temporariamente indisponível.",
 
-    senaEyebrow: "Sena · a IA do SolSentry",
-    senaTitle: "Pergunte qualquer coisa à Sena sobre um operador",
-    senaSub:
-      "A Sena é a face do nosso cérebro autônomo. Explica risco em linguagem direta — baseada em dados, sem sensacionalismo.",
-    senaSample:
-      "“Esse deployer tem rugs confirmados no histórico, cada um verificado on-chain. Tags: rebrand_artist, fast_deployer. Quer que eu mostre os últimos cinco deploys?”",
-    senaCta: "Abrir Sena num operador ao vivo →",
-    senaHint: "Preview gratuito — três mensagens por sessão antes do login.",
-
     buildEyebrow: "Para builders",
     buildTitle: "Três pontos de entrada gratuitos",
     buildTgTitle: "Bot do Telegram",
@@ -406,7 +380,7 @@ export const COPY: Record<Lang, LandingCopy> = {
     easyPlaceholder: "Cole wallet ou token (ex.: 7mPzKL… ou So1111…)",
     easyScanCta: "Escanear",
     easyEmptyHint: "Cole qualquer endereço ou clique num exemplo acima.",
-    easyProDev: "Histórico completo, gráficos e alertas no Pro / Dev.",
+    easyProDev: "Histórico completo, gráficos e alertas chegam em breve no Pro / Dev.",
     sampleOperator: "Operador rastreado",
     sampleToken: "Wrapped SOL",
     sampleDevWallet: "Dev wallet conhecida",
