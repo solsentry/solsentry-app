@@ -143,7 +143,7 @@ const COPY: Record<Lang, AboutCopy> = {
     teamSena:
       " — the AI persona. Surfaces operator threat context in human language, in PT-BR or EN. Powered by Anthropic. Tone: senior security analyst, evidence-first, no sensationalism.",
     teamAck:
-      "Acknowledgments: Mert Mumtaz (Helius CEO) for the open-source Haradrim patterns we credit in our graph viz. Pedro Marafiotti (Superteam BR · The Garage). Every contributor to the public MCP + docs repos.",
+      "Acknowledgments: Mert Mumtaz (Helius CEO) for the public Haradrim patterns we credit in our graph viz. Pedro Marafiotti (Superteam BR · The Garage). Every contributor to the public MCP + docs repos.",
     neverTitle: "What we'll never do",
     never: [
       "Issue a token. Sem token. Ever.",
@@ -224,7 +224,7 @@ const COPY: Record<Lang, AboutCopy> = {
     teamSena:
       " — a persona de IA. Apresenta contexto de ameaças de operadores em linguagem humana, em PT-BR ou EN. Powered by Anthropic. Tom: analista sênior de segurança, evidência primeiro, sem sensacionalismo.",
     teamAck:
-      "Agradecimentos: Mert Mumtaz (CEO da Helius) pelos padrões open-source Haradrim que creditamos na visualização de grafos. Pedro Marafiotti (Superteam BR · The Garage). Cada contribuidor dos repos públicos de MCP + docs.",
+      "Agradecimentos: Mert Mumtaz (CEO da Helius) pelos padrões públicos Haradrim que creditamos na visualização de grafos. Pedro Marafiotti (Superteam BR · The Garage). Cada contribuidor dos repos públicos de MCP + docs.",
     neverTitle: "O que nunca faremos",
     never: [
       "Emitir um token. Sem token. Nunca.",
