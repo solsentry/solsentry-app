@@ -29,6 +29,9 @@ export interface ScansTrendPoint {
 
 export interface NetworkStats {
   total_predictions: number;
+  /** One count per token (api #396). Absent on an api older than that. */
+  unique_mints_predicted?: number;
+  unique_mints_resolved?: number;
   pending: number;
   resolved: number;
   resolve_rate_pct: number;

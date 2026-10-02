@@ -13,6 +13,8 @@ import type { LandingCopy } from "@/lib/i18n-landing";
 export interface LiveStatsPayload {
   ok: boolean;
   totalPredictions?: number;
+  /** unique_mints_predicted — one count per token; preferred when present. */
+  trackedTokens?: number;
   runtimeHours?: number;
   rugs?: number;
 }
@@ -52,11 +54,17 @@ export function LiveStatsBar({ copy, lang, stats }: Props) {
   }
 
   const cells = [
-    {
-      label: copy.statsLabelScans,
-      value: fmtInt(stats.totalPredictions),
-      href: "https://api.solsentry.app/v1/stats",
-    },
+    stats.trackedTokens != null
+      ? {
+          label: copy.statsLabelTokens,
+          value: fmtInt(stats.trackedTokens),
+          href: "https://api.solsentry.app/v1/stats",
+        }
+      : {
+          label: copy.statsLabelScans,
+          value: fmtInt(stats.totalPredictions),
+          href: "https://api.solsentry.app/v1/stats",
+        },
     {
       label: copy.statsLabelUptime,
       value: fmtUptime(stats.runtimeHours, lang),

@@ -134,7 +134,7 @@ const COPY: Record<Lang, AboutCopy> = {
       { label: "Open source MCP", detail: "@solsentry/mcp on NPM · source on GitHub", href: "https://www.npmjs.com/package/@solsentry/mcp" },
       { label: "Open source docs", detail: "solsentry/solsentry-docs · audit logs reproducible", href: "https://github.com/solsentry/solsentry-docs" },
       { label: "Open source frontend", detail: "solsentry/solsentry-app · this site's code", href: "https://github.com/solsentry/solsentry-app" },
-      { label: "Live health", detail: "api.solsentry.app/health · invariants checked daily", href: "https://api.solsentry.app/health" },
+      { label: "Live health", detail: "api.solsentry.app/health · service status (up / down)", href: "https://api.solsentry.app/health" },
     ],
     teamTitle: "Team",
     teamCrashPre: " — founder, sole developer. Self-taught since the early 2000s: Slackware, Unix, Oracle networking. No university, no bootcamp. Started learning Python in January 2025. Currently: ",
@@ -143,7 +143,7 @@ const COPY: Record<Lang, AboutCopy> = {
     teamSena:
       " — the AI persona. Surfaces operator threat context in human language, in PT-BR or EN. Powered by Anthropic. Tone: senior security analyst, evidence-first, no sensationalism.",
     teamAck:
-      "Acknowledgments: Mert Mumtaz (Helius CEO) for the open-source Haradrim patterns we credit in our graph viz. Pedro Marafiotti (Superteam BR · The Garage). Every contributor to the public MCP + docs repos.",
+      "Acknowledgments: Mert Mumtaz (Helius CEO) for the public Haradrim patterns we credit in our graph viz. Pedro Marafiotti (Superteam BR · The Garage). Every contributor to the public MCP + docs repos.",
     neverTitle: "What we'll never do",
     never: [
       "Issue a token. Sem token. Ever.",
@@ -214,7 +214,7 @@ const COPY: Record<Lang, AboutCopy> = {
       { label: "MCP open source", detail: "@solsentry/mcp no NPM · código no GitHub", href: "https://www.npmjs.com/package/@solsentry/mcp" },
       { label: "Documentação open source", detail: "solsentry/solsentry-docs · logs de auditoria reproduzíveis", href: "https://github.com/solsentry/solsentry-docs" },
       { label: "Frontend open source", detail: "solsentry/solsentry-app · o código deste site", href: "https://github.com/solsentry/solsentry-app" },
-      { label: "Saúde ao vivo", detail: "api.solsentry.app/health · invariantes verificadas diariamente", href: "https://api.solsentry.app/health" },
+      { label: "Saúde ao vivo", detail: "api.solsentry.app/health · status do serviço (no ar ou fora)", href: "https://api.solsentry.app/health" },
     ],
     teamTitle: "Equipe",
     teamCrashPre:
@@ -224,7 +224,7 @@ const COPY: Record<Lang, AboutCopy> = {
     teamSena:
       " — a persona de IA. Apresenta contexto de ameaças de operadores em linguagem humana, em PT-BR ou EN. Powered by Anthropic. Tom: analista sênior de segurança, evidência primeiro, sem sensacionalismo.",
     teamAck:
-      "Agradecimentos: Mert Mumtaz (CEO da Helius) pelos padrões open-source Haradrim que creditamos na visualização de grafos. Pedro Marafiotti (Superteam BR · The Garage). Cada contribuidor dos repos públicos de MCP + docs.",
+      "Agradecimentos: Mert Mumtaz (CEO da Helius) pelos padrões públicos Haradrim que creditamos na visualização de grafos. Pedro Marafiotti (Superteam BR · The Garage). Cada contribuidor dos repos públicos de MCP + docs.",
     neverTitle: "O que nunca faremos",
     never: [
       "Emitir um token. Sem token. Nunca.",
