@@ -23,6 +23,9 @@ jobs:
     needs: build
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+    # Cloudflare secrets live only in this Environment, whose deployment rule
+    # allows the main branch alone: a workflow on any other branch cannot read them.
+    environment: production
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
