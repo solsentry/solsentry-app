@@ -164,12 +164,16 @@ export function SenaDrawer({
               history: messages.map((m) => ({ role: m.role, text: m.text })),
             }),
           });
-          const data = (await res.json()) as { reply?: string; fallback_client_cap?: boolean };
+          const data = (await res.json()) as {
+            answer?: string;
+            reply?: string;
+            fallback_client_cap?: boolean;
+          };
           
           if (data.fallback_client_cap) {
             replyText = "API daily cap reached (20 calls/day per IP). Please check back later.";
           } else {
-            replyText = data.reply ?? "Received an empty response.";
+            replyText = data.answer ?? data.reply ?? "Received an empty response.";
           }
         }
 
