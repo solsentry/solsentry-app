@@ -12,10 +12,10 @@ export const revalidate = 60;
 export const metadata = {
   title: "About SolSentry — operator threat intelligence for Solana",
   description:
-    "Solo-built, free, open-core operator-graph threat intelligence for Solana. Live mainnet since April 2026.",
+    "Free, open-core operator-graph threat intelligence for Solana. Live mainnet since April 2026.",
   openGraph: {
     title: "About SolSentry",
-    description: "Solo-built, free, open-core operator-graph threat intelligence for Solana.",
+    description: "Free, open-core operator-graph threat intelligence for Solana.",
     images: ["/og/og-default.png"],
   },
 };
