@@ -71,6 +71,7 @@ interface AboutCopy {
   teamTitle: string;
   teamCrashPre: string;
   teamCrashPost: string;
+  teamCofounder: string;
   teamSena: string;
   teamAck: string;
   // §8 never
@@ -87,7 +88,7 @@ const COPY: Record<Lang, AboutCopy> = {
     heroTitleA: "Operator threat intelligence for ",
     heroTitleEm: "Solana",
     heroSub:
-      "Solo-built. Free. Open-core. Live mainnet since April 2026 — tracking the wallets behind serial rug deployments before they catch the next buyer.",
+      "Built by two founders. Free. Open-core. Live mainnet since April 2026 — tracking the wallets behind serial rug deployments before they catch the next buyer.",
     statContinuous: "Continuous mainnet",
     statPredictions: "Predictions issued",
     statsFootnote: "All numbers live. Click any stat to verify against the public API.",
@@ -137,9 +138,10 @@ const COPY: Record<Lang, AboutCopy> = {
       { label: "Live health", detail: "api.solsentry.app/health · service status (up / down)", href: "https://api.solsentry.app/health" },
     ],
     teamTitle: "Team",
-    teamCrashPre: " — founder, sole developer. Self-taught since the early 2000s: Slackware, Unix, Oracle networking. No university, no bootcamp. Started learning Python in January 2025. Currently: ",
+    teamCrashPre: " — co-founder, builds SolSentry. Self-taught since the early 2000s: Slackware, Unix, Oracle networking. No university, no bootcamp. Started learning Python in January 2025. Currently: ",
     teamCrashPost:
-      "+ mainnet predictions, full async architecture, and live precision metrics from the public API — solo, in Brazil.",
+      "+ mainnet predictions, full async architecture, and live precision metrics from the public API, in Brazil.",
+    teamCofounder: " — co-founder and CMO. Design and research.",
     teamSena:
       " — the AI persona. Surfaces operator threat context in human language, in PT-BR or EN. Powered by Anthropic. Tone: senior security analyst, evidence-first, no sensationalism.",
     teamAck:
@@ -166,7 +168,7 @@ const COPY: Record<Lang, AboutCopy> = {
     heroTitleA: "Threat intelligence de operadores para ",
     heroTitleEm: "Solana",
     heroSub:
-      "Construído solo. Gratuito. Open-core. Mainnet ao vivo desde abril de 2026 — rastreando as wallets por trás de rugs seriais antes que peguem o próximo comprador.",
+      "Construído por dois fundadores. Gratuito. Open-core. Mainnet ao vivo desde abril de 2026 — rastreando as wallets por trás de rugs seriais antes que peguem o próximo comprador.",
     statContinuous: "Mainnet contínua",
     statPredictions: "Predições emitidas",
     statsFootnote: "Todos os números são ao vivo. Clique em qualquer stat para verificar na API pública.",
@@ -218,9 +220,10 @@ const COPY: Record<Lang, AboutCopy> = {
     ],
     teamTitle: "Equipe",
     teamCrashPre:
-      " — fundador, único desenvolvedor. Autodidata desde o início dos anos 2000: Slackware, Unix, redes Oracle. Sem universidade, sem bootcamp. Começou a aprender Python em janeiro de 2025. Atualmente: ",
+      " — cofundador, constrói o SolSentry. Autodidata desde o início dos anos 2000: Slackware, Unix, redes Oracle. Sem universidade, sem bootcamp. Começou a aprender Python em janeiro de 2025. Atualmente: ",
     teamCrashPost:
-      "+ predições na mainnet, arquitetura totalmente assíncrona e métricas de precisão ao vivo da API pública — solo, no Brasil.",
+      "+ predições na mainnet, arquitetura totalmente assíncrona e métricas de precisão ao vivo da API pública, no Brasil.",
+    teamCofounder: " — co-founder e CMO. Design e pesquisa.",
     teamSena:
       " — a persona de IA. Apresenta contexto de ameaças de operadores em linguagem humana, em PT-BR ou EN. Powered by Anthropic. Tom: analista sênior de segurança, evidência primeiro, sem sensacionalismo.",
     teamAck:
@@ -382,6 +385,10 @@ export function AboutClient({ stats }: { stats: NetworkStats | null }) {
               {t.teamCrashPre}
               {fmtInt(stats?.total_predictions)}
               {t.teamCrashPost}
+            </p>
+            <p>
+              <strong>Sabadinhos</strong>
+              {t.teamCofounder}
             </p>
             <p>
               <strong>Sena</strong>
