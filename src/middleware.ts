@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
  * Allowlist-based middleware (default-deny).
  *
  * Public routes: / · /about · /docs · /changelog · /mcp · /api · /architecture
- *                /telegram · /auth/verify
+ *                /telegram · /mobile · /auth/verify
  *
  * Everything else → 307 redirect to / + X-Robots-Tag: noindex.
  * Static assets, Next internals, and /api route handlers are always allowed.
@@ -24,6 +24,7 @@ const ALWAYS_ALLOW_PREFIXES = [
   "/og/",
   "/logo",
   "/public/",
+  "/mobile-preview/", // static design preview embedded by /mobile
 ];
 
 // Public route prefixes (exact or prefix match)
@@ -36,6 +37,7 @@ const ALLOWLIST_PREFIXES = [
   "/api",
   "/architecture",
   "/telegram",
+  "/mobile",
   "/auth/verify", // magic-link landing — without this the emailed link 307s to / and eats the token
   // This flag is the per-phase route gate.
   // Its value is decided by the owner.

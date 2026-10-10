@@ -20,6 +20,11 @@ const nextConfig = {
           { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
         ],
       },
+      {
+        // the /mobile page embeds this static preview in an iframe; later entry wins
+        source: "/mobile-preview/(.*)",
+        headers: [{ key: "X-Frame-Options", value: "SAMEORIGIN" }],
+      },
     ];
   },
 };
