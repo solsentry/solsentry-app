@@ -1,0 +1,523 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>SolSentry Mobile · design preview</title>
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=390, initial-scale=1">
+<script src="./vendor/react.js"></script>
+<script src="./vendor/react-dom.js"></script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&amp;family=Manrope:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#F5A05B}a:hover{color:#FFB677}
+.mh.t-dark{--bg:#090A09;--panel:#111311;--panel2:#171A17;--line:rgba(255,255,255,.09);--line2:rgba(255,255,255,.18);--text:#F2F1EB;--muted:#8D928B;--orange:#F28A35;--orangeText:#F5A05B;--onOrange:#17100A;--ok:#5FD1B4;--okBg:rgba(95,209,180,.12);--scrim:rgba(0,0,0,.6);--h0:#1C1F1C;--h1:#4A2C14;--h2:#87491B;--h3:#C96A24;--h4:#F28A35;--track:#2A2E2A}
+.mh.t-light{--bg:#F4F1EA;--panel:#FFFFFF;--panel2:#FAF8F3;--line:rgba(23,21,18,.09);--line2:rgba(23,21,18,.2);--text:#171512;--muted:#67635B;--orange:#E07A22;--orangeText:#A9530F;--onOrange:#17100A;--ok:#1F7A66;--okBg:rgba(31,122,102,.10);--scrim:rgba(23,21,18,.42);--h0:#E7E2D8;--h1:#F5CFA6;--h2:#EFA764;--h3:#E5852F;--h4:#B95E12;--track:#DDD7CB}
+.mh{transition:background-color .4s ease, color .4s ease}
+.mh *{box-sizing:border-box}
+.mh button{font:inherit;cursor:pointer}
+.mh .mono{font-family:'DM Mono',ui-monospace,monospace}
+.mh .num{font-variant-numeric:tabular-nums}
+.mh .eyebrow{font-family:'DM Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.1em;color:var(--muted);text-transform:uppercase}
+.mh .blk{background-color:var(--panel);border:1px solid var(--line);border-radius:16px;transition:background-color .4s ease, border-color .4s ease}
+.mh .scroll{overflow-y:auto;scrollbar-width:none}
+.mh .scroll::-webkit-scrollbar{display:none}
+.mh .scroll > *{flex-shrink:0}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.mh .c1{animation:fadeUp .55s cubic-bezier(.2,.9,.2,1) .04s both}
+.mh .c2{animation:fadeUp .55s cubic-bezier(.2,.9,.2,1) .1s both}
+.mh .c3{animation:fadeUp .55s cubic-bezier(.2,.9,.2,1) .16s both}
+.mh .c4{animation:fadeUp .55s cubic-bezier(.2,.9,.2,1) .22s both}
+
+/* rig fan */
+@keyframes spin{to{transform:rotate(360deg)}}
+.mh .fan{display:block;animation:spin 1.2s linear infinite;transform-origin:50% 50%}
+.mh.is-miner .fan{animation-duration:.45s}
+.mh.is-paused .fan{animation-play-state:paused;color:var(--muted)}
+.mh .statusbtn{transition:border-color .2s ease}
+.mh .statusbtn:hover{border-color:var(--line2)}
+
+/* value */
+@keyframes flash{0%{color:var(--orangeText)}100%{color:var(--text)}}
+.mh .counting{color:var(--orangeText)}
+.mh .settled{animation:flash 1.2s ease-out both}
+@keyframes bump{0%{opacity:0;transform:translateY(6px)}20%,70%{opacity:1;transform:none}100%{opacity:0;transform:translateY(-6px)}}
+.mh .bump{animation:bump 1.6s ease-out both}
+
+/* toast */
+@keyframes toastIn{0%{opacity:0;transform:translateY(-14px) scale(.96)}100%{opacity:1;transform:none}}
+.mh .toast{animation:toastIn .45s cubic-bezier(.2,1.2,.3,1) both}
+
+/* blocks */
+.mh .cell{position:relative;overflow:hidden;display:block;width:100%;aspect-ratio:1;border-radius:8px;border:0;padding:0;transition:transform .15s ease, background-color .3s ease}
+.mh .cell:hover{transform:scale(1.06)}
+.mh .cell.sel{box-shadow:0 0 0 2px var(--panel), 0 0 0 3.5px var(--text)}
+.mh .fill{position:absolute;left:0;right:0;bottom:0;background-color:var(--orange);transition:height 1s linear}
+@keyframes sealed{0%{box-shadow:0 0 0 0 rgba(242,138,53,.7)}100%{box-shadow:0 0 0 8px rgba(242,138,53,0)}}
+.mh .cell.sealed{animation:sealed .8s ease-out}
+
+/* wallet dots */
+.mh .wd{display:block;width:100%;aspect-ratio:1;border-radius:50%;transition:background-color .25s ease}
+@keyframes used{0%{transform:scale(1);box-shadow:0 0 0 0 rgba(242,138,53,.8)}40%{transform:scale(1.8)}100%{transform:scale(1);box-shadow:0 0 0 6px rgba(242,138,53,0)}}
+.mh .wd.used{animation:used .9s ease-out}
+
+/* dial */
+.mh .bar{display:block;width:3px;border-radius:2px;transition:height .55s cubic-bezier(.3,.9,.3,1), background-color .4s ease}
+.mh .ptr{position:absolute;top:0;bottom:0;width:2px;transition:left .75s cubic-bezier(.34,1.35,.5,1)}
+@keyframes knob{0%,100%{transform:scale(1)}50%{transform:scale(1.25)}}
+.mh.is-running .knob{animation:knob 1.6s ease-in-out infinite}
+.mh.is-miner.is-running .knob{animation-duration:.8s}
+.mh .stop{position:absolute;width:60px;text-align:center;transition:color .3s ease}
+.mh .seg{transition:background-color .25s ease, color .25s ease}
+.mh .seg.on{background-color:var(--orange);color:var(--onOrange)}
+
+@keyframes wavedot{0%,100%{opacity:.2;transform:scale(.7)}50%{opacity:1;transform:none}}
+.mh .ld i{display:block;width:5px;height:5px;border-radius:50%;background-color:var(--orange);animation:wavedot 1.1s ease-in-out infinite}
+
+/* buttons, sheets */
+.mh .btn-p{transition:filter .2s ease, transform .15s ease}
+.mh .btn-p:hover{filter:brightness(1.08)}
+.mh .btn-p:active{transform:scale(.98)}
+.mh .btn-s{transition:border-color .2s ease}
+.mh .btn-s:hover{border-color:var(--orange)}
+.mh .plan{font-family:'DM Mono',ui-monospace,monospace;font-size:9px;letter-spacing:.06em;padding:2px 6px;border-radius:4px;border:1px solid var(--line2);color:var(--muted)}
+.mh .plan.paid{border-color:var(--orange);color:var(--orangeText)}
+.mh .plan.free{border-color:var(--ok);color:var(--ok)}
+.mh .field:focus{outline:2px solid var(--orange);outline-offset:1px}
+@keyframes scrimIn{from{opacity:0}to{opacity:1}}
+@keyframes sheetUp{from{transform:translateY(100%)}to{transform:none}}
+@keyframes spinner{to{transform:rotate(360deg)}}
+@keyframes okIn{0%{opacity:0;transform:scale(.94)}100%{opacity:1;transform:none}}
+.mh .scrim{animation:scrimIn .25s ease both}
+.mh .sheet{animation:sheetUp .45s cubic-bezier(.2,.9,.2,1) both}
+.mh .spin{animation:spinner .8s linear infinite}
+.mh .ok{animation:okIn .35s ease both}
+.mh .prow{transition:border-color .2s ease}
+.mh .prow:hover{border-color:var(--line2)}
+.mh .prow.sel{border-color:var(--orange)}
+
+@media (prefers-reduced-motion: reduce){.mh *,.mh *::before,.mh *::after{animation-duration:.001s !important;animation-iteration-count:1 !important;animation-delay:0s !important;transition:none !important}}
+</style>
+</helmet>
+<div class="mh {{rootCls}}" style="width: 390px; height: 844px; position: relative; overflow: hidden; background-color: var(--bg); color: var(--text); font-family: 'Manrope', 'Segoe UI', sans-serif">
+
+  <!-- app bar -->
+  <div style="position: absolute; top: 0; left: 0; right: 0; height: 64px; padding: 0 16px; display: flex; align-items: center; justify-content: space-between; background-color: var(--bg); z-index: 3">
+    <div style="display: flex; align-items: center; gap: 10px">
+      <img src="./assets/a6e68cacab5d9aad2672f061d7b95378.jpg" alt="" style="width: 36px; height: 36px; border-radius: 50%; object-fit: cover; display: block; border: 1px solid var(--line2)">
+      <span style="font-size: 15px; font-weight: 600; letter-spacing: -0.02em">Crash</span>
+    </div>
+    <div style="display: flex; align-items: center; gap: 8px">
+      <button class="btn-s" onClick="{{openRpc}}" aria-label="RPC source {{rpcName}}. Change" style="height: 40px; padding: 0 10px 0 12px; border-radius: 20px; border: 1px solid var(--line2); background-color: var(--panel); color: var(--text); display: flex; align-items: center; gap: 7px">
+        <span class="mono" style="font-size: 11px">{{rpcMono}}</span>
+        <span class="plan {{planCls}}">{{planTag}}</span>
+        <svg aria-hidden="true" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"></path></svg>
+      </button>
+      <button class="btn-s" onClick="{{toggleTheme}}" aria-label="{{themeAria}}" style="width: 40px; height: 40px; border-radius: 20px; border: 1px solid var(--line2); background-color: transparent; color: var(--text); display: flex; align-items: center; justify-content: center">
+        <sc-if value="{{isDark}}" hint-placeholder-val="{{ true }}">
+          <svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"></circle><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"></path></svg>
+        </sc-if>
+        <sc-if value="{{isLight}}" hint-placeholder-val="{{ false }}">
+          <svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"></path></svg>
+        </sc-if>
+      </button>
+    </div>
+  </div>
+
+  <!-- instant credit toast -->
+  <sc-if value="{{toast}}" hint-placeholder-val="{{ false }}">
+    <div class="toast" role="status" style="position: absolute; top: 70px; left: 16px; right: 16px; z-index: 4; height: 48px; border-radius: 24px; background-color: var(--orange); color: var(--onOrange); display: flex; align-items: center; justify-content: space-between; padding: 0 8px 0 18px; box-shadow: 0 14px 40px rgba(242,138,53,.35)">
+      <span class="mono num" style="font-size: 12px; letter-spacing: .04em">{{toastText}}</span>
+      <span class="mono num" style="height: 32px; padding: 0 12px; border-radius: 16px; background-color: rgba(23,16,10,.14); display: flex; align-items: center; font-size: 13px; font-weight: 500">+${{creditStr}}</span>
+    </div>
+  </sc-if>
+
+  <!-- content -->
+  <div class="scroll" style="position: absolute; top: 64px; left: 0; right: 0; bottom: 0; padding: 4px 16px 24px; display: flex; flex-direction: column; gap: 10px">
+
+    <!-- 1. blocks -->
+    <section class="blk c1" aria-label="Activity" style="padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 12px">
+      <div style="display: flex; justify-content: space-between; align-items: baseline">
+        <span class="eyebrow">Blocks · 28d</span>
+        <span class="mono num" style="font-size: 10.5px; color: var(--muted)">{{selLabel}}</span>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px">
+        <sc-for list="{{cells}}" as="c" hint-placeholder-count="28">
+          <button class="cell {{c.cls}}" onClick="{{c.pick}}" aria-label="{{c.label}}" style="background-color: {{c.bg}}">
+            <sc-if value="{{c.isToday}}" hint-placeholder-val="{{ false }}">
+              <span class="fill" style="height: {{c.fill}}"></span>
+            </sc-if>
+          </button>
+        </sc-for>
+      </div>
+    </section>
+
+    <!-- 2. balance -->
+    <section class="blk c2" aria-label="Balance" style="padding: 10px; display: flex; flex-direction: column; gap: 10px">
+      <button class="statusbtn" onClick="{{toggleRun}}" aria-label="{{runAria}}" style="height: 44px; border-radius: 10px; border: 1px solid var(--line); background-color: var(--panel2); color: var(--text); display: flex; align-items: center; gap: 10px; padding: 0 12px">
+        <svg class="fan" aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="color: var(--orange)"><path d="M12 10.2c.3-2.6.2-5.6-2.3-7.4C8.4 2 6.6 2.6 6.4 4.1c-.3 2 2.6 3.9 5.6 6.1zM13.8 12c2.6.3 5.6.2 7.4-2.3.8-1.3.2-3.1-1.3-3.3-2-.3-3.9 2.6-6.1 5.6zM12 13.8c-.3 2.6-.2 5.6 2.3 7.4 1.3.8 3.1.2 3.3-1.3.3-2-2.6-3.9-5.6-6.1zM10.2 12c-2.6-.3-5.6-.2-7.4 2.3-.8 1.3-.2 3.1 1.3 3.3 2 .3 3.9-2.6 6.1-5.6z"></path><circle cx="12" cy="12" r="1.6"></circle></svg>
+        <span class="mono" style="font-size: 11px; letter-spacing: .08em">{{statusText}}</span>
+        <span class="mono num" style="margin-left: auto; font-size: 11px; color: var(--muted)">{{statsLine}}</span>
+        <sc-if value="{{running}}" hint-placeholder-val="{{ true }}">
+          <svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" style="color: var(--muted)"><rect x="6" y="5" width="4" height="14" rx="1"></rect><rect x="14" y="5" width="4" height="14" rx="1"></rect></svg>
+        </sc-if>
+        <sc-if value="{{paused}}" hint-placeholder-val="{{ false }}">
+          <svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" style="color: var(--muted)"><path d="M7 5l12 7-12 7z"></path></svg>
+        </sc-if>
+      </button>
+      <div style="padding: 4px 6px 0; display: flex; align-items: flex-end; justify-content: space-between">
+        <div class="{{valueCls}}" style="display: flex; align-items: baseline; gap: 2px">
+          <span class="mono num" style="font-size: 46px; line-height: 1; font-weight: 500; letter-spacing: -0.04em">{{valueMain}}</span>
+          <span class="mono num" style="font-size: 20px; color: var(--muted)">{{valueTail}}</span>
+        </div>
+        <sc-if value="{{scanning}}" hint-placeholder-val="{{ false }}">
+          <span class="ld" aria-label="Mapping" style="display: grid; grid-template-columns: repeat(4, 5px); gap: 3px; margin-bottom: 8px">
+            <i></i><i style="animation-delay: .1s"></i><i style="animation-delay: .2s"></i><i style="animation-delay: .3s"></i>
+          </span>
+        </sc-if>
+        <sc-if value="{{notScanning}}" hint-placeholder-val="{{ true }}">
+          <span class="mono num" style="font-size: 11px; color: var(--orangeText); margin-bottom: 6px">{{rateTag}}</span>
+        </sc-if>
+      </div>
+      <button class="btn-p" onClick="{{openClaim}}" aria-label="Claim to Seed Vault" style="height: 48px; border: 0; border-radius: 10px; background-color: var(--orange); color: var(--onOrange); font-size: 14px; font-weight: 600; display: flex; align-items: center; justify-content: space-between; padding: 0 16px">
+        <span>Claim</span>
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+      </button>
+    </section>
+
+    <!-- 3. wallets -->
+    <section class="blk c3" aria-label="Mapped wallets" style="padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 12px">
+      <div style="display: flex; justify-content: space-between; align-items: baseline">
+        <span class="eyebrow">Valid wallets</span>
+        <span style="display: flex; align-items: baseline; gap: 8px">
+          <sc-if value="{{showBump}}" hint-placeholder-val="{{ false }}">
+            <span class="mono num bump" style="font-size: 10.5px; color: var(--orangeText)">+$0.02</span>
+          </sc-if>
+          <span class="mono num" style="font-size: 13px">{{walletCount}}</span>
+        </span>
+      </div>
+      <div role="img" aria-label="{{walletAria}}" style="display: grid; grid-template-columns: repeat(25, minmax(0, 1fr)); gap: 5px">
+        <sc-for list="{{dots}}" as="d" hint-placeholder-count="100">
+          <i class="wd {{d.cls}}" style="background-color: {{d.bg}}"></i>
+        </sc-for>
+      </div>
+    </section>
+
+    <!-- 4. level -->
+    <section class="blk c4" aria-label="Sentry level" style="padding: 10px 16px 14px; display: flex; flex-direction: column; gap: 10px">
+      <div style="display: flex; justify-content: space-between; align-items: center">
+        <span class="eyebrow">Level · {{rateMult}}</span>
+        <div role="group" aria-label="Sentry level" style="display: flex; padding: 3px; border-radius: 22px; border: 1px solid var(--line2)">
+          <button class="seg {{freeCls}}" onClick="{{pickFree}}" aria-pressed="{{freePressed}}" style="height: 38px; min-width: 72px; padding: 0 14px; border-radius: 19px; border: 0; background-color: transparent; color: var(--text); font-size: 13px; font-weight: 600">Free</button>
+          <button class="seg {{minerCls}}" onClick="{{pickMiner}}" aria-pressed="{{minerPressed}}" style="height: 38px; min-width: 72px; padding: 0 14px; border-radius: 19px; border: 0; background-color: transparent; color: var(--text); font-size: 13px; font-weight: 600">Miner</button>
+        </div>
+      </div>
+      <div role="img" aria-label="{{dialAria}}" style="position: relative; width: 326px; height: 64px">
+        <div style="position: absolute; left: 0; right: 0; bottom: 0; height: 54px; display: flex; align-items: flex-end; justify-content: space-between">
+          <sc-for list="{{bars}}" as="b" hint-placeholder-count="37">
+            <i class="bar" style="height: {{b.h}}; background-color: {{b.bg}}; opacity: {{b.op}}"></i>
+          </sc-for>
+        </div>
+        <div class="ptr" style="left: {{ptrLeft}}">
+          <span style="position: absolute; left: 0; top: 8px; bottom: 0; width: 2px; border-radius: 1px; background-color: var(--text); display: block"></span>
+          <span class="knob" style="position: absolute; left: -4px; top: 0; width: 10px; height: 10px; border-radius: 50%; background-color: var(--orange); display: block"></span>
+        </div>
+      </div>
+      <div class="mono" style="position: relative; height: 12px; font-size: 9px; letter-spacing: .1em">
+        <span class="stop" style="left: {{freeStopLeft}}; color: {{freeStopColor}}">FREE</span>
+        <span class="stop" style="left: {{minerStopLeft}}; color: {{minerStopColor}}">MINER</span>
+      </div>
+    </section>
+  </div>
+
+  <!-- RPC sheet -->
+  <sc-if value="{{rpcOpen}}" hint-placeholder-val="{{ false }}">
+    <div style="position: absolute; inset: 0; z-index: 5">
+      <button class="scrim" aria-label="Close RPC sources" onClick="{{closeRpc}}" style="position: absolute; inset: 0; border: 0; padding: 0; background-color: var(--scrim)"></button>
+      <div class="sheet" role="dialog" aria-label="RPC sources" style="position: absolute; left: 0; right: 0; bottom: 0; max-height: 760px; overflow-y: auto; background-color: var(--panel); border-top: 1px solid var(--line2); border-radius: 20px 20px 0 0; padding: 10px 16px 24px; display: flex; flex-direction: column; gap: 12px">
+        <div style="width: 36px; height: 4px; border-radius: 2px; background-color: var(--line2); align-self: center"></div>
+        <h2 style="margin: 0; font-size: 19px; font-weight: 600; letter-spacing: -0.02em">RPC</h2>
+        <div style="display: flex; flex-direction: column; gap: 8px">
+          <sc-for list="{{providers}}" as="p" hint-placeholder-count="4">
+            <button class="prow {{p.cls}}" onClick="{{p.pick}}" style="height: 56px; border-radius: 12px; border: 1px solid var(--line); background-color: var(--panel2); color: var(--text); display: flex; align-items: center; gap: 12px; padding: 0 12px; text-align: left">
+              <span class="mono" style="width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--line2); display: flex; align-items: center; justify-content: center; font-size: 10.5px; flex: none">{{p.mono}}</span>
+              <span style="flex: 1; display: flex; align-items: center; gap: 7px; min-width: 0"><span style="font-size: 14px; font-weight: 600">{{p.name}}</span><span class="plan {{p.planCls}}">{{p.planTag}}</span></span>
+              <span class="mono" style="font-size: 11px; color: var(--muted)">{{p.multStr}}</span>
+              <span style="width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid {{p.radio}}; display: flex; align-items: center; justify-content: center; flex: none"><span style="width: 8px; height: 8px; border-radius: 50%; background-color: {{p.radioFill}}; display: block"></span></span>
+            </button>
+          </sc-for>
+        </div>
+        <sc-if value="{{addClosed}}" hint-placeholder-val="{{ true }}">
+          <button class="btn-s" onClick="{{openAdd}}" style="height: 46px; border-radius: 10px; border: 1px dashed var(--line2); background-color: transparent; color: var(--text); font-size: 13.5px; font-weight: 600">+ Add key</button>
+        </sc-if>
+        <sc-if value="{{addOpen}}" hint-placeholder-val="{{ false }}">
+          <div class="ok" style="border: 1px solid var(--line2); border-radius: 12px; padding: 12px; display: flex; flex-direction: column; gap: 10px">
+            <label for="mhKey" class="eyebrow">RPC URL or key</label>
+            <input id="mhKey" class="field mono" type="text" value="{{keyVal}}" onChange="{{onKey}}" placeholder="https://…" style="height: 44px; border-radius: 10px; border: 1px solid var(--line2); background-color: var(--bg); color: var(--text); padding: 0 12px; font-size: 12px; width: 100%">
+            <div role="group" aria-label="Key plan" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px">
+              <button class="seg {{freeKeyCls}}" onClick="{{pickFreeKey}}" aria-pressed="{{freeKeyPressed}}" style="height: 44px; border-radius: 10px; border: 1px solid var(--line2); background-color: transparent; color: var(--text); font-size: 12.5px; font-weight: 600">Free</button>
+              <button class="seg {{paidKeyCls}}" onClick="{{pickPaidKey}}" aria-pressed="{{paidKeyPressed}}" style="height: 44px; border-radius: 10px; border: 1px solid var(--line2); background-color: transparent; color: var(--text); font-size: 12.5px; font-weight: 600">Paid</button>
+            </div>
+            <button class="btn-p" onClick="{{saveKey}}" style="height: 44px; border: 0; border-radius: 10px; background-color: var(--orange); color: var(--onOrange); font-size: 13px; font-weight: 600">Save</button>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- Claim sheet -->
+  <sc-if value="{{claimOpen}}" hint-placeholder-val="{{ false }}">
+    <div style="position: absolute; inset: 0; z-index: 5">
+      <button class="scrim" aria-label="Close claim" onClick="{{closeClaim}}" style="position: absolute; inset: 0; border: 0; padding: 0; background-color: var(--scrim)"></button>
+      <div class="sheet" role="dialog" aria-label="Claim" style="position: absolute; left: 0; right: 0; bottom: 0; background-color: var(--panel); border-top: 1px solid var(--line2); border-radius: 20px 20px 0 0; padding: 10px 16px 24px; display: flex; flex-direction: column; gap: 14px">
+        <div style="width: 36px; height: 4px; border-radius: 2px; background-color: var(--line2); align-self: center"></div>
+        <div style="display: flex; align-items: baseline; justify-content: space-between">
+          <h2 style="margin: 0; font-size: 19px; font-weight: 600; letter-spacing: -0.02em">Claim</h2>
+          <span class="mono num" style="font-size: 22px; font-weight: 500">{{claimAmount}}</span>
+        </div>
+        <div class="mono" style="display: flex; justify-content: space-between; font-size: 11px; color: var(--muted)"><span>→ SEED VAULT</span><span>7xKX…9fQ2</span></div>
+        <sc-if value="{{isIdle}}" hint-placeholder-val="{{ true }}">
+          <button class="btn-p" onClick="{{claim}}" style="height: 50px; border: 0; border-radius: 10px; background-color: var(--orange); color: var(--onOrange); font-size: 14.5px; font-weight: 600">Approve</button>
+        </sc-if>
+        <sc-if value="{{isSending}}" hint-placeholder-val="{{ false }}">
+          <div style="height: 50px; border-radius: 10px; border: 1px solid var(--line2); display: flex; align-items: center; justify-content: center; gap: 10px">
+            <span class="spin" aria-label="Confirming" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--line2); border-top-color: var(--orange); display: block"></span>
+          </div>
+        </sc-if>
+        <sc-if value="{{isDone}}" hint-placeholder-val="{{ false }}">
+          <div class="ok" style="height: 50px; border-radius: 10px; background-color: var(--okBg); color: var(--ok); display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 14px; font-weight: 600">
+            <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>{{claimedStr}}
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"startTheme":{"editor":"enum","options":["Dark","Light"],"default":"Dark"},"startMode":{"editor":"enum","options":["Free","Miner"],"default":"Miner"},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.TOTAL_WALLETS = 5000;
+    this.CREDIT = 100;
+    this.state = {
+      theme: props.startTheme === 'Light' ? 'light' : 'dark',
+      mode: props.startMode === 'Free' ? 'free' : 'miner',
+      running: true, tick: 0,
+      phase: 'scan', mapped: 0, credited: 0, toast: false,
+      value: 0, usedDot: -1, bumpKey: 0, showBump: false,
+      today: 940, selDay: null, sealedFlash: false,
+      rpcOpen: false, addOpen: false, keyVal: '', addPlan: 'paid',
+      selected: 'quicknode',
+      providers: [
+        { id: 'solsentry', name: 'SolSentry', mono: 'SS', plan: 'default' },
+        { id: 'helius', name: 'Helius', mono: 'HE', plan: 'free' },
+        { id: 'quicknode', name: 'QuickNode', mono: 'QN', plan: 'paid' },
+        { id: 'triton', name: 'Triton One', mono: 'TR', plan: 'paid' }
+      ],
+      claimOpen: false, claimPhase: 'idle', claimed: 0
+    };
+    this.history = this.buildHistory();
+    this.noise = [];
+    for (let i = 0; i < 37; i++) this.noise.push(Math.abs(Math.sin((i + 2) * 12.9898) * 43758.5453) % 1);
+    this.order = [];
+    for (let i = 0; i < 100; i++) this.order.push({ i, r: Math.abs(Math.sin((i + 9) * 41.17) * 9631.3) % 1 });
+    this.order.sort((a, b) => a.r - b.r);
+    this.rank = {}; this.order.forEach((o, k) => { this.rank[o.i] = k; });
+    this.timers = [];
+  }
+  buildHistory() {
+    const out = [];
+    const today = new Date(); today.setHours(0, 0, 0, 0);
+    for (let i = 0; i < 28; i++) {
+      const d = new Date(today); d.setDate(today.getDate() - 27 + i);
+      const r = Math.abs(Math.sin((i + 5) * 78.233) * 12345.678) % 1;
+      let n = Math.round((300 + i * 45) * (0.3 + r * 1.1));
+      if (r < 0.12) n = 0;
+      out.push({ date: d, n, isToday: i === 27 });
+    }
+    return out;
+  }
+  mult(plan) { return plan === 'paid' ? 1 : plan === 'free' ? 0.35 : 0.05; }
+  currentPlan() { const p = this.state.providers.find((x) => x.id === this.state.selected); return p ? p.plan : 'default'; }
+  perSecond() { return (this.state.mode === 'miner' ? 0.0028 : 0.0008) * this.mult(this.currentPlan()); }
+  later(fn, ms) { const t = setTimeout(fn, ms); this.timers.push(t); return t; }
+  componentDidMount() {
+    this.later(() => {
+      const t0 = Date.now();
+      this.mapIv = setInterval(() => {
+        const f = Math.min(1, (Date.now() - t0) / 1600), e = 1 - Math.pow(1 - f, 2);
+        this.setState({ mapped: Math.round(this.TOTAL_WALLETS * e) });
+        if (f >= 1) { clearInterval(this.mapIv); this.mapIv = null; this.startCredit(); }
+      }, 40);
+    }, 400);
+    this.iv = setInterval(() => {
+      const s = this.state;
+      const add = s.running && s.phase === 'live';
+      const upd = { tick: s.tick + 1 };
+      if (add) {
+        upd.value = s.value + this.perSecond();
+        upd.today = s.today + (s.mode === 'miner' ? 3 : 1);
+        if ((s.tick + 1) % 5 === 0) {
+          upd.usedDot = Math.floor(Math.abs(Math.sin(s.tick * 3.1) * 997)) % 100;
+          upd.value += 0.02; upd.showBump = true;
+          this.later(() => this.setState({ showBump: false }), 1600);
+        }
+      }
+      this.setState(upd);
+    }, 1000);
+  }
+  startCredit() {
+    const t0 = Date.now();
+    this.setState({ phase: 'credit', toast: true });
+    this.cIv = setInterval(() => {
+      const f = Math.min(1, (Date.now() - t0) / 1300), e = 1 - Math.pow(1 - f, 3);
+      this.setState({ value: this.CREDIT * e, credited: this.CREDIT * e });
+      if (f >= 1) {
+        clearInterval(this.cIv); this.cIv = null;
+        this.setState({ phase: 'live', value: this.CREDIT, credited: this.CREDIT });
+        this.later(() => this.setState({ toast: false }), 2400);
+      }
+    }, 40);
+  }
+  componentWillUnmount() {
+    [this.iv, this.mapIv, this.cIv].forEach((x) => { if (x) clearInterval(x); });
+    this.timers.forEach((t) => clearTimeout(t));
+  }
+  renderVals() {
+    const s = this.state, miner = s.mode === 'miner', run = s.running;
+    const plan = this.currentPlan(), m = this.mult(plan);
+    const info = { default: { tag: 'BASE', cls: '' }, free: { tag: 'FREE', cls: 'free' }, paid: { tag: 'PAID', cls: 'paid' } };
+    const sel = s.providers.find((p) => p.id === s.selected) || s.providers[0];
+    const multStr = (x) => x.toFixed(2) + '×';
+    const live = s.phase === 'live';
+
+    // dial
+    const N = 37, W = 326, step = (W - 3) / (N - 1), FREE = 9, MINER = 27;
+    const p = miner ? MINER : FREE;
+    const amp = miner ? 44 : 26, sig = miner ? 5.5 : 4;
+    const bars = [];
+    for (let i = 0; i < N; i++) {
+      const g = Math.exp(-Math.pow(i - p, 2) / (2 * sig * sig));
+      const jit = run ? 0.8 + 0.2 * Math.abs(Math.sin(s.tick * 1.3 + i * 0.7)) : 1;
+      const base = 4 + this.noise[i] * 5;
+      const h = run ? base + amp * g * jit : base;
+      const hot = run && Math.abs(i - p) <= sig;
+      bars.push({ h: h.toFixed(1) + 'px', bg: hot ? 'var(--orange)' : 'var(--track)', op: hot ? (0.45 + 0.55 * g).toFixed(2) : '1' });
+    }
+    const stopLeft = (idx) => (idx * step + 1.5 - 30).toFixed(1) + 'px';
+
+    // blocks
+    const fmtDay = (d) => d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }).toUpperCase();
+    const level = (n) => n <= 0 ? 0 : n < 500 ? 1 : n < 900 ? 2 : n < 1400 ? 3 : 4;
+    const days = this.history.map((d) => Object.assign({}, d, { n: d.isToday ? s.today : d.n }));
+    const selIdx = s.selDay == null ? 27 : s.selDay;
+    const prog = live && run ? ((s.tick % 12) + 1) / 12 : (live ? (s.tick % 12) / 12 : 0);
+    const cells = days.map((d, i) => ({
+      isToday: d.isToday,
+      fill: (prog * 100).toFixed(0) + '%',
+      cls: (i === selIdx ? 'sel' : '') + (d.isToday && live && run && s.tick % 12 === 11 ? ' sealed' : ''),
+      bg: 'var(--h' + (d.isToday ? 1 : level(d.n)) + ')',
+      label: fmtDay(d.date) + ': ' + d.n.toLocaleString('en-US') + ' requests',
+      pick: () => this.setState({ selDay: i })
+    }));
+    const sd = days[selIdx];
+
+    // wallets
+    const filled = Math.round(s.mapped / this.TOTAL_WALLETS * 100);
+    const dots = [];
+    for (let i = 0; i < 100; i++) {
+      const on = this.rank[i] < filled;
+      dots.push({ bg: on ? 'var(--orange)' : 'var(--track)', cls: live && i === s.usedDot ? 'used' : '' });
+    }
+
+    // stats
+    const jit = Math.abs(Math.sin((s.tick + 1) * 1.7)) * 0.2 + 0.9;
+    const rpm = run ? Math.round((miner ? 180 : 60) * jit * Math.max(m, 0.3)) : 0;
+
+    const v = s.value, f4 = v.toFixed(4);
+    const scanning = s.phase === 'scan';
+
+    const providers = s.providers.map((pr) => {
+      const pi = info[pr.plan], on = pr.id === s.selected;
+      return Object.assign({}, pr, {
+        planTag: pi.tag, planCls: pi.cls, multStr: multStr(this.mult(pr.plan)),
+        cls: on ? 'sel' : '', radio: on ? 'var(--orange)' : 'var(--line2)', radioFill: on ? 'var(--orange)' : 'transparent',
+        pick: () => this.setState({ selected: pr.id })
+      });
+    });
+
+    return {
+      rootCls: ['t-' + s.theme, miner ? 'is-miner' : 'is-free', run ? 'is-running' : 'is-paused'].join(' '),
+      isDark: s.theme === 'dark', isLight: s.theme === 'light',
+      themeAria: s.theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme',
+      toggleTheme: () => this.setState({ theme: this.state.theme === 'dark' ? 'light' : 'dark' }),
+
+      toast: s.toast, creditStr: s.credited.toFixed(2),
+      toastText: this.TOTAL_WALLETS.toLocaleString('en-US') + ' WALLETS',
+
+      rpcName: sel.name, rpcMono: sel.mono, planTag: info[plan].tag, planCls: info[plan].cls,
+      running: run, paused: !run,
+      statusText: run ? (miner ? 'MINING' : 'IDLE MINING') : 'PAUSED',
+      statsLine: run ? rpm + ' req/min' : '',
+      runAria: run ? 'Pause' : 'Resume',
+      toggleRun: () => this.setState({ running: !this.state.running }),
+
+      scanning, notScanning: !scanning,
+      rateTag: run ? '+$' + (this.perSecond() * 3600).toFixed(2) + '/h' : '0/h',
+      valueCls: s.phase === 'credit' ? 'counting' : (live ? 'settled' : ''),
+      valueMain: '$' + f4.slice(0, -2), valueTail: f4.slice(-2),
+      openClaim: () => this.setState({ claimOpen: true, claimPhase: 'idle' }),
+
+      cells, selLabel: (sd.isToday ? 'TODAY' : fmtDay(sd.date)) + ' · ' + sd.n.toLocaleString('en-US'),
+
+      dots, walletCount: s.mapped.toLocaleString('en-US'), showBump: s.showBump,
+      walletAria: s.mapped.toLocaleString('en-US') + ' valid wallets mapped',
+
+      rateMult: multStr((miner ? 3.5 : 1) * m),
+      dialAria: (miner ? 'Miner' : 'Free') + ' level',
+      bars, ptrLeft: (p * step + 0.5).toFixed(1) + 'px',
+      freeStopLeft: stopLeft(FREE), minerStopLeft: stopLeft(MINER),
+      freeStopColor: miner ? 'var(--muted)' : 'var(--orangeText)',
+      minerStopColor: miner ? 'var(--orangeText)' : 'var(--muted)',
+      freeCls: miner ? 'off' : 'on', minerCls: miner ? 'on' : 'off',
+      freePressed: miner ? 'false' : 'true', minerPressed: miner ? 'true' : 'false',
+      pickFree: () => this.setState({ mode: 'free' }), pickMiner: () => this.setState({ mode: 'miner' }),
+
+      rpcOpen: s.rpcOpen, providers,
+      openRpc: () => this.setState({ rpcOpen: true, addOpen: false }),
+      closeRpc: () => this.setState({ rpcOpen: false }),
+      addOpen: s.addOpen, addClosed: !s.addOpen,
+      openAdd: () => this.setState({ addOpen: true }),
+      keyVal: s.keyVal, onKey: (e) => this.setState({ keyVal: e.target.value }),
+      freeKeyCls: s.addPlan === 'free' ? 'on' : 'off', paidKeyCls: s.addPlan === 'paid' ? 'on' : 'off',
+      freeKeyPressed: s.addPlan === 'free' ? 'true' : 'false', paidKeyPressed: s.addPlan === 'paid' ? 'true' : 'false',
+      pickFreeKey: () => this.setState({ addPlan: 'free' }), pickPaidKey: () => this.setState({ addPlan: 'paid' }),
+      saveKey: () => {
+        const id = 'custom' + this.state.providers.length;
+        this.setState({ providers: this.state.providers.concat([{ id, name: 'Custom', mono: 'CU', plan: this.state.addPlan }]), selected: id, addOpen: false, keyVal: '' });
+      },
+
+      claimOpen: s.claimOpen,
+      closeClaim: () => { if (this.state.claimPhase !== 'sending') this.setState({ claimOpen: false, claimPhase: 'idle' }); },
+      claimAmount: '$' + v.toFixed(2),
+      isIdle: s.claimPhase === 'idle', isSending: s.claimPhase === 'sending', isDone: s.claimPhase === 'done',
+      claimedStr: '$' + s.claimed.toFixed(2),
+      claim: () => {
+        if (this.state.claimPhase !== 'idle') return;
+        this.setState({ claimPhase: 'sending' });
+        this.later(() => this.setState({ claimPhase: 'done', claimed: this.state.value, value: 0 }), 1600);
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>

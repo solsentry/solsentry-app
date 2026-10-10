@@ -67,6 +67,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.6,
     },
     {
+      path: "/mobile",
+      changeFrequency: "weekly",
+      priority: 0.6,
+    },
+    {
       path: "/telegram",
       changeFrequency: "weekly",
       priority: 0.5,
