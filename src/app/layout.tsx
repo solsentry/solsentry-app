@@ -1,36 +1,22 @@
 import type { Metadata } from "next";
 import "./globals.css";
 
+const TITLE = "SolSentry — your phone verifies Solana";
+const DESCRIPTION =
+  "An Android app that reads public Solana transactions, signs what it saw with a key held in the phone's secure hardware, and earns points for every read the server can confirm. Built for Solana Seeker.";
+
 export const metadata: Metadata = {
-  title: {
-    default: "SolSentry — Operator intelligence for Solana",
-    template: "%s · SolSentry",
-  },
-  description:
-    "Autonomous threat intelligence for Solana. Operator risk, rug pull detection, serial deployer tracking. Install via npx @solsentry/mcp or query api.solsentry.app.",
+  title: TITLE,
+  description: DESCRIPTION,
   metadataBase: new URL("https://solsentry.app"),
   openGraph: {
     type: "website",
     url: "https://solsentry.app",
-    title: "SolSentry — Operator intelligence for Solana",
-    description:
-      "RugCheck tells you a fire is burning. SolSentry tells you who lit it. Operator-centric threat intelligence — live mainnet.",
+    title: TITLE,
+    description: DESCRIPTION,
     siteName: "SolSentry",
-    images: [
-      {
-        url: "/og/og-default.png",
-        width: 1200,
-        height: 630,
-        alt: "SolSentry — Operator intelligence for Solana",
-      },
-    ],
   },
-  twitter: {
-    card: "summary_large_image",
-    title: "SolSentry — Operator intelligence for Solana",
-    description: "RugCheck tells you a fire is burning. SolSentry tells you who lit it.",
-    images: ["/og/og-default.png"],
-  },
+  twitter: { card: "summary", title: TITLE, description: DESCRIPTION },
   robots: { index: true, follow: true },
   icons: {
     icon: [
@@ -50,15 +36,6 @@ export const viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <head>
-        <link
-          rel="preload"
-          as="image"
-          href="/logo-3d.webp"
-          type="image/webp"
-          fetchPriority="high"
-        />
-      </head>
       <body>
         <a href="#main" className="skip-link">
           Skip to main content

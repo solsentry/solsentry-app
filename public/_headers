@@ -1,0 +1,2 @@
+/app/latest.json
+  Cache-Control: public, max-age=300

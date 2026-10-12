@@ -1,0 +1,15 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls",
+      "delegate_permission/common.get_login_creds"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "app.solsentry.mobile",
+      "sha256_cert_fingerprints": [
+        "6C:3D:54:55:14:FA:46:37:83:07:AF:59:61:8E:99:1A:82:C5:B0:C0:30:A8:D0:1C:80:16:58:65:55:89:42:50"
+      ]
+    }
+  }
+]
