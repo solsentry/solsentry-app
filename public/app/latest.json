@@ -1,1 +1,1 @@
-{"versionCode":21,"name":"0.1.21","url":"https://api.solsentry.app/app/solsentry-0.1.21.apk","sha256":"1eeff3af6c4e80e16d3dce63b744f0cb14b8ed312d57a205e8baa82738034868","notes":"First public build."}
+{"versionCode":22,"name":"0.1.22","url":"https://api.solsentry.app/app/solsentry-0.1.22.apk","sha256":"37e3ff4ff2f5b61a42757000c234da4348ac3d1514a1f8da0f530dd655f74d19","notes":"Home screen widget with verification status, balance and today's count. The home screen now points to the own-RPC bonus."}
