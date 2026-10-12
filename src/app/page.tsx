@@ -48,7 +48,9 @@ const POINTS = [
   "One point per transaction per device, for accepted, signed reads only.",
   "A daily cap per device.",
   "Bonuses that add up by class: attested device, attested device with the Seeker Genesis Token, and reads through your own RPC.",
-  "Points convert to SKR under per-device and per-wallet caps. You sign the claim and pay the network fee; the server confirms it on chain.",
+  "In this test phase of the Seeker launch, wallets holding a Seeker Genesis Token claim SKR from a pool SolSentry funds, under per-device and per-wallet caps. Claiming does not spend points.",
+  "You sign the claim and pay the network fee; the server confirms it on chain.",
+  "Points have no cash value and are not a token. Caps and rates belong to this test phase and will change.",
   "Every point is a row in an append-only ledger that records the rule that produced it, so a rule change never rewrites past points.",
 ];
 
@@ -80,41 +82,11 @@ const STRAIGHT = [
   "SolSentry has no token of its own. Rewards are paid in SKR from a reward pool.",
 ];
 
-function Phone() {
-  return (
-    <div className={styles.phone} aria-hidden>
-      <div className={styles.screen}>
-        <div className={styles.screenHead}>
-          <span className={styles.dot} />
-          <span>Validating</span>
-        </div>
-        <div className={styles.task}>
-          <div className={styles.taskRow}>
-            <span>Task</span>
-            <code>5xQ…9mR</code>
-          </div>
-          <div className={styles.taskRow}>
-            <span>RPC</span>
-            <code>own key</code>
-          </div>
-          <div className={styles.taskRow}>
-            <span>Fact hash</span>
-            <code>a41f…07c2</code>
-          </div>
-          <div className={styles.taskRow}>
-            <span>Signed</span>
-            <code>Keystore · StrongBox</code>
-          </div>
-        </div>
-        <div className={styles.verdict}>accepted</div>
-        <div className={styles.pointsLine}>
-          <span>Points today</span>
-          <strong>+1</strong>
-        </div>
-      </div>
-    </div>
-  );
-}
+const SCREENS = [
+  { src: "/screens/home.webp", alt: "Home screen: verifying, 194 matched, SKR balance and Claim" },
+  { src: "/screens/account.webp", alt: "Account screen: linked wallet with a Seeker Genesis Token" },
+  { src: "/screens/points.webp", alt: "How points add up: attested device, Genesis wallet, own RPC" },
+];
 
 export default function Home() {
   return (
@@ -133,8 +105,8 @@ export default function Home() {
             <p className={styles.lead}>
               SolSentry turns an idle phone into a verifier of public Solana data. It reads one
               transaction at a time from its own connection, signs what it saw with a key held in
-              secure hardware, and earns points when the server confirms the read. Points convert
-              to SKR.
+              secure hardware, and earns points when the server confirms the read. Seeker owners can
+              claim SKR.
             </p>
             <div className={styles.actions}>
               {APK_URL ? (
@@ -149,8 +121,34 @@ export default function Home() {
             <p className={styles.status}>Solana dApp Store listing in preparation.</p>
           </div>
           <div className={styles.phoneCol}>
-            <Phone />
-            <p className={styles.caption}>Illustration of one task, not a screenshot.</p>
+            <img
+              className={styles.shot}
+              src="/screens/home.webp"
+              alt={SCREENS[0].alt}
+              width={540}
+              height={1201}
+            />
+            <p className={styles.caption}>Real screenshot, Solana Seeker.</p>
+          </div>
+        </div>
+      </section>
+
+      <section className={styles.section}>
+        <div className={styles.wrap}>
+          <span className={styles.eyebrow}>The app</span>
+          <h2 className={styles.h2}>On a Solana Seeker.</h2>
+          <div className={styles.shots}>
+            {SCREENS.map((sc) => (
+              <img
+                key={sc.src}
+                className={styles.shot}
+                src={sc.src}
+                alt={sc.alt}
+                width={540}
+                height={1201}
+                loading="lazy"
+              />
+            ))}
           </div>
         </div>
       </section>

@@ -104,76 +104,6 @@
   flex-direction: column;
   align-items: center;
 }
-.phone {
-  width: 280px;
-  max-width: 100%;
-  border: 1px solid var(--border-strong);
-  border-radius: 36px;
-  padding: 14px;
-  background: var(--bg-elev);
-}
-.screen {
-  border-radius: 24px;
-  background: var(--bg);
-  padding: 20px 16px;
-  min-height: 420px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-.screenHead {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-family: var(--font-mono);
-  font-size: 12px;
-  color: var(--fg-2);
-}
-.dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--amber);
-}
-.task {
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-.taskRow {
-  display: flex;
-  justify-content: space-between;
-  gap: 8px;
-  font-size: 13px;
-  color: var(--fg-3);
-}
-.taskRow code {
-  color: var(--fg-1);
-}
-.verdict {
-  align-self: flex-start;
-  font-family: var(--font-mono);
-  font-size: 13px;
-  padding: 6px 12px;
-  border-radius: 999px;
-  border: 1px solid var(--amber);
-  color: var(--amber-soft);
-}
-.pointsLine {
-  margin-top: auto;
-  display: flex;
-  justify-content: space-between;
-  font-size: 14px;
-  color: var(--fg-2);
-}
-.pointsLine strong {
-  color: var(--fg-1);
-  font-family: var(--font-display);
-  font-size: 22px;
-}
 .caption {
   margin-top: 12px;
   font-size: 12px;
@@ -282,6 +212,30 @@
 }
 @media (max-width: 520px) {
   .steps {
+    grid-template-columns: 1fr;
+  }
+}
+
+.shot {
+  display: block;
+  width: 280px;
+  max-width: 100%;
+  height: auto;
+  border: 1px solid var(--border-strong);
+  border-radius: 28px;
+}
+.shots {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  justify-items: center;
+}
+.shots .shot {
+  width: 100%;
+  max-width: 300px;
+}
+@media (max-width: 900px) {
+  .shots {
     grid-template-columns: 1fr;
   }
 }
