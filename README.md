@@ -1,80 +1,24 @@
 # solsentry-app
 
-> RugCheck tells you a fire is burning. SolSentry tells you who lit it.
+The website at [solsentry.app](https://solsentry.app): one page about the SolSentry Android app, which turns a
+phone into a verifier of public Solana data.
 
-Public web app for [SolSentry](https://solsentry.app) — Solana threat
-intelligence. Landing, lookup, operator/token pages, live dashboards and
-integration docs for the operator-risk intelligence layer.
+## What is served
 
-Live product:
+- `/`: the landing page (`src/app/page.tsx`).
+- `/.well-known/assetlinks.json`: Digital Asset Links for the Android app (`app.solsentry.mobile`), checked by
+  wallets over Mobile Wallet Adapter.
+- Any other path redirects to `/` (`src/middleware.ts`), so old shared links land on the page.
 
-- App: `https://solsentry.app`
-- API: `https://api.solsentry.app/v1/stats`
-- Infra backing the API: `Contabo US-East (66.94.105.185)`, migrated from
-  Hetzner on `2026-06-09`
-- Frontend hosting: `Cloudflare/Vercel` (not on the VPS)
+The previous site (all pages and branches) is kept in a separate private archive repository.
 
-## What this app exposes
-
-- landing page and positioning for SolSentry
-- live operator lookup UI
-- public install/docs entrypoint for REST and MCP
-- links to the wider public SolSentry surface
-
-## Stack
-
-- Next.js 15.1 + React 19 + TypeScript 5.7
-- App Router
-- Static export where possible; SSR (edge runtime) for `/operator/[wallet]`
-- Consumes the public REST API at https://api.solsentry.app
-- Cloudflare Pages deployment
-
-## Routes
-
-| Route | Type | Purpose |
-|---|---|---|
-| `/` | Static/server | Landing with live stats-backed lookup entry |
-| `/lookup` | Server | Universal wallet/mint lookup redirect |
-| `/scan` | Server | Scan fallback for unknown wallet/mint inputs |
-| `/operator/[wallet]` | Dynamic | Live operator risk profile |
-| `/token/[mint]` | Dynamic | Live token risk profile and deployer context |
-| `/network/[wallet]` | Dynamic | Operator graph view |
-| `/drain/[wallet]` | Dynamic | Drain-trace view |
-| `/share/operator/[wallet]` | Dynamic | Public read-only operator share card |
-| `/dashboard`, `/live`, `/alerts` | Dynamic/client | Live network and alert surfaces |
-| `/clusters`, `/clusters/[id]` | Dynamic | Bot-cluster registry and detail pages |
-| `/top-operators`, `/operators`, `/tokens`, `/wallets` | Dynamic | Public directories |
-| `/api`, `/docs`, `/mcp`, `/telegram`, `/x402` | Static/server | Integration and developer pages |
-| `/pricing` | Static | Tiers and credit packs read live from `/v1/pricing` |
-| `/lab/*`, `/screen`, `/dashboard/v3`, `/fun`, `/sidetrack` | Internal/noindex | Labs, presentation and experimental surfaces |
-
-## Local development
+## Run
 
 ```bash
-npm install
-npm run dev
+npm ci
+npm run dev            # http://localhost:3000
+npm run pages:build    # Cloudflare Workers bundle (OpenNext)
+npx wrangler dev       # serve that bundle locally
 ```
 
-## Build
-
-```bash
-npm run build
-npm run pages:build
-```
-
-## Environment
-
-| Variable | Default | Purpose |
-|---|---|---|
-| `NEXT_PUBLIC_API_URL` | `https://api.solsentry.app` | REST API base URL |
-
-## Notes
-
-- Public claims should point back to `https://api.solsentry.app/v1/stats`.
-- Precision is auditable per-mint at `/v1/predictions/{mint}` (live) — never
-  publish a hardcoded accuracy/precision number or operator-level aggregate as
-  a standing fact; re-verify live on the day.
-
-## License
-
-MIT
+Deployed on Cloudflare Workers from `main`.
