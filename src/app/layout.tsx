@@ -1,5 +1,14 @@
 import type { Metadata } from "next";
+import { DM_Mono, Manrope } from "next/font/google";
 import "./globals.css";
+
+// Self-hosted at build time by next/font: no request to Google from the visitor.
+const manrope = Manrope({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-body",
+});
+const dmMono = DM_Mono({ subsets: ["latin"], weight: ["400", "500"], variable: "--font-mono" });
 
 const TITLE = "SolSentry — your phone verifies Solana";
 const DESCRIPTION =
@@ -30,12 +39,12 @@ export const metadata: Metadata = {
 };
 
 export const viewport = {
-  themeColor: "#100E0A",
+  themeColor: "#090A09",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${manrope.variable} ${dmMono.variable}`}>
       <body>
         <a href="#main" className="skip-link">
           Skip to main content

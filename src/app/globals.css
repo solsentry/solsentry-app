@@ -1,39 +1,20 @@
-@font-face {
-  font-family: "Syne";
-  src: url("/fonts/Syne-Variable.ttf") format("truetype-variations");
-  font-weight: 400 800;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "DM Sans";
-  src: url("/fonts/DMSans-Variable.ttf") format("truetype-variations");
-  font-weight: 100 1000;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "JetBrains Mono";
-  src: url("/fonts/JetBrainsMono-Variable.ttf") format("truetype-variations");
-  font-weight: 100 800;
-  font-style: normal;
-  font-display: swap;
-}
-
 :root {
-  --amber: #c17d0e;
-  --amber-soft: #d89530;
-  --bg: #100e0a;
-  --bg-elev: #18150f;
-  --surface: #1f1b14;
-  --border: #2a251c;
-  --border-strong: #3d362a;
-  --fg-1: #f2ede4;
-  --fg-2: #b8b0a0;
-  --fg-3: #8a8276;
-  --font-display: "Syne", ui-sans-serif, system-ui, sans-serif;
-  --font-body: "DM Sans", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --bg: #090a09;
+  --bg-warm: #17100a;
+  --surface: #111311;
+  --surface-2: #171a17;
+  --line: rgba(255, 255, 255, 0.09);
+  --line-soft: rgba(255, 255, 255, 0.07);
+  --line-strong: rgba(255, 255, 255, 0.2);
+  --fg-1: #f2f1eb;
+  --fg-2: #c9ccc4;
+  --fg-3: #9a9f98;
+  --fg-4: #8d928b;
+  --accent: #f28a35;
+  --accent-soft: #f5a05b;
+  --accent-hi: #ffb677;
+  --accent-deep: #e06a10;
+  --on-accent: #17100a;
   color-scheme: dark;
 }
 
@@ -49,34 +30,35 @@ body {
   padding: 0;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   background: var(--bg);
   color: var(--fg-1);
-  font-family: var(--font-body);
+  font-family: var(--font-body), "Segoe UI", ui-sans-serif, system-ui, sans-serif;
   font-size: 16px;
-  line-height: 1.6;
+  line-height: 1.55;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
 
 a {
-  color: var(--amber-soft);
+  color: var(--accent-soft);
+}
+a:hover {
+  color: var(--accent-hi);
 }
 
 h1,
 h2,
 h3 {
-  font-family: var(--font-display);
-  line-height: 1.1;
   margin: 0;
 }
 
 p {
   margin: 0;
-}
-
-code {
-  font-family: var(--font-mono);
-  font-size: 0.9em;
 }
 
 .skip-link {
@@ -86,8 +68,22 @@ code {
 .skip-link:focus {
   left: 16px;
   top: 16px;
-  background: var(--amber);
-  color: var(--bg);
+  background: var(--accent);
+  color: var(--on-accent);
   padding: 8px 12px;
+  border-radius: 8px;
   z-index: 10;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001s !important;
+    animation-iteration-count: 1 !important;
+    transition: none !important;
+  }
 }
