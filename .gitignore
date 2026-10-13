@@ -18,6 +18,7 @@ tsconfig.tsbuildinfo
 
 # Local agent context (internal strategy — never commit)
 .agent/
+AGENTS.md
 holders_*_temp.*
 *_temp.ts
 GEMINI.md
