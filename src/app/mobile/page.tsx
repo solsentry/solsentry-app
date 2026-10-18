@@ -20,7 +20,7 @@ const WHY = [
   },
   {
     title: "Wallet risk data comes from a handful of vendors.",
-    body: "Companies already pay for know-your-wallet (KYW) checks before they accept a deposit or send a payout. The data behind those checks is produced by very few readers of the chain.",
+    body: "Companies already pay to screen a wallet before they accept a deposit or send a payout. The data behind those checks is produced by very few readers of the chain.",
   },
   {
     title: "Phones are online, idle and everywhere.",
