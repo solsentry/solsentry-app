@@ -8,7 +8,7 @@
     "build": "next build",
     "start": "next start -p 3000",
     "lint": "eslint .",
-    "pages:build": "opennextjs-cloudflare build",
+    "pages:build": "opennextjs-cloudflare build --dangerouslyUseUnsupportedNextVersion",
     "format": "prettier --write \"src/**/*.{ts,tsx,css}\"",
     "format:check": "prettier --check \"src/**/*.{ts,tsx,css}\""
   },
@@ -33,7 +33,7 @@
     "d3-hierarchy": "^3.1.2",
     "framer-motion": "^12.38.0",
     "lucide-react": "^1.8.0",
-    "next": "^15.5.15",
+    "next": "^15.5.28",
     "next-themes": "^0.4.6",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
@@ -52,10 +52,13 @@
     "@types/react": "^19.0.1",
     "@types/react-dom": "^19.0.2",
     "eslint": "^9.17.0",
-    "eslint-config-next": "^15.5.15",
+    "eslint-config-next": "^15.5.28",
     "prettier": "^3.8.3",
     "tailwindcss": "^4.3.0",
     "typescript": "^5.7.2",
     "wrangler": "^4.86.0"
+  },
+  "overrides": {
+    "protobufjs": "^7.6.6"
   }
 }
