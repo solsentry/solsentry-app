@@ -27,8 +27,8 @@ Antes de fechar: `npm run build` verde + `git grep -niE "real.?time" src/` só c
 
 ## 🚦 GATE de copy (resumo — autoridade `.agent/site-context/brand-voice/19_ANTI_POSITIONING.md §2)
 NUNCA: "zero false positives" · "real-time" sem qualifier (→ "low-latency") · "AI-powered" (→ "ALife agents"/"operator graph") ·
-mitologia (token #62 / 19min / 1.059) · agregados operator-level de SISTEMA (LOCK-01) · operador nomeado como "serial rugger"/"deployer" ou número por operador vindo de `operator_profiles` (LOCK-03; exemplo = mint-level ou placeholder `<WALLET_ADDRESS>`) ·
-buzzword. SEMPRE: número só de `/v1/stats` live (nunca hardcodar) · "XX.X% CRITICAL precision — auditable per-mint" (XX.X = valor live do dia).
+mitologia (token #62 / 19min / 1.059) · agregado de deployer/sistema fora da forma BAN-12 (com escopo + data de corte) · operador nomeado como "serial rugger"/"deployer" · número por operador sem ser verificado pela tx de criação real E rechecado live no dia (BAN-10) · percentual de precisão cru em copy externa (BAN-11, congelado até a validação da Onda 2) · buzzword.
+SEMPRE: número só de `/v1/stats` live (nunca hardcodar) · precisão na forma "over N outcome-tracked predictions, each auditable per mint" (N live do dia, sem percentual).
 
 ## Git
 - `.agent/` é gitignored — nunca commitar (estratégia/competidor interna).
