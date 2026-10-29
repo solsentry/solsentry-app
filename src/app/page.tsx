@@ -93,7 +93,7 @@ const NEXT = [
 const STRAIGHT = [
   "It is not a Solana consensus validator. It does not vote, stake or produce blocks.",
   "It is not trustless yet. The SolSentry server is the reference every result is compared against.",
-  "SolSentry has no token of its own. Rewards are paid in SKR from a reward pool.",
+  "SolSentry has no token of its own. SKR claims come from a pool SolSentry funds, for Seeker Genesis holders.",
 ];
 
 const SCREENS = [
@@ -297,7 +297,7 @@ export default function Home() {
           <div className={styles.band}>
             <div className={styles.bandText}>
               <span className={styles.bandEyebrow}>Points and SKR</span>
-              <h2 className={styles.bandH2}>Paid for reads the server can confirm.</h2>
+              <h2 className={styles.bandH2}>Points for reads the server can confirm.</h2>
             </div>
             <svg
               className={styles.seal}
