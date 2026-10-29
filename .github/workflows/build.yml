@@ -11,6 +11,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      # Agent notes are local only (.gitignore); fail if one is tracked again.
+      - name: Block tracked agent notes
+        run: |
+          tracked=$(git ls-files AGENTS.md .agent .agents)
+          if [ -n "$tracked" ]; then
+            echo "::error::Agent notes must stay out of this public repo:"
+            echo "$tracked"
+            exit 1
+          fi
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
